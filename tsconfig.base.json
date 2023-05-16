@@ -14,7 +14,53 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@chat-clean-architecture/chat/adapters/controllers": [
+        "libs/chat/adapters/controllers/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/adapters/gateways": [
+        "libs/chat/adapters/gateways/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/adapters/presenters": [
+        "libs/chat/adapters/presenters/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/adapters/views": [
+        "libs/chat/adapters/views/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/application-business-rules/interactor": [
+        "libs/chat/application-business-rules/interactor/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/application-business-rules/main": [
+        "libs/chat/application-business-rules/main/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/entreprise-business-rules/dtos": [
+        "libs/chat/entreprise-business-rules/dtos/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/entreprise-business-rules/entities": [
+        "libs/chat/entreprise-business-rules/entities/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/db/in-memory-db": [
+        "libs/chat/frameworks/db/in-memory-db/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/db/mongo-db": [
+        "libs/chat/frameworks/db/mongo-db/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/ui/angular/contacts": [
+        "libs/chat/frameworks/ui/angular/contacts/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/ui/angular/rooms": [
+        "libs/chat/frameworks/ui/angular/rooms/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/ui/react": [
+        "libs/chat/frameworks/ui/react/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/web/graph-ql": [
+        "libs/chat/frameworks/web/graph-ql/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/frameworks/web/http-nest": [
+        "libs/chat/frameworks/web/http-nest/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

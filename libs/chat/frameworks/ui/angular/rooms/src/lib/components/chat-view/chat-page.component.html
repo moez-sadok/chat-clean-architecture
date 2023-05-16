@@ -1,0 +1,89 @@
+<ng-container *ngIf="chatPageView">
+  <mat-card>
+    <!-- <mat-card-title>User: {{activeUser.name}}</mat-card-title> -->
+    <mat-card-content>
+      <div fxLayoutGap="12px grid" fxLayout fxFlex>
+        <div fxFlex="40">
+          <!-- <ng-container *ngIf="chatRooms$| async as chatrooms"> -->
+          <mat-card>
+            <mat-selection-list #chatRoomsList [multiple]="false">
+              <mat-list-option
+                *ngFor="let chatRoom of chatPageView.rooms"
+                [value]="chatRoom"
+                (click)="selectRoom.emit(chatRoom)"
+              >
+                <mat-icon mat-list-icon>groups</mat-icon>
+                <div mat-line>{{ chatRoom.name }}</div>
+                <!-- <div mat-line> {{chatRoom.messages[chatRoom.messages.length - 1].message}} </div> -->
+              </mat-list-option>
+            </mat-selection-list>
+          </mat-card>
+          <!-- </ng-container> -->
+        </div>
+        <div fxFlex="60">
+          <ng-container *ngIf="chatPageView.activeRoom">
+            <div fxLayoutGap="12px grid" fxLayout="column">
+              <div fxFlex>
+                <mat-card>
+                  <mat-card-header>
+                    <div mat-card-avatar>
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="chat room menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                    </div>
+                    <mat-card-title>{{
+                      chatPageView.activeRoom.name
+                    }}</mat-card-title>
+                    <!-- <mat-card-subtitle>{{Object.keys(activeChatroom.participants)}}</mat-card-subtitle> -->
+                  </mat-card-header>
+                  <div *ngFor="let message of chatPageView.activeRoomMessages">
+                    <p>
+                      <b>{{ message.participantName }}</b
+                      >: {{ message.content }}
+                    </p>
+                  </div>
+                </mat-card>
+              </div>
+              <div fxFlex>
+                <mat-card>
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <!-- appearance="legacy" -->
+                    <mat-form-field  style="width: 80%">
+                      <input #messageInput matInput />
+                    </mat-form-field>
+                    <button
+                      mat-mini-fab
+                      color="warn"
+                      (click)="sendMessage.emit(messageInput.value)"
+                      aria-label="Send message"
+                    >
+                      <mat-icon>send</mat-icon>
+                    </button>
+                  </div>
+                </mat-card>
+              </div>
+            </div>
+
+            <mat-menu #menu="matMenu">
+              <button
+                mat-menu-item
+                (click)="leaveChatRoom.emit(chatPageView.activeRoom.roomId)"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Leave</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>add</mat-icon>
+                <span>Add Participant</span>
+              </button>
+            </mat-menu>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

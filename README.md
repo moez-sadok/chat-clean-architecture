@@ -6,6 +6,9 @@
 
 ## Understand this workspace
 
+npm run ng g @nrwl/workspace:lib chat/libname
+npm run ng g @nrwl/angular:lib chat/frameworks/ui/angular/rooms
+
 Run `nx graph` to see a diagram of the dependencies of the projects.
 
 ## Remote caching
