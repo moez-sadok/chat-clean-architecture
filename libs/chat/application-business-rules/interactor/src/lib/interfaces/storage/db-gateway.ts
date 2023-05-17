@@ -4,25 +4,22 @@ import {
   ParticpantDto,
   UserDto,
 } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
-
-  //db Gateway
+//db Gateway
 export interface IDataAccess {
-
 
   getUsers(): UserDto[];
   getUserById(userId: number): UserDto;
+  addUser(user: UserDto): void;
 
   getChatRooms(): ChatroomDto[];
-
   getChatRoomsByUser(userId: number): ChatroomDto[];
   getChatRoomsById(roomId: number): ChatroomDto;
-  getMessagesByRoom(roomId: number): MessageDto[];
-  getParticpantByUserAndRoom(roomId: number, userId: number): ParticpantDto;
-
-  addMessage(message: MessageDto): MessageDto;
-  addParticipant(participant: ParticpantDto): void;
-  addUser(user: UserDto): void;
   addChatRoom(chatRoom: ChatroomDto): void;
 
+  getMessagesByRoom(roomId: number): MessageDto[];
+  addMessage(message: MessageDto): MessageDto;
+
+  getParticpantByUserAndRoom(roomId: number, userId: number): ParticpantDto;
+  addParticipant(participant: ParticpantDto): void;
   removeParticipant(participant: ParticpantDto): void;
 }

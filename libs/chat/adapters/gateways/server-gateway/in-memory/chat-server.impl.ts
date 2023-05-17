@@ -1,8 +1,8 @@
-import { IChatServer } from "../interfaces/chat-server";
-import { SendMessageInputData } from "../dtos/input.chat.data";
-import { Chatroom, IChatroom, IMessage, IParticpant, Message, Participant } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
-import { IDataAccess } from "../interfaces/db-gateway";
-import { IConnectedUser } from "../interfaces/connected-user";
+import { IChatPresenterOutputBoundary, IChatServer, IDataAccess, SendMessageInputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import { IConnectedUser } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import { UserDto } from "@chat-clean-architecture/chat/entreprise-business-rules/dtos";
+import { IChatroom, IMessage, Message, Chatroom, Participant, IParticpant } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
+import { ConnectedUserImpl } from "./connected-user.impl";
 
 export class ChatServerImpl implements IChatServer {
 
@@ -27,7 +27,13 @@ export class ChatServerImpl implements IChatServer {
 
   connectUser(user: IConnectedUser): void {
     const userId = user.getUser().id;
-    if (userId != null || userId != undefined && !this.connectetdUsers[userId]) this.connectetdUsers[userId] = user;
+    if (userId != null || userId != undefined && !this.connectetdUsers[userId])
+     this.connectetdUsers[userId] = user;
+  }
+
+  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): void {
+    const cuser : IConnectedUser = new ConnectedUserImpl(user,presenter);
+   this.connectUser(cuser);
   }
 
   disconnectUser(user: IConnectedUser): void {

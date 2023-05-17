@@ -1,9 +1,6 @@
+import { IChatServer, IChatPresenterOutputBoundary, SendMessageInputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { UserDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
-import { IChatServer } from '../interfaces/chat-server';
-import { SendMessageInputData } from '../dtos/input.chat.data';
-import { MessageOutputData } from '../dtos/output.chat.data';
-import { IChatPresenterOutputBoundary } from '../interfaces/chat.presenter.output.boundary';
-import { IConnectedUser } from '../interfaces/connected-user';
+import { IConnectedUser } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 export class ConnectedUserImpl implements IConnectedUser {
 

@@ -1,8 +1,10 @@
 /******** Abstraction of mediator pattern */
 // Colleagues in IConnectedUser
-import { SendMessageInputData } from '../dtos/input.chat.data';
+import { SendMessageInputData } from '../../dtos/input.chat.data';
 import { IChatroom } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 import { IConnectedUser } from './connected-user';
+import { UserDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
+import { IChatPresenterOutputBoundary } from '../outputs/chat.presenter.output.boundary';
 
 // Mediator
 export interface IChatServer {
@@ -13,6 +15,8 @@ export interface IChatServer {
   initServer(): void;
   setRooms(rooms: Record<string, IChatroom>): void;
   connectUser(user: IConnectedUser): void;
+  connectUser(user: IConnectedUser): void;
+  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): void
   disconnectUser(user: IConnectedUser): void;
   broadcast(message: SendMessageInputData): void;
 }

@@ -1,4 +1,4 @@
-import { MessageOutputData, RoomOutputData } from '../dtos/output.chat.data';
+import { MessageOutputData, RoomOutputData } from '../../dtos/output.chat.data';
 
 export interface IChatPresenterOutputBoundary {
   selectedRoomsByUser(rooms: RoomOutputData[]): void;

@@ -1,33 +1,24 @@
 import { MessageDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
-import {
-  GetRoomsByUserInputData,
-  GetRoomMessagesInputData,
-  CreateChatRoomInputData,
-  SendMessageInputData,
-  LeaveRoomInputData,
-} from './dtos/input.chat.data';
 import { MessageOutputData, RoomOutputData } from './dtos/output.chat.data';
-import { IChatControllerInputBoundary } from './interfaces/chat.controller.input.boundary';
-import { IChatPresenterOutputBoundary } from './interfaces/chat.presenter.output.boundary';
-import { IDataAccess } from './interfaces/db-gateway';
-import { IChatServer } from './interfaces/chat-server';
-import { ConnectedUserImpl } from './client-server/connected-user.impl';
-import { IConnectedUser } from './interfaces/connected-user';
+import { IChatControllerInputBoundary } from './interfaces/inputs/chat.controller.input.boundary';
+import { IChatPresenterOutputBoundary } from './interfaces/outputs/chat.presenter.output.boundary';
+import { IDataAccess } from './interfaces/storage/db-gateway';
+import { IChatServer } from './interfaces/server/chat-server';
+import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, LeaveRoomInputData, CreateChatRoomInputData } from './dtos/input.chat.data';
 
 export class ChatInteractorImpl implements IChatControllerInputBoundary {
 
   constructor(
     private chatdataBase: IDataAccess,
-    private chaPresenterOutputBoundary: IChatPresenterOutputBoundary,
-    private chatServer : IChatServer
+    private presenter: IChatPresenterOutputBoundary,
+    private chatServer: IChatServer
   ) {
     console.log('ChatInteractorImpl constructor');
   }
 
   connectUser(userId: number): void {
     const existUser = this.chatdataBase.getUserById(userId);
-    const cuser : IConnectedUser = new ConnectedUserImpl(existUser,this.chaPresenterOutputBoundary)
-    this.chatServer.connectUser(cuser);
+    this.chatServer.connectUserPresenter(existUser, this.presenter);
   }
 
   getRoomsByUser(user: GetRoomsByUserInputData): void {
@@ -52,21 +43,18 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
       } as MessageOutputData;
     });
     //this.chaPresenterOutputBoundary.selectChatRoomsMessages(messages);
-    const croom : RoomOutputData = { roomId: room.roomId, roomName: room.roomName};
-    this.chatServer.getConnectetdUsers()[room.userId].getPresenter().selectChatRoomsMessages(messages,croom)
+    const croom: RoomOutputData = { roomId: room.roomId, roomName: room.roomName };
+    this.chatServer.getConnectetdUsers()[room.userId].getPresenter().selectChatRoomsMessages(messages, croom)
   }
 
   sendMessage(message: SendMessageInputData) {
     // db 
-    const participantInRoom = this.chatdataBase.getParticpantByUserAndRoom(
-      message.roomId,
-      message.userId
-    );
+    const participantInRoom = this.chatdataBase.getParticpantByUserAndRoom(message.roomId, message.userId);
     const croom = this.chatdataBase.getChatRoomsById(message.roomId);
     const messagedto: MessageDto = {
       from: participantInRoom,
       message: message.message,
-      room: croom,
+      room: croom
     };
     const newMessage = this.chatdataBase.addMessage(messagedto);
     // const messagedOutput: MessageOutputData = {

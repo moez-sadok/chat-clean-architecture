@@ -1,10 +1,10 @@
 /******** Abstraction of mediator pattern */
 // Colleagues in IConnectedUser
 import { UserDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
-import { MessageOutputData } from '../dtos/output.chat.data';
-import { SendMessageInputData } from '../dtos/input.chat.data';
-import { IChatPresenterOutputBoundary } from './chat.presenter.output.boundary';
 import { IChatServer } from './chat-server';
+import { SendMessageInputData } from '../../dtos/input.chat.data';
+import { MessageOutputData } from '../../dtos/output.chat.data';
+import { IChatPresenterOutputBoundary } from '../outputs/chat.presenter.output.boundary';
 
 // Colleagues
 export interface IConnectedUser {

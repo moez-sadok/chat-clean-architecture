@@ -4,7 +4,7 @@ import {
   GetRoomsByUserInputData,
   LeaveRoomInputData,
   SendMessageInputData,
-} from '../dtos/input.chat.data';
+} from '../../dtos/input.chat.data';
 
 export interface IChatControllerInputBoundary {
   connectUser(userId: number): void;
