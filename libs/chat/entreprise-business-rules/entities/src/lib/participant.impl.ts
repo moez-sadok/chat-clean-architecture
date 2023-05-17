@@ -41,7 +41,6 @@ export class Participant implements IParticpant {
   }
 
   printTextMessage(messageData: IMessage) {
-    console.log(messageData.getParticipant().getUser().name +
-        ' to ' + this.user.name + ': ' +messageData.getcontent());
+    console.log(messageData.getParticipant().getUser().name +' to ' + this.user.name + ': ' +messageData.getcontent());
   }
 }

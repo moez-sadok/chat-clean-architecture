@@ -1,5 +1,5 @@
 export * from './lib/chat-interactor';
-export * from './lib/interfaces/database';
+export * from './lib/interfaces/db-gateway';
 
 export * from './lib/interfaces/chat.controller.input.boundary';
 export * from './lib/interfaces/chat.presenter.output.boundary';

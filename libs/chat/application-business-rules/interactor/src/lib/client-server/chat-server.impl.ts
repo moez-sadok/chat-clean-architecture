@@ -1,7 +1,7 @@
 import { IChatServer } from "../interfaces/chat-server";
 import { SendMessageInputData } from "../dtos/input.chat.data";
 import { Chatroom, IChatroom, IMessage, IParticpant, Message, Participant } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
-import { IDataAccess } from "../interfaces/database";
+import { IDataAccess } from "../interfaces/db-gateway";
 import { IConnectedUser } from "../interfaces/connected-user";
 
 export class ChatServerImpl implements IChatServer {

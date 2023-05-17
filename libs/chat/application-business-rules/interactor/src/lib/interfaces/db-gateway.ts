@@ -5,8 +5,9 @@ import {
   UserDto,
 } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 
+  //db Gateway
 export interface IDataAccess {
-  //or Gateway
+
 
   getUsers(): UserDto[];
   getUserById(userId: number): UserDto;
