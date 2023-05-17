@@ -3,7 +3,7 @@ import { MessageDataViewModelDto, RoomDataViewModelDto, ChatDataViewModelDto } f
 import { IChatWebViewScreen } from './interfaces/web.screen.view';
 
 export class ChatWebPresenterImpl implements IChatPresenterOutputBoundary {
-  
+
   constructor(private chatWebViewScreen: IChatWebViewScreen) { }
 
   receiveNewMessage(message: MessageOutputData): void {
@@ -33,7 +33,8 @@ export class ChatWebPresenterImpl implements IChatPresenterOutputBoundary {
       rooms: rooms.map((e) => {
         return { name: e.roomName, roomId: e.roomId } as RoomDataViewModelDto;
       }),
-      activeRoom: { name: rooms[0].roomName, roomId: rooms[0].roomId },
+      //activeRoom: { name: rooms[0].roomName, roomId: rooms[0].roomId },
+      activeRoom: { name: '', roomId: -1},
       sendButtonLabel: 'Send',
       menuItemLeaveRoomLabel: 'Leave room',
       menuItemAddParticipantLabel: 'Add',

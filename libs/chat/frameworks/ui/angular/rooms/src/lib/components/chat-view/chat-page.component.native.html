@@ -1,0 +1,31 @@
+<div *ngIf="chatPageView" class="display-flex padding-12 card-border">
+
+  <div class="margin-12 padding-12 card-border">
+    <h2>Rooms</h2>
+    <ul>
+      <li class="padding-12 cursor-pointer" *ngFor="let chatRoom of chatPageView.rooms" [value]="chatRoom"
+        (click)="selectRoom.emit(chatRoom)">
+        <b>{{ chatRoom.name }}</b>
+      </li>
+    </ul>
+  </div>
+
+  <div class="margin-12" *ngIf="chatPageView.activeRoom.name">
+
+    <div>
+      <h2>{{ chatPageView.activeRoom.name }}</h2>
+      <div *ngFor="let message of chatPageView.activeRoomMessages">
+        <p> <b>{{ message.participantName }}</b>: {{ message.content }}</p>
+      </div>
+    </div>
+
+    <div class="display-flex">
+      <input class="padding-vertical-4" #messageInput matInput />
+      <button class="send-button" (click)="sendMessage.emit(messageInput.value);messageInput.value=''"
+        aria-label="Send message">
+        Send
+      </button>
+    </div>
+
+  </div>
+</div>

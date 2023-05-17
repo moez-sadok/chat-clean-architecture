@@ -1,0 +1,29 @@
+.display-flex {
+    display: flex;
+}
+
+.margin-12 {
+    margin: 12px;
+}
+
+.padding-12 {
+    padding: 12px;
+}
+
+.padding-vertical-4 {
+    padding: 4px 0px;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+//
+.send-button{
+    margin-left: 8px;
+    border-radius: 16px;
+}
+
+.card-border {
+    box-shadow: inset 0 -3em 3em rgb(0 0 0 / 4%), 0 0 0 2px rgb(255, 255, 255), 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}

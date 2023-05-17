@@ -21,7 +21,7 @@
           <!-- </ng-container> -->
         </div>
         <div fxFlex="60">
-          <ng-container *ngIf="chatPageView.activeRoom">
+          <ng-container *ngIf="chatPageView.activeRoom.name">
             <div fxLayoutGap="12px grid" fxLayout="column">
               <div fxFlex>
                 <mat-card>
@@ -38,7 +38,7 @@
                     <mat-card-title>{{
                       chatPageView.activeRoom.name
                     }}</mat-card-title>
-                    <!-- <mat-card-subtitle>{{Object.keys(activeChatroom.participants)}}</mat-card-subtitle> -->
+                    <!-- <mat-card-subtitle>{{Object.keys(chatPageView.activeRoom.participants)}}</mat-card-subtitle> -->
                   </mat-card-header>
                   <div *ngFor="let message of chatPageView.activeRoomMessages">
                     <p>
@@ -58,7 +58,7 @@
                     <button
                       mat-mini-fab
                       color="warn"
-                      (click)="sendMessage.emit(messageInput.value)"
+                      (click)="sendMessage.emit(messageInput.value);messageInput.value=''"
                       aria-label="Send message"
                     >
                       <mat-icon>send</mat-icon>
