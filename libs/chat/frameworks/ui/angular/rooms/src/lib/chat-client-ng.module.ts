@@ -49,6 +49,7 @@ import { ChatPageWsHttpClientComponent } from './containers/chat-page/chat-page.
     //
   ],
   providers: [
+    //Version 1: Full In memory main components injections 
     { provide: CHAT_DB_PROVIDER, useClass: DataBaseMemoryImpl },
     {
       provide: CHAT_DB_MAPPER_PROVIDER, useFactory: dbMapperFactory,

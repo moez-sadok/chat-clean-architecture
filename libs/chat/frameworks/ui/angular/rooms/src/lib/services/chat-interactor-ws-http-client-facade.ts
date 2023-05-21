@@ -34,12 +34,12 @@ export class ChatInteractorWsHttpClientFacadeImpl implements IChatControllerInpu
       reconnectionDelayMax: 10000,
       auth: { userId: userId }
     });
+    this.listenReceiveMessage();
+  }
+
+  private listenReceiveMessage(){
     this.clientSocket.on('msgToClient', (message) => {
-      console.log('receved message', message);
       this.presentator.receiveNewMessage(message);
-      //this.lastReceiveMessage$ = Promise.resolve(message);
-      // this.lastReceiveMessage$.next(message);
-      // return this.receiveMessage();
     });
   }
 

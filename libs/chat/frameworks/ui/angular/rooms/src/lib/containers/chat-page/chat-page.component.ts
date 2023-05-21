@@ -11,7 +11,7 @@ import { IChatController } from '@chat-clean-architecture/chat/adapters/controll
   selector: 'cca-chat-page',
   templateUrl: './chat-page.component.html',
   providers: [
-    { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl   /* UserWebViewServerImpl */ },
+    { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl   /* UserWebViewClientImpl */ },
     {
       provide: CHAT_PRESENTATOR_PROVIDER, useFactory: presenterFactory,
       deps: [CHAT_VIEW_PROVIDER]
@@ -52,7 +52,7 @@ export class ChatPageComponent implements OnInit {
         tap((userId) => {
           console.log('id user from router', userId);
           if (userId != null || userId != undefined) this.activeUserId = +userId;
-        })).subscribe(); //don't forget to unsubscribe
+        })).subscribe(); //don't forget to unsubscribe in ondestroy
   }
 
 }

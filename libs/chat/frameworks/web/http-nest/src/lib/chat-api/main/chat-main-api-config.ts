@@ -1,8 +1,8 @@
 import { ChatApiControllerImpl, IChatApiController } from "@chat-clean-architecture/chat/adapters/controllers";
 import { IChatDatabase, DataBaseMapper } from "@chat-clean-architecture/chat/adapters/gateways";
 import { ChatServerImpl } from "@chat-clean-architecture/chat/adapters/gateways/server-gateway";
-import { ChatInMemoryServerImpl } from "@chat-clean-architecture/chat/adapters/presenters";
-//import { UserWebViewServerImpl } from "@chat-clean-architecture/chat/adapters/views";
+import { ChatPresenterApiImpl } from "@chat-clean-architecture/chat/adapters/presenters";
+//import { UserWebViewClientImpl } from "@chat-clean-architecture/chat/adapters/views";
 import { ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServer, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { DataBaseMemoryImpl } from "@chat-clean-architecture/chat/frameworks/db/in-memory-db";
 
@@ -25,8 +25,8 @@ export class ChatAppMainConfig {
     this.memoryDb = new DataBaseMemoryImpl();
     this.chatDbMapper = new DataBaseMapper(this.memoryDb);
     this.chatServer = new ChatServerImpl(this.chatDbMapper);
-    //this.chatView = new UserWebViewServerImpl();
-    this.chatPresenter = new ChatInMemoryServerImpl();
+    //this.chatView = new UserWebViewClientImpl();
+    this.chatPresenter = new ChatPresenterApiImpl();
     //this.chatInteractor = new ChatInteractorServerImpl(this.chatDbMapper, this.chatPresenter);
     this.chatInteractor = new ChatInteractorInMemoryImpl(this.chatDbMapper, this.chatPresenter, this.chatServer);
     //this.chatController = new ChatControllerImpl(this.chatInteractor);

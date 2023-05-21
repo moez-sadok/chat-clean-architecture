@@ -7,8 +7,8 @@ import { ChatPageWsHttpClientComponent } from './containers/chat-page/chat-page.
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'multi' },
   { path: 'multi', component: MultiUsersChatPageComponent },
-  //{ path: 'user/:userId', component: ChatPageComponent },
   { path: 'user/:userId', component: ChatPageWsHttpClientComponent },
+  //{ path: 'user/:userId', component: ChatPageComponent },
 ];
 
 @NgModule({

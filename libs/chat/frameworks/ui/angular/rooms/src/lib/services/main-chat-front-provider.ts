@@ -6,7 +6,6 @@ import { ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresente
 import { ChatServerImpl  } from "@chat-clean-architecture/chat/adapters/gateways/server-gateway";
 import { ChatInteractorWsHttpClientFacadeImpl } from "./chat-interactor-ws-http-client-facade";
 import { HttpClient } from "@angular/common/http";
-import { Socket } from "socket.io-client";
 
 export const CHAT_SERVER_PROVIDER = new InjectionToken<IChatServer>('chat.server.facade');
 export const CHAT_INTERACTOR_PROVIDER = new InjectionToken<IChatControllerInputBoundary>('chat.interactor');
@@ -28,7 +27,7 @@ export const interactorFactory = (db: IDataAccess, presentator: IChatPresenterOu
     return new ChatInteractorInMemoryImpl(db,presentator, chatserver);
 };
 
-//,clientSocket: Socket // 
+// ws/http interactor // 
 export const interactorClientFacadeFactory = (httpclient: HttpClient,presentator: IChatPresenterOutputBoundary) => {
     return new ChatInteractorWsHttpClientFacadeImpl(httpclient,presentator);
 };
@@ -41,17 +40,11 @@ export const controllerFactory = (interactor: IChatControllerInputBoundary) => {
     return new ChatControllerMemoryImpl(interactor);
 };
 
-// export const controllerWsClientFactory = (view: IChatView) => {
-//     return new ChatControllerWsClientImpl(view);
-// };
-
+// Using an app main facade for the http/ws 
 // export const interactorFactory = (db: IDataAccess, presentator: IChatPresenterOutputBoundary) => {
 //     return new ChatInteractorImpl(db, presentator);
 // };
-
 // export const chatAppMainFactory = (view: IChatView, constroller: IChatController) => {
 //     return new ChatAppMain(view, constroller);
 // };
-
-//import {  IChatAppMainMemoryFacade } from "@chat-clean-architecture/chat/application-business-rules/main";
 //export const CHAT_MAIN_FACADE_PROVIDER = new InjectionToken<IChatAppMainMemoryFacade>('chat.main.facade');

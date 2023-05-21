@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Module } from '@nestjs/common';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@chat-clean-architecture/chat/adapters/gateways';
-import { ChatInMemoryServerImpl } from '@chat-clean-architecture/chat/adapters/presenters';
+import { ChatPresenterApiImpl } from '@chat-clean-architecture/chat/adapters/presenters';
 import { IDataAccess, IChatPresenterOutputBoundary, ChatInteractorInMemoryImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_INTERACTOR_PROVIDER } from './providers.refs';
 
@@ -19,7 +19,7 @@ export const dbMapperFactory = (db: IChatDatabase) => {
 export class DataBaseMemoryImplService extends DataBaseMemoryImpl {}
 
 @Injectable()
-export class ChatInMemoryServerImplService extends ChatInMemoryServerImpl {}
+export class ChatPresenterApiImplService extends ChatPresenterApiImpl {}
 
 @Injectable()
 export class ChatInteractorInMemoryImplService extends ChatInteractorInMemoryImpl {}
@@ -33,7 +33,7 @@ export class ChatInteractorInMemoryImplService extends ChatInteractorInMemoryImp
       inject:[DataBaseMemoryImplService]
     },
     {
-      provide: CHAT_PRESENTATOR_PROVIDER, useClass: ChatInMemoryServerImplService
+      provide: CHAT_PRESENTATOR_PROVIDER, useClass: ChatPresenterApiImplService
     },
     // {
     //   provide: CHAT_INTERACTOR_PROVIDER, useFactory: interactorFactory,

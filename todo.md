@@ -4,5 +4,8 @@
 - Create adapter for websoket server (for IchatServer) 
 - Create adapter for websoket socket (client) (for IConnectedUser) 
 - Split interactor facade to usecases (ISP)
+- replace the main config in nestjs api by the DI
+- Add testing example (using jest)
 - Add mongo db or mysql (as second db test)
+- Add graphql  (as second api test)
 - Add react for the ui (as second ui Framework test)

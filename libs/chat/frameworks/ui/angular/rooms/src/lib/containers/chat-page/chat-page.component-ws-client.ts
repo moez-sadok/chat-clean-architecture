@@ -8,7 +8,7 @@ import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/vi
   selector: 'cca-chat-page-ws-client',
   templateUrl: './chat-page.component.html',
   providers: [
-    { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl   /* UserWebViewServerImpl */ },
+    { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl   /* UserWebViewClientImpl */ },
     {
       provide: CHAT_PRESENTATOR_PROVIDER, useFactory: presenterFactory,
       deps: [CHAT_VIEW_PROVIDER]

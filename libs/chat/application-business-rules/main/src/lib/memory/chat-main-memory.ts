@@ -2,11 +2,12 @@
 import { ChatControllerMemoryImpl } from '@chat-clean-architecture/chat/adapters/controllers';
 import { IChatDatabase, DataBaseMapper } from '@chat-clean-architecture/chat/adapters/gateways';
 import { IChatView, ChatInMemoryPresenterImpl, ChatDataViewModelDto, MessageDataViewModelDto, RoomDataViewModelDto } from '@chat-clean-architecture/chat/adapters/presenters';
-import { UserWebViewServerImpl } from '@chat-clean-architecture/chat/adapters/views';
-import { IChatPresenterOutputBoundary, IChatControllerInputBoundary, IDataAccess, IChatServer, ChatServerImpl, ChatInteractorImpl, SendMessageInputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
+import { IChatPresenterOutputBoundary, IChatControllerInputBoundary, IDataAccess, IChatServer, SendMessageInputData, ChatInteractorInMemoryImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatAppMainMemoryFacade } from '../interfaces/chat.app.main.facade';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
-//
+import { ChatServerImpl } from '@chat-clean-architecture/chat/adapters/gateways/server-gateway';
+// Not used yet just for local test
 // Main app role as facade in memory mock
 export class ChatAppMainMemory implements IChatAppMainMemoryFacade {
   chatView: IChatView;
@@ -28,11 +29,11 @@ export class ChatAppMainMemory implements IChatAppMainMemoryFacade {
     // in memory chatServer
     this.chatServer = new ChatServerImpl(this.chatDbMapper);
 
-    this.chatView = new UserWebViewServerImpl();
+    this.chatView = new UserWebViewClientImpl();
     //this.chatView = new UserMobileViewImpl(); //pdf , api ... 
     this.chatPresenter = new ChatInMemoryPresenterImpl(this.chatView);
     //this.chatPresenter = new ChatMobilePresenterImpl(this.chatView);
-    this.chatInteractor = new ChatInteractorImpl(
+    this.chatInteractor = new ChatInteractorInMemoryImpl(
       this.chatDbMapper,
       this.chatPresenter,
       this.chatServer
