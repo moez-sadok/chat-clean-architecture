@@ -4,7 +4,7 @@ import {
   MessageDataViewModelDto,
 } from '@chat-clean-architecture/chat/adapters/presenters';
 
-export interface IChatAppMainFacade {
+export interface IChatAppMainMemoryFacade {
   //app behavior
   getUserChatView(userId: number): Promise<ChatDataViewModelDto>;
   getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageDataViewModelDto[]>;

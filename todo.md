@@ -1,0 +1,8 @@
+- Replace the front-end interactor (using app facade like the back-end)
+- The presenter api can use the server/socket (IchatServer/IConnectedUser) and return response directly
+- Check the communication model for http: 2 solutions ( app facade (as used now) book-p237 or relation controller / presenter book-p72)
+- Create adapter for websoket server (for IchatServer) 
+- Create adapter for websoket socket (client) (for IConnectedUser) 
+- Split interactor facade to usecases (ISP)
+- Add mongo db or mysql (as second db test)
+- Add react for the ui (as second ui Framework test)

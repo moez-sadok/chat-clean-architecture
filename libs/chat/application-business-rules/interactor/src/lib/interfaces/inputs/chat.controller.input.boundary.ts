@@ -1,17 +1,13 @@
 import {
-  CreateChatRoomInputData,
   GetRoomMessagesInputData,
   GetRoomsByUserInputData,
-  LeaveRoomInputData,
   SendMessageInputData,
 } from '../../dtos/input.chat.data';
+import { MessageOutputData, RoomOutputData } from '../../dtos/output.chat.data';
 
 export interface IChatControllerInputBoundary {
   connectUser(userId: number): void;
-  getRoomsByUser(user: GetRoomsByUserInputData): void;
-  getChatRoomsMessages(room: GetRoomMessagesInputData): void;
-
-  createChatRoom(data: CreateChatRoomInputData): void;
-  leaveChatRoom(data: LeaveRoomInputData): void;
+  getRoomsByUser(user: GetRoomsByUserInputData): Promise<RoomOutputData[]>;
+  getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<MessageOutputData[]>;
   sendMessage(message: SendMessageInputData): void;
 }

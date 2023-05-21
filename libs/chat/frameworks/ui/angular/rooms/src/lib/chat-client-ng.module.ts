@@ -20,12 +20,14 @@ import { MultiUsersChatPageComponent } from './containers/multi-users-chat-page/
 //
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER_PROVIDER, chatServerFactory } from './services/main-chat-front-provider';
+import { ChatPageWsHttpClientComponent } from './containers/chat-page/chat-page.component-ws-client';
 
 @NgModule({
   declarations: [
     ChatPageComponent, 
     ChatViewComponent,
-    MultiUsersChatPageComponent
+    MultiUsersChatPageComponent,
+    ChatPageWsHttpClientComponent
   ],
   imports: [
     CommonModule,

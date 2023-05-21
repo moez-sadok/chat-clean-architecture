@@ -9,7 +9,7 @@ export class ChatServerImpl implements IChatServer {
   private connectetdUsers: Record<number, IConnectedUser> = {};
   private rooms: Record<number, IChatroom> = {};
 
-  constructor(private chatdataBase: IDataAccess) {
+  constructor(protected chatdataBase: IDataAccess) {
     this.initServer();
   }
 
@@ -34,6 +34,10 @@ export class ChatServerImpl implements IChatServer {
   connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): void {
     const cuser : IConnectedUser = new ConnectedUserImpl(user,presenter);
    this.connectUser(cuser);
+  }
+
+  getUserPresenter(userId: number): IChatPresenterOutputBoundary {
+    return this.connectetdUsers[userId].getPresenter();
   }
 
   disconnectUser(user: IConnectedUser): void {

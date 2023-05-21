@@ -14,13 +14,3 @@ export interface SendMessageInputData {
   roomId: number;
   message: string;
 }
-
-export interface LeaveRoomInputData {
-  roomId: number;
-  participantId: number;
-}
-
-export interface CreateChatRoomInputData {
-  name: string;
-  usersId: number[];
-}

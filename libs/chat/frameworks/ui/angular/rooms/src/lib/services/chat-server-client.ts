@@ -13,11 +13,11 @@ import {
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 
-//import { IChatAppMainFacade } from '@chat-clean-architecture/chat/application-business-rules/main';
+//import { IChatAppMainMemoryFacade } from '@chat-clean-architecture/chat/application-business-rules/main';
 import { SendMessageInputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 @Injectable()
-export class ChatClientServerImpl /*implements IChatAppMainFacade */{
+export class ChatClientServerImpl /*implements IChatAppMainMemoryFacade */{
   private clientSocket!: Socket;
   //private lastReceiveMessage$: BehaviorSubject<MessageDataViewModelDto | null> = new BehaviorSubject<MessageDataViewModelDto | null>(null);
   private lastReceiveMessage$: Promise<MessageDataViewModelDto | null>;

@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { of, switchMap, tap } from 'rxjs';
 
 import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER, CHAT_VIEW_PROVIDER, controllerFactory, interactorFactory, presenterFactory } from '../../services/main-chat-front-provider';
-import { IChatWebViewScreen } from '@chat-clean-architecture/chat/adapters/presenters';
+import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
 import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
 import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
 
@@ -13,11 +13,6 @@ import { IChatController } from '@chat-clean-architecture/chat/adapters/controll
   providers: [
     { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl   /* UserWebViewServerImpl */ },
     {
-      provide: CHAT_CONTROLLER_PROVIDER,
-      useFactory: controllerFactory,
-      deps: [CHAT_INTERACTOR_PROVIDER]
-    },
-    {
       provide: CHAT_PRESENTATOR_PROVIDER, useFactory: presenterFactory,
       deps: [CHAT_VIEW_PROVIDER]
     },
@@ -26,6 +21,11 @@ import { IChatController } from '@chat-clean-architecture/chat/adapters/controll
       useFactory: interactorFactory,
       deps: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER]
     },
+    {
+      provide: CHAT_CONTROLLER_PROVIDER,
+      useFactory: controllerFactory,
+      deps: [CHAT_INTERACTOR_PROVIDER]
+    }
   ]
 })
 export class ChatPageComponent implements OnInit {
@@ -42,7 +42,7 @@ export class ChatPageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatController,
-    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatWebViewScreen){ }
+    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView){ }
 
   ngOnInit(): void {
     //get user id from url (router param)

@@ -61,7 +61,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
   //getters
   getMessageByRoom(roomId: number): MessageTable[] {
     //perf issue
-    return Object.values(this.messages).filter((m) => m.roomId === roomId);
+    return Object.values(this.messages).filter((m) => m.roomId == roomId);
   }
 
   getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable {

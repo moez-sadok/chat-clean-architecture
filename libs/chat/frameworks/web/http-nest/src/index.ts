@@ -1,1 +1,2 @@
-export * from './lib/chat-frameworks-web-http-nest';
+export * from './lib/chat-api/chat-api.module';
+export * from './lib/chat-api/chat-api-redis-adapter';

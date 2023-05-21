@@ -1,13 +1,18 @@
 import {
   ChatDataViewModelDto,
-  IChatWebViewScreen,
+  IChatView,
   MessageDataViewModelDto,
   RoomDataViewModelDto,
 } from '@chat-clean-architecture/chat/adapters/presenters';
 
-export class UserWebViewServerImpl implements IChatWebViewScreen {
+export class UserWebViewServerImpl implements IChatView {
+  
   chatDataViewModelDto!: ChatDataViewModelDto;
   lastMessage!: MessageDataViewModelDto;
+
+  displayChatPageView(chatView: ChatDataViewModelDto): void {
+    this.chatDataViewModelDto = chatView;
+  }
 
   displayChatRoomsMessages(messages: MessageDataViewModelDto[]): void {
     this.chatDataViewModelDto = {
@@ -15,11 +20,7 @@ export class UserWebViewServerImpl implements IChatWebViewScreen {
       activeRoomMessages: messages,
     };
   }
-
-  displayChatPageView(chatView: ChatDataViewModelDto): void {
-    this.chatDataViewModelDto = chatView;
-  }
-
+  
   setActiveRoom(room: RoomDataViewModelDto) {
     this.chatDataViewModelDto = {
       ...this.chatDataViewModelDto,
