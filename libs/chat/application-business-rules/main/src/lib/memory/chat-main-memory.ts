@@ -41,7 +41,7 @@ export class ChatAppMainMemory implements IChatAppMainMemoryFacade {
     this.chatController = new ChatControllerMemoryImpl(this.chatInteractor);
   }
 
-  getUserChatView(userId: number): Promise<ChatDataViewModelDto> {
+  getUserChatRooms(userId: number): Promise<ChatDataViewModelDto> {
     this.chatController.getUserRooms(userId);
     return new Promise((resolve) => {
       resolve(this.chatView.chatDataViewModelDto);

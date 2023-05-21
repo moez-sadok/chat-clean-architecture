@@ -6,7 +6,7 @@ import {
 
 export interface IChatAppMainMemoryFacade {
   //app behavior
-  getUserChatView(userId: number): Promise<ChatDataViewModelDto>;
+  getUserChatRooms(userId: number): Promise<ChatDataViewModelDto>;
   getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageDataViewModelDto[]>;
   sendMessage(message: SendMessageInputData): Promise<MessageDataViewModelDto>;
   //message:MessageDataViewModelDto

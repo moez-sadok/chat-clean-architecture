@@ -4,7 +4,7 @@ import { MessageOutputData, RoomOutputData, SendMessageInputData } from '@chat-c
 
 export interface IChatAppApiMainFacade {
   //app behavior
-  getUserChatView(userId: number): Promise<RoomOutputData[]>;
+  getUserChatRooms(userId: number): Promise<RoomOutputData[]>;
   getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageOutputData[]>;
   sendMessage(message: SendMessageInputData):void ; //: Promise<MessageOutputData>
   //message:MessageOutputData

@@ -10,7 +10,7 @@ export class ChatMainApiImpl extends ChatAppMainConfig implements IChatAppApiMai
     super()
   }
 
-  getUserChatView(userId: number): Promise<RoomOutputData[]> {
+  getUserChatRooms(userId: number): Promise<RoomOutputData[]> {
     return new Promise((resolve) => {
       resolve(this.chatController.getUserRooms(userId));
     });

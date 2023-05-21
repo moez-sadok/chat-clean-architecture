@@ -4,6 +4,7 @@ import { MessageDataViewModelDto } from '@chat-clean-architecture/chat/adapters/
 import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, IChatControllerInputBoundary, IChatPresenterOutputBoundary, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { lastValueFrom, tap } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
+
 export class ChatInteractorWsHttpClientFacadeImpl implements IChatControllerInputBoundary {
 
   private clientSocket!: Socket;
@@ -25,8 +26,7 @@ export class ChatInteractorWsHttpClientFacadeImpl implements IChatControllerInpu
     return lastValueFrom(this.http.get<MessageOutputData[]>(url, 
       { params: { userId: room.userId, roomId : room.roomId, roomName: room.roomName } }).pipe(
         tap(res => this.presentator.selectChatRoomsMessages(res,room))
-      )
-      );
+      ));
   }
 
   connectUser(userId: number): void {

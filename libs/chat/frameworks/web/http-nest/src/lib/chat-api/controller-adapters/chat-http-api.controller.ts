@@ -16,7 +16,7 @@ export class ChatHttpApiadApterController {//extends ChatControllerMemoryImpl  /
 
   @Get('chat-user-page-view/:userId')
   getChatPageView(@Param() params:any)/*ChatDataViewModelDto*/ {
-    return this.chatApiMainService.getUserChatView(+params.userId);
+    return this.chatApiMainService.getUserChatRooms(+params.userId);
   }
 
   @Get('chat-room-messages/:roomId')
