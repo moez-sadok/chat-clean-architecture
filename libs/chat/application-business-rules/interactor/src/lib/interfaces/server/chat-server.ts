@@ -15,7 +15,7 @@ export interface IChatServer {
   initServer(): void;
   setRooms(rooms: Record<string, IChatroom>): void;
   connectUser(user: IConnectedUser): void;
-  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): void;
+  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): boolean;
   getUserPresenter(userId: number): IChatPresenterOutputBoundary;
   disconnectUser(user: IConnectedUser): void;
   broadcast(message: SendMessageInputData): void;

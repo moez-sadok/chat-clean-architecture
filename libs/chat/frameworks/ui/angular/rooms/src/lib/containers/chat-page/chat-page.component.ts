@@ -5,7 +5,7 @@ import { of, switchMap, tap } from 'rxjs';
 import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER, CHAT_VIEW_PROVIDER, controllerFactory, interactorFactory, presenterFactory } from '../../services/main-chat-front-provider';
 import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
 import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
-import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatApiController, IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
 
 @Component({
   selector: 'cca-chat-page',
@@ -41,7 +41,8 @@ export class ChatPageComponent implements OnInit {
   get activeUserId() { return this._activeUserId }
 
   constructor(private route: ActivatedRoute,
-    @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatController,
+    //@Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatController,
+    @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatApiController,
     @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView){ }
 
   ngOnInit(): void {

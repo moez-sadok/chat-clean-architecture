@@ -14,7 +14,7 @@ export class ChatInteractorWsHttpClientFacadeImpl implements IChatControllerInpu
     private presentator: IChatPresenterOutputBoundary) { }
 
   getRoomsByUser(user: GetRoomsByUserInputData): Promise<RoomOutputData[]> {
-    const url = `${'api/chat-user-page-view'}/${user.userId}`;
+    const url = `${'api/chat-user-rooms'}/${user.userId}`;
     return lastValueFrom(this.http.get<RoomOutputData[]>(url).pipe(
       tap(res => this.presentator.selectedRoomsByUser(res))
     ));
@@ -29,12 +29,23 @@ export class ChatInteractorWsHttpClientFacadeImpl implements IChatControllerInpu
       ));
   }
 
-  connectUser(userId: number): void {
+  connectUser(userId: number): Promise<boolean> {
     this.clientSocket = io('ws://localhost:8080', {
       reconnectionDelayMax: 10000,
       auth: { userId: userId }
     });
     this.listenReceiveMessage();
+    this.listenerConnectUser();
+    return new Promise((resolve) => {
+      //@ts-ignore
+      resolve(true);
+    }); 
+  }
+
+  private listenerConnectUser(){
+    this.clientSocket.on("connect", () => {
+      console.log('is connected',this.clientSocket); // x8WIv7-mJelg7on_ALbx
+    });
   }
 
   private listenReceiveMessage(){

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChatPageComponent } from './chat-page.component';
-import { CHAT_CONTROLLER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_VIEW_PROVIDER, controllerFactory, interactorClientFacadeFactory, presenterFactory } from '../../services/main-chat-front-provider';
+import {  CHAT_CONTROLLER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_VIEW_PROVIDER, controllerApiFactory, controllerFactory, interactorClientFacadeFactory, presenterFactory } from '../../services/main-chat-front-provider';
 import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
 
 @Component({
@@ -20,13 +20,12 @@ import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/vi
     },
     {
       provide: CHAT_CONTROLLER_PROVIDER,
-      useFactory: controllerFactory,
+      useFactory: controllerApiFactory,
       deps: [CHAT_INTERACTOR_PROVIDER]
     }
   ]
 })
 export class ChatPageWsHttpClientComponent extends ChatPageComponent {
-
 
 }
 

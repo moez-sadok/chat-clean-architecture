@@ -25,18 +25,22 @@ export class ChatServerImpl implements IChatServer {
     this.rooms = rooms;
   }
 
-  connectUser(user: IConnectedUser): void {
+  connectUser(user: IConnectedUser): boolean {
     const userId = user.getUser().id;
-    if (userId != null || userId != undefined && !this.connectetdUsers[userId])
-     this.connectetdUsers[userId] = user;
+    if(userId != null || userId != undefined && !this.connectetdUsers[userId]) {
+      this.connectetdUsers[userId] = user;
+      return true;
+    }
+    return false;
   }
 
-  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): void {
+  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): boolean {
     const cuser : IConnectedUser = new ConnectedUserImpl(user,presenter);
-   this.connectUser(cuser);
+   return this.connectUser(cuser);
   }
 
   getUserPresenter(userId: number): IChatPresenterOutputBoundary {
+    if(!this.connectetdUsers[userId]) throw new Error('ChatServer Error: getUserPresenter not found for user id: '+userId); 
     return this.connectetdUsers[userId].getPresenter();
   }
 

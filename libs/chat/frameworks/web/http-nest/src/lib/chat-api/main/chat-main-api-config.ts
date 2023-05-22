@@ -6,7 +6,7 @@ import { ChatPresenterApiImpl } from "@chat-clean-architecture/chat/adapters/pre
 import { ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServer, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { DataBaseMemoryImpl } from "@chat-clean-architecture/chat/frameworks/db/in-memory-db";
 
-//using the DI (nestjs injection see chat.providers.module)
+// Not used (one main example) now using the DI (nestjs injection see chat.main.config.providers.module)
 // Main app role for the server (no view , only api presenter)
 export class ChatAppMainConfig {
 

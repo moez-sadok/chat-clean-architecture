@@ -2,6 +2,7 @@ import { IChatPresenterOutputBoundary, MessageOutputData, RoomOutputData } from 
 
 export class ChatPresenterApiImpl implements IChatPresenterOutputBoundary {
 
+
   receiveNewMessage(message: MessageOutputData): MessageOutputData {
     return message;
   }

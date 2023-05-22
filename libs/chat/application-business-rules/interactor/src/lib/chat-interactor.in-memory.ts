@@ -13,13 +13,14 @@ export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary 
     private chatdataBase: IDataAccess,
     private presenter: IChatPresenterOutputBoundary,
     private chatServer: IChatServer
-  ) {
-    console.log('ChatInteractorInMemoryImpl constructor');
-  }
+  ) {}
 
-  connectUser(userId: number): void {
+  connectUser(userId: number): Promise<boolean> {
     const existUser = this.chatdataBase.getUserById(userId);
-    this.chatServer.connectUserPresenter(existUser, this.presenter);
+    return new Promise((resolve) => {
+      const res = this.chatServer.connectUserPresenter(existUser, this.presenter);
+      resolve(res);
+    });
   }
 
   getRoomsByUser(user: GetRoomsByUserInputData): Promise<RoomOutputData[]> {
@@ -32,7 +33,10 @@ export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary 
     });
     // this.chaPresenterOutputBoundary.selectedRoomsByUser(rooms);
     return new Promise((resolve) => {
-      const res = this.chatServer.getUserPresenter(user.userId).selectedRoomsByUser(rooms);
+      const presUser = this.chatServer.getUserPresenter(user.userId);
+      if(!presUser) resolve([])
+       //throw new Error('Error interactor not found presenter user')
+      const res = presUser.selectedRoomsByUser(rooms);
       resolve(res);
     });
   }

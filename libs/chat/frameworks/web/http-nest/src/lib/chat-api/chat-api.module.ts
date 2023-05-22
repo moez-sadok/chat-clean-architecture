@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ChatMainApiImpl } from './main/chat-main-api-impl';
 import { ChatHttpApiadApterController } from './controller-adapters/chat-http-api.controller';
 import { ChatSocketApiadApterController } from './controller-adapters/chat-socket.api.controller';
+import { ChatMainConfigProvidersModule } from './main/chat.main.config.providers.module';
 
 @Module({
-  //imports: [ChatProvidersModule], // to complete replace the config app main by di
+  imports: [ChatMainConfigProvidersModule],
   controllers: [
     ChatHttpApiadApterController
   ],
   providers: [
-    ChatMainApiImpl,
     ChatSocketApiadApterController
   ]
 })

@@ -5,9 +5,10 @@ import { IChatApiController } from './interfaces/chat.controllor.api';
 
 export class ChatApiControllerImpl implements IChatApiController {
 
-  constructor(public interactorInputboundry: IChatControllerInputBoundary) {}
+  constructor(public interactorInputboundry: IChatControllerInputBoundary) {
+  }
 
-  initUserConnection(userId: number) {
+  initUserConnection(userId: number):Promise<boolean> {
    return this.interactorInputboundry.connectUser(userId);
   }
 
