@@ -1,61 +1,99 @@
 # Chat Clean Architecture
 
-✨ ** Example of chat application using clean architecture ** ✨
- 
- Discover the magic of the clean architucture and produce a software:
+✨ **Example of a chat application using clean architecture** ✨
 
- Independent of Frameworks 
+Discover the magic of clean architecture.
 
- Testable
+See: [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
- Independent of UI.
+ <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="angular-logo" width="400px" height="300px"/>
 
- Independent of Database.
+## 1. Independent of Frameworks:
 
- Independent of any external agency.
+In this example, when using Angular, we only utilize the necessary features such as Dependency Injection (DI), modules, routing, component input/output, and the httpClient. We also use only four RxJS operators and don't require ngrx (provided by the architecture's native flow). The frameworks act only with adapters.
 
- See: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
+## 2. Testable:
 
- Languages: Typescript, Html, Css
+Starting with Test-Driven Development (TDD) will be easy, and our business rules can be tested without relying on the UI, database, web server, or any other external elements.
 
- Tools: Nx workspace
+This example runs in two environments:
 
- Frameworks/libs: Angular, NestJs, Redis (...React) 
+- In-memory: Used as an integration test for the full system and runs inside Angular (page: /chat/multi).
+- Network: Uses HTTP and WebSocket, allowing the system's components to be easily split between client and server.
 
- Database: In-memory / (...MongoDb)
+## 3. Independent of UI:
 
- Network:  In-memory / Http / Websocket (...GraphQl)
-## Demo (in memory angular app as a main) 
+In this example, we use a native HTML/CSS view and another one using material-components. The UI can be easily changed without affecting the rest of the system. (Note: The API can also be seen as another kind of UI output.)
+
+## 4. Independent of Database:
+
+In this example, we use an in-memory database as a mock and MongoDB. However, you can easily swap it out for MySQL, Cassandra, Oracle, or any other database. Your business rules are not tightly coupled to the database.
+
+## 5. Independent of any external agency:
+
+In this example, all business rules are decoupled from the outside world. See the dependency graph [Dependencies Graph](#dependencies-graph)
+
+# Ecosystem
+
+### Languages: [Typescript]() , [Html]() , [Css]()
+### Tools: [Nx workspace]()
+### Frameworks/libs: [Angular]() , [NestJs]() , [Redis]() , [...React]() 
+### Database: [In-memory]() , [...MongoDB]()  
+### Network: [In-memory ]() , [HTTP]() , [WebSocket]() , [...GraphQL]() 
+<br>
+Note: In this example, we use different frameworks/libs to illustrate the power of this architecture and how easily we can replace them.
+<br>
+<br>
+
+# Demo (in-memory Angular app as the main)
 
 https://stackblitz.com/github/moez-sadok/chat-clean-architecture
 
-## Run in localhost
+# Installation
+```
 npm i
+```
+To install Redis, please check the official Redis website and see also [NestJS WebSocket Adapter documentation](https://docs.nestjs.com/websockets/adapter).
+
+# Run locally
+```
+redis-server
 
 npm run start:ng
 
 npm run start:api
-
-install redis (check official redis website and see also https://docs.nestjs.com/websockets/adapter)
-
-run redis using cli command: 
-
-redis-server
+```
 
 ## Try with 2 versions
-Version 1: Full in memory angular app as main
-http://localhost:4200/chat/multi
 
-Version 2:With client/server (websockt/http) , open in different private tabs 
+Version 1: Full in-memory angular app as main (no need to run the back-end api)
 
-http://localhost:4200/chat/user/1
+ - http://localhost:4200/chat/multi 
 
-http://localhost:4200/chat/user/2
+Version 2: With client/server (websockt/http), open in different private tabs
 
-## Using nx to show the dependencies graph
+- http://localhost:4200/chat/user/1
+- http://localhost:4200/chat/user/2
+
+# dependencies graph
+```
 npm run dep-graph
+```
 
-## Code scaffolding 
+ <img src="nx-dep-graph-image.png" alt="angular-logo" width="780px" height="480px"/>
+
+<br>
+
+# Code source structure
+
+ <img src="code-structure.png" alt="angular-logo" width="300px" height="600px"/>
+
+
+
+# Code scaffolding
+Using Nx console vs code extension or cli:
 
 Generate nest app:
+```
 npx nx generate @nrwl/nest:application chat/chat-server-main-api --frontendProject chat-chat-client-main-ng
+```
