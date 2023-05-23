@@ -52,11 +52,6 @@ export const controllerFactory = (interactor: IChatControllerInputBoundary) => {
     }
   ],
   exports: [
-    // CHAT_DB_PROVIDER,
-    // CHAT_DB_MAPPER_PROVIDER,
-    // CHAT_PRESENTATOR_PROVIDER,
-    // CHAT_INTERACTOR_PROVIDER,
-    // CHAT_SERVER_PROVIDER,
     CHAT_CONTROLLER_PROVIDER
   ]
 })

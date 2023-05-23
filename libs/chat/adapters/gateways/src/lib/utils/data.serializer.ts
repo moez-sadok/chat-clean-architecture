@@ -1,16 +1,10 @@
-import {
-  ChatroomDto,
-  MessageDto,
-  ParticpantDto,
-  UserDto,
-} from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
+import { ChatroomDto, UserDto, ParticpantDto, MessageDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { IChatDatabase } from '../interfaces/chat-database';
 import { ChatroomTable } from '../tables/chatroom.table';
 import { MessageTable } from '../tables/message.table';
 import { ParticpantTable } from '../tables/participant.table';
 import { UserTable } from '../tables/user.table';
-// database ram gateway
-//serialisation / desirialisation (gateway part)
+//serialisation / desirialisation (utils for gateway part)
 export class ChatDataSerializer {
 
   constructor(private db: IChatDatabase) { }

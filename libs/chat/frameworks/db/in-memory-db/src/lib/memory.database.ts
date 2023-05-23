@@ -1,10 +1,4 @@
-import { IChatDatabase } from '@chat-clean-architecture/chat/adapters/gateways';
-import {
-  ChatroomTable,
-  MessageTable,
-  ParticpantTable,
-  UserTable,
-} from '@chat-clean-architecture/chat/adapters/gateways';
+import { ChatroomTable, IChatDatabase, MessageTable, ParticpantTable, UserTable } from '@chat-clean-architecture/chat/adapters/gateways';
 
 export class DataBaseMemoryImpl implements IChatDatabase {
   
@@ -26,36 +20,12 @@ export class DataBaseMemoryImpl implements IChatDatabase {
      return Object.values(this.rooms);
   }
 
-  insertUser(user: UserTable): UserTable {
-    const newId = this.lastParticipantId + 1;
-    const tabelUser = { ...user, id: newId };
-    this.users[newId] = tabelUser;
-    this.lastUserId = newId;
-    return tabelUser;
-  }
-
-  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
-    const newId = this.lastRoomId + 1;
-    const tabelroom = { ...chatRoom, id: newId };
-    this.rooms[newId] = tabelroom;
-    this.lastRoomId = newId;
-    return tabelroom;
-  }
-
   insertMessage(message: MessageTable): MessageTable {
     const newId = this.lastMessageId + 1;
     const tabelMessage = { ...message, id: newId };
     this.messages[newId] = tabelMessage;
     this.lastMessageId = newId;
     return tabelMessage;
-  }
-
-  insertParticipant(participant: ParticpantTable): ParticpantTable {
-    const newId = this.lastParticipantId + 1;
-    const tabelPart = { ...participant, id: newId };
-    this.participants[newId] = tabelPart;
-    this.lastParticipantId = newId;
-    return tabelPart;
   }
 
   //getters
@@ -99,12 +69,6 @@ export class DataBaseMemoryImpl implements IChatDatabase {
 
   getUserById(userId: number): UserTable {
     return this.users[userId];
-  }
-
-  removeParticipant(id: number): void {
-    if (this.lastParticipantId === id)
-      this.lastParticipantId = this.lastParticipantId - 1;
-    delete this.participants[id];
   }
 
   createDb() {
@@ -156,4 +120,35 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     this.lastMessageId = 5;
     this.lastParticipantId = 7;
   }
+
+  // insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
+  //   const newId = this.lastRoomId + 1;
+  //   const tabelroom = { ...chatRoom, id: newId };
+  //   this.rooms[newId] = tabelroom;
+  //   this.lastRoomId = newId;
+  //   return tabelroom;
+  // }
+  
+  // removeParticipant(id: number): void {
+  //   if (this.lastParticipantId === id)
+  //     this.lastParticipantId = this.lastParticipantId - 1;
+  //   delete this.participants[id];
+  // }
+
+  // insertParticipant(participant: ParticpantTable): ParticpantTable {
+  //   const newId = this.lastParticipantId + 1;
+  //   const tabelPart = { ...participant, id: newId };
+  //   this.participants[newId] = tabelPart;
+  //   this.lastParticipantId = newId;
+  //   return tabelPart;
+  // }
+
+  // insertUser(user: UserTable): UserTable {
+  //   const newId = this.lastParticipantId + 1;
+  //   const tabelUser = { ...user, id: newId };
+  //   this.users[newId] = tabelUser;
+  //   this.lastUserId = newId;
+  //   return tabelUser;
+  // }
+
 }

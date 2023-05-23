@@ -3,7 +3,7 @@ import {
   ChatDataViewModelDto,
   MessageDataViewModelDto,
 } from '@chat-clean-architecture/chat/adapters/presenters';
-
+// Not used yet just for local test
 export interface IChatAppMainMemoryFacade {
   //app behavior
   getUserChatRooms(userId: number): Promise<ChatDataViewModelDto>;

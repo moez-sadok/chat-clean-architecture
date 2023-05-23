@@ -7,6 +7,7 @@ import { IChatPresenterOutputBoundary, IChatControllerInputBoundary, IDataAccess
 import { IChatAppMainMemoryFacade } from '../interfaces/chat.app.main.facade';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { ChatServerImpl } from '@chat-clean-architecture/chat/adapters/gateways/server-gateway';
+
 // Not used yet just for local test
 // Main app role as facade in memory mock
 export class ChatAppMainMemory implements IChatAppMainMemoryFacade {

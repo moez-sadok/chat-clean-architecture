@@ -1,5 +1,6 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
 import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 /* First solution: 
  create a facade for the app and return the data inside the flow (interactor -> controller)
@@ -10,7 +11,7 @@ import { IChatApiController } from '@chat-clean-architecture/chat/adapters/contr
 */
 
 @Controller()
-export class ChatHttpApiadApterController {//extends ChatControllerMemoryImpl  //implements IChatController (to create an adapter )
+export class ChatHttpApiadApterController {// DI (at is) or extends ChatControllerMemoryImpl or implements IChatController (with SIP)
 
   constructor(
     @Optional() @Inject('CHAT_CONTROLLER_PROVIDER') private chatController: IChatApiController

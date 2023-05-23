@@ -5,7 +5,7 @@ import { of, switchMap, tap } from 'rxjs';
 import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER, CHAT_VIEW_PROVIDER, controllerFactory, interactorFactory, presenterFactory } from '../../services/main-chat-front-provider';
 import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
 import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
-import { IChatApiController, IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
 
 @Component({
   selector: 'cca-chat-page',
@@ -35,13 +35,13 @@ export class ChatPageComponent implements OnInit {
     if (value != null || value != undefined) {
       this._activeUserId = value;
       this.chatController.initUserConnection(value);
+      //TODO: wait the init connection before call 
       this.chatController.getUserRooms(value);
     }
   }
   get activeUserId() { return this._activeUserId }
 
   constructor(private route: ActivatedRoute,
-    //@Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatController,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatApiController,
     @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView){ }
 
@@ -51,9 +51,9 @@ export class ChatPageComponent implements OnInit {
         //change as input in angular 16 (userg resolver)
         switchMap((params: Params) => { return of(params['userId']); }),
         tap((userId) => {
-          console.log('id user from router', userId);
-          if (userId != null || userId != undefined) this.activeUserId = +userId;
-        })).subscribe(); //don't forget to unsubscribe in ondestroy
+          if (userId != null || userId != undefined) 
+          this.activeUserId = +userId;
+        })).subscribe(); //TODO use Angular 16 input by route resolver - don't forget to unsubscribe in ondestroy
   }
 
 }

@@ -1,28 +1,15 @@
-import {
-  ChatroomDto,
-  MessageDto,
-  ParticpantDto,
-  UserDto,
-} from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { IDataAccess } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatDataSerializer } from './utils/data.serializer';
 import { IChatDatabase } from './interfaces/chat-database';
 import { ChatroomTable } from './tables/chatroom.table';
 import { ParticpantTable } from './tables/participant.table';
+import { UserDto, ChatroomDto, MessageDto, ParticpantDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 
 export class DataBaseMapper implements IDataAccess {
   private dbSerializer: ChatDataSerializer;
 
   constructor(private db: IChatDatabase) {
     this.dbSerializer = new ChatDataSerializer(db);
-  }
-
-  getUserById(userId: number): UserDto {
-    return this.dbSerializer.serializeUser(this.db.getUserById(userId));
-  }
-
-  getChatRooms(): ChatroomDto[] {
-    return this.db.getChatRooms().map( roomTable => this.dbSerializer.serializeRoom(roomTable))
   }
 
   /** insertions */
@@ -37,28 +24,13 @@ export class DataBaseMapper implements IDataAccess {
     return { ...message, id: newMessage.id };
   }
 
-  addParticipant(participant: ParticpantDto): void {
-    if (!participant.chatroom?.id || !participant.user.id)
-      throw new Error('Add participant miss attrs');
-    const tabelPart = this.dbSerializer.desirializeParticipant(participant);
-    this.db.insertParticipant(tabelPart);
-  }
-
-  addUser(user: UserDto): void {
-    if (!user?.id) throw new Error('Add user miss attrs');
-    const tabelUser = this.dbSerializer.deserializeUser({ ...user });
-    this.db.insertUser(tabelUser);
-  }
-
-  addChatRoom(chatRoom: ChatroomDto): void {
-    const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
-    this.db.insertChatRoom(tabelroom);
-  }
-
   /** getters / selects */
+  getUserById(userId: number): UserDto {
+    return this.dbSerializer.serializeUser(this.db.getUserById(userId));
+  }
 
-  getUsers(): UserDto[] {
-    return this.db.getUses().map((ut) => this.dbSerializer.serializeUser(ut));
+  getChatRooms(): ChatroomDto[] {
+    return this.db.getChatRooms().map(roomTable => this.dbSerializer.serializeRoom(roomTable))
   }
 
   getChatRoomsByUser(userId: number): ChatroomDto[] {
@@ -73,8 +45,7 @@ export class DataBaseMapper implements IDataAccess {
   }
 
   getMessagesByRoom(roomId: number): MessageDto[] {
-    return this.db
-      .getMessageByRoom(roomId)
+    return this.db.getMessageByRoom(roomId)
       .map((m) => this.dbSerializer.serializeMessage(m));
   }
 
@@ -99,9 +70,30 @@ export class DataBaseMapper implements IDataAccess {
     }, {});
   }
 
-  // remove
-  removeParticipant(participant: ParticpantDto): void {
-    if (!participant.id) throw new Error("Can't remouve unfoud participant");
-    this.db.removeParticipant(participant.id);
-  }
+  // getUsers(): UserDto[] {
+  //   return this.db.getUses().map((ut) => this.dbSerializer.serializeUser(ut));
+  // }
+
+  // addChatRoom(chatRoom: ChatroomDto): void {
+  //   const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
+  //   this.db.insertChatRoom(tabelroom);
+  // }
+
+  // addParticipant(participant: ParticpantDto): void {
+  //   if (!participant.chatroom?.id || !participant.user.id)
+  //     throw new Error('Add participant miss attrs');
+  //   const tabelPart = this.dbSerializer.desirializeParticipant(participant);
+  //   this.db.insertParticipant(tabelPart);
+  // }
+
+  // removeParticipant(participant: ParticpantDto): void {
+  //   if (!participant.id) throw new Error("Can't remouve unfoud participant");
+  //   this.db.removeParticipant(participant.id);
+  // }
+
+  // addUser(user: UserDto): void {
+  //   if (!user?.id) throw new Error('Add user miss attrs');
+  //   const tabelUser = this.dbSerializer.deserializeUser({ ...user });
+  //   this.db.insertUser(tabelUser);
+  // }
 }

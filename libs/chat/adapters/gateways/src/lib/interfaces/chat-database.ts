@@ -5,24 +5,20 @@ import { UserTable } from '../tables/user.table';
 
 export interface IChatDatabase {
   createDb(): void;
-
   insertMessage(message: MessageTable): MessageTable;
-  insertParticipant(participant: ParticpantTable): ParticpantTable;
-  insertUser(user: UserTable): UserTable;
-  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable;
-
   getRoomById(roomId: number): ChatroomTable;
+  getChatRooms(): ChatroomTable[];
+  getParticipantsByUser(userId: number): ParticpantTable[];
+  getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable;
   getMessageByRoom(roomId: number): MessageTable[];
 
   getParticipantById(participantId: number): ParticpantTable;
   getParticipantsByRoom(id: number): ParticpantTable[];
-  getParticipantsByUser(userId: number): ParticpantTable[];
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable;
-
   getUserById(userId: number): UserTable;
-  getUses(): UserTable[];
 
-  getChatRooms(): ChatroomTable[];
-
-  removeParticipant(id: number): void;
+  //insertUser(user: UserTable): UserTable;
+  //insertChatRoom(chatRoom: ChatroomTable): ChatroomTable;
+  //insertParticipant(participant: ParticpantTable): ParticpantTable;
+  //getUses(): UserTable[];
+  //removeParticipant(id: number): void;
 }

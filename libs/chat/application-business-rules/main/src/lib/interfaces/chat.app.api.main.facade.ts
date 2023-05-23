@@ -1,7 +1,7 @@
 import { MessageOutputData, RoomOutputData, SendMessageInputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 //make new api presenter
-
+// Not used yet just for local test
 export interface IChatAppApiMainFacade {
   //app behavior
   getUserChatRooms(userId: number): Promise<RoomOutputData[]>;

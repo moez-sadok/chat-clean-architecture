@@ -21,8 +21,7 @@
 
     <div class="display-flex">
       <input class="padding-vertical-4" #messageInput matInput />
-      <button class="send-button" (click)="sendMessage.emit(messageInput.value);messageInput.value=''"
-        aria-label="Send message">
+      <button class="send-button" (click)="sendMessage.emit(messageInput.value);messageInput.value=''">
         Send
       </button>
     </div>

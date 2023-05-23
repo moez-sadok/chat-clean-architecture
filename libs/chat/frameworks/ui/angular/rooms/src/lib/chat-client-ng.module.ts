@@ -18,8 +18,6 @@ import { ChatClientRoutingNgModule } from './chat-client-ng.module.routing';
 import { HttpClientModule } from '@angular/common/http';
 import { MultiUsersChatPageComponent } from './containers/multi-users-chat-page/multi-users-chat-page.component';
 //
-import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
-import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER_PROVIDER, chatServerFactory } from './services/main-chat-front-provider';
 import { ChatPageWsHttpClientComponent } from './containers/chat-page/chat-page.component-ws-client';
 
 @NgModule({
@@ -47,18 +45,6 @@ import { ChatPageWsHttpClientComponent } from './containers/chat-page/chat-page.
     MatSelectModule,
     MatFormFieldModule,
     //
-  ],
-  providers: [
-    //Version 1: Full In memory main components injections 
-    { provide: CHAT_DB_PROVIDER, useClass: DataBaseMemoryImpl },
-    {
-      provide: CHAT_DB_MAPPER_PROVIDER, useFactory: dbMapperFactory,
-      deps: [CHAT_DB_PROVIDER]
-    },
-    {
-      provide: CHAT_SERVER_PROVIDER, useFactory: chatServerFactory,
-      deps: [CHAT_DB_MAPPER_PROVIDER]
-    },
   ]
 })
 export class ChatClientNgModule {}

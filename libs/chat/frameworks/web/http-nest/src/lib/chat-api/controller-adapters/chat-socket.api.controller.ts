@@ -8,7 +8,7 @@ import { SendMessageInputData } from '@chat-clean-architecture/chat/application-
 @WebSocketGateway(
   8080, { cors: { origin: '*' } }
 )
-export class ChatSocketApiadApterController { //implements ChatServerSideWsFacade 
+export class ChatSocketApiadApterController { //DI (at is) or extends ChatControllerMemoryImpl or implements IChatController (with SIP)
 
   @WebSocketServer() server!: Server;
 
@@ -18,9 +18,10 @@ export class ChatSocketApiadApterController { //implements ChatServerSideWsFacad
 
   @SubscribeMessage('msgToServer')
   public async handleMessage(client: Socket, payload: SendMessageInputData): Promise<WsResponse<any>> {
+    console.log('msgToServer message:',payload);
     const message = await this.chatController.sendMessage(payload.roomId, payload.userId, payload.message);
     //@ts-ignore
-    return await this.server.to(payload.roomId).emit('msgToClient', message);;
+    return await this.server.to(payload.roomId).emit('msgToClient', message);
   }
 
   public handleConnection(client: Socket): void {
@@ -29,20 +30,19 @@ export class ChatSocketApiadApterController { //implements ChatServerSideWsFacad
   }
 
   public handleDisconnect(client: Socket): void {
+    //TODO: add the disconnect function in the controller
     console.log(`Client disconnected user id: ${client.handshake.auth.userId}`);
   }
 
-  //optional using socket rooms 
+  // optional using socket rooms (out of internal bussiness )
   @SubscribeMessage('joinRoom')
   public joinRoom(client: Socket, room: string): void {
-    //to check (out of internal bussiness )
     client.join(room);
     client.emit('joinedRoom', room);
   }
 
   @SubscribeMessage('leaveRoom')
   public leaveRoom(client: Socket, room: string): void {
-    //to check (out of internal bussiness )
     client.leave(room);
     client.emit('leftRoom', room);
   }
