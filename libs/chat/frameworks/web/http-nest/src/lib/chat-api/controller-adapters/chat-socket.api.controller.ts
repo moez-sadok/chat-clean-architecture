@@ -18,7 +18,6 @@ export class ChatSocketApiadApterController { //DI (at is) or extends ChatContro
 
   @SubscribeMessage('msgToServer')
   public async handleMessage(client: Socket, payload: SendMessageInputData): Promise<WsResponse<any>> {
-    console.log('msgToServer message:',payload);
     const message = await this.chatController.sendMessage(payload.roomId, payload.userId, payload.message);
     //@ts-ignore
     return await this.server.to(payload.roomId).emit('msgToClient', message);
@@ -30,11 +29,11 @@ export class ChatSocketApiadApterController { //DI (at is) or extends ChatContro
   }
 
   public handleDisconnect(client: Socket): void {
-    //TODO: add the disconnect function in the controller
+    //TODO: add the disconnect usecase
     console.log(`Client disconnected user id: ${client.handshake.auth.userId}`);
   }
 
-  // optional using socket rooms (out of internal bussiness )
+  // optional using socket rooms (TODO: add usecase)
   @SubscribeMessage('joinRoom')
   public joinRoom(client: Socket, room: string): void {
     client.join(room);

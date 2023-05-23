@@ -1,7 +1,7 @@
 
 ## TODO
 - Split interactor facade to usecases (ISP & SRP)
-- Add testing example (using jest)
+- Add a use case from scratch using TDD (testing using jest)
 - Add mongo db or mysql (as second db test)
 - Add graphql  (as second api test)
 - Add react for the ui (as second ui Framework test)
