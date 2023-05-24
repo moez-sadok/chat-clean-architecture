@@ -10,8 +10,7 @@ See: [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/t
 
 ## 1. Independent of Frameworks:
 
-In this example, when using Angular, we only utilize the necessary features such as Dependency Injection (DI), modules, routing, component input/output, and the httpClient. We also use only four RxJS operators and don't require ngrx (provided by the architecture's native flow). The frameworks act only with adapters.
-
+In this example, when using Angular, we only utilize the necessary features such as Dependency Injection (DI), modules, routing, component input/output, and the httpClient. We also use only four RxJS operators and don't require ngrx (provided by the architecture's native flow). Also for NestJs we only utilize (DI, module,controller) . The frameworks/lib used as a tool.
 ## 2. Testable:
 
 Starting with Test-Driven Development (TDD) will be easy, and our business rules can be tested without relying on the UI, database, web server, or any other external elements.
