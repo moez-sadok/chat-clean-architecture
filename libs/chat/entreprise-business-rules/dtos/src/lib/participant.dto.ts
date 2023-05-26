@@ -6,4 +6,5 @@ export interface ParticpantDto {
   id: number;
   user: UserDto;
   chatroom?: ChatroomDto | null;
+  isBot?: boolean;
 }

@@ -36,6 +36,7 @@ export class ChatDataSerializer {
     return {
       id: oTable.id,
       user: this.serializeUser(this.db.getUserById(oTable.userId)),
+      isBot: oTable.isBot
       //chatroom: this.serializeRoom(this.getRoomById(oTable.chatRoomId))
     };
   }
@@ -51,6 +52,7 @@ export class ChatDataSerializer {
       id: part.id,
       chatRoomId: part.chatroom.id,
       userId: part.user.id,
+      isBot : part.isBot
     };
   }
 
