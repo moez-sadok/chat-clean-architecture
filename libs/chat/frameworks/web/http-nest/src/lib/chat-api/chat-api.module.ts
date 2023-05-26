@@ -1,15 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ChatHttpApiadApterController } from './controller-adapters/chat-http-api.controller';
-import { ChatSocketApiadApterController } from './controller-adapters/chat-socket.api.controller';
 import { ChatMainConfigProvidersModule } from './main/chat.main.config.providers.module';
+import { ChatHttpAdapterController } from './adapters/controller/chat-http-ws.adapter.controller';
 
 @Module({
   imports: [ChatMainConfigProvidersModule],
   controllers: [
-    ChatHttpApiadApterController
-  ],
-  providers: [
-    ChatSocketApiadApterController
+    ChatHttpAdapterController,
   ]
 })
 export class ChatApiModule {}

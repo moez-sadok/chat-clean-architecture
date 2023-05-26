@@ -8,6 +8,7 @@ export class ChatControllerMemoryImpl implements IChatController {
 
   initUserConnection(userId: number) {
     this.interactorInputboundry.connectUser(userId);
+    this.getUserRooms(userId)
   }
 
   getUserRooms(userId: number) {

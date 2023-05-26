@@ -1,8 +1,8 @@
 import { IChatPresenterOutputBoundary, MessageOutputData, RoomOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-
+//server web socket
 export class ChatPresenterApiImpl implements IChatPresenterOutputBoundary {
 
-
+  
   receiveNewMessage(message: MessageOutputData): MessageOutputData {
     return message;
   }
@@ -15,3 +15,6 @@ export class ChatPresenterApiImpl implements IChatPresenterOutputBoundary {
     return rooms;
   }
 }
+
+
+

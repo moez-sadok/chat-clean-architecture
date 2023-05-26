@@ -2,15 +2,13 @@ import { ChatApiControllerImpl, IChatApiController } from "@chat-clean-architect
 import { IChatDatabase, DataBaseMapper } from "@chat-clean-architecture/chat/adapters/gateways";
 import { ChatServerImpl } from "@chat-clean-architecture/chat/adapters/gateways/server-gateway";
 import { ChatPresenterApiImpl } from "@chat-clean-architecture/chat/adapters/presenters";
-//import { UserWebViewClientImpl } from "@chat-clean-architecture/chat/adapters/views";
 import { ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServer, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { DataBaseMemoryImpl } from "@chat-clean-architecture/chat/frameworks/db/in-memory-db";
+//import { UserWebViewClientImpl } from "@chat-clean-architecture/chat/adapters/views";
 
 // Not used (one main example) now using the DI (nestjs injection see chat.main.config.providers.module)
 // Main app role for the server (no view , only api presenter)
 export class ChatAppMainConfig {
-
-  //chatView: IChatView;
 
   //chatController: IChatController;
   chatController: IChatApiController;
@@ -20,6 +18,8 @@ export class ChatAppMainConfig {
 
   chatDbMapper: IDataAccess;
   memoryDb: IChatDatabase;
+
+  //chatView: IChatView;
 
   constructor() {
     this.memoryDb = new DataBaseMemoryImpl();

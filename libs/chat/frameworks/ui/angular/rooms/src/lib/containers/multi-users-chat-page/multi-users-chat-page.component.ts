@@ -20,6 +20,6 @@ import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER
 })
 export class MultiUsersChatPageComponent {
 
-  userIds: number[] = [1, 2, 3, 4]
+  userIds: number[] = [1, 2, 3, 4, 5]
 
 }

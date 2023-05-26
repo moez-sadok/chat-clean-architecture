@@ -79,12 +79,14 @@ export class DataBaseMemoryImpl implements IChatDatabase {
       { id: 2, name: 'Samir' },
       { id: 3, name: 'Sandra' },
       { id: 4, name: 'Jhon' },
+      { id: 5, name: 'Bot' },
     ];
 
     this.rooms = [
       { id: 0, name: 'Tennis' },
       { id: 1, name: 'Yuri & Ameli' },
       { id: 2, name: 'Disco' },
+      { id: 3, name: 'Bot & Sandra' },
     ];
 
     this.participants = [
@@ -98,22 +100,24 @@ export class DataBaseMemoryImpl implements IChatDatabase {
       { id: 5, userId: 2, chatRoomId: 2 },
       { id: 6, userId: 3, chatRoomId: 2 },
       { id: 7, userId: 4, chatRoomId: 2 },
+      //bot & sandra
+      { id: 8, userId: 3, chatRoomId: 3 },
+      { id: 9, userId: 5, chatRoomId: 3, isBot : true },
     ];
 
     this.messages = [
       { id: 0, roomId: 0, participantId: 0, content: 'Hello' },
       { id: 1, roomId: 0, participantId: 1, content: 'Hi' },
       { id: 2, roomId: 0, participantId: 2, content: 'cc' },
-
       {
         id: 3,
         roomId: 1,
         participantId: 3,
-        content: 'going to the tennis club',
+        content: 'going to the tennis club!',
       },
       { id: 4, roomId: 1, participantId: 4, content: "no , i'm tired" },
 
-      { id: 5, roomId: 2, participantId: 5, content: 'disco party tonight' },
+      { id: 5, roomId: 2, participantId: 5, content: 'disco party tonight?' },
     ];
 
     this.lastRoomId = 2;

@@ -3,24 +3,20 @@ import { MessageOutputData, RoomOutputData } from './dtos/output.chat.data';
 import { IChatControllerInputBoundary } from './interfaces/inputs/chat.controller.input.boundary';
 import { IChatPresenterOutputBoundary } from './interfaces/outputs/chat.presenter.output.boundary';
 import { IDataAccess } from './interfaces/storage/db-gateway';
-import { IChatServer } from './interfaces/server/chat-server';
 import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData } from './dtos/input.chat.data';
 
-//to be removed -> chat server inside presenter/view
 /* for this example the interactor contain chat use cases (to be splited by ISP) */
-export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary {
+export class ChatInteractorApiImpl implements IChatControllerInputBoundary {
 
   constructor(
     private chatdataBase: IDataAccess,
-    private presenter: IChatPresenterOutputBoundary,
-    private chatServer: IChatServer
+    private presenter: IChatPresenterOutputBoundary
   ) {}
 
   connectUser(userId: number): Promise<boolean> {
-    const existUser = this.chatdataBase.getUserById(userId);
+    const existUser = this.chatdataBase.getUserById(+userId);
     return new Promise((resolve) => {
-      const res = this.chatServer.connectUserPresenter(existUser, this.presenter);
-      resolve(res);
+      resolve(existUser ? true : false);
     });
   }
 
@@ -32,13 +28,9 @@ export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary 
         rommParticipantsNames: Object.values(r.participants).map(p => p.user.name)
       } as RoomOutputData;
     });
-    // this.chaPresenterOutputBoundary.selectedRoomsByUser(rooms);
+     ;
     return new Promise((resolve) => {
-      const presUser = this.chatServer.getUserPresenter(user.userId);
-      if(!presUser) resolve([])
-       //throw new Error('Error interactor not found presenter user')
-      const res = presUser.selectedRoomsByUser(rooms);
-      resolve(res);
+      resolve(this.presenter.selectedRoomsByUser(rooms));
     });
   }
 
@@ -51,11 +43,10 @@ export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary 
         chatRoomId: m.room.id,
       } as MessageOutputData;
     });
-    //this.chaPresenterOutputBoundary.selectChatRoomsMessages(messages);
+    //
     const croom: RoomOutputData = { roomId: room.roomId, roomName: room.roomName };
     return new Promise((resolve) => {
-      const res = this.chatServer.getUserPresenter(room.userId).selectChatRoomsMessages(messages, croom);
-      resolve(res);
+      resolve(this.presenter.selectChatRoomsMessages(messages,croom));
     });
   }
 
@@ -74,9 +65,7 @@ export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary 
       message: newMessage.message,
       chatRoomId: newMessage.room.id,
     };
-    //return this.chaPresenterOutputBoundary.receiveNewMessage(messagedOutput);
-    this.chatServer.broadcast(message);
-    return messagedOutput;
+    return this.presenter.receiveNewMessage(messagedOutput);
   }
 
 }

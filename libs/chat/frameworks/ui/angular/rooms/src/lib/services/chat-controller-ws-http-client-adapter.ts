@@ -20,6 +20,7 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
     });
     this.listenReceiveMessage();
     this.listenerConnectUser();
+    this.getUserRooms(userId);
     //TODO : return the userdto and resolve it inside the on.connect
     return new Promise((resolve) => {
       resolve(true);
@@ -35,19 +36,27 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
 
   getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageOutputData[]> {
     this.joinRoom(roomId);
-    const url = `${'api/chat-room-messages'}/${roomId}`;
+    const url = 'api/chat-room-messages';
     const room = { userId: userId, roomId: roomId, roomName: roomName }; //as GetRoomMessagesInputData
     return lastValueFrom(this.http.get<MessageOutputData[]>(url, { params: room }).pipe(
       tap(res => this.presentator.selectChatRoomsMessages(res, room))
     ));
   }
 
+  //http
   sendMessage(roomId: number, userId: number, message: string) {
-    const messageData: SendMessageInputData = { roomId: roomId, userId: userId, message: message }
-    this.clientSocket.emit('msgToServer', messageData, (val: any) => {
-      console.log('sendMessage', val);
-    });
+    const url = 'api/send-message';
+    const msg = {  roomId: roomId,userId: userId, message: message };
+    return lastValueFrom(this.http.get<MessageOutputData>(url, { params: msg }));
   }
+
+  //ws
+  // sendMessage(roomId: number, userId: number, message: string) {
+  //   const messageData: SendMessageInputData = { roomId: roomId, userId: userId, message: message }
+  //   this.clientSocket.emit('msgToServer', messageData, (val: any) => {
+  //     console.log('sendMessage', val);
+  //   });
+  // }
 
   //
   private listenerConnectUser() {

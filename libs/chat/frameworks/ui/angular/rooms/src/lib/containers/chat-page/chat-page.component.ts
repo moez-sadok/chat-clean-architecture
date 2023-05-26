@@ -35,8 +35,6 @@ export class ChatPageComponent implements OnInit {
     if (value != null || value != undefined) {
       this._activeUserId = value;
       this.chatController.initUserConnection(value);
-      //TODO: wait the init connection before call or the useCase can call another (interactor) (initconnection -> getUserRooms)
-      this.chatController.getUserRooms(value);
     }
   }
   get activeUserId() { return this._activeUserId }

@@ -2,7 +2,7 @@ import { InjectionToken } from "@angular/core";
 import { ChatControllerMemoryImpl, IChatApiController } from "@chat-clean-architecture/chat/adapters/controllers";
 import { DataBaseMapper, IChatDatabase } from "@chat-clean-architecture/chat/adapters/gateways";
 import { ChatInMemoryPresenterImpl, IChatView } from "@chat-clean-architecture/chat/adapters/presenters";
-import { ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServer, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import {  ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServer, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { ChatServerImpl  } from "@chat-clean-architecture/chat/adapters/gateways/server-gateway";
 import { HttpClient } from "@angular/common/http";
 import { ChatControllerWsHttpClientAdapterImpl } from "./chat-controller-ws-http-client-adapter";

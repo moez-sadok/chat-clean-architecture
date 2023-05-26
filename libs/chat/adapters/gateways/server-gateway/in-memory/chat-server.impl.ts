@@ -1,7 +1,7 @@
 import { IChatPresenterOutputBoundary, IChatServer, IDataAccess, SendMessageInputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { IConnectedUser } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { UserDto } from "@chat-clean-architecture/chat/entreprise-business-rules/dtos";
-import { IChatroom, IMessage, Message, Chatroom, Participant, IParticpant } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
+import { IChatroom, IMessage, Message, Chatroom, Participant, IParticpant, BotParticipant } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
 import { ConnectedUserImpl } from "./connected-user.impl";
 
 export class ChatServerImpl implements IChatServer {
@@ -56,11 +56,12 @@ export class ChatServerImpl implements IChatServer {
     const currPart = currRoom.getParticipants()[currUser.name];
     const message: IMessage = new Message(msg.message, currRoom, currPart);
     currRoom.broadcastMessage(message, currPart);
+    //to fix ..
     Object.values(currRoom.getParticipants()).forEach(participant => {
       const participantUserId = participant.getUser().id;
       if (participantUserId == null || participantUserId == undefined) throw new Error('ChatServer Error: Participant in room don t have a user');
       if(!this.connectetdUsers[participantUserId]) console.log('User not connected: send notification or search in service discovery for another chatserver instance, userid= '+participantUserId)  
-      else this.connectetdUsers[participantUserId].getPresenter().receiveNewMessage({
+      else this.connectetdUsers[participantUserId].receive({
         chatRoomId: msg.roomId,
         message: msg.message,
         participantName: currUser.name
@@ -73,7 +74,7 @@ export class ChatServerImpl implements IChatServer {
     this.chatdataBase.getChatRooms().map(roomDto => {
       const roomEntity: Chatroom = new Chatroom(roomDto.name);
       const parts: Participant[] = Object.values(roomDto.participants).map(partDto => {
-        return new Participant(partDto.user);
+        return partDto.isBot ? new BotParticipant(partDto.user) : new Participant(partDto.user);
       });
       //set participants
       roomEntity.initChatRoom(parts, []);
