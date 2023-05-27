@@ -15,6 +15,7 @@ export interface IChatServerPort {
 
 //collegue
 export interface IChatClient {
+  getId(): number;
   emit(event: string, message: MessageOutputData): void;
   join(roomId: number): void;
   leave(roomId: number):void;  

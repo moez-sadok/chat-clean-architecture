@@ -8,7 +8,7 @@ export class UserWebViewClientImpl implements IChatView {
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto,activeRoomMessages: messages };
   }
 
-  displayChatPageView(chatView: ChatDataViewModelDto): void {
+  displayChatPageRooms(chatView: ChatDataViewModelDto): void {
     this.chatDataViewModelDto = chatView;
   }
 

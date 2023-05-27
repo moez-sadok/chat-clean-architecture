@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@chat-clean-architecture/chat/adapters/gateways';
 import { IDataAccess, IChatPresenterOutputBoundary, ChatInteractorApiImpl, IChatServerPort } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { ChatServerImpl } from '@chat-clean-architecture/chat/adapters/gateways/server-gateway';
 import { ChatApiControllerImpl } from '@chat-clean-architecture/chat/adapters/controllers';
 import { IChatControllerInputBoundary } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatServerGatewayAdapter } from '../adapters/gateway/server.ws.gateway.adapter';
@@ -17,10 +16,6 @@ export const CHAT_CONTROLLER_PROVIDER = 'CHAT_CONTROLLER_PROVIDER';
 
 export const dbMapperFactory = (db: IChatDatabase) => {
   return new DataBaseMapper(db);
-};
-
-export const chatServerFactory = (db: IDataAccess) => {
-  return new ChatServerImpl(db);
 };
 
 export const interactorFactory = (db: IDataAccess, presenter: IChatPresenterOutputBoundary) => {
@@ -40,6 +35,7 @@ export const presenterFactory = (server: IChatServerPort) => {
 @Module({
   providers: [
     ChatServerGatewayAdapter,
+    //{ provide: CHAT_SERVER_PROVIDER, useValue: new ChatServerGatewayAdapter() },
     { provide: CHAT_DB_PROVIDER, useValue: new DataBaseMemoryImpl() },
     {
       provide: CHAT_PRESENTATOR_PROVIDER, useFactory: presenterFactory,

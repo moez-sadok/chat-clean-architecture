@@ -5,7 +5,7 @@ export interface IChatView {
   
   chatDataViewModelDto: ChatDataViewModelDto;
 
-  displayChatPageView(chatView: ChatDataViewModelDto): void;
+  displayChatPageRooms(chatView: ChatDataViewModelDto): void;
   displayChatRoomsMessages(messages: MessageDataViewModelDto[]): void;
   receiveMessage( message: MessageDataViewModelDto): MessageDataViewModelDto | null;
   setActiveRoom(room: RoomDataViewModelDto): void;

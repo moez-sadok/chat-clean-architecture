@@ -40,7 +40,7 @@ export class ChatInMemoryPresenterImpl implements IChatPresenterOutputBoundary {
       menuItemLeaveRoomLabel: 'Leave room',
       menuItemAddParticipantLabel: 'Add',
     };
-    this.chatWebViewScreen.displayChatPageView(pchatView);
+    this.chatWebViewScreen.displayChatPageRooms(pchatView);
     return rooms;
   }
 }
