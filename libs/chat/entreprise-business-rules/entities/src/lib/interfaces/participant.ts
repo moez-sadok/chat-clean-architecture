@@ -1,12 +1,12 @@
 /******** Abstraction of mediator pattern */
 
 import { IChatroom } from './chatroom';
-import { UserDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { IMessage } from './message';
 
 // Colleagues
 export interface IParticpant {
-  getUser(): UserDto;
+  getUserName(): string;
+  getUserId(): number;
   getchatRoom(): IChatroom;
 
   send(message: string): void;

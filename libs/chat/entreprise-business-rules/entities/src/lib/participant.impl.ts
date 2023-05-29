@@ -1,16 +1,17 @@
-import { UserDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { IChatroom } from './interfaces/chatroom';
 import { IMessage } from './interfaces/message';
 import { IParticpant } from './interfaces/participant';
 import { Message } from './message.impl';
 
 export class Participant implements IParticpant {
-  
-  user: UserDto;
-  chatroom?: IChatroom | null;
 
-  constructor(user: UserDto) {
-    this.user = user;
+  private userName: string;
+  private userId: number;
+  private chatroom?: IChatroom | null;
+
+  constructor(name: string, id: number) {
+    this.userName = name;
+    this.userId = id;
   }
 
   getchatRoom(): IChatroom {
@@ -18,8 +19,12 @@ export class Participant implements IParticpant {
     return this.chatroom;
   }
 
-  getUser(): UserDto {
-    return this.user;
+  getUserId(): number {
+    return this.userId;
+  }
+
+  getUserName(): string {
+    return this.userName;
   }
 
   enterChatRoom(chatroom: IChatroom) {
@@ -31,7 +36,7 @@ export class Participant implements IParticpant {
   }
 
   send(content: string) {
-    if (!this.chatroom)throw new Error( 'Can not send a message: participant dont have a chatroom');
+    if (!this.chatroom) throw new Error('Can not send a message: participant dont have a chatroom');
     const message = new Message(content, this.chatroom, this);
     this.chatroom.broadcastMessage(message, this);
   }
@@ -41,6 +46,6 @@ export class Participant implements IParticpant {
   }
 
   printTextMessage(messageData: IMessage) {
-    console.log(messageData.getParticipant().getUser().name +' to ' + this.user.name + ': ' +messageData.getcontent());
+    console.log(messageData.getParticipant().getUserName() + ' to ' + this.userName + ': ' + messageData.getcontent());
   }
 }

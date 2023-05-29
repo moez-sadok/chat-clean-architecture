@@ -1,22 +1,21 @@
 import { IChatServer, IChatPresenterOutputBoundary, SendMessageInputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { UserDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { IConnectedUser } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 export class ConnectedUserImpl implements IConnectedUser {
 
-  user: UserDto;
+  userId: number;
   chatServer?: IChatServer | null;
 
-  constructor(user: UserDto, private chaPresenterOutputBoundary: IChatPresenterOutputBoundary) {
-    this.user = user;
+  constructor(userId: number, private chaPresenterOutputBoundary: IChatPresenterOutputBoundary) {
+    this.userId = userId;
+  }
+
+  getUserId(): number {
+    return this.userId;
   }
 
   getPresenter(): IChatPresenterOutputBoundary {
     return this.chaPresenterOutputBoundary;
-  }
-
-  getUser(): UserDto {
-    return this.user;
   }
 
   getChatServer(): IChatServer {

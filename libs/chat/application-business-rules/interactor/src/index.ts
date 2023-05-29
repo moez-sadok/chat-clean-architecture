@@ -12,3 +12,9 @@ export * from './lib/dtos/output.chat.data';
 export * from './lib/interfaces/server/chat-server';
 export * from './lib/interfaces/server/chat-server.port';
 export * from './lib/interfaces/server/connected-user';
+
+export * from './lib/dtos/models/user.dto';
+export * from './lib/dtos/models/chatroom.dto';
+export * from './lib/dtos/models/message.dto';
+export * from './lib/dtos/models/participant.dto';
+

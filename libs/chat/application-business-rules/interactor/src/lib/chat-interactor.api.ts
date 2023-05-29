@@ -1,9 +1,9 @@
-import { MessageDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { MessageOutputData, RoomOutputData } from './dtos/output.chat.data';
 import { IChatControllerInputBoundary } from './interfaces/inputs/chat.controller.input.boundary';
 import { IChatPresenterOutputBoundary } from './interfaces/outputs/chat.presenter.output.boundary';
 import { IDataAccess } from './interfaces/storage/db-gateway';
 import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData } from './dtos/input.chat.data';
+import { MessageDto } from './dtos/models/message.dto';
 
 /* for this example the interactor contain chat use cases (to be splited by ISP) */
 export class ChatInteractorApiImpl implements IChatControllerInputBoundary {

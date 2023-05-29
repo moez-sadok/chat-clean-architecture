@@ -26,14 +26,14 @@ export class Chatroom implements IChatroom {
 
   /** pattern basic methods */
   register(participant: IParticpant) {
-    if (this.participants[participant.getUser().name]) throw new Error('Can not register an existing participant');
-    this.participants[participant.getUser().name] = participant;
+    if (this.participants[participant.getUserName()]) throw new Error('Can not register an existing participant');
+    this.participants[participant.getUserName()] = participant;
     participant.enterChatRoom(this);
   }
 
   broadcastMessage(message: IMessage, from: IParticpant) {
     for (const key in this.participants) {
-      if (this.participants[key].getUser().name !== from.getUser().name) {
+      if (this.participants[key].getUserName() !== from.getUserName()) {
         this.participants[key].receive(message);
       }
     }
@@ -53,9 +53,9 @@ export class Chatroom implements IChatroom {
   }
 
   leave(participant: IParticpant) {
-    if (!this.participants[participant.getUser().name]) throw new Error('Can not found participant to leave');
+    if (!this.participants[participant.getUserName()]) throw new Error('Can not found participant to leave');
     const message = new Message('Leave the room', this, participant);
     this.broadcastMessage(message, participant);
-    delete this.participants[participant.getUser().name];
+    delete this.participants[participant.getUserName()];
   }
 }

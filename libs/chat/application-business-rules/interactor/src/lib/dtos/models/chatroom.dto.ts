@@ -1,4 +1,4 @@
-import { MessageDto } from './message';
+import { MessageDto } from './message.dto';
 import { ParticpantDto } from './participant.dto';
 
 // Mediator

@@ -1,10 +1,10 @@
-import { MessageDto } from '@chat-clean-architecture/chat/entreprise-business-rules/dtos';
 import { MessageOutputData, RoomOutputData } from './dtos/output.chat.data';
 import { IChatControllerInputBoundary } from './interfaces/inputs/chat.controller.input.boundary';
 import { IChatPresenterOutputBoundary } from './interfaces/outputs/chat.presenter.output.boundary';
 import { IDataAccess } from './interfaces/storage/db-gateway';
 import { IChatServer } from './interfaces/server/chat-server';
 import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData } from './dtos/input.chat.data';
+import { MessageDto } from './dtos/models/message.dto';
 
 //to be removed -> chat server inside presenter/view
 /* for this example the interactor contain chat use cases (to be splited by ISP) */
@@ -19,8 +19,8 @@ export class ChatInteractorInMemoryImpl implements IChatControllerInputBoundary 
   connectUser(userId: number): Promise<boolean> {
     const existUser = this.chatdataBase.getUserById(userId);
     return new Promise((resolve) => {
-      const res = this.chatServer.connectUserPresenter(existUser, this.presenter);
-      resolve(res);
+      if(existUser.id)
+      resolve(this.chatServer.connectUserPresenter(existUser.id, this.presenter));
     });
   }
 

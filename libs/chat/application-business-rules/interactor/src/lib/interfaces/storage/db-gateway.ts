@@ -1,4 +1,8 @@
-import { UserDto, ChatroomDto, MessageDto, ParticpantDto } from "@chat-clean-architecture/chat/entreprise-business-rules/dtos";
+import { ChatroomDto } from "../../dtos/models/chatroom.dto";
+import { MessageDto } from "../../dtos/models/message.dto";
+import { ParticpantDto } from "../../dtos/models/participant.dto";
+import { UserDto } from "../../dtos/models/user.dto";
+
 //db Gateway
 export interface IDataAccess {
 

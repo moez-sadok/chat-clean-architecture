@@ -1,5 +1,5 @@
 import { ChatroomDto } from './chatroom.dto';
-import { UserDto } from './user';
+import { UserDto } from './user.dto';
 
 // Colleagues
 export interface ParticpantDto {
