@@ -1,6 +1,5 @@
 import { IChatPresenterOutputBoundary, IChatServer, IDataAccess, SendMessageInputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { IConnectedUser } from "@chat-clean-architecture/chat/application-business-rules/interactor";
-import { UserDto } from "@chat-clean-architecture/chat/entreprise-business-rules/dtos";
 import { IChatroom, IMessage, Message, Chatroom, Participant, IParticpant, BotParticipant } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
 import { ConnectedUserImpl } from "./connected-user.impl";
 
@@ -26,7 +25,7 @@ export class ChatServerImpl implements IChatServer {
   }
 
   connectUser(user: IConnectedUser): boolean {
-    const userId = user.getUser().id;
+    const userId = user.getUserId();
     if(userId != null || userId != undefined && !this.connectetdUsers[userId]) {
       this.connectetdUsers[userId] = user;
       return true;
@@ -34,8 +33,8 @@ export class ChatServerImpl implements IChatServer {
     return false;
   }
 
-  connectUserPresenter(user: UserDto,presenter: IChatPresenterOutputBoundary): boolean {
-    const cuser : IConnectedUser = new ConnectedUserImpl(user,presenter);
+  connectUserPresenter(userId: number,presenter: IChatPresenterOutputBoundary): boolean {
+    const cuser : IConnectedUser = new ConnectedUserImpl(userId,presenter);
    return this.connectUser(cuser);
   }
 
@@ -45,20 +44,21 @@ export class ChatServerImpl implements IChatServer {
   }
 
   disconnectUser(user: IConnectedUser): void {
-    const userId = user.getUser().id;
+    const userId = user.getUserId();
     if (userId && this.connectetdUsers[userId]) delete this.connectetdUsers[userId];
   }
 
   broadcast(msg: SendMessageInputData): void {
+    //entity
     const currUser = this.chatdataBase.getUserById(msg.userId);
     const currRoom = this.rooms[msg.roomId];
     if(!currRoom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
     const currPart = currRoom.getParticipants()[currUser.name];
     const message: IMessage = new Message(msg.message, currRoom, currPart);
     currRoom.broadcastMessage(message, currPart);
-    //to fix ..
+    //server gateway
     Object.values(currRoom.getParticipants()).forEach(participant => {
-      const participantUserId = participant.getUser().id;
+      const participantUserId = participant.getUserId();
       if (participantUserId == null || participantUserId == undefined) throw new Error('ChatServer Error: Participant in room don t have a user');
       if(!this.connectetdUsers[participantUserId]) console.log('User not connected: send notification or search in service discovery for another chatserver instance, userid= '+participantUserId)  
       else this.connectetdUsers[participantUserId].receive({
@@ -74,7 +74,8 @@ export class ChatServerImpl implements IChatServer {
     this.chatdataBase.getChatRooms().map(roomDto => {
       const roomEntity: Chatroom = new Chatroom(roomDto.name);
       const parts: Participant[] = Object.values(roomDto.participants).map(partDto => {
-        return partDto.isBot ? new BotParticipant(partDto.user) : new Participant(partDto.user);
+        return partDto.isBot ? new BotParticipant(partDto.user.name,partDto.user.id) 
+                             : new Participant(partDto.user.name,partDto.user.id);
       });
       //set participants
       roomEntity.initChatRoom(parts, []);
