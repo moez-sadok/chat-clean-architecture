@@ -1,3 +1,4 @@
-export * from './lib/dtos/chat.data.view.model';
-export * from './lib/interfaces/chat.view';
-export * from './lib/chat-presenter-in-memory';
+export * from './lib/ui/chat.data.view.model';
+export * from './lib/ui/chat.view';
+export * from './lib/ui/chat-presenter-ui';
+export * from './lib/api/chat-presenter.api';

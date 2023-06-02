@@ -96,3 +96,9 @@ Generate nest app:
 ```
 npx nx generate @nrwl/nest:application chat/chat-server-main-api --frontendProject chat-chat-client-main-ng
 ```
+
+Generate lib:
+```
+npx nx generate @nrwl/workspace:library chat/entreprise-business-rules/notifiyer
+npx nx generate @nrwl/workspace:library chat/application-business-rules/network
+```

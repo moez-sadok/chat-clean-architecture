@@ -3,7 +3,7 @@
 import { IChatroom } from './chatroom';
 import { IMessage } from './message';
 
-// Colleagues
+// Colleagues // Mediator in chat room
 export interface IParticpant {
   getUserName(): string;
   getUserId(): number;
@@ -15,4 +15,4 @@ export interface IParticpant {
   leaveChatRoom(): void;
   //likeMessage(message:MessageDto) :void;
 }
-// Mediator in chat room
+

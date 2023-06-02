@@ -21,9 +21,6 @@
       "@chat-clean-architecture/chat/adapters/gateways": [
         "libs/chat/adapters/gateways/src/index.ts"
       ],
-      "@chat-clean-architecture/chat/adapters/gateways/*": [
-        "libs/chat/adapters/gateways/*"
-      ],
       "@chat-clean-architecture/chat/adapters/presenters": [
         "libs/chat/adapters/presenters/src/index.ts"
       ],
@@ -33,14 +30,14 @@
       "@chat-clean-architecture/chat/application-business-rules/interactor": [
         "libs/chat/application-business-rules/interactor/src/index.ts"
       ],
-      "@chat-clean-architecture/chat/application-business-rules/main": [
-        "libs/chat/application-business-rules/main/src/index.ts"
-      ],
       "@chat-clean-architecture/chat/entreprise-business-rules/dtos": [
         "libs/chat/entreprise-business-rules/dtos/src/index.ts"
       ],
       "@chat-clean-architecture/chat/entreprise-business-rules/entities": [
         "libs/chat/entreprise-business-rules/entities/src/index.ts"
+      ],
+      "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer": [
+        "libs/chat/entreprise-business-rules/notifiyer/src/index.ts"
       ],
       "@chat-clean-architecture/chat/frameworks/db/in-memory-db": [
         "libs/chat/frameworks/db/in-memory-db/src/index.ts"

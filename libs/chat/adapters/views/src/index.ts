@@ -1,1 +1,1 @@
-export * from './lib/user-view.client.impl';
+export * from './lib/ui/user.chat.view.ui';

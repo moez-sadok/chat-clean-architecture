@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { of, switchMap, tap } from 'rxjs';
 
-import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER, CHAT_VIEW_PROVIDER, controllerFactory, interactorFactory, presenterFactory } from '../../services/main-chat-front-provider';
+import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT, CHAT_VIEW_PROVIDER, controllerFactory, interactorNetworkFactory, presenterFactory } from '../../services/main-chat-front-provider';
 import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
 import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
 import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
@@ -18,8 +18,8 @@ import { IChatApiController } from '@chat-clean-architecture/chat/adapters/contr
     },
     {
       provide: CHAT_INTERACTOR_PROVIDER,
-      useFactory: interactorFactory,
-      deps: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER]
+      useFactory: interactorNetworkFactory,
+      deps: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]
     },
     {
       provide: CHAT_CONTROLLER_PROVIDER,

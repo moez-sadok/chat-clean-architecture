@@ -1,7 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { IChatPresenterOutputBoundary, RoomOutputData, MessageOutputData, SendMessageInputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatPresenterOutputBoundary, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { lastValueFrom, tap } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 
@@ -21,7 +21,6 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
     this.listenReceiveMessage();
     this.listenerConnectUser();
     this.getUserRooms(userId);
-    //TODO : return the userdto and resolve it inside the on.connect
     return new Promise((resolve) => {
       resolve(true);
     });
@@ -48,17 +47,9 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
     const url = 'api/send-message';
     const msg = {  roomId: roomId,userId: userId, message: message };
     return lastValueFrom(this.http.get<MessageOutputData>(url, { params: msg }));
+    //or with ws: this.clientSocket.emit('msgToServer', messageData, (val: any) => {});
   }
 
-  //ws
-  // sendMessage(roomId: number, userId: number, message: string) {
-  //   const messageData: SendMessageInputData = { roomId: roomId, userId: userId, message: message }
-  //   this.clientSocket.emit('msgToServer', messageData, (val: any) => {
-  //     console.log('sendMessage', val);
-  //   });
-  // }
-
-  //
   private listenerConnectUser() {
     this.clientSocket.on("connect", () => {
       console.log('is connected', this.clientSocket.id);
@@ -73,10 +64,6 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
 
   private joinRoom(roomId: number) {
     this.clientSocket.emit('joinRoom', roomId);
-  }
-
-  private leaveRoom(roomId: number) {
-    this.clientSocket.emit('leaveRoom', roomId);
   }
 
 }

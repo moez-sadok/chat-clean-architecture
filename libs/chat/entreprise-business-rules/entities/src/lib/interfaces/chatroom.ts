@@ -1,12 +1,13 @@
 /******** Abstraction of mediator pattern */
-// Colleagues in Iparticipant
+
 import { IMessage } from './message';
 import { IParticpant } from './participant';
 
-// Mediator
+// Mediator // Colleagues in Iparticipant
 export interface IChatroom {
   //getters
   getName(): string;
+  getId(): number;
   getParticipants(): Record<string, IParticpant>;
   getMessages(): IMessage[];
   //methods
@@ -16,7 +17,7 @@ export interface IChatroom {
   leave(participant: IParticpant): void;
 }
 
-//client use example (one room):
+// client main use example (one room):
 // const yuri: UserDto = { name: 'Yuri' };
 // const amelie: UserDto = { name: 'Ameli' };
 // const yuriParticipantAmelie = new Participant(yuri);

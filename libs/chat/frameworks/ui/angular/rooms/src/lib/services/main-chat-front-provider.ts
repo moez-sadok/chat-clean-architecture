@@ -1,13 +1,13 @@
 import { InjectionToken } from "@angular/core";
 import { ChatControllerMemoryImpl, IChatApiController } from "@chat-clean-architecture/chat/adapters/controllers";
 import { DataBaseMapper, IChatDatabase } from "@chat-clean-architecture/chat/adapters/gateways";
-import { ChatInMemoryPresenterImpl, IChatView } from "@chat-clean-architecture/chat/adapters/presenters";
-import {  ChatInteractorInMemoryImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServer, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
-import { ChatServerImpl  } from "@chat-clean-architecture/chat/adapters/gateways/server-gateway";
+import { ChatUiPresenterImpl, IChatView } from "@chat-clean-architecture/chat/adapters/presenters";
+import { ChatInteractorImpl, IChatControllerInputBoundary, IChatPresenterOutputBoundary, IChatServerPort, IDataAccess } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { HttpClient } from "@angular/common/http";
 import { ChatControllerWsHttpClientAdapterImpl } from "./chat-controller-ws-http-client-adapter";
 
-export const CHAT_SERVER_PROVIDER = new InjectionToken<IChatServer>('chat.server.facade');
+export const CHAT_SERVER_PROVIDER_PORT = new InjectionToken<IChatServerPort>('chat.server.port.facade');
+
 export const CHAT_INTERACTOR_PROVIDER = new InjectionToken<IChatControllerInputBoundary>('chat.interactor');
 export const CHAT_DB_PROVIDER = new InjectionToken<IChatDatabase>('chat.bd');
 export const CHAT_DB_MAPPER_PROVIDER = new InjectionToken<IDataAccess>('chat.mapper.bd');
@@ -20,15 +20,11 @@ export const dbMapperFactory = (db: IChatDatabase) => {
 };
 
 export const presenterFactory = (view: IChatView) => {
-    return new ChatInMemoryPresenterImpl(view);
+    return new ChatUiPresenterImpl(view);
 };
 
-export const interactorFactory = (db: IDataAccess, presentator: IChatPresenterOutputBoundary,chatserver: IChatServer) => {
-    return new ChatInteractorInMemoryImpl(db,presentator, chatserver);
-};
-
-export const chatServerFactory = (db: IDataAccess) => {
-    return new ChatServerImpl(db);
+export const interactorNetworkFactory = (db: IDataAccess, presentator: IChatPresenterOutputBoundary,chatserver: IChatServerPort) => {
+    return new ChatInteractorImpl(db,presentator, chatserver);
 };
 
 export const controllerClientAdapterFactory = (httpclient: HttpClient,presentator: IChatPresenterOutputBoundary) => {
