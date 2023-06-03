@@ -30,9 +30,6 @@
       "@chat-clean-architecture/chat/application-business-rules/interactor": [
         "libs/chat/application-business-rules/interactor/src/index.ts"
       ],
-      "@chat-clean-architecture/chat/entreprise-business-rules/dtos": [
-        "libs/chat/entreprise-business-rules/dtos/src/index.ts"
-      ],
       "@chat-clean-architecture/chat/entreprise-business-rules/entities": [
         "libs/chat/entreprise-business-rules/entities/src/index.ts"
       ],
