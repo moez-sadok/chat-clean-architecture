@@ -1,15 +1,13 @@
 /******** Abstraction of mediator pattern */
-import { IChatroom, IMessage } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
+import { IChatroom } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
 import { IChatClient } from "./chat-client.port";
+import { MessageOutputData } from "../../dtos/output.chat.data";
 
 // Mediator
 export interface IChatServerPort {
   connectUser(user: IChatClient): boolean;
   disconnectUser(user: IChatClient): void;
-  joinRoom(user: IChatClient,roomId: number):void;  
-  leaveRoom(client: IChatClient , room: number):void;
-  broadcast(message: IMessage): void;
-
+  broadcast(message: MessageOutputData): void;
   initServer(rooms: IChatroom[]):void;
   getConnectedClients():Record<number, IChatClient>;
 }

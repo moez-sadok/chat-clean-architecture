@@ -11,7 +11,8 @@ export interface IChatroom {
   getParticipants(): Record<string, IParticpant>;
   getMessages(): IMessage[];
   //methods
-  initChatRoom(parts: IParticpant[], messages: IMessage[]): void;
+  setParticipants(parts: IParticpant[]): void;
+  setMessages(messages: IMessage[]): void;
   register(participant: IParticpant): void;
   broadcastMessage(message: IMessage, from: IParticpant): void;
   leave(participant: IParticpant): void;

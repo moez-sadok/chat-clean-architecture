@@ -1,6 +1,7 @@
 export * from './lib/impl/chat-interactor.impl';
 
-export * from './lib/impl/network/chat-server.memory.port.impl';
+export * from './lib/impl/network/chat-server.port.impl';
+export * from './lib/impl/network/chat-client.port.impl';
 export * from './lib/interfaces/network/chat-server.port';
 export * from './lib/interfaces/network/chat-client.port';
 

@@ -39,7 +39,10 @@ export class Participant implements IParticpant {
 
   receive(message: IMessage) {
     if(this.notifiyer) this.notifiyer.notifiy(
-      message.getcontent(),message.getchatRoom().getId(),this.getUserId(),this.getUserName())
+      message.getcontent(),
+      message.getchatRoom().getId(),
+      this.getUserId(),
+      message.getParticipant().getUserName());
     else this.printTextMessage(message);
   }
 

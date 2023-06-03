@@ -19,7 +19,6 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
       auth: { userId: userId }
     });
     this.listenReceiveMessage();
-    this.listenerConnectUser();
     this.getUserRooms(userId);
     return new Promise((resolve) => {
       resolve(true);
@@ -34,7 +33,6 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
   }
 
   getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageOutputData[]> {
-    this.joinRoom(roomId);
     const url = 'api/chat-room-messages';
     const room = { userId: userId, roomId: roomId, roomName: roomName }; //as GetRoomMessagesInputData
     return lastValueFrom(this.http.get<MessageOutputData[]>(url, { params: room }).pipe(
@@ -42,28 +40,20 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
     ));
   }
 
-  //http
   sendMessage(roomId: number, userId: number, message: string) {
     const url = 'api/send-message';
     const msg = {  roomId: roomId,userId: userId, message: message };
-    return lastValueFrom(this.http.get<MessageOutputData>(url, { params: msg }));
+    //TODO: change by post request
+    return lastValueFrom(this.http.get<MessageOutputData>(url, { params: msg }).pipe(
+      tap(resMsg => this.presentator.receiveNewMessage(resMsg))
+    ));
     //or with ws: this.clientSocket.emit('msgToServer', messageData, (val: any) => {});
-  }
-
-  private listenerConnectUser() {
-    this.clientSocket.on("connect", () => {
-      console.log('is connected', this.clientSocket.id);
-    });
   }
 
   private listenReceiveMessage() {
     this.clientSocket.on('msgToClient', (message) => {
       this.presentator.receiveNewMessage(message);
     });
-  }
-
-  private joinRoom(roomId: number) {
-    this.clientSocket.emit('joinRoom', roomId);
   }
 
 }

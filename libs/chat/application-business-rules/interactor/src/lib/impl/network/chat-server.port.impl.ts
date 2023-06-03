@@ -2,8 +2,9 @@
 import { IChatroom, IMessage,  Message } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
 import { IChatClient } from "../../interfaces/network/chat-client.port";
 import { IChatServerPort } from "../../interfaces/network/chat-server.port";
+import { MessageOutputData } from "../../dtos/output.chat.data";
 
-export class ChatServerPortMemoryImpl implements IChatServerPort {
+export class ChatServerPortImpl implements IChatServerPort {
 
   private connectetdUsers: Record<number, IChatClient> = {};
   private rooms: Record<number, IChatroom> = {};
@@ -23,24 +24,15 @@ export class ChatServerPortMemoryImpl implements IChatServerPort {
   }
 
   disconnectUser(user: IChatClient): void {
-    const userId = user.getId();
-    if (userId && this.connectetdUsers[userId]) delete this.connectetdUsers[userId];
+    if (user && this.connectetdUsers[user.getId()]) delete this.connectetdUsers[user.getId()];
   }
 
-  broadcast(msg: IMessage): void {
-    const currRoom = this.rooms[msg.getchatRoom().getId()];
+  broadcast(msg: MessageOutputData): void {
+    const currRoom = this.rooms[msg.chatRoomId];
     if (!currRoom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
-    const currPart = currRoom.getParticipants()[msg.getParticipant().getUserName()];
-    const message: IMessage = new Message(msg.getcontent(), currRoom, currPart);
+    const currPart = currRoom.getParticipants()[msg.participantName];
+    const message: IMessage = new Message(msg.message, currRoom, currPart);
     currRoom.broadcastMessage(message, currPart);
-  }
-
-  joinRoom(client: IChatClient, roomId: number): void {
-    client.join(roomId);
-  }
-
-  leaveRoom(client: IChatClient, roomId: number): void {
-    client.leave(roomId);
   }
 
   initServer(rooms: IChatroom[]): void {

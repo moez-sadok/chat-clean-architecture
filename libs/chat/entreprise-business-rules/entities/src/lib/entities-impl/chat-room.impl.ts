@@ -26,6 +26,17 @@ export class Chatroom implements IChatroom {
     return this.messages;
   }
 
+  //setters
+  setParticipants(parts: IParticpant[]): void {
+    for (let i = 0; i < parts.length; i++) {
+      this.register(parts[i]);
+    }
+  }
+
+  setMessages(messages: IMessage[]): void {
+    this.messages = messages;
+  }
+
   /** pattern basic methods */
   register(participant: IParticpant) {
     if (this.participants[participant.getUserName()]) throw new Error('Can not register an existing participant');
@@ -45,13 +56,6 @@ export class Chatroom implements IChatroom {
 
   addMessage(message: IMessage) {
     this.messages.push(message);
-  }
-
-  initChatRoom(parts: IParticpant[], messages: IMessage[]) {
-    for (let i = 0; i < parts.length; i++) {
-      this.register(parts[i]);
-    }
-    this.messages = messages;
   }
 
   leave(participant: IParticpant) {

@@ -1,6 +1,5 @@
 
 import { IChatControllerInputBoundary, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-//import { IChatController } from './interfaces/chat.controllor';
 import { IChatApiController } from './interfaces/chat.controllor.api';
 
 export class ChatApiControllerImpl implements IChatApiController {

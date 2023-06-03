@@ -6,13 +6,13 @@ import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData
 import { MessageDto } from '../dtos/models/message.dto';
 import { BotParticipant, Chatroom, IParticpant, Message, Participant } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 import { IChatServerPort } from '../interfaces/network/chat-server.port';
-import { ChatClientPortMemoryImpl } from './network/chat-client.memory.port.impl';
-import { NotifiyerNetworkImpl } from './network/notifiyer.network.memory';
+import { ChatClientPortImpl } from './network/chat-client.port.impl';
+import { NotifiyerNetworkImpl } from './network/notifiyer.network';
 import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 //Use cases (can be splitted)
 export class ChatInteractorImpl implements IChatControllerInputBoundary {
 
-  private notifiyer: INotifilyer;
+  private notifiyer: INotifilyer; //TODO add it to DI
 
   constructor( private chatdataBase: IDataAccess,
     private presenter: IChatPresenterOutputBoundary,
@@ -26,7 +26,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     const existUser = this.chatdataBase.getUserById(userId);
     return new Promise((resolve) => {
       if (existUser.id)
-        resolve(this.chatServer.connectUser(new ChatClientPortMemoryImpl(existUser.id, this.presenter)));
+        resolve(this.chatServer.connectUser(new ChatClientPortImpl(existUser.id, this.presenter)));
     });
   }
 
@@ -74,14 +74,10 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
       message: newMessage.message,
       chatRoomId: newMessage.room.id,
     };
-    //entity
-    const chatRoomEntity = new Chatroom(croom.name, croom.id);
-    const participantEntity = new Participant(newMessage.from.user.name, newMessage.from.user.id);
-    const messageEntity = new Message(message.message, chatRoomEntity, participantEntity);
-    this.chatServer.broadcast(messageEntity);
-    //presenter
-    const msg = this.presenter.receiveNewMessage(messagedOutput);
-    return messagedOutput;
+    // chat server network (using notifiyer -> entities)
+    this.chatServer.broadcast(messagedOutput);
+    // presenter
+    return this.presenter.receiveNewMessage(messagedOutput);
   }
 
   private initChatServer(): void {
@@ -92,7 +88,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
           : new Participant(partDto.user.name, partDto.user.id, this.notifiyer);
       });
       //set participants
-      roomEntity.initChatRoom(parts, []);
+      roomEntity.setParticipants(parts);
       //set messages
       const roomMessages: Message[] = roomDto.messages
         ? roomDto.messages.map(rm => {
@@ -101,7 +97,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
           const partM: IParticpant = roomParts[userName];
           return new Message(rm.message, roomEntity, partM);
         }) : [];
-      roomEntity.initChatRoom([], roomMessages);
+      roomEntity.setMessages(roomMessages);
       //add to rooms
       return roomEntity;
     });

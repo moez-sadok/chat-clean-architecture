@@ -15,7 +15,4 @@
 
 ## TO CHECK (more internal abstraction)
 - Check the communication model for http: 2 solutions ( app/controller facade (used in the back-end) book-p237 or relation controller / presenter (used in the front-end part) book-p72)
-- The presenter api can use the server/socket (IchatServer/IConnectedUser) and return response directly
-- Make an adapter for websoket server (for IchatServer) 
-- Make an  adapter for websoket socket (client) (for IConnectedUser) 
-- Make an  adapter for http
+- Make an  adapter for websoket socket (client) (for IClientUser)

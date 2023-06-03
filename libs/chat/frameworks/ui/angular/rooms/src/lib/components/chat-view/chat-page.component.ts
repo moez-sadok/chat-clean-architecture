@@ -3,8 +3,7 @@ import { ChatDataViewModelDto, RoomDataViewModelDto } from '@chat-clean-architec
 
 @Component({
   selector: 'cca-chat-view',
-  //templateUrl: './chat-page.component.material.html',
-  templateUrl: './chat-page.component.native.html',
+  templateUrl: './chat-page.component.native.html',//'./chat-page.component.material.html',
   styleUrls: ['./chat-page.component.native.scss']
 })
 export class ChatViewComponent {
