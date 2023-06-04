@@ -18,6 +18,6 @@ import { ChatServerPortImpl } from '@chat-clean-architecture/chat/application-bu
 })
 export class MultiUsersChatPageComponent {
 
-  userIds: number[] = [1, 2, 3, 4, 5]
+  userIds: number[] = [1, 2, 3, 4]
 
 }

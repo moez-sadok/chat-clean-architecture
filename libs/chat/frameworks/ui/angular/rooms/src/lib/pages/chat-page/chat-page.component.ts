@@ -1,6 +1,5 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { of, switchMap, tap } from 'rxjs';
+import { Component, Inject, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT, CHAT_VIEW_PROVIDER, controllerFactory, interactorNetworkFactory, presenterFactory } from '../../services/main-chat-front-provider';
 import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
@@ -11,7 +10,7 @@ import { IChatApiController } from '@chat-clean-architecture/chat/adapters/contr
   selector: 'cca-chat-page',
   templateUrl: './chat-page.component.html',
   providers: [
-    { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl   /* UserWebViewClientImpl */ },
+    { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl },
     {
       provide: CHAT_PRESENTATOR_PROVIDER, useFactory: presenterFactory,
       deps: [CHAT_VIEW_PROVIDER]
@@ -28,7 +27,7 @@ import { IChatApiController } from '@chat-clean-architecture/chat/adapters/contr
     }
   ]
 })
-export class ChatPageComponent implements OnInit {
+export class ChatPageComponent {
 
   private _activeUserId = 0;
   @Input() set activeUserId(value: number) {
@@ -39,20 +38,9 @@ export class ChatPageComponent implements OnInit {
   }
   get activeUserId() { return this._activeUserId }
 
-  constructor(private route: ActivatedRoute,
+  constructor(protected route: ActivatedRoute,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatApiController,
     @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView){ }
-
-  ngOnInit(): void {
-    //get user id from url (router param)
-    this.route.params.pipe(
-        //change as input in angular 16 (userg resolver)
-        switchMap((params: Params) => { return of(params['userId']); }),
-        tap((userId) => {
-          if (userId != null || userId != undefined) 
-          this.activeUserId = +userId;
-        })).subscribe(); //TODO use Angular 16 input by route resolver - don't forget to unsubscribe in ondestroy
-  }
 
 }
 

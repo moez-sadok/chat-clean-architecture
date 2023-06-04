@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChatPageComponent } from './containers/chat-page/chat-page.component';
-import { ChatViewComponent } from './components/chat-view/chat-page.component';
+import { ChatPageComponent } from './pages/chat-page/chat-page.component';
+import { ChatViewComponent } from './components/chat-view/chat-view.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -16,9 +16,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChatClientRoutingNgModule } from './chat-client-ng.module.routing';
 import { HttpClientModule } from '@angular/common/http';
-import { MultiUsersChatPageComponent } from './containers/multi-users-chat-page/multi-users-chat-page.component';
+import { MultiUsersChatPageComponent } from './pages/multi-users-chat-page/multi-users-chat-page.component';
 //
-import { ChatPageWsHttpClientComponent } from './containers/chat-page/chat-page.component-ws-client';
+import { ChatPageWsHttpClientComponent } from './pages/chat-page/chat-page.component-ws-client';
 
 @NgModule({
   declarations: [

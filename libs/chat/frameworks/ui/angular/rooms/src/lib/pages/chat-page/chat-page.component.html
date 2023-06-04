@@ -2,6 +2,5 @@
 <cca-chat-view [chatPageView]="chatview.chatDataViewModelDto" 
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 
     (sendMessage)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
-        activeUserId,
-        $event)">
+        activeUserId, $event)">
 </cca-chat-view>

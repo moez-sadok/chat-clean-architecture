@@ -1,4 +1,4 @@
-import { WebSocketGateway, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer, SubscribeMessage } from '@nestjs/websockets';
+import { WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatServerPortImpl, IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatClientNetworkAdapter } from './client.ws.network.adapter';
@@ -6,13 +6,9 @@ import { ChatClientNetworkAdapter } from './client.ws.network.adapter';
 @WebSocketGateway(
   8080, { cors: { origin: '*' } }
 )
-export class ChatServerNetworkAdapter extends ChatServerPortImpl implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class ChatServerNetworkAdapter extends ChatServerPortImpl implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() public server!: Server;
-
-  afterInit(server: Server) {
-    this.server = server;
-  }
 
   handleConnection(client: Socket): void {
     const chatClient: IChatClient = new ChatClientNetworkAdapter(client);

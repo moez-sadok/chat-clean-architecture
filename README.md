@@ -58,7 +58,7 @@ To install Redis, please check the official Redis website and see also [NestJS W
 ```
 redis-server
 
-npm run start:ng
+npm run start
 
 npm run start:api
 ```
