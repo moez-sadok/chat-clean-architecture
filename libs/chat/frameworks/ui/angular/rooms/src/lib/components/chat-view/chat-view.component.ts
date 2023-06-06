@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ChatDataViewModelDto, RoomDataViewModelDto } from '@chat-clean-architecture/chat/adapters/presenters';
+import { ChatDataViewModelDto, RoomViewModel } from '@chat-clean-architecture/chat/adapters/presenters';
 
 @Component({
   selector: 'cca-chat-view',
@@ -20,5 +20,5 @@ export class ChatViewComponent {
 
   @Output() leaveChatRoom: EventEmitter<number> = new EventEmitter();
   @Output() sendMessage: EventEmitter<string> = new EventEmitter();
-  @Output() selectRoom: EventEmitter<RoomDataViewModelDto> = new EventEmitter();
+  @Output() selectRoom: EventEmitter<RoomViewModel> = new EventEmitter();
 }

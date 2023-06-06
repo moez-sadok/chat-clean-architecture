@@ -7,8 +7,8 @@ export class ChatClientNetworkAdapter extends ChatClientPortImpl {
     super(socket.handshake.auth.userId);
   }
 
-  emit(data: MessageOutputData): void {
-    this.socket.emit('msgToClient', data);
-  }
+  receive(message: MessageOutputData): void {
+    this.socket.emit('msgToClient', message);
+   }
 
 }

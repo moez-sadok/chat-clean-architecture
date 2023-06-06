@@ -8,9 +8,9 @@ export class NotifiyerNetworkImpl implements INotifilyer {
 
     notifiy(msg: string, roomId: number,receiverId:number, receiverName : string): void {
        const connectedReceiver = this.chatServer.getConnectedClients()[receiverId];
-       const messageOutput : MessageOutputData = { chatRoomId : roomId, message : msg, participantName :receiverName}
+       const messageOutput : MessageOutputData = { chatRoomId : roomId, message : msg, authorName :receiverName}
        if(connectedReceiver) connectedReceiver.receive(messageOutput);
-       else console.log('Participant user is not connected, send a push notif');
+       else console.log('Participant user is not connected, send a push notif',receiverId);
     }
 
 }

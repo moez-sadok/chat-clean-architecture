@@ -25,7 +25,7 @@ export class ChatHttpAdapterController {
 
 }
 
-//DI (at is) or extends ChatControllerMemoryImpl / implements IChatController (with SIP)
+//DI (at is) or extends ChatControllerApiImpl / implements IChatController (with SIP)
 
 // /* First solution: 
 //  create a facade for the app and return the data inside the flow (interactor -> controller)

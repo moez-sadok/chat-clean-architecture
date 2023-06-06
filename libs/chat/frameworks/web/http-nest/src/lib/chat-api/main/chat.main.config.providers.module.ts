@@ -1,18 +1,17 @@
 import { Module } from '@nestjs/common';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@chat-clean-architecture/chat/adapters/gateways';
-import { IDataAccess, IChatPresenterOutputBoundary, IChatServerPort, ChatInteractorImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IDataAccess, IChatPresenterOutputBoundary, IChatServerPort, ChatInteractorImpl, ChatServerPortImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatApiControllerImpl } from '@chat-clean-architecture/chat/adapters/controllers';
 import { ChatApiPresenterImpl } from '@chat-clean-architecture/chat/adapters/presenters';
 import { IChatControllerInputBoundary } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { ChatServerNetworkAdapter } from '../adapters/network/server.ws.network.adapter';
 
 export const CHAT_INTERACTOR_PROVIDER = 'CHAT_INTERACTOR_PROVIDER';
 export const CHAT_DB_PROVIDER = 'CHAT_DB_PROVIDER';
 export const CHAT_DB_MAPPER_PROVIDER = 'CHAT_DB_MAPPER_PROVIDER';
 export const CHAT_PRESENTATOR_PROVIDER = 'CHAT_PRESENTATOR_PROVIDER';
 export const CHAT_CONTROLLER_PROVIDER = 'CHAT_CONTROLLER_PROVIDER';
-//export const CHAT_SERVER_PROVIDER_PORT = 'CHAT_SERVER_PROVIDER_PORT';
+export const CHAT_SERVER_PROVIDER_PORT = 'CHAT_SERVER_PROVIDER_PORT';
 
 export const dbMapperFactory = (db: IChatDatabase) => {
   return new DataBaseMapper(db);
@@ -28,8 +27,7 @@ export const controllerFactory = (interactor: IChatControllerInputBoundary) => {
 
 @Module({
   providers: [
-    ChatServerNetworkAdapter,//{ provide: CHAT_SERVER_PROVIDER_PORT, useValue: new ChatServerNetworkAdapter() },
-    
+    { provide: CHAT_SERVER_PROVIDER_PORT, useValue: new ChatServerPortImpl() },
     { provide: CHAT_DB_PROVIDER, useValue: new DataBaseMemoryImpl() },
     { provide: CHAT_PRESENTATOR_PROVIDER, useValue: new ChatApiPresenterImpl() },
     {
@@ -38,7 +36,7 @@ export const controllerFactory = (interactor: IChatControllerInputBoundary) => {
     },
     {
       provide: CHAT_INTERACTOR_PROVIDER, useFactory: interactorNetworkFactory,
-      inject: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, ChatServerNetworkAdapter]
+      inject: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]
     },
     {
       provide: CHAT_CONTROLLER_PROVIDER, useFactory: controllerFactory,
@@ -47,8 +45,7 @@ export const controllerFactory = (interactor: IChatControllerInputBoundary) => {
   ],
   exports: [
     CHAT_CONTROLLER_PROVIDER,
-    CHAT_INTERACTOR_PROVIDER,
-    ChatServerNetworkAdapter
+    CHAT_INTERACTOR_PROVIDER
   ]
 })
 export class ChatMainConfigProvidersModule { }

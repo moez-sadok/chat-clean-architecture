@@ -1,5 +1,5 @@
 
-import { IChatControllerInputBoundary, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatControllerInputBoundary, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData, UserOutputData, IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatApiController } from './interfaces/chat.controllor.api';
 
 export class ChatApiControllerImpl implements IChatApiController {
@@ -7,7 +7,15 @@ export class ChatApiControllerImpl implements IChatApiController {
   constructor(public interactorInputboundry: IChatControllerInputBoundary) {
   }
 
-  initUserConnection(userId: number):Promise<boolean> {
+  disconnectClient(userId: number): Promise<boolean> {
+     return this.interactorInputboundry.disconnectClient(userId);
+  }
+
+  connectClient(client: IChatClient): Promise<UserOutputData | null> {
+       return this.interactorInputboundry.connectClient(client);
+  }
+
+  initUserConnection(userId: number):Promise<UserOutputData | null> {
    return this.interactorInputboundry.connectUser(userId);
   }
 
@@ -16,8 +24,8 @@ export class ChatApiControllerImpl implements IChatApiController {
     return this.interactorInputboundry.getRoomsByUser(userInput);
   }
 
-  getRoomMessages(roomId: number,roomName: string,userId: number) : Promise<MessageOutputData[]> {
-    const roomInput: GetRoomMessagesInputData = { roomId: roomId , userId : userId, roomName:roomName };
+  getRoomMessages(roomId: number,roomName: string) : Promise<MessageOutputData[]> {
+    const roomInput: GetRoomMessagesInputData = { roomId: roomId , roomName:roomName };
     return this.interactorInputboundry.getChatRoomsMessages(roomInput);
   }
 

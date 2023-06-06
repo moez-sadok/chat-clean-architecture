@@ -20,7 +20,8 @@
                 </button>
               </div>
               <mat-card-title>{{ chatPageView.activeRoom.name }}</mat-card-title>
-              <mat-card-subtitle>{{chatPageView.activeRoomMessages?.length}} messages</mat-card-subtitle>
+              <!-- <mat-card-subtitle>{{chatPageView.activeRoomMessages?.length}} message(s)</mat-card-subtitle> -->
+              <mat-card-subtitle>{{chatPageView.activeRoom.participantNames}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <div *ngFor="let message of chatPageView.activeRoomMessages">

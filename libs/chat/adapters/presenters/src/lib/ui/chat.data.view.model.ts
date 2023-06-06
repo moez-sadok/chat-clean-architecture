@@ -1,9 +1,8 @@
 export interface ChatDataViewModelDto {
-  rooms?: RoomDataViewModelDto[];
+  rooms?: RoomViewModel[];
 
-  activeRoom: RoomDataViewModelDto;
-  activeRoomParticipants?: ParticipantDataViewModelDto[];
-  activeRoomMessages?: MessageDataViewModelDto[];
+  activeRoom: RoomViewModel;
+  activeRoomMessages?: MessageViewModel[];
 
   inputMessage?: string;
   sendButtonLabel: string;
@@ -11,18 +10,19 @@ export interface ChatDataViewModelDto {
   menuItemAddParticipantLabel: string;
 }
 
-export interface MessageDataViewModelDto {
+export interface MessageViewModel {
   roomId: number;
   content: string;
   participantName: string;
 }
 
-export interface RoomDataViewModelDto {
+export interface RoomViewModel {
   roomId: number;
   name: string;
+  participantNames?: string[];
 }
 
-export interface ParticipantDataViewModelDto {
+export interface ParticipantViewModel {
   id: number;
   name: string;
 }

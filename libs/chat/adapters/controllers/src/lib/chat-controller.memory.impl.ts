@@ -16,8 +16,8 @@ export class ChatControllerMemoryImpl implements IChatController {
     this.interactorInputboundry.getRoomsByUser(userInput);
   }
 
-  getRoomMessages(roomId: number,roomName: string,userId: number) {
-    const roomInput: GetRoomMessagesInputData = { roomId: roomId , userId : userId, roomName:roomName };
+  getRoomMessages(roomId: number,roomName: string) {
+    const roomInput: GetRoomMessagesInputData = { roomId: roomId ,  roomName:roomName };
     this.interactorInputboundry.getChatRoomsMessages(roomInput);
   }
 

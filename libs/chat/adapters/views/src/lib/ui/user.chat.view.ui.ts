@@ -1,10 +1,10 @@
-import { IChatView, ChatDataViewModelDto, MessageDataViewModelDto, RoomDataViewModelDto } from "@chat-clean-architecture/chat/adapters/presenters";
+import { IChatView, ChatDataViewModelDto, MessageViewModel, RoomViewModel } from "@chat-clean-architecture/chat/adapters/presenters";
 
 export class UserWebViewClientImpl implements IChatView {
 
   chatDataViewModelDto!: ChatDataViewModelDto;
 
-  displayChatRoomsMessages(messages: MessageDataViewModelDto[]): void {
+  displayChatRoomsMessages(messages: MessageViewModel[]): void {
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto,activeRoomMessages: messages };
   }
 
@@ -12,11 +12,11 @@ export class UserWebViewClientImpl implements IChatView {
     this.chatDataViewModelDto = chatView;
   }
 
-  setActiveRoom(room: RoomDataViewModelDto) {
+  setActiveRoom(room: RoomViewModel) {
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoom: room};
   }
 
-  receiveMessage(message: MessageDataViewModelDto): MessageDataViewModelDto | null {
+  receiveMessage(message: MessageViewModel): MessageViewModel | null {
     //the room is not selected
     if (message.roomId != this.chatDataViewModelDto.activeRoom?.roomId) {
       console.log('Send notif t the user is not inside the room')

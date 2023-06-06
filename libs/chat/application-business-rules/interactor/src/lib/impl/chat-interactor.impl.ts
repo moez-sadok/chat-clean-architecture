@@ -1,4 +1,4 @@
-import { MessageOutputData, RoomOutputData } from '../dtos/output.chat.data';
+import { MessageOutputData, RoomOutputData, UserOutputData } from '../dtos/output.chat.data';
 import { IChatControllerInputBoundary } from '../interfaces/inputs/chat.controller.input.boundary';
 import { IChatPresenterOutputBoundary } from '../interfaces/outputs/chat.presenter.output.boundary';
 import { IDataAccess } from '../interfaces/storage/db-gateway';
@@ -9,12 +9,13 @@ import { IChatServerPort } from '../interfaces/network/chat-server.port';
 import { ChatClientPortImpl } from './network/chat-client.port.impl';
 import { NotifiyerNetworkImpl } from './network/notifiyer.network';
 import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
+import { IChatClient } from '../interfaces/network/chat-client.port';
 //Use cases (can be splitted)
 export class ChatInteractorImpl implements IChatControllerInputBoundary {
 
   private notifiyer: INotifilyer; //TODO add it to DI
 
-  constructor( private chatdataBase: IDataAccess,
+  constructor(private chatdataBase: IDataAccess,
     private presenter: IChatPresenterOutputBoundary,
     private chatServer: IChatServerPort
   ) {
@@ -22,11 +23,29 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     this.initChatServer();
   }
 
-  connectUser(userId: number): Promise<boolean> {
+  disconnectClient(userId: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      resolve(this.chatServer.disconnectUser(userId));
+    });
+  }
+
+  connectClient(client: IChatClient): Promise<UserOutputData | null> {
+    const existUser = this.chatdataBase.getUserById(client.getId());
+    return new Promise((resolve) => {
+      if (existUser.id) {
+        this.chatServer.connectUser(client);
+        resolve(existUser);
+      }
+    });
+  }
+
+  connectUser(userId: number): Promise<UserOutputData | null> {
     const existUser = this.chatdataBase.getUserById(userId);
     return new Promise((resolve) => {
-      if (existUser.id)
-        resolve(this.chatServer.connectUser(new ChatClientPortImpl(existUser.id, this.presenter)));
+      if (existUser.id) {
+        this.chatServer.connectUser(new ChatClientPortImpl(existUser.id, this.presenter));
+        resolve(existUser);
+      }
     });
   }
 
@@ -35,7 +54,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
       return {
         roomId: r.id,
         roomName: r.name,
-        rommParticipantsNames: Object.values(r.participants).map(p => p.user.name)
+        //participantsNames: Object.values(r.participants).map(p => p.user.name)
       } as RoomOutputData;
     });
     return new Promise((resolve) => {
@@ -45,14 +64,18 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
 
   getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<MessageOutputData[]> {
     const messagesByRoom = this.chatdataBase.getMessagesByRoom(room.roomId);
+    const roomDto = this.chatdataBase.getChatRoomsById(room.roomId);
     const messages = messagesByRoom.map((m) => {
       return {
-        participantName: m.from.user.name,
+        authorName: m.from.user.name,
         message: m.message,
         chatRoomId: m.room.id,
       } as MessageOutputData;
     });
-    const croom: RoomOutputData = { roomId: room.roomId, roomName: room.roomName };
+    const croom: RoomOutputData = {
+      roomId: room.roomId, roomName: room.roomName,
+      participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
+    };
     return new Promise((resolve) => {
       const res = this.presenter.selectChatRoomsMessages(messages, croom);
       resolve(res);
@@ -70,7 +93,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     };
     const newMessage = this.chatdataBase.addMessage(messagedto);
     const messagedOutput: MessageOutputData = {
-      participantName: newMessage.from.user.name,
+      authorName: newMessage.from.user.name,
       message: newMessage.message,
       chatRoomId: newMessage.room.id,
     };
@@ -84,6 +107,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     const chatRooms = this.chatdataBase.getChatRooms().map(roomDto => {
       const roomEntity: Chatroom = new Chatroom(roomDto.name, roomDto.id);
       const parts: Participant[] = Object.values(roomDto.participants).map(partDto => {
+        //TODO : add a participant factory
         return partDto.isBot ? new BotParticipant(partDto.user.name, partDto.user.id, this.notifiyer)
           : new Participant(partDto.user.name, partDto.user.id, this.notifiyer);
       });

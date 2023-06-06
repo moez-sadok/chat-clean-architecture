@@ -6,7 +6,7 @@ import { MessageOutputData } from "../../dtos/output.chat.data";
 // Mediator
 export interface IChatServerPort {
   connectUser(user: IChatClient): boolean;
-  disconnectUser(user: IChatClient): void;
+  disconnectUser(userId: number): boolean;
   broadcast(message: MessageOutputData): void;
   initServer(rooms: IChatroom[]):void;
   getConnectedClients():Record<number, IChatClient>;

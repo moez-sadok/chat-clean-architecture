@@ -1,11 +1,19 @@
 export interface RoomOutputData {
   roomName: string;
   roomId: number;
-  rommParticipantsNames?: string[];
+  participantsNames?: string[];
 }
 
 export interface MessageOutputData {
-  participantName: string;
+  authorName: string;
   message: string;
   chatRoomId: number;
 }
+
+export interface UserOutputData {
+  id: number;
+  name: string;
+  // status?: string;
+  // avatar?: string;
+}
+
