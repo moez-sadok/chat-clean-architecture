@@ -8,44 +8,44 @@ import { ChatClientsocketkAdapter } from './chat-socket-client-adapter';
 
 export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController {
 
-  //private clientSocket!: Socket;
-  private clientSocket!: IChatClient; //ChatClientsocketkAdapter;
+  private clientSocket!: IChatClient;
 
   constructor(
     private http: HttpClient,
     private presentator: IChatPresenterOutputBoundary) { }
 
+  connectClient(client: IChatClient): Promise<boolean> {
+    return new Promise((resolve) => {
+      if (client) resolve(true);
+      else resolve(false);
+    });
+  }
 
   disconnectClient(userId: number): Promise<boolean> {
-    console.log('disconnectClient ...',userId);
+    console.log('disconnectClient ...', userId);
     return new Promise((resolve) => {
       resolve(true);
     });
-    
   }
 
-  connectClient(client: IChatClient): Promise<UserOutputData | null> {
-    return new Promise((resolve) => {
-      resolve({ id: client.getId(), name: 'in progress ' });
-    });
-  }
-
-  initUserConnection(userId: number): Promise<UserOutputData | null> {
-    //TODO add try catch
-    const socket: Socket = io('ws://localhost:8080', {
-      reconnectionDelayMax: 10000,
-      auth: { userId: userId, name: 'in progress ' }
-    });
-    if (socket) {
+  async initUserConnection(userId: number): Promise<boolean> {
+    const user = await this.getUserById(userId);
+    if (user) {
+      this.getUserRooms(userId);
+      const socket: Socket = io('ws://localhost:8080', {
+        reconnectionDelayMax: 10000,
+        auth: { userId: user.id, userName: user.name }
+      });
       this.clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
-      this.connectClient(this.clientSocket);
+      return this.connectClient(this.clientSocket);
     }
-    this.getUserRooms(userId);
-    return new Promise((resolve) => {
-      resolve({ id: userId, name: 'in progress ' });
-    });
+    return new Promise((resolve) => { resolve(false) });
   }
 
+  getUserById(userId: number): Promise<UserOutputData | null> {
+    const url = `${'api/chat-user'}/${userId}`;
+    return lastValueFrom(this.http.get<UserOutputData | null>(url));
+  }
 
   getUserRooms(userId: number): Promise<RoomOutputData[]> {
     const url = `${'api/chat-user-rooms'}/${userId}`;
@@ -70,6 +70,27 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
       tap(resMsg => this.presentator.receiveNewMessage(resMsg))
     ));
   }
+
+  //TODO add try catch
+  // const socket: Socket = io('ws://localhost:8080', {
+  //   reconnectionDelayMax: 10000,
+  //   auth: { userId: userId }
+  // });
+  //this.getUserRooms(userId);
+  // this.clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
+  //return this.connectClient(this.clientSocket);
+  // getUserById(userId: number): Promise<UserOutputData | null> {
+  //   const url = `${'api/chat-user'}/${userId}`;
+  //   return lastValueFrom(this.http.get<UserOutputData | null>(url).pipe(
+  //     tap(res => {
+  //       console.log('getUserById cont front', res);
+  //       if (res) {
+  //         this.getUserRooms(userId);
+  //         this.connectClient(res);
+  //       }
+  //     })
+  //   ));
+  // }
 
   // private getConnectedUser(): Promise<UserOutputData | null> {
   //   // eslint-disable-next-line @typescript-eslint/no-this-alias

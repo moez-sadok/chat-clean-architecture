@@ -7,15 +7,19 @@ export class ChatApiControllerImpl implements IChatApiController {
   constructor(public interactorInputboundry: IChatControllerInputBoundary) {
   }
 
+  getUserById(userId: number): Promise<UserOutputData | null> {
+    return this.interactorInputboundry.getUser(userId);
+  }
+
   disconnectClient(userId: number): Promise<boolean> {
      return this.interactorInputboundry.disconnectClient(userId);
   }
 
-  connectClient(client: IChatClient): Promise<UserOutputData | null> {
+  connectClient(client: IChatClient): Promise<boolean> {
        return this.interactorInputboundry.connectClient(client);
   }
 
-  initUserConnection(userId: number):Promise<UserOutputData | null> {
+  initUserConnection(userId: number):Promise<boolean> {
    return this.interactorInputboundry.connectUser(userId);
   }
 

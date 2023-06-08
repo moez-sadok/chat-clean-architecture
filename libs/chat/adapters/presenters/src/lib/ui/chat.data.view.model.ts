@@ -21,8 +21,3 @@ export interface RoomViewModel {
   name: string;
   participantNames?: string[];
 }
-
-export interface ParticipantViewModel {
-  id: number;
-  name: string;
-}

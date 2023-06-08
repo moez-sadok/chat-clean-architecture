@@ -5,13 +5,13 @@ export class ChatClientsocketkAdapter extends ChatClientPortImpl {
 
     constructor(private socket: Socket, protected presentator: IChatPresenterOutputBoundary) {
         //@ts-ignore
-        super(socket.auth.userId, presentator);
+        super(socket.auth.userId, socket.auth.userName, presentator);
         this.onReceivedMessage();
     }
 
     onReceivedMessage() {
         this.socket.on('msgToClient', (message) => {
-            console.log('received message', message);
+            //console.log('socket received message', message);
             this.receive(message)
         });
     }

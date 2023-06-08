@@ -13,6 +13,11 @@ export class ChatHttpAdapterController {
     return this.chatController.getUserRooms(+params.userId);
   }
 
+  @Get('chat-user/:userId')
+  getUserhttp(@Param() params: any) {
+    return this.chatController.getUserById(+params.userId);
+  }
+
   @Get('chat-room-messages')
   getRoomMessagesHttp(@Query() query: any) {
     return this.chatController.getRoomMessages(+query.roomId, query.roomName, +query.userId);

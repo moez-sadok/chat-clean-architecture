@@ -23,28 +23,32 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     this.initChatServer();
   }
 
+  getUser(userId: number): Promise<UserOutputData | null> {
+    const existUser = this.chatdataBase.getUserById(userId);
+    return new Promise((resolve) => {
+      if (existUser) resolve({ id: existUser.id, name: existUser.name });
+    });
+  }
+
   disconnectClient(userId: number): Promise<boolean> {
     return new Promise((resolve) => {
       resolve(this.chatServer.disconnectUser(userId));
     });
   }
 
-  connectClient(client: IChatClient): Promise<UserOutputData | null> {
-    const existUser = this.chatdataBase.getUserById(client.getId());
+  connectClient(client: IChatClient): Promise<boolean> {
     return new Promise((resolve) => {
-      if (existUser.id) {
-        this.chatServer.connectUser(client);
-        resolve(existUser);
-      }
+      resolve(this.chatServer.connectUser(client));
     });
   }
 
-  connectUser(userId: number): Promise<UserOutputData | null> {
+  //to delete - replaced get user
+  connectUser(userId: number): Promise<boolean> {
     const existUser = this.chatdataBase.getUserById(userId);
     return new Promise((resolve) => {
       if (existUser.id) {
-        this.chatServer.connectUser(new ChatClientPortImpl(existUser.id, this.presenter));
-        resolve(existUser);
+        this.chatServer.connectUser(new ChatClientPortImpl(existUser.id, existUser.name, this.presenter));
+        resolve(true);
       }
     });
   }
