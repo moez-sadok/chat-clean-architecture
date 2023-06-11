@@ -26,7 +26,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
   getUser(userId: number): Promise<UserOutputData | null> {
     const existUser = this.chatdataBase.getUserById(userId);
     return new Promise((resolve) => {
-      if (existUser) resolve({ id: existUser.id, name: existUser.name });
+      if (existUser) resolve(this.presenter.selectedUser(existUser));
     });
   }
 

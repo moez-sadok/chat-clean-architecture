@@ -1,6 +1,10 @@
-import { IChatPresenterOutputBoundary, MessageOutputData, RoomOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatPresenterOutputBoundary, MessageOutputData, RoomOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 export class ChatApiPresenterImpl implements IChatPresenterOutputBoundary {
+
+  selectedUser(user: UserOutputData): UserOutputData {
+    return user;
+  }
 
   receiveNewMessage(message: MessageOutputData): MessageOutputData {
     return message;

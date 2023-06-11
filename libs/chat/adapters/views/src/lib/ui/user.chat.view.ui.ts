@@ -1,19 +1,25 @@
 import { IChatView, ChatDataViewModelDto, MessageViewModel, RoomViewModel } from "@chat-clean-architecture/chat/adapters/presenters";
+import { UserOutputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 
 export class UserWebViewClientImpl implements IChatView {
 
+
   chatDataViewModelDto!: ChatDataViewModelDto;
 
-  displayChatRoomsMessages(messages: MessageViewModel[]): void {
-    this.chatDataViewModelDto = { ...this.chatDataViewModelDto,activeRoomMessages: messages };
+  setActiveUser(user: UserOutputData): void {
+    this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeUser: user };
   }
 
-  displayChatPageRooms(chatView: ChatDataViewModelDto): void {
-    this.chatDataViewModelDto = chatView;
+  displayChatRoomsMessages(messages: MessageViewModel[]): void {
+    this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoomMessages: messages };
+  }
+
+  displayChatPageRooms(rooms: RoomViewModel[]): void {
+    this.chatDataViewModelDto = {...this.chatDataViewModelDto, rooms : rooms};
   }
 
   setActiveRoom(room: RoomViewModel) {
-    this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoom: room};
+    this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoom: room };
   }
 
   receiveMessage(message: MessageViewModel): MessageViewModel | null {
@@ -29,7 +35,7 @@ export class UserWebViewClientImpl implements IChatView {
     }
     //add message to existing
     const newMessages = [...this.chatDataViewModelDto.activeRoomMessages, message];
-    this.chatDataViewModelDto = {...this.chatDataViewModelDto, activeRoomMessages: newMessages};
+    this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoomMessages: newMessages };
     return message;
   }
 }

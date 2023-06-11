@@ -44,7 +44,9 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
 
   getUserById(userId: number): Promise<UserOutputData | null> {
     const url = `${'api/chat-user'}/${userId}`;
-    return lastValueFrom(this.http.get<UserOutputData | null>(url));
+    return lastValueFrom(this.http.get<UserOutputData | null>(url).pipe(
+      tap(user => { if (user) this.presentator.selectedUser(user) })
+    ));
   }
 
   getUserRooms(userId: number): Promise<RoomOutputData[]> {

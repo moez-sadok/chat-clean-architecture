@@ -2,6 +2,7 @@ export interface ChatDataViewModelDto {
   rooms?: RoomViewModel[];
 
   activeRoom: RoomViewModel;
+  activeUser: UserViewModel;
   activeRoomMessages?: MessageViewModel[];
 
   inputMessage?: string;
@@ -20,4 +21,9 @@ export interface RoomViewModel {
   roomId: number;
   name: string;
   participantNames?: string[];
+}
+
+export interface UserViewModel {
+  id: number;
+  name: string;
 }

@@ -1,4 +1,4 @@
-<p>Connected User id: {{ activeUserId }}</p>
+<!-- <p>Connected User id: {{ activeUserId }}</p> -->
 <cca-chat-view [chatPageView]="chatview.chatDataViewModelDto" 
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 
     (sendMessage)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
