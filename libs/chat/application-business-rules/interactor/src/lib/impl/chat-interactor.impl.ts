@@ -42,23 +42,21 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     });
   }
 
-  //to delete - replaced get user
   connectUser(userId: number): Promise<boolean> {
     const existUser = this.chatdataBase.getUserById(userId);
-    return new Promise((resolve) => {
-      if (existUser.id) {
-        this.chatServer.connectUser(new ChatClientPortImpl(existUser.id, existUser.name, this.presenter));
-        resolve(true);
-      }
-    });
+    if (existUser) {
+      const client: IChatClient = new ChatClientPortImpl(existUser.id,
+         existUser.name,  this.presenter );
+      return this.connectClient(client);
+    }
+    return new Promise((resolve) => { resolve(false) });
   }
 
   getRoomsByUser(user: GetRoomsByUserInputData): Promise<RoomOutputData[]> {
     const rooms = this.chatdataBase.getChatRoomsByUser(user.userId).map((r) => {
       return {
         roomId: r.id,
-        roomName: r.name,
-        //participantsNames: Object.values(r.participants).map(p => p.user.name)
+        roomName: r.name
       } as RoomOutputData;
     });
     return new Promise((resolve) => {
@@ -81,8 +79,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
     };
     return new Promise((resolve) => {
-      const res = this.presenter.selectChatRoomsMessages(messages, croom);
-      resolve(res);
+      resolve(this.presenter.selectChatRoomsMessages(messages, croom));
     });
   }
 
@@ -120,9 +117,8 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
       //set messages
       const roomMessages: Message[] = roomDto.messages
         ? roomDto.messages.map(rm => {
-          const roomParts = roomEntity.getParticipants();
           const userName = rm.from.user.name;
-          const partM: IParticpant = roomParts[userName];
+          const partM: IParticpant = roomEntity.getParticipants()[userName];
           return new Message(rm.message, roomEntity, partM);
         }) : [];
       roomEntity.setMessages(roomMessages);

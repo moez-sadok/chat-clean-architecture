@@ -14,14 +14,12 @@ export class ChatServerPortImpl implements IChatServerPort {
   }
 
   connectUser(user: IChatClient): boolean {
-    //const cuser = new ChatClientPortImpl(existUser.id, this.presenter)
     const userId = user.getId();
     if (userId === null || userId === undefined) return false;
     if (!this.connectetdUsers[userId]) {
       this.connectetdUsers[userId] = user;
       return true;
-    } else
-      return false;
+    } else return false;
   }
 
   disconnectUser(userId: number): boolean {
