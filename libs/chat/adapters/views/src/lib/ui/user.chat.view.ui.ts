@@ -25,15 +25,9 @@ export class UserWebViewClientImpl implements IChatView {
   receiveMessage(message: MessageViewModel): MessageViewModel | null {
     //the room is not selected
     if (message.roomId != this.chatDataViewModelDto.activeRoom?.roomId) {
-      console.log('Send notif t the user is not inside the room')
+      console.warn('Send local notif to the user, he is not inside the selected room');
       return null;
     }
-    //the room don't have a messages :
-    if (!this.chatDataViewModelDto.activeRoomMessages) {
-      this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoomMessages: [message] };
-      return message;
-    }
-    //add message to existing
     const newMessages = [...this.chatDataViewModelDto.activeRoomMessages, message];
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoomMessages: newMessages };
     return message;

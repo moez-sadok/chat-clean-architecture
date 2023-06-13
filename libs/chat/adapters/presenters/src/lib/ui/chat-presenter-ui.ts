@@ -7,6 +7,7 @@ export class ChatUiPresenterImpl implements IChatPresenterOutputBoundary {
     //init empty view model
     this.chatWebViewScreen.chatDataViewModelDto = {
       rooms: [],
+      activeRoomMessages: [],
       activeRoom: { name: '', roomId: -1 },
       activeUser: { name: '', id: -1 },
       sendButtonLabel: 'Send',

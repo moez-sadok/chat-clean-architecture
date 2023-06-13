@@ -17,7 +17,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "chat-clean-architecture",
+            "prefix": "cca",
             "style": "kebab-case"
           }
         ]

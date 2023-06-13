@@ -30,16 +30,14 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
 
   async initUserConnection(userId: number): Promise<boolean> {
     const user = await this.getUserById(userId);
-    if (user) {
-      this.getUserRooms(userId);
-      const socket: Socket = io('ws://localhost:8080', {
-        reconnectionDelayMax: 10000,
-        auth: { userId: user.id, userName: user.name }
-      });
-      this.clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
-      return this.connectClient(this.clientSocket);
-    }
-    return new Promise((resolve) => { resolve(false) });
+    if (!user) return new Promise((resolve) => { resolve(false) });
+    this.getUserRooms(userId);
+    const socket: Socket = io('ws://localhost:8080', {
+      reconnectionDelayMax: 10000,
+      auth: { userId: user.id, userName: user.name }
+    });
+    this.clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
+    return this.connectClient(this.clientSocket);
   }
 
   getUserById(userId: number): Promise<UserOutputData | null> {
@@ -72,44 +70,6 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
       tap(resMsg => this.presentator.receiveNewMessage(resMsg))
     ));
   }
-
-  //TODO add try catch
-  // const socket: Socket = io('ws://localhost:8080', {
-  //   reconnectionDelayMax: 10000,
-  //   auth: { userId: userId }
-  // });
-  //this.getUserRooms(userId);
-  // this.clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
-  //return this.connectClient(this.clientSocket);
-  // getUserById(userId: number): Promise<UserOutputData | null> {
-  //   const url = `${'api/chat-user'}/${userId}`;
-  //   return lastValueFrom(this.http.get<UserOutputData | null>(url).pipe(
-  //     tap(res => {
-  //       console.log('getUserById cont front', res);
-  //       if (res) {
-  //         this.getUserRooms(userId);
-  //         this.connectClient(res);
-  //       }
-  //     })
-  //   ));
-  // }
-
-  // private getConnectedUser(): Promise<UserOutputData | null> {
-  //   // eslint-disable-next-line @typescript-eslint/no-this-alias
-  //   const self = this;
-  //   return new Promise(function (resolve) {
-  //     self.clientSocket.on("connect", () => {
-  //       console.log('is connected', self.clientSocket.id);
-  //       console.log('is connected data', self.clientSocket.auth);
-  //       resolve({ id: +self.clientSocket.id, name: 'in progress ' })
-  //     });
-  //   });
-  // }
-  // private listenReceiveMessage() {
-  //   this.clientSocket.on('msgToClient', (message) => {
-  //     this.presentator.receiveNewMessage(message);
-  //   });
-  // }
 
   // private listenerConnectUser() {
   //   this.clientSocket.on("connect", () => {

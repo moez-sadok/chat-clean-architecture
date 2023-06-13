@@ -10,7 +10,8 @@ See: [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/t
 
 ## 1. Independent of Frameworks:
 
-In this example, when using Angular, we only utilize the necessary features such as Dependency Injection (DI), modules, routing, component input/output, and the httpClient. We also use only four RxJS operators and don't require ngrx (provided by the architecture's native flow). Also for NestJs we only utilize (DI, module,controller) . The frameworks/lib used as a tool.
+In this example, when using Angular or NestJs, we only utilize the necessary features such as Dependency Injection (DI), modules ... 
+The frameworks/lib used as a tool.
 ## 2. Testable:
 
 Starting with Test-Driven Development (TDD) will be easy, and our business rules can be tested without relying on the UI, database, web server, or any other external elements.
@@ -52,12 +53,9 @@ https://stackblitz.com/github/moez-sadok/chat-clean-architecture
 ```
 npm i
 ```
-To install Redis, please check the official Redis website and see also [NestJS WebSocket Adapter documentation](https://docs.nestjs.com/websockets/adapter).
 
 # Run locally
 ```
-redis-server
-
 npm run start
 
 npm run start:api
@@ -87,7 +85,25 @@ npm run dep-graph
 
  <img src="code-structure.png" alt="angular-logo" width="300px" height="600px"/>
 
+# Redis as adapter 
+Many other tools harness the power of port/adapter architecture. For instance, Redis enables the creation and connection of a multi-chat server to support millions of connected users with just three lines of code.
 
+See also: https://socket.io/docs/v4/redis-adapter/
+
+https://docs.nestjs.com/websockets/adapter
+
+To install Redis, please check the official Redis website and see also [NestJS WebSocket Adapter documentation](https://docs.nestjs.com/websockets/adapter).
+
+- Uncomment redis adapter code inside the main.ts of chat-server-main-api 
+```
+  // const redisIoAdapter = new RedisIoAdapter(app);
+  // await redisIoAdapter.connectToRedis();
+  // app.useWebSocketAdapter(redisIoAdapter);
+```
+- Run redis server inside the cmd
+```
+redis-server
+```
 
 # Code scaffolding
 Using Nx console vs code extension or cli:

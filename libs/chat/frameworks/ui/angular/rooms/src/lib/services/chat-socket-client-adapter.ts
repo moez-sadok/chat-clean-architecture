@@ -11,7 +11,6 @@ export class ChatClientsocketkAdapter extends ChatClientPortImpl {
 
     onReceivedMessage() {
         this.socket.on('msgToClient', (message) => {
-            //console.log('socket received message', message);
             this.receive(message)
         });
     }

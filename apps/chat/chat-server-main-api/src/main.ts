@@ -1,20 +1,15 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
 import { AppModule } from './app/app.module';
-import { RedisIoAdapter } from '@chat-clean-architecture/chat/frameworks/web/http-nest';
-//import { WsAdapter } from '@nestjs/platform-ws';
+//import { RedisIoAdapter } from '@chat-clean-architecture/chat/frameworks/web/http-nest';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //ws socket default adapter
-  //app.useWebSocketAdapter(new WsAdapter(app));
-  
   // redis ws adapter (install and run redis using cli command: redis-server)
-  const redisIoAdapter = new RedisIoAdapter(app);
-  await redisIoAdapter.connectToRedis();
-  app.useWebSocketAdapter(redisIoAdapter);
+  // const redisIoAdapter = new RedisIoAdapter(app);
+  // await redisIoAdapter.connectToRedis();
+  // app.useWebSocketAdapter(redisIoAdapter);
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

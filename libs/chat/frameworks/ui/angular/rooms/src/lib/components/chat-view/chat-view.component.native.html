@@ -13,8 +13,8 @@
   <div class="margin-12" *ngIf="chatPageView.activeRoom.name">
 
     <div>
-      <p><b>{{ chatPageView.activeRoom.name }}</b></p>
-      <p>{{chatPageView.activeRoom.participantNames}}</p>
+      <div><b>{{ chatPageView.activeRoom.name }}</b></div>
+      <div class="divider">{{chatPageView.activeRoom.participantNames}}</div>
       <br>
       <div *ngFor="let message of chatPageView.activeRoomMessages">
         <p> <b>{{ message.participantName }}</b>: {{ message.content }}</p>
@@ -24,7 +24,7 @@
     <div class="display-flex">
       <input class="padding-vertical-4" #messageInput matInput />
       <button class="send-button" (click)="sendMessage.emit(messageInput.value);messageInput.value=''">
-        Send
+        {{ chatPageView.sendButtonLabel }}
       </button>
     </div>
 

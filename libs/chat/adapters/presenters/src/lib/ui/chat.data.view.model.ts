@@ -3,7 +3,7 @@ export interface ChatDataViewModelDto {
 
   activeRoom: RoomViewModel;
   activeUser: UserViewModel;
-  activeRoomMessages?: MessageViewModel[];
+  activeRoomMessages: MessageViewModel[];
 
   inputMessage?: string;
   sendButtonLabel: string;
