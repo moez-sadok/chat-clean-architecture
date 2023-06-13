@@ -4,9 +4,10 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
-    "start":  "nx serve chat-chat-server-main-api & nx serve chat-chat-client-main-ng",
     "start:ui":  "nx serve chat-chat-client-main-ng",
     "start:api": "nx serve chat-chat-server-main-api",
+    "dev": "(start npm run start:ui && start npm run start:api) || (npm run start:ui & npm run start:api)",
+    "start":  "npm run dev",
     "build": "nx build",
     "test": "nx test",
     "dep-graph": "nx dep-graph"
