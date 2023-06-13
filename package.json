@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
-    "start":  "nx serve chat-chat-client-main-ng",
+    "start":  "nx serve chat-chat-server-main-api & nx serve chat-chat-client-main-ng",
+    "start:ui":  "nx serve chat-chat-client-main-ng",
     "start:api": "nx serve chat-chat-server-main-api",
     "build": "nx build",
     "test": "nx test",
