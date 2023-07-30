@@ -5,7 +5,7 @@ import { IChatPresenterOutputBoundary, RoomOutputData, MessageOutputData, UserOu
 import { lastValueFrom, tap } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { ChatClientsocketkAdapter } from './chat-socket-client-adapter';
-
+//Adapter pattern (Object) 
 export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController {
 
   private clientSocket!: IChatClient;
@@ -63,6 +63,7 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
   }
 
   sendMessage(roomId: number, userId: number, message: string) {
+    //for adding e2ee encrypt message in the client side controller
     const url = 'api/send-message';
     const msg = { roomId: roomId, userId: userId, message: message };
     //TODO: change by post request or with ws: this.clientSocket.emit('msgToServer', messageData, (val: any) => {});

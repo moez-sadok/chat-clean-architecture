@@ -1,10 +1,9 @@
 import { Socket } from 'socket.io';
 import { ChatClientPortImpl, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-
+//Adapter pattern (class short, TO-CHECK decorator)
 export class ChatClientNetworkAdapter extends ChatClientPortImpl {
 
   constructor(private socket: Socket) {
-    //console.log('socket client server auth',socket.handshake.auth);
     super(socket.handshake.auth.userId, socket.handshake.auth.userName);
   }
 

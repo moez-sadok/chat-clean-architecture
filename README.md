@@ -117,4 +117,5 @@ Generate lib:
 ```
 npx nx generate @nrwl/workspace:library chat/entreprise-business-rules/notifiyer
 npx nx generate @nrwl/workspace:library chat/application-business-rules/network
+npx nx generate @nrwl/workspace:library chat/adapters/network
 ```

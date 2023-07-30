@@ -45,6 +45,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
   connectUser(userId: number): Promise<boolean> {
     const existUser = this.chatdataBase.getUserById(userId);
     if (existUser) {
+      //TODO : no new here must be injected + create an abstract class
       const client: IChatClient = new ChatClientPortImpl(existUser.id,
          existUser.name,  this.presenter );
       return this.connectClient(client);

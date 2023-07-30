@@ -22,6 +22,7 @@ export class ChatUiPresenterImpl implements IChatPresenterOutputBoundary {
   }
 
   receiveNewMessage(message: MessageOutputData): MessageOutputData {
+    //for adding e2ee decrypt message in the client side presenter
     const messageInput: MessageViewModel = {
       content: message.message,
       participantName: message.authorName,
