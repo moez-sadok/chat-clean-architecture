@@ -1,12 +1,11 @@
-import { IChatView, ChatDataViewModelDto, MessageViewModel, RoomViewModel } from "@chat-clean-architecture/chat/adapters/presenters";
-import { UserOutputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import { IChatView, ChatDataViewModelDto, MessageViewModel, RoomViewModel, UserViewModel } from "@chat-clean-architecture/chat/adapters/presenters";
 
 export class UserWebViewClientImpl implements IChatView {
 
 
   chatDataViewModelDto!: ChatDataViewModelDto;
 
-  setActiveUser(user: UserOutputData): void {
+  setActiveUser(user: UserViewModel): void {
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeUser: user };
   }
 

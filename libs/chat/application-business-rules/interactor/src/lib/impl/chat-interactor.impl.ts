@@ -6,10 +6,10 @@ import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData
 import { MessageDto } from '../dtos/models/message.dto';
 import { BotParticipant, Chatroom, IParticpant, Message, Participant } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 import { IChatServerPort } from '../interfaces/network/chat-server.port';
-import { ChatClientPortImpl } from './network/chat-client.port.impl';
 import { NotifiyerNetworkImpl } from './network/notifiyer.network';
 import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 import { IChatClient } from '../interfaces/network/chat-client.port';
+import { ChatClientPortImpl } from './network/chat-client.port.impl';
 //Use cases (can be splitted)
 export class ChatInteractorImpl implements IChatControllerInputBoundary {
 
@@ -42,7 +42,7 @@ export class ChatInteractorImpl implements IChatControllerInputBoundary {
     });
   }
 
-  connectUser(userId: number): Promise<boolean> {
+  connectUser(userId: number,): Promise<boolean> {
     const existUser = this.chatdataBase.getUserById(userId);
     if (existUser) {
       //TODO : no new here must be injected + create an abstract class

@@ -20,7 +20,7 @@ import { ChatViewMaterialComponent } from './components/chat-view/chat-view.mate
     CommonModule,
     ChatClientRoutingNgModule,
     HttpClientModule,
-    ChatViewMaterialComponent // comment me for native html use (save 2.2 mb)
+    ChatViewMaterialComponent,// comment me for native html use (save 2.2 mb)
   ]
 })
 export class ChatClientNgModule {}

@@ -1,30 +1,38 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
 import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { UserOutputData, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+//Adapter pattern object
+interface ChatcontrollerHttpAdaptee{
+  getUserById(params: any): Promise<UserOutputData | null>;
+  getUserRooms(params: any): Promise<RoomOutputData[]>;
+  getRoomMessages(query: any): Promise<MessageOutputData[]>;
+  sendMessage(query: any): void;
+} 
 
 @Controller()
-export class ChatHttpAdapterController { 
+export class ChatHttpAdapterController implements ChatcontrollerHttpAdaptee { 
 
   constructor(@Optional() @Inject('CHAT_CONTROLLER_PROVIDER') 
       private chatController: IChatApiController
   ) { }
 
   @Get('chat-user-rooms/:userId')
-  getUserRoomshttp(@Param() params: any) {
+  getUserRooms(@Param() params: any) {
     return this.chatController.getUserRooms(+params.userId);
   }
 
   @Get('chat-user/:userId')
-  getUserhttp(@Param() params: any) {
+  getUserById(@Param() params: any) {
     return this.chatController.getUserById(+params.userId);
   }
 
   @Get('chat-room-messages')
-  getRoomMessagesHttp(@Query() query: any) {
+  getRoomMessages(@Query() query: any) {
     return this.chatController.getRoomMessages(+query.roomId, query.roomName, +query.userId);
   }
 
   @Get('send-message')
-  receiveMessageHttp(@Query() query: any) {
+  sendMessage(@Query() query: any) {
     return this.chatController.sendMessage(+query.roomId, +query.userId ,query.message, );
   }
 

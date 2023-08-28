@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io-client';
-import { ChatClientPortImpl, IChatPresenterOutputBoundary,IChatClient, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-// Adapter design pattern (Class) short way 
+import { ChatClientPortImpl, IChatPresenterOutputBoundary } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+// Adapter design pattern (Class)  
+// https://refactoring.guru/design-patterns/adapter/typescript/example
 export class ChatClientsocketkAdapter extends ChatClientPortImpl {
     // socket is the adaptee
     constructor(private socket: Socket, protected presentator: IChatPresenterOutputBoundary) {
@@ -10,20 +11,22 @@ export class ChatClientsocketkAdapter extends ChatClientPortImpl {
     }
 
     onReceivedMessage() {
-        this.socket.on('msgToClient', (message) => {
-            this.receive(message)
-        });
+        this.socket.on('msgToClient', (message) => { this.receive(message) });
     }
 
 }
 
-// // NOT USED : Adapter pattern (Object)  
+
+
+
+// 2 solution : Adapter pattern (Object)  
 // export class ChatClientsocketkAdapterObj implements IChatClient {
 
+//     protected userName: string;
 //     // socket is the adaptee
 //     constructor(private socket: Socket, protected presentator: IChatPresenterOutputBoundary) {
 //         //@ts-ignore
-//         super(socket.auth.userId, socket.auth.userName, presentator);
+//         this.userName = this.socket.auth.userName;
 //         this.onReceivedMessage();
 //     }
 
@@ -33,18 +36,21 @@ export class ChatClientsocketkAdapter extends ChatClientPortImpl {
 //         });
 //     }
 
-//     setName(name: string): void {
-//         this.setName(name);
-//     }
-//     getId(): number {
-//         return this.getId();
-//     }
-//     getName(): string {
-//       return this.getName();
-
-//     }
 //     receive(message: MessageOutputData): void {
-//         return this.receive(message);
+//         if (this.presentator) this.presentator.receiveNewMessage(message);
+//     }
+
+//     getId(): number {
+//         //@ts-ignore
+//         return +this.socket.auth.userId;
+//     }
+
+//     getName(): string {
+//         return this.userName;
+//     }
+
+//     setName(name: string): void {
+//         this.userName = name;
 //     }
 
 // }
