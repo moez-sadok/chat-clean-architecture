@@ -47,16 +47,20 @@
   "namedInputs": {
     "default": [
       "{projectRoot}/**/*",
-      "sharedGlobals"
+      "sharedGlobals",
+      "{workspaceRoot}/tests/**/*"
     ],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s"
+      "!{projectRoot}/jest.config.[jt]s",
+      "{workspaceRoot}/tests/jest.config.js"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": [
+      "{workspaceRoot}/tests/**/*"
+    ]
   },
   "generators": {
     "@nrwl/angular:application": {

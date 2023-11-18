@@ -21,4 +21,6 @@ export class ChatViewComponent {
   @Output() leaveChatRoom: EventEmitter<number> = new EventEmitter();
   @Output() sendMessage: EventEmitter<string> = new EventEmitter();
   @Output() selectRoom: EventEmitter<RoomViewModel> = new EventEmitter();
+
+  
 }

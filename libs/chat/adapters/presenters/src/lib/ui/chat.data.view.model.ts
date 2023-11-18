@@ -9,6 +9,7 @@ export interface ChatDataViewModelDto {
   sendButtonLabel: string;
   menuItemLeaveRoomLabel: string;
   menuItemAddParticipantLabel: string;
+  categoryColor?: string;
 }
 
 export interface MessageViewModel {
