@@ -7,6 +7,7 @@ import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-r
 export class Participant implements IParticpant {
 
   private chatroom?: IChatroom | null;
+  private lastReceivedMessage?: IMessage | null;
 
   constructor(private userName: string,private userId: number, private notifiyer? : INotifilyer) {}
 
@@ -21,6 +22,11 @@ export class Participant implements IParticpant {
 
   getUserName(): string {
     return this.userName;
+  }
+
+  getLastReceivedMessage(): IMessage {
+    if(!this.lastReceivedMessage) throw new Error('No last recaived message found');
+    return this.lastReceivedMessage;
   }
 
   enterChatRoom(chatroom: IChatroom) {
@@ -38,6 +44,7 @@ export class Participant implements IParticpant {
   }
 
   receive(message: IMessage) {
+    this.lastReceivedMessage = message;
     if(this.notifiyer) this.notifiyer.notifiy(
       message.getcontent(),
       message.getchatRoom().getId(),
@@ -47,6 +54,6 @@ export class Participant implements IParticpant {
   }
 
   private printTextMessage(messageData: IMessage) {
-    console.log(messageData.getParticipant().getUserName() + ' to ' + this.userName + ': ' + messageData.getcontent());
+    //console.log(messageData.getParticipant().getUserName() + ' to ' + this.userName + ': ' + messageData.getcontent());
   }
 }

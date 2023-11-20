@@ -1,19 +1,29 @@
 import { expect, test } from "@jest/globals";
-import { Participant } from "../../libs/chat/entreprise-business-rules/entities/src";
+import { Chatroom, IParticpant, Participant } from "../../libs/chat/entreprise-business-rules/entities/src";
 
+describe('Participant testing', () => {
+    let participant: IParticpant;
+    beforeEach(() => {
+        participant = new Participant('Anna', 1);
+    });
+    test('No Existing chat room, throw error', () => {
+        expect(() => { participant.getchatRoom() }).toThrow('Participant dont have a chatroom');
+        expect(() => { participant.send('test message') })
+            .toThrow('Can not send a message: participant dont have a chatroom');
+    });
 
- test('No Existing chat room, throw error', () => {
-    const participant = new Participant('Anna', 1);
+    test('Get name', () => {
+        expect(participant.getUserName()).toBe('Anna')
+    });
 
-    expect(() => {participant.getchatRoom()})
-                        .toThrow('Participant dont have a chatroom');
-    
-    expect(() => {participant.send('test message')})
-                        .toThrow('Can not send a message: participant dont have a chatroom');
- });
+    test('Send message', () => {
+        const chatroom = new Chatroom('Anna & Lili', 1);
+        const secondParticipant = new Participant('Lili', 2);
+        chatroom.register(participant);
+        chatroom.register(secondParticipant);
+        participant.send('Hi');
+        expect(chatroom.getMessages()[0].getcontent()).toBe('Hi');
+        expect(secondParticipant.getLastReceivedMessage().getcontent()).toBe('Hi');
+    });
 
-
-test('Get participant name', () => {
-    const participant = new Participant('Anna', 1);
-    expect(participant.getUserName()).toBe('Anna')
 });

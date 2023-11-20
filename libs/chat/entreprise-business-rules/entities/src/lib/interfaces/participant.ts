@@ -8,6 +8,7 @@ export interface IParticpant {
   getUserName(): string;
   getUserId(): number;
   getchatRoom(): IChatroom;
+  getLastReceivedMessage(): IMessage;
 
   send(message: string): void;
   receive(message: IMessage): void;
