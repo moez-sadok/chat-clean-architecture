@@ -9,7 +9,7 @@
     "dev": "(start npm run start:ui && start npm run start:api) || (npm run start:ui & npm run start:api)",
     "start": "npm run dev",
     "build": "nx build",
-    "test": "jest test tests",
+    "test": "jest test tests --verbose",
     "dep-graph": "nx dep-graph"
   },
   "private": true,

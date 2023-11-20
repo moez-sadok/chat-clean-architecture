@@ -24,6 +24,7 @@ describe('Participant testing', () => {
         participant.send('Hi');
         expect(chatroom.getMessages()[0].getcontent()).toBe('Hi');
         expect(secondParticipant.getLastReceivedMessage().getcontent()).toBe('Hi');
+        expect(secondParticipant.getLastReceivedMessage().getParticipant()).toBe(participant);
     });
 
 });

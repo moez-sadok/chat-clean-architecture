@@ -6,10 +6,10 @@ import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-r
 
 export class Participant implements IParticpant {
 
-  private chatroom?: IChatroom | null;
-  private lastReceivedMessage?: IMessage | null;
+  protected chatroom?: IChatroom | null;
+  protected lastReceivedMessage?: IMessage | null;
 
-  constructor(private userName: string,private userId: number, private notifiyer? : INotifilyer) {}
+  constructor(protected userName: string,protected userId: number, protected notifiyer? : INotifilyer) {}
 
   getchatRoom(): IChatroom {
     if (!this.chatroom) throw new Error('Participant dont have a chatroom');
