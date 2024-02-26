@@ -1,10 +1,10 @@
 
-import { IChatControllerInputBoundary, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatAppFacadeControllerInput, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatController } from './interfaces/chat.controllor';
 
 export class ChatControllerMemoryImpl implements IChatController {
 
-  constructor(public interactorInputboundry: IChatControllerInputBoundary) {}
+  constructor(public interactorInputboundry: IChatAppFacadeControllerInput) {}
 
   initUserConnection(userId: number) {
     this.interactorInputboundry.getUser(userId);

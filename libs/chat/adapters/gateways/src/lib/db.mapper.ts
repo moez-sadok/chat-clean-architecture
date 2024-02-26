@@ -1,10 +1,10 @@
-import { ChatroomDto, IDataAccess, MessageDto, ParticpantDto, UserDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ChatroomDto, IChatRepository, MessageDto, ParticpantDto, UserDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatDataSerializer } from './utils/data.serializer';
 import { IChatDatabase } from './interfaces/chat-database';
 import { ChatroomTable } from './tables/chatroom.table';
 import { ParticpantTable } from './tables/participant.table';
 
-export class DataBaseMapper implements IDataAccess {
+export class DataBaseMapper implements IChatRepository {
   private dbSerializer: ChatDataSerializer;
 
   constructor(private db: IChatDatabase) {

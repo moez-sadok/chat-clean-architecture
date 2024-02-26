@@ -3,10 +3,11 @@ import { MessageDto } from "../../dtos/models/message.dto";
 import { ParticpantDto } from "../../dtos/models/participant.dto";
 import { UserDto } from "../../dtos/models/user.dto";
 
-//db Gateway
-export interface IDataAccess {
+//chat repository
+export interface IChatRepository {
 
   getUserById(userId: number): UserDto;
+  
   getChatRooms(): ChatroomDto[];
   getChatRoomsByUser(userId: number): ChatroomDto[];
   getChatRoomsById(roomId: number): ChatroomDto;

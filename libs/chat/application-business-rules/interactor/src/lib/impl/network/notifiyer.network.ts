@@ -1,6 +1,7 @@
 import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
-import { IChatServerPort } from '../../interfaces/network/chat-server.port';
+
 import { MessageOutputData } from '../../dtos/output.chat.data';
+import { IChatServerPort } from '../../components/network/chat-server.port';
 
 export class NotifiyerNetworkImpl implements INotifilyer {
 

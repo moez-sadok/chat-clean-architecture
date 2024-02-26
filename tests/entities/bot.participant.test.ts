@@ -15,7 +15,7 @@ describe('Bot participant testing', () => {
         expect(chatroom.getMessages()[0].getcontent()).toBe('Hi');
         expect(bot.getLastReceivedMessage().getcontent()).toBe('Hi');
         //bot response testing
-        await new Promise((r) => setTimeout(r, 101));
+        await new Promise((r) => setTimeout(r, 100));
         expect(participant.getLastReceivedMessage().getParticipant()).toBe(bot);
         expect(chatroom.getMessages()[1].getcontent()).toBe('Hello Lili, Who i can help you?');
     });

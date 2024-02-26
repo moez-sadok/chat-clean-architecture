@@ -1,7 +1,7 @@
-import { IChatPresenterOutputBoundary, MessageOutputData, RoomOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatAppFacadePresenterOutput, MessageOutputData, RoomOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { MessageViewModel, RoomViewModel } from './chat.data.view.model';
 import { IChatView } from './chat.view';
-export class ChatUiPresenterImpl implements IChatPresenterOutputBoundary {
+export class ChatUiPresenterImpl implements IChatAppFacadePresenterOutput {
 
   constructor(private chatWebViewScreen: IChatView) {
     //init empty view model

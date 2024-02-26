@@ -1,10 +1,11 @@
 
+import { IChatClient } from "../../components/network/chat-client.port";
 import { MessageOutputData } from "../../dtos/output.chat.data";
-import { IChatClient } from "../../interfaces/network/chat-client.port";
-import { IChatPresenterOutputBoundary } from "../../interfaces/outputs/chat.presenter.output.boundary";
+import { ISendMessagePresenterOutput } from "../../features/send-message/sendMessage.presenter.output";
 export class ChatClientPortImpl implements IChatClient {
 
-  constructor(private userId: number, protected userName: string,protected presenter? :IChatPresenterOutputBoundary) { }
+  constructor(private userId: number, protected userName: string,
+    protected presenter? :ISendMessagePresenterOutput) { }
  
   receive(message: MessageOutputData): void {
    if(this.presenter) this.presenter.receiveNewMessage(message);
@@ -12,14 +13,6 @@ export class ChatClientPortImpl implements IChatClient {
   
   getId(): number {
     return this.userId;
-  }
-
-  getName(): string {
-    return this.userName;
-  }
-
-  setName(name: string): void {
-    this.userName = name;
   }
 
 }

@@ -29,18 +29,18 @@ import { IChatApiController } from '@chat-clean-architecture/chat/adapters/contr
 })
 export class ChatPageComponent {
 
+  defaultView = 'native'; // or material
+
   private _activeUserId = 0;
   @Input() set activeUserId(value: number) {
-    if (value != null || value != undefined) {
-      this._activeUserId = value;
-      this.chatController.initUserConnection(value);
-    }
+    if (value == null || value == undefined) return;
+    this._activeUserId = value;
+    this.chatController.initUserConnection(value);
   }
   get activeUserId() { return this._activeUserId }
 
   constructor(protected route: ActivatedRoute,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatApiController,
-    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView){ }
-
+    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView) { }
 }
 

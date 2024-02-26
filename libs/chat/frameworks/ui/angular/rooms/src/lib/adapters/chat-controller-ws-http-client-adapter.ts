@@ -1,7 +1,8 @@
 
 import { HttpClient } from '@angular/common/http';
 import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { IChatPresenterOutputBoundary, RoomOutputData, MessageOutputData, UserOutputData, IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatAppFacadePresenterOutput, RoomOutputData, 
+  MessageOutputData, UserOutputData, IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { lastValueFrom, tap } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { ChatClientsocketkAdapter } from './chat-socket-client-adapter';
@@ -12,7 +13,7 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
 
   constructor(
     private http: HttpClient,
-    private presentator: IChatPresenterOutputBoundary) { }
+    private presentator: IChatAppFacadePresenterOutput) { }
 
   connectClient(client: IChatClient): Promise<boolean> {
     return new Promise((resolve) => {

@@ -1,13 +1,14 @@
 <!-- <p>Connected User id: {{ activeUserId }}</p> -->
-
-<!-- <cca-chat-view [chatPageView]="chatview.chatDataViewModelDto" 
+<cca-chat-view *ngIf="defaultView === 'native'"
+    [chatPageView]="chatview.chatDataViewModelDto" 
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 
     (sendMessage)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
         activeUserId, $event)">
-</cca-chat-view> -->
+</cca-chat-view>
 
-<cca-chat-view-mat [chatPageView]="chatview.chatDataViewModelDto" 
+<cca-chat-view-mat  *ngIf="defaultView === 'material'" 
+    [chatPageView]="chatview.chatDataViewModelDto" 
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 
     (sendMessage)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
         activeUserId, $event)">
-</cca-chat-view-mat>
+</cca-chat-view-mat> 

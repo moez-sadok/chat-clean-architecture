@@ -1,6 +1,6 @@
-import { IChatPresenterOutputBoundary, MessageOutputData, RoomOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatAppFacadePresenterOutput, MessageOutputData, RoomOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
-export class ChatApiPresenterImpl implements IChatPresenterOutputBoundary {
+export class ChatApiPresenterImpl implements IChatAppFacadePresenterOutput {
 
   selectedUser(user: UserOutputData): UserOutputData {
     return user;
