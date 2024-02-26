@@ -1,5 +1,5 @@
-export * from './lib/impl/network/chat-server.port.impl';
-export * from './lib/impl/network/chat-client.port.impl';
+export * from './lib/components/network/chat-server.port.impl';
+export * from './lib/components/network/chat-client.port.impl';
 
 export * from './lib/components/chat-repository/repository-gateway';
 
@@ -15,7 +15,7 @@ export * from './lib/entry-chat-facade/entry.facade.entry.impl';
 export * from './lib/entry-chat-facade/entry.facade.controller';
 export * from './lib/entry-chat-facade/entry.facade.presenter';
 
-export * from './lib/components/network/chat-server.port';
-export * from './lib/components/network/chat-client.port';
+export * from './lib/components/network/abstraction/chat-server.port';
+export * from './lib/components/network/abstraction/chat-client.port';
 
 

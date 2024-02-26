@@ -1,6 +1,6 @@
 import { IChatRepository } from '../../components/chat-repository/repository-gateway';
 import { IConnectUserInput } from './connectUser.feature.input';
-import { IChatServerPort } from '../../components/network/chat-server.port';
+import { IChatServerPort } from '../../components/network/abstraction/chat-server.port';
 import { IChatAppFacadePresenterOutput } from '../../entry-chat-facade/entry.facade.presenter';
 
 export class ConnectUserFeature implements IConnectUserInput {

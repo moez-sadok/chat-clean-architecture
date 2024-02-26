@@ -13,8 +13,8 @@ import { GetRoomsByUserFeature } from '../features/get-rooms-by-user/getRoomsByU
 import { GetMessagesByRoomFeature } from '../features/get-messages-by-room/getMessagesByRoom.feature';
 import { SendMessageFeature } from '../features/send-message/send-message.feature';
 import { IChatAppFacadePresenterOutput } from './entry.facade.presenter';
-import { IChatServerPort } from '../components/network/chat-server.port';
-import { IChatClient } from '../components/network/chat-client.port';
+import { IChatServerPort } from '../components/network/abstraction/chat-server.port';
+import { IChatClient } from '../components/network/abstraction/chat-client.port';
 
 export class ChatAppFacadeImpl implements IChatAppFacadeControllerInput {
 

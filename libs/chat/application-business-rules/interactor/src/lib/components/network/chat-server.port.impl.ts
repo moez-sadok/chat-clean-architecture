@@ -3,12 +3,12 @@ import { BotParticipant, Chatroom, IChatroom, IMessage, IParticpant, Message, Pa
 import { INotifilyer } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
 
 import { MessageOutputData } from "../../dtos/output.chat.data";
-import { IChatRepository } from "../../components/chat-repository/repository-gateway";
+import { IChatRepository } from "../chat-repository/repository-gateway";
 import { NotifiyerNetworkImpl } from "./notifiyer.network";
 import { ChatClientPortImpl } from "./chat-client.port.impl";
-import { IChatServerPort } from "../../components/network/chat-server.port";
-import { IChatClient } from "../../components/network/chat-client.port";
-import { IChatAppFacadePresenterOutput } from "../../entry-chat-facade/entry.facade.presenter";
+import { IChatServerPort } from "./abstraction/chat-server.port";
+import { IChatClient } from "./abstraction/chat-client.port";
+import { ISendMessagePresenterOutput } from "../../features/send-message/sendMessage.presenter.output";
 
 export class ChatServerPortImpl implements IChatServerPort {
 
@@ -37,7 +37,7 @@ export class ChatServerPortImpl implements IChatServerPort {
     } else return false;
   }
 
-  connectUserByID(userId: number, presenter: IChatAppFacadePresenterOutput): boolean {
+  connectUserByID(userId: number, presenter: ISendMessagePresenterOutput): boolean {
     if (userId === null || userId === undefined) return false;
     const dbUser = this.chatRepository.getUserById(userId);
     if (!dbUser) return false;

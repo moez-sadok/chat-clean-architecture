@@ -1,5 +1,5 @@
 
-import { IChatClient } from "../../components/network/chat-client.port";
+import { IChatClient } from "./abstraction/chat-client.port";
 import { MessageOutputData } from "../../dtos/output.chat.data";
 import { ISendMessagePresenterOutput } from "../../features/send-message/sendMessage.presenter.output";
 export class ChatClientPortImpl implements IChatClient {

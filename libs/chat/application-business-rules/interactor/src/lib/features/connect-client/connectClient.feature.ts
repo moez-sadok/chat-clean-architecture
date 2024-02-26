@@ -1,7 +1,7 @@
 
 import { IConnectClientInput } from './connectClient.feature.input';
-import { IChatServerPort } from '../../components/network/chat-server.port';
-import { IChatClient } from '../../components/network/chat-client.port';
+import { IChatServerPort } from '../../components/network/abstraction/chat-server.port';
+import { IChatClient } from '../../components/network/abstraction/chat-client.port';
 
 export class ConnectClientFeature implements IConnectClientInput {
 

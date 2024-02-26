@@ -1,6 +1,6 @@
 /******** Abstraction of mediator pattern */
 
-import { MessageOutputData } from "../../dtos/output.chat.data";
+import { MessageOutputData } from "../../../dtos/output.chat.data";
 
 //collegue
 export interface IChatClient {
