@@ -6,6 +6,7 @@
       <li class="padding-12 cursor-pointer" *ngFor="let chatRoom of chatPageView.rooms" [value]="chatRoom"
         (click)="selectRoom.emit(chatRoom)">
         <b>{{ chatRoom.name }}</b>
+        <span *ngIf="chatRoom.newMessagesNotif" >({{ chatRoom.newMessagesNotif }})</span>
       </li>
     </ul>
   </div>

@@ -11,5 +11,4 @@ export class ChatClientNetworkAdapter extends ChatClientPortImpl {
     this.socket.emit('msgToClient', message);
   }
 
-
 }

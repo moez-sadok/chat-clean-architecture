@@ -1,45 +1,18 @@
 
 import { HttpClient } from '@angular/common/http';
 import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { IChatAppFacadePresenterOutput, RoomOutputData, 
-  MessageOutputData, UserOutputData, IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatAppFacadePresenterOutput, RoomOutputData,
+  MessageOutputData, UserOutputData, IChatClient
+} from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { lastValueFrom, tap } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { ChatClientsocketkAdapter } from './chat-socket-client-adapter';
-//Adapter pattern (Object) 
+// Adapter pattern (Object) 
 export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController {
-
-  private clientSocket!: IChatClient;
 
   constructor(
     private http: HttpClient,
     private presentator: IChatAppFacadePresenterOutput) { }
-
-  connectClient(client: IChatClient): Promise<boolean> {
-    return new Promise((resolve) => {
-      if (client) resolve(true);
-      else resolve(false);
-    });
-  }
-
-  disconnectClient(userId: number): Promise<boolean> {
-    console.log('disconnectClient ...', userId);
-    return new Promise((resolve) => {
-      resolve(true);
-    });
-  }
-
-  async initUserConnection(userId: number): Promise<boolean> {
-    const user = await this.getUserById(userId);
-    if (!user) return new Promise((resolve) => { resolve(false) });
-    this.getUserRooms(userId);
-    const socket: Socket = io('ws://localhost:8080', {
-      reconnectionDelayMax: 10000,
-      auth: { userId: user.id, userName: user.name }
-    });
-    this.clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
-    return this.connectClient(this.clientSocket);
-  }
 
   getUserById(userId: number): Promise<UserOutputData | null> {
     const url = `${'api/chat-user'}/${userId}`;
@@ -64,21 +37,31 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
   }
 
   sendMessage(roomId: number, userId: number, message: string) {
-    //for adding e2ee encrypt message in the client side controller
     const url = 'api/send-message';
     const msg = { roomId: roomId, userId: userId, message: message };
-    //TODO: change by post request or with ws: this.clientSocket.emit('msgToServer', messageData, (val: any) => {});
+    //TODO: change by post request or with ws: this.clientSocket.emit('msgToServer', messageData, (val: any) => {});  //for adding e2ee encrypt message in the client side controller
     return lastValueFrom(this.http.get<MessageOutputData>(url, { params: msg }).pipe(
       tap(resMsg => this.presentator.receiveNewMessage(resMsg))
     ));
   }
 
-  // private listenerConnectUser() {
-  //   this.clientSocket.on("connect", () => {
-  //     console.log('is connected', this.clientSocket.id);
-  //     console.log('is connected data', this.clientSocket.auth);
-  //   });
-  // }
+  async initUserConnection(userId: number): Promise<boolean> {
+    const socket: Socket = io('ws://localhost:8080', {
+      reconnectionDelayMax: 10000,
+      auth: { userId: userId }
+    });
+    const clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
+    return this.connectClient(clientSocket);
+  }
 
+  connectClient(client: IChatClient): Promise<boolean> {
+    return new Promise((resolve) => {
+      if (client) resolve(true); resolve(false);
+    });
+  }
+
+  disconnectClient(userId: number): Promise<boolean> {
+    return new Promise((resolve) => { resolve(true); });
+  }
 
 }

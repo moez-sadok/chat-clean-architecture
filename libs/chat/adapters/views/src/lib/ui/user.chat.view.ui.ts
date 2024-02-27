@@ -2,7 +2,6 @@ import { IChatView, ChatDataViewModelDto, MessageViewModel, RoomViewModel, UserV
 
 export class UserWebViewClientImpl implements IChatView {
 
-
   chatDataViewModelDto!: ChatDataViewModelDto;
 
   setActiveUser(user: UserViewModel): void {
@@ -22,11 +21,6 @@ export class UserWebViewClientImpl implements IChatView {
   }
 
   receiveMessage(message: MessageViewModel): MessageViewModel | null {
-    //the room is not selected
-    if (message.roomId != this.chatDataViewModelDto.activeRoom?.roomId) {
-      console.warn('Send local notif to the user, he is not inside the selected room');
-      return null;
-    }
     const newMessages = [...this.chatDataViewModelDto.activeRoomMessages, message];
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoomMessages: newMessages };
     return message;

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@chat-clean-architecture/chat/adapters/gateways';
-import { IChatRepository, IChatAppFacadePresenterOutput, IChatServerPort, ChatInteractorImpl, ChatServerPortImpl, ChatAppFacadeImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatRepository, IChatAppFacadePresenterOutput, IChatServerPort, ChatServerPortImpl, ChatAppFacadeImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatApiControllerImpl } from '@chat-clean-architecture/chat/adapters/controllers';
 import { ChatApiPresenterImpl } from '@chat-clean-architecture/chat/adapters/presenters';
 import { IChatAppFacadeControllerInput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
@@ -26,7 +26,7 @@ export const interactorNetworkFactory = (db: IChatRepository, presenter: IChatAp
   return new ChatAppFacadeImpl(db,presenter, chatserver);
 };
 
-export const controllerFactory = (interactor: IChatAppFacadeControllerInput) => {
+export const controllerApiFactory = (interactor: IChatAppFacadeControllerInput) => {
   return new ChatApiControllerImpl(interactor);
 };
 
@@ -46,7 +46,7 @@ export const controllerFactory = (interactor: IChatAppFacadeControllerInput) => 
       inject: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]
     },
     {
-      provide: CHAT_CONTROLLER_PROVIDER, useFactory: controllerFactory,
+      provide: CHAT_CONTROLLER_PROVIDER, useFactory: controllerApiFactory,
       inject: [CHAT_INTERACTOR_PROVIDER]
     }
   ],

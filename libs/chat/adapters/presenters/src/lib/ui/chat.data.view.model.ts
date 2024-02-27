@@ -9,7 +9,8 @@ export interface ChatDataViewModelDto {
   sendButtonLabel: string;
   menuItemLeaveRoomLabel: string;
   menuItemAddParticipantLabel: string;
-  categoryColor?: string;
+
+  defaultView ?: 'native' | 'material';
 }
 
 export interface MessageViewModel {
@@ -22,6 +23,7 @@ export interface RoomViewModel {
   roomId: number;
   name: string;
   participantNames?: string[];
+  newMessagesNotif?: number;
 }
 
 export interface UserViewModel {

@@ -1,9 +1,9 @@
 import { Socket } from 'socket.io-client';
 import { ChatClientPortImpl, IChatAppFacadePresenterOutput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-// Adapter design pattern (Class)  
+// Adapter design pattern (Class)  (see 2e solution below - Object Adapter)
 // https://refactoring.guru/design-patterns/adapter/typescript/example
 export class ChatClientsocketkAdapter extends ChatClientPortImpl {
-    // socket is the adaptee
+    // socket as the adaptee
     constructor(private socket: Socket, protected presentator: IChatAppFacadePresenterOutput) {
         //@ts-ignore
         super(socket.auth.userId, socket.auth.userName, presentator);
@@ -17,6 +17,17 @@ export class ChatClientsocketkAdapter extends ChatClientPortImpl {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 // 2 solution : Adapter pattern (Object)  

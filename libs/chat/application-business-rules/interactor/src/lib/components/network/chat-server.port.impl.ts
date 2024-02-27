@@ -12,15 +12,12 @@ import { ISendMessagePresenterOutput } from "../../features/send-message/sendMes
 
 export class ChatServerPortImpl implements IChatServerPort {
 
-  private connectetdUsers: Record<number, IChatClient> = {};
-  private rooms: Record<number, IChatroom> = {};//changed by rooms repository
+  protected connectetdUsers: Record<number, IChatClient> = {};
+  protected rooms: Record<number, IChatroom> = {};//changed by rooms repository
 
-  private notifiyer: INotifilyer; //TODO add it to DI
+  protected notifiyer: INotifilyer = new NotifiyerNetworkImpl(this); //TODO add it to DI
 
-  constructor(
-    private chatRepository: IChatRepository
-  ) {
-    this.notifiyer = new NotifiyerNetworkImpl(this);
+  constructor( protected chatRepository: IChatRepository) {
     this.init();
   }
 
@@ -95,6 +92,5 @@ export class ChatServerPortImpl implements IChatServerPort {
     rooms.map(room => { chatRooms[room.getId()] = room; });
     this.rooms = chatRooms;
   }
-
 
 }
