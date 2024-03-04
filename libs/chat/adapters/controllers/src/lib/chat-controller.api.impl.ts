@@ -4,8 +4,7 @@ import { IChatApiController } from './interfaces/chat.controllor.api';
 
 export class ChatApiControllerImpl implements IChatApiController {
 
-  constructor(public interactorInputboundry: IChatAppFacadeControllerInput) {
-  }
+  constructor(public interactorInputboundry: IChatAppFacadeControllerInput) {}
 
   getUserById(userId: number): Promise<UserOutputData | null> {
     return this.interactorInputboundry.getUser(userId);

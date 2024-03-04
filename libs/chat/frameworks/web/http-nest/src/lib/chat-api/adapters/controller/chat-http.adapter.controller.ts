@@ -1,8 +1,9 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
-import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatApiController, IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
 import { UserOutputData, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 //Adapter pattern object
-interface ChatcontrollerHttpAdaptee{
+interface ChatcontrollerHttpAdaptee extends IChatController{
+  initUserConnection(userId: number):void;
   getUserById(params: any): Promise<UserOutputData | null>;
   getUserRooms(params: any): Promise<RoomOutputData[]>;
   getRoomMessages(query: any): Promise<MessageOutputData[]>;
@@ -34,6 +35,10 @@ export class ChatHttpAdapterController implements ChatcontrollerHttpAdaptee {
   @Get('send-message')
   sendMessage(@Query() query: any) {
     return this.chatController.sendMessage(+query.roomId, +query.userId ,query.message, );
+  }
+
+  initUserConnection(userId: number): void {
+    throw new Error('Method not implemented.');
   }
 
 }
