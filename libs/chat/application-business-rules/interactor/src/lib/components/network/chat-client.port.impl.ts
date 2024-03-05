@@ -7,7 +7,7 @@ export class ChatClientPortImpl implements IChatClient {
   constructor(
     protected userId: number, 
     protected userName: string,
-    public presenter? :ISendMessagePresenterOutput) { }
+    public presenter ?:ISendMessagePresenterOutput) { }
  
   receive(message: MessageOutputData): void {
    if(this.presenter) this.presenter.receiveNewMessage(message);

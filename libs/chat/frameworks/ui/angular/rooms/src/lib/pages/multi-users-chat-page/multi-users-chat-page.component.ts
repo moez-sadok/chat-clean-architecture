@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
-import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER_PROVIDER_PORT, chatServerFactory } from '../../services/main-chat-front-provider';
+import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER_PROVIDER_PORT } from '../../services/main-chat-front-provider';
+import { ChatServerPortImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 
 @Component({
   selector: 'cca-multi-users-chat-page',
@@ -13,8 +14,7 @@ import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER
       deps: [CHAT_DB_PROVIDER]
     },
     {
-      provide: CHAT_SERVER_PROVIDER_PORT, useFactory: chatServerFactory,
-      deps: [CHAT_DB_MAPPER_PROVIDER]
+      provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerPortImpl
     },
   ]
 })

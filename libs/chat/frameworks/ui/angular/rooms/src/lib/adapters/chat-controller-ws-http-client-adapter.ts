@@ -1,18 +1,30 @@
 
 import { HttpClient } from '@angular/common/http';
-import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { IChatAppFacadePresenterOutput, RoomOutputData,
+import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
+import {
+  IChatAppFacadePresenterOutput, RoomOutputData,
   MessageOutputData, UserOutputData, IChatClient
 } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { lastValueFrom, tap } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { ChatClientsocketkAdapter } from './chat-socket-client-adapter';
 // Adapter pattern (Object) 
-export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController {
+export class ChatControllerWsHttpClientAdapterImpl implements IChatController {
 
   constructor(
     private http: HttpClient,
     private presentator: IChatAppFacadePresenterOutput) { }
+
+  connectClient(userId: number): Promise<boolean> {
+    const socket: Socket = io('ws://localhost:8080', {
+      reconnectionDelayMax: 10000,
+      auth: { userId: userId }
+    });
+    const clientSocket : IChatClient = new ChatClientsocketkAdapter(socket, this.presentator);
+    return new Promise((resolve) => {
+      if (clientSocket) resolve(true); resolve(false);
+    });
+  }
 
   getUserById(userId: number): Promise<UserOutputData | null> {
     const url = `${'api/chat-user'}/${userId}`;
@@ -43,21 +55,6 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatApiController
     return lastValueFrom(this.http.get<MessageOutputData>(url, { params: msg }).pipe(
       tap(resMsg => this.presentator.receiveNewMessage(resMsg))
     ));
-  }
-
-  async initUserConnection(userId: number): Promise<boolean> {
-    const socket: Socket = io('ws://localhost:8080', {
-      reconnectionDelayMax: 10000,
-      auth: { userId: userId }
-    });
-    const clientSocket = new ChatClientsocketkAdapter(socket, this.presentator);
-    return this.connectClient(clientSocket);
-  }
-
-  connectClient(client: IChatClient): Promise<boolean> {
-    return new Promise((resolve) => {
-      if (client) resolve(true); resolve(false);
-    });
   }
 
   disconnectClient(userId: number): Promise<boolean> {

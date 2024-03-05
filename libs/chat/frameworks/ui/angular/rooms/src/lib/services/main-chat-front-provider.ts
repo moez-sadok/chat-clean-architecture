@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import { ChatControllerMemoryImpl, IChatApiController } from "@chat-clean-architecture/chat/adapters/controllers";
+import { ChatControllerMemoryImpl, IChatController } from "@chat-clean-architecture/chat/adapters/controllers";
 import { DataBaseMapper, IChatDatabase } from "@chat-clean-architecture/chat/adapters/gateways";
 import { ChatUiPresenterImpl, IChatView } from "@chat-clean-architecture/chat/adapters/presenters";
 import { IChatAppFacadeControllerInput, IChatAppFacadePresenterOutput, IChatRepository, ChatServerPortImpl, ChatAppFacadeImpl, IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
@@ -12,14 +12,10 @@ export const CHAT_DB_PROVIDER = new InjectionToken<IChatDatabase>('chat.bd');
 export const CHAT_DB_MAPPER_PROVIDER = new InjectionToken<IChatRepository>('chat.mapper.bd');
 export const CHAT_PRESENTATOR_PROVIDER = new InjectionToken<IChatAppFacadePresenterOutput>('chat.presentator');
 export const CHAT_VIEW_PROVIDER = new InjectionToken<IChatView>('chat.view');
-export const CHAT_CONTROLLER_PROVIDER = new InjectionToken<IChatApiController>('chat.controller');
+export const CHAT_CONTROLLER_PROVIDER = new InjectionToken<IChatController>('chat.controller');
 
 export const dbMapperFactory = (db: IChatDatabase) => {
     return new DataBaseMapper(db);
-};
-
-export const chatServerFactory = (repository: IChatRepository) => {
-    return new ChatServerPortImpl(repository);
 };
 
 export const presenterFactory = (view: IChatView) => {
@@ -34,6 +30,6 @@ export const controllerClientAdapterFactory = (httpclient: HttpClient,presentato
     return new ChatControllerWsHttpClientAdapterImpl(httpclient,presentator);
 };
 
-export const controllerMomoryFactory = (interactor: IChatAppFacadeControllerInput) => {
-    return new ChatControllerMemoryImpl(interactor);
+export const controllerMomoryFactory = (interactor: IChatAppFacadeControllerInput,presentator: IChatAppFacadePresenterOutput) => {
+    return new ChatControllerMemoryImpl(interactor,presentator);
 };

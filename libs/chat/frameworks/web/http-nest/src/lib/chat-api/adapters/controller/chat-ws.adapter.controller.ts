@@ -2,7 +2,7 @@ import { WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketSe
 import { Server, Socket } from 'socket.io';
 import { IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatClientNetworkAdapter } from '../network/client.ws.network.adapter';
-import { IChatApiController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
 import { Optional, Inject } from '@nestjs/common';
 // TODO use native ws : no netsjs annotations : more flexible adapter (using DI)
 @WebSocketGateway(
@@ -13,7 +13,7 @@ export class ChatWsAdapterController implements OnGatewayConnection, OnGatewayDi
   @WebSocketServer() public server!: Server;
 
   constructor(@Optional() @Inject('CHAT_CONTROLLER_PROVIDER') 
-  private chatController: IChatApiController
+  private chatController: IChatController
 ) {}
 
   handleConnection(clientSocket: Socket) {

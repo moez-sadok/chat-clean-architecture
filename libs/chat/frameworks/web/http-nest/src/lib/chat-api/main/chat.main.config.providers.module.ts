@@ -17,12 +17,7 @@ export const dbMapperFactory = (db: IChatDatabase) => {
   return new DataBaseMapper(db);
 };
 
-export const chatServerFactory = (repository: IChatRepository) => {
-  return  new ChatServerPortImpl(repository)
-};
-
 export const interactorNetworkFactory = (db: IChatRepository, presenter: IChatAppFacadePresenterOutput, chatserver: IChatServerPort) => {
-  //return new ChatInteractorImpl(db, presenter, chatserver);
   return new ChatAppFacadeImpl(db,presenter, chatserver);
 };
 
@@ -32,15 +27,13 @@ export const controllerApiFactory = (interactor: IChatAppFacadeControllerInput) 
 
 @Module({
   providers: [
-    // { provide: CHAT_SERVER_PROVIDER_PORT, useValue: new ChatServerPortImpl() },
     { provide: CHAT_DB_PROVIDER, useValue: new DataBaseMemoryImpl() },
     { provide: CHAT_PRESENTATOR_PROVIDER, useValue: new ChatApiPresenterImpl() },
     {
       provide: CHAT_DB_MAPPER_PROVIDER, useFactory: dbMapperFactory,
       inject: [CHAT_DB_PROVIDER]
     },
-    { provide: CHAT_SERVER_PROVIDER_PORT, useFactory: chatServerFactory,
-      inject: [CHAT_DB_MAPPER_PROVIDER] },
+    { provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerPortImpl },
     {
       provide: CHAT_INTERACTOR_PROVIDER, useFactory: interactorNetworkFactory,
       inject: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]

@@ -1,20 +1,12 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
-import { IChatApiController, IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { UserOutputData, RoomOutputData, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 //Adapter pattern object
-interface ChatcontrollerHttpAdaptee extends IChatController{
-  initUserConnection(userId: number):void;
-  getUserById(params: any): Promise<UserOutputData | null>;
-  getUserRooms(params: any): Promise<RoomOutputData[]>;
-  getRoomMessages(query: any): Promise<MessageOutputData[]>;
-  sendMessage(query: any): void;
-} 
-
 @Controller()
-export class ChatHttpAdapterController implements ChatcontrollerHttpAdaptee { 
+export class ChatHttpAdapterController implements IChatController { 
 
   constructor(@Optional() @Inject('CHAT_CONTROLLER_PROVIDER') 
-      private chatController: IChatApiController
+      private chatController: IChatController
   ) { }
 
   @Get('chat-user-rooms/:userId')
@@ -37,9 +29,15 @@ export class ChatHttpAdapterController implements ChatcontrollerHttpAdaptee {
     return this.chatController.sendMessage(+query.roomId, +query.userId ,query.message, );
   }
 
-  initUserConnection(userId: number): void {
+  //Handled by ChatWsAdapterController , to check by SIP 
+  connectClient(client: number | IChatClient): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
+
+  disconnectClient(userId: number): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+
 
 }
 

@@ -1,8 +1,8 @@
 
 import { IChatAppFacadeControllerInput, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData, UserOutputData, IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { IChatApiController } from './interfaces/chat.controllor.api';
+import { IChatController } from './interfaces/chat.controllor';
 
-export class ChatApiControllerImpl implements IChatApiController {
+export class ChatApiControllerImpl implements IChatController {
 
   constructor(public interactorInputboundry: IChatAppFacadeControllerInput) {}
 
@@ -16,10 +16,6 @@ export class ChatApiControllerImpl implements IChatApiController {
 
   connectClient(client: IChatClient): Promise<boolean> {
        return this.interactorInputboundry.connectClient(client);
-  }
-
-  initUserConnection(userId: number):Promise<boolean> {
-   return this.interactorInputboundry.connectUser(userId);
   }
 
   getUserRooms(userId: number) : Promise<RoomOutputData[]> {
