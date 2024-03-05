@@ -25,11 +25,11 @@ export const presenterFactory = (view: IChatView) => {
 export const interactorNetworkFactory = (db: IChatRepository, presentator: IChatAppFacadePresenterOutput,chatserver: IChatServerPort) => {
     return new ChatAppFacadeImpl(db,presentator, chatserver);
 };
-
+// net controller (http/ws)
 export const controllerClientAdapterFactory = (httpclient: HttpClient,presentator: IChatAppFacadePresenterOutput) => {
     return new ChatControllerWsHttpClientAdapterImpl(httpclient,presentator);
 };
-
+// inmemory controller
 export const controllerMomoryFactory = (interactor: IChatAppFacadeControllerInput,presentator: IChatAppFacadePresenterOutput) => {
     return new ChatControllerMemoryImpl(interactor,presentator);
 };

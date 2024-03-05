@@ -6,7 +6,7 @@ import { IChatClient } from "./abstraction/chat-client.port";
 
 export class ChatServerPortImpl implements IChatServerPort {
 
-  protected connectetdUsers: Record<number, IChatClient> = {};
+  connectetdUsers: Record<number, IChatClient> = {};
 
   getConnectedClients(): Record<number, IChatClient> {
     return this.connectetdUsers;
