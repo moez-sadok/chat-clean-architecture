@@ -1,5 +1,6 @@
 import { Socket } from 'socket.io';
-import { ChatClientPortImpl, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ChatClientPortImpl } from '@chat-clean-architecture/chat/adapters/network';
 //Adapter pattern (class short, TO-CHECK decorator)
 export class ChatClientNetworkAdapter extends ChatClientPortImpl {
 

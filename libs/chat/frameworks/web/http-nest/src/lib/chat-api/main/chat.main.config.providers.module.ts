@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@chat-clean-architecture/chat/adapters/gateways';
-import { IChatRepository, IChatAppFacadePresenterOutput, IChatServerPort, ChatServerPortImpl, ChatAppFacadeImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { ChatApiControllerImpl } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatRepository, IChatAppFacadePresenterOutput, IChatServerPort, ChatAppFacadeImpl } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ChatControllerImpl } from '@chat-clean-architecture/chat/adapters/controllers';
 import { ChatApiPresenterImpl } from '@chat-clean-architecture/chat/adapters/presenters';
 import { IChatAppFacadeControllerInput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ChatServerPortImpl } from '@chat-clean-architecture/chat/adapters/network';
 
 export const CHAT_INTERACTOR_PROVIDER = 'CHAT_INTERACTOR_PROVIDER';
 export const CHAT_DB_PROVIDER = 'CHAT_DB_PROVIDER';
@@ -22,7 +23,7 @@ export const interactorNetworkFactory = (db: IChatRepository, presenter: IChatAp
 };
 
 export const controllerApiFactory = (interactor: IChatAppFacadeControllerInput) => {
-  return new ChatApiControllerImpl(interactor);
+  return new ChatControllerImpl(interactor);
 };
 
 @Module({

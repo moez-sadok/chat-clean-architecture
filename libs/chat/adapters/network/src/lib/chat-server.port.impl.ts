@@ -1,8 +1,4 @@
-
-import { IChatroom, IMessage, Message } from "@chat-clean-architecture/chat/entreprise-business-rules/entities";
-import { MessageOutputData } from "../../dtos/output.chat.data";
-import { IChatServerPort } from "./abstraction/chat-server.port";
-import { IChatClient } from "./abstraction/chat-client.port";
+import { IChatClient, IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 
 export class ChatServerPortImpl implements IChatServerPort {
 
@@ -26,13 +22,6 @@ export class ChatServerPortImpl implements IChatServerPort {
     if (!this.connectetdUsers[userId]) return false;
     delete this.connectetdUsers[userId];
     return true;
-  }
-
-  broadcast(msg: MessageOutputData, currRoom: IChatroom): void {
-    if (!currRoom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
-    const currPart = currRoom.getParticipants()[msg.authorName];
-    const message: IMessage = new Message(msg.message, currRoom, currPart);
-    currRoom.broadcastMessage(message, currPart);
   }
 
 }

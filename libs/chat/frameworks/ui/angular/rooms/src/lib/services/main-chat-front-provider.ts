@@ -1,10 +1,11 @@
 import { InjectionToken } from "@angular/core";
-import { ChatControllerMemoryImpl, IChatController } from "@chat-clean-architecture/chat/adapters/controllers";
+import { IChatController } from "@chat-clean-architecture/chat/adapters/controllers";
 import { DataBaseMapper, IChatDatabase } from "@chat-clean-architecture/chat/adapters/gateways";
 import { ChatUiPresenterImpl, IChatView } from "@chat-clean-architecture/chat/adapters/presenters";
-import { IChatAppFacadeControllerInput, IChatAppFacadePresenterOutput, IChatRepository, ChatServerPortImpl, ChatAppFacadeImpl, IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import { IChatAppFacadeControllerInput, IChatAppFacadePresenterOutput, IChatRepository, ChatAppFacadeImpl, IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { HttpClient } from "@angular/common/http";
 import { ChatControllerWsHttpClientAdapterImpl } from "../adapters/chat-controller-ws-http-client-adapter";
+import { ChatControllerMemoryClientAdapterImpl } from "../adapters/chat-controller-memory-client-adapter";
 
 export const CHAT_SERVER_PROVIDER_PORT = new InjectionToken<IChatServerPort>('chat.server.port.facade');
 export const CHAT_INTERACTOR_PROVIDER = new InjectionToken<IChatAppFacadeControllerInput>('chat.interactor');
@@ -31,5 +32,6 @@ export const controllerClientAdapterFactory = (httpclient: HttpClient,presentato
 };
 // inmemory controller
 export const controllerMomoryFactory = (interactor: IChatAppFacadeControllerInput,presentator: IChatAppFacadePresenterOutput) => {
-    return new ChatControllerMemoryImpl(interactor,presentator);
+    return new ChatControllerMemoryClientAdapterImpl(interactor,presentator);
+    
 };
