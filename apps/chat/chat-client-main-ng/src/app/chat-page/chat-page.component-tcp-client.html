@@ -1,0 +1,34 @@
+<div *ngIf="chatview.chatDataViewModelDto" class="display-flex padding-12 card-border">
+
+  <div class="margin-12 padding-12 card-border">
+    <h2>{{ chatview.chatDataViewModelDto.activeUser.name }}</h2>
+    <ul>
+      <li class="padding-12 cursor-pointer" *ngFor="let chatRoom of chatview.chatDataViewModelDto.rooms" [value]="chatRoom"
+        (click)="chatController.getRoomMessages(chatRoom.roomId,chatRoom.name,activeUserId)">
+        <b>{{ chatRoom.name }}</b>
+        <span *ngIf="chatRoom.newMessagesNotif" >({{ chatRoom.newMessagesNotif }})</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="margin-12" *ngIf="chatview.chatDataViewModelDto.activeRoom.name">
+
+    <div>
+      <div><b>{{ chatview.chatDataViewModelDto.activeRoom.name }}</b></div>
+      <div class="divider">{{chatview.chatDataViewModelDto.activeRoom.participantNames}}</div>
+      <br>
+      <div *ngFor="let message of chatview.chatDataViewModelDto.activeRoomMessages">
+        <p> <b>{{ message.participantName }}</b>: {{ message.content }}</p>
+      </div>
+    </div>
+
+    <div class="display-flex">
+      <input class="padding-vertical-4" #messageInput matInput />
+      <button class="send-button" (click)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
+      activeUserId, messageInput.value);messageInput.value=''">
+        {{ chatview.chatDataViewModelDto.sendButtonLabel }}
+      </button>
+    </div>
+
+  </div>
+</div>

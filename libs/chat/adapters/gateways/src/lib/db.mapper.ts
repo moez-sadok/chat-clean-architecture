@@ -1,4 +1,5 @@
-import { ChatroomDto, IChatRepository, MessageDto, ParticpantDto, UserDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ChatroomDto, MessageDto, ParticpantDto, UserDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { IChatRepository } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatDataSerializer } from './utils/data.serializer';
 import { IChatDatabase } from './interfaces/chat-database';
 import { ChatroomTable } from './tables/chatroom.table';

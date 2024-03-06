@@ -4,11 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChatPageTcpClientComponent } from './chat-page/chat-page.component-tcp-client';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,ChatPageTcpClientComponent],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

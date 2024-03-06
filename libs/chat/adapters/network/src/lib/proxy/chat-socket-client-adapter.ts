@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io-client';
-import {  IChatAppFacadePresenterOutput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { ChatClientPortImpl } from '@chat-clean-architecture/chat/adapters/network';
+import { IChatAppFacadePresenterOutput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ChatClientPortImpl } from '../chat-client.port.impl';
 // Adapter design pattern (Class)  (see 2e solution below - Object Adapter)
 // https://refactoring.guru/design-patterns/adapter/typescript/example
 export class ChatClientsocketkAdapter extends ChatClientPortImpl {
