@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
 import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
-//Adapter pattern object ?? proxy 
+//Proxy 
 @Controller()
 export class ChatHttpAdapterController implements IChatController { 
 

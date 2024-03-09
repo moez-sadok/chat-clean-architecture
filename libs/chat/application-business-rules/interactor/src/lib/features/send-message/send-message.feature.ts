@@ -4,7 +4,7 @@ import { ISendMessageInput } from './sendMessage.controller.input';
 import { SendMessageInputData } from '../../dtos/input.chat.data';
 import { MessageDto } from '../../dtos/models/message.dto';
 import { ISendMessagePresenterOutput } from './sendMessage.presenter.output';
-import { IChatServerPort } from '../../components/network/abstraction/chat-server.port';
+import { IChatServerPort } from '../../components/network/chat-server.port';
 import { BotParticipant, Chatroom, IChatroom, IMessage, IParticpant, Message, Participant } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 import { ChatroomDto } from '../../dtos/models/chatroom.dto';
 import { ParticpantDto } from '../../dtos/models/participant.dto';

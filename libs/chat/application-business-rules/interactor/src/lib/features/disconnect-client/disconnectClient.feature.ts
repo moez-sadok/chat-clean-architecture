@@ -1,4 +1,4 @@
-import { IChatServerPort } from '../../components/network/abstraction/chat-server.port';
+import { IChatServerPort } from '../../components/network/chat-server.port';
 import { IDisconnectClientInput } from './disconnectClient.controller.input';
 
 export class DisconnectClientFeature implements IDisconnectClientInput {

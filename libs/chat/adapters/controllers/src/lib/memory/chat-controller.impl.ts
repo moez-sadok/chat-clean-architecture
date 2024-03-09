@@ -2,7 +2,7 @@
 import { IChatAppFacadeControllerInput, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData, UserOutputData, IChatAppFacadePresenterOutput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatController } from '../chat.controllor';
 import { ChatClientPortImpl } from '@chat-clean-architecture/chat/adapters/network';
-
+// Adapter pattern (Object) 
 export class ChatControllerMemoryImpl implements IChatController {
 
   constructor(protected interactorInputboundry: IChatAppFacadeControllerInput,

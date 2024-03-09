@@ -5,7 +5,7 @@ import { Optional, Inject } from '@nestjs/common';
 import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 import { ChatClientServerAdapter } from '@chat-clean-architecture/chat/adapters/network';
 // TODO use native ws : no netsjs annotations : more flexible adapter (using DI)
-//Proxy
+// Proxy
 @WebSocketGateway(
   8080, { cors: { origin: '*' } }
 )
