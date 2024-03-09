@@ -1,7 +1,6 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
 import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-//Adapter pattern object
+//Adapter pattern object ?? proxy 
 @Controller()
 export class ChatHttpAdapterController implements IChatController { 
 
@@ -30,14 +29,13 @@ export class ChatHttpAdapterController implements IChatController {
   }
 
   //Handled by ChatWsAdapterController , to check by SIP 
-  connectClient(client: number | IChatClient): Promise<boolean> {
+  connectClient(client: number | any): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 
   disconnectClient(userId: number): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
-
 
 }
 

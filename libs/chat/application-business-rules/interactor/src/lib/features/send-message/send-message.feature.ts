@@ -7,13 +7,8 @@ import { ISendMessagePresenterOutput } from './sendMessage.presenter.output';
 import { IChatServerPort } from '../../components/network/abstraction/chat-server.port';
 import { BotParticipant, Chatroom, IChatroom, IMessage, IParticpant, Message, Participant } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 import { ChatroomDto } from '../../dtos/models/chatroom.dto';
-import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
-import { NotifiyerNetworkImpl } from '../../components/network/notifiyer.network';
 import { ParticpantDto } from '../../dtos/models/participant.dto';
-
 export class SendMessageFeature implements ISendMessageInput {
-
-  notifiyer: INotifilyer = new NotifiyerNetworkImpl(this.chatServer)
 
   constructor(
     private chatRepository: IChatRepository,
@@ -33,15 +28,16 @@ export class SendMessageFeature implements ISendMessageInput {
       authorName: newMessage.from.user.name, message: newMessage.message,
       chatRoomId: newMessage.room.id
     };
+    if (!croom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
     // create the room entity
     const currRomm = this.createRoomEntity(croom);
     this.broadcast(messagedOutput, currRomm); //old this.chatServer.broadcast(messagedOutput, currRomm);
+    
     // presenter
     return this.presenter.receiveNewMessage(messagedOutput);
   }
 
   private broadcast(msg: MessageOutputData, currRoom: IChatroom): void {
-    if (!currRoom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
     const currPart = currRoom.getParticipants()[msg.authorName];
     const message: IMessage = new Message(msg.message, currRoom, currPart);
     currRoom.broadcastMessage(message, currPart);
@@ -54,15 +50,15 @@ export class SendMessageFeature implements ISendMessageInput {
     });
     //set participants
     roomEntity.setParticipants(parts);
-    // set messages (optional) 
-    // roomEntity.setMessages(this.toMessagesEntities(roomEntity,roomDto));
+    // set messages (optional) // roomEntity.setMessages(this.toMessagesEntities(roomEntity,roomDto));
     return roomEntity;
   }
 
   private participantFactory(partDto: ParticpantDto): IParticpant {
+    const client = this.chatServer.getConnectedClient(partDto.user.id);
     return partDto.isBot ?
-      new BotParticipant(partDto.user.name, partDto.user.id, this.notifiyer)
-      : new Participant(partDto.user.name, partDto.user.id, this.notifiyer);
+      new BotParticipant(partDto.user.name, partDto.user.id, client)
+      : new Participant(partDto.user.name, partDto.user.id, client);
   }
 
   // private toMessagesEntities(roomEntity: IChatroom, roomDto: ChatroomDto): IMessage[]{

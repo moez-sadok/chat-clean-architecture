@@ -13,7 +13,6 @@ import { GetMessagesByRoomFeature } from '../features/get-messages-by-room/getMe
 import { SendMessageFeature } from '../features/send-message/send-message.feature';
 import { IChatAppFacadePresenterOutput } from './entry.facade.presenter';
 import { IChatServerPort } from '../components/network/abstraction/chat-server.port';
-import { IChatClient } from '../components/network/abstraction/chat-client.port';
 
 export class ChatAppFacadeImpl implements IChatAppFacadeControllerInput {
 
@@ -31,7 +30,7 @@ export class ChatAppFacadeImpl implements IChatAppFacadeControllerInput {
     return new DisconnectClientFeature(this.chatServer).disconnectClient(userId);
   }
 
-  connectClient(client: IChatClient): Promise<boolean> {
+  connectClient(client: any): Promise<boolean> {
     return new ConnectClientFeature(this.chatServer).connectClient(client)
   }
 

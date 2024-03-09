@@ -2,14 +2,14 @@ import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
 import { IParticpant } from '../interfaces/participant';
 import { Message } from './message.impl';
-import { INotifilyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
+import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 
 export class Participant implements IParticpant {
 
   protected chatroom?: IChatroom | null;
   protected lastReceivedMessage?: IMessage | null;
 
-  constructor(protected userName: string,protected userId: number, protected notifiyer? : INotifilyer) {}
+  constructor(protected userName: string, protected userId: number, protected client?: IChatClient) { }
 
   getchatRoom(): IChatroom {
     if (!this.chatroom) throw new Error('Participant dont have a chatroom');
@@ -25,7 +25,7 @@ export class Participant implements IParticpant {
   }
 
   getLastReceivedMessage(): IMessage {
-    if(!this.lastReceivedMessage) throw new Error('No last recaived message found');
+    if (!this.lastReceivedMessage) throw new Error('No last recaived message found');
     return this.lastReceivedMessage;
   }
 
@@ -45,15 +45,13 @@ export class Participant implements IParticpant {
 
   receive(message: IMessage) {
     this.lastReceivedMessage = message;
-    if(this.notifiyer) this.notifiyer.notifiy(
+    if (this.client) this.client.receive(
       message.getcontent(),
       message.getchatRoom().getId(),
       this.getUserId(),
       message.getParticipant().getUserName());
-    else this.printTextMessage(message);
+    else
+      console.log('Participant user is not connected, send a push notif...', this.getUserId());
   }
 
-  private printTextMessage(messageData: IMessage) {
-    //console.log(messageData.getParticipant().getUserName() + ' to ' + this.userName + ': ' + messageData.getcontent());
-  }
 }

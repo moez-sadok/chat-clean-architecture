@@ -1,2 +1,2 @@
-export * from './lib/chat-client-ng.module';
-export * from './lib/pages/chat-page/chat-page.component.base';
+export * from './lib/components/chat-view/chat-view.component';
+export * from './lib/components/chat-view/chat-view.material.component';

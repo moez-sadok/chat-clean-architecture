@@ -1,0 +1,6 @@
+<h4>Testing multiple users in one page</h4>
+<div gdGap="42px" gdColumns="repeat(auto-fill, minmax(540px, 1fr))"  >
+  <div *ngFor="let userId of userIds" >
+     <cca-chat-page [activeUserId]="userId" ></cca-chat-page>
+  </div>
+</div>

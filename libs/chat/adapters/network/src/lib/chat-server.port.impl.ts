@@ -1,11 +1,12 @@
-import { IChatClient, IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import {  IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
 
 export class ChatServerPortImpl implements IChatServerPort {
 
   connectetdUsers: Record<number, IChatClient> = {};
 
-  getConnectedClients(): Record<number, IChatClient> {
-    return this.connectetdUsers;
+  getConnectedClient(userId: number): IChatClient {
+    return this.connectetdUsers[userId];
   }
 
   connectUser(client: IChatClient): boolean {

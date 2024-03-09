@@ -1,9 +1,8 @@
-/******** Abstraction of mediator pattern */
-import { IChatClient } from "./chat-client.port";
+import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
 
 export interface IChatServerPort {
   connectUser(user: IChatClient): boolean;
   disconnectUser(userId: number): boolean;
-  getConnectedClients():Record<number, IChatClient>;
+  getConnectedClient(userId: number): IChatClient;
 }
 

@@ -5,10 +5,20 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChatPageTcpClientComponent } from './chat-page/chat-page.component-tcp-client';
+import { ChatViewComponent, ChatViewMaterialComponent } from '@chat-clean-architecture/chat/frameworks/ui/angular/rooms';
 
 @NgModule({
-  declarations: [AppComponent,ChatPageTcpClientComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
+  declarations: [
+    AppComponent, 
+    ChatPageTcpClientComponent
+  ],
+  imports: [
+    BrowserModule, 
+    AppRoutingModule, 
+    BrowserAnimationsModule,
+    ChatViewComponent,
+    ChatViewMaterialComponent
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

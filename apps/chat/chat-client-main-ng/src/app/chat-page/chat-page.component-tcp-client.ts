@@ -23,7 +23,6 @@ export const controllerClientAdapterFactory = (presentator: IChatAppFacadePresen
 @Component({
   selector: 'cca-client-chat-page-tcp',
   templateUrl: 'chat-page.component-tcp-client.html',
-  styleUrls: ['./chat-page.component-tcp-client.scss'],
   providers: [
     { provide: CHAT_VIEW_PROVIDER, useClass: UserWebViewClientImpl },
     {

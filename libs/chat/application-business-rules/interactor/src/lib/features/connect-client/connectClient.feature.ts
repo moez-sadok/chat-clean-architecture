@@ -1,7 +1,7 @@
 
 import { IConnectClientInput } from './connectClient.feature.input';
 import { IChatServerPort } from '../../components/network/abstraction/chat-server.port';
-import { IChatClient } from '../../components/network/abstraction/chat-client.port';
+import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 
 export class ConnectClientFeature implements IConnectClientInput {
 
@@ -14,7 +14,5 @@ export class ConnectClientFeature implements IConnectClientInput {
       resolve(this.chatServer.connectUser(client));
     });
   }
-
-
 
 }

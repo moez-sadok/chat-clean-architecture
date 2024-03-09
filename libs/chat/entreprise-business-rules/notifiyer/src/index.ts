@@ -1,1 +1,1 @@
-export * from './lib/interfaces/notifiyer';
+export * from './lib/interfaces/chat-client.port';

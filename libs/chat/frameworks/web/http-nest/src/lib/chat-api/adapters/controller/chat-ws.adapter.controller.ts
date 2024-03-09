@@ -1,10 +1,11 @@
 import { WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { IChatClient } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { ChatClientNetworkAdapter } from '../network/client.ws.network.adapter';
 import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
 import { Optional, Inject } from '@nestjs/common';
+import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
+import { ChatClientServerAdapter } from '@chat-clean-architecture/chat/adapters/network';
 // TODO use native ws : no netsjs annotations : more flexible adapter (using DI)
+//Proxy
 @WebSocketGateway(
   8080, { cors: { origin: '*' } }
 )
@@ -17,7 +18,7 @@ export class ChatWsAdapterController implements OnGatewayConnection, OnGatewayDi
 ) {}
 
   handleConnection(clientSocket: Socket) {
-    const chatClient: IChatClient = new ChatClientNetworkAdapter(clientSocket);
+    const chatClient: IChatClient = new ChatClientServerAdapter(clientSocket);
     return this.chatController.connectClient(chatClient);
   }
 
