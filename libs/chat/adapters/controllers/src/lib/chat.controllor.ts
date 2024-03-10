@@ -2,7 +2,7 @@ import { MessageOutputData, RoomOutputData, UserOutputData } from "@chat-clean-a
 import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
 //TODO split SIP
 export interface IChatController {
-  connectClient(client: IChatClient | number):Promise<boolean>;
+  connectClient(client: IChatClient | number | any):Promise<boolean>;
   disconnectClient(userId: number):Promise<boolean>;
   //
   getUserById(userId: number): Promise<UserOutputData | null>;

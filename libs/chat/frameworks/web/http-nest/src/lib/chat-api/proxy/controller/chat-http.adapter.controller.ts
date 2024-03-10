@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
 import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
-//Proxy 
+//As proxy ? TO-CHECK
 @Controller()
 export class ChatHttpAdapterController implements IChatController { 
 
@@ -50,7 +50,7 @@ export class ChatHttpAdapterController implements IChatController {
 // */
 
 // //NOT used yet (on cheking ... cqrs/ full ws )
-// /* SECOND solution - controller use the presenter (see clean architecture page 72) to contunie cheking */
+// /* SECOND solution - controller use the presenter (see clean architecture page 72 vs 118) to contunie cheking */
 
 // //https://softwareengineering.stackexchange.com/questions/357052/clean-architecture-use-case-containing-the-presenter-or-returning-data
 // //https://stackoverflow.com/questions/70913826/clean-architecture-can-the-preseter-talk-to-to-the-controller
