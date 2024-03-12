@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
-    "start:multi": "nx serve chat-chat-main-memory",
+    "start:multi": "nx serve chat-chat-main-memory --port 4201",
     "start:ui": "nx serve chat-chat-client-main-ng",
     "start:api": "nx serve chat-chat-server-main-api",
     "dev": "(start npm run start:ui && start npm run start:api) || (npm run start:ui & npm run start:api)",

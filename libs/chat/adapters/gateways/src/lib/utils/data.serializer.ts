@@ -4,14 +4,17 @@ import { ChatroomTable } from '../tables/chatroom.table';
 import { MessageTable } from '../tables/message.table';
 import { ParticpantTable } from '../tables/participant.table';
 import { UserTable } from '../tables/user.table';
+//import { Chatroom } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 //serialisation / desirialisation (utils for gateway part)
 export class ChatDataSerializer {
+
+  //chatromm!: Chatroom;
 
   constructor(private db: IChatDatabase) { }
 
   public serializeRoom(oTable: ChatroomTable): ChatroomDto {
     const parts = this.db.getParticipantsByRoom(oTable.id);
-    const messages = this.db.getMessageByRoom(oTable.id);
+    const messages = this.db.getMessagesByRoom(oTable.id);
     const serRoomDto : ChatroomDto= {
       id: oTable.id,
       name: oTable.name,

@@ -5,7 +5,7 @@ import { IChatRepository, IChatAppFacadePresenterOutput, IChatServerPort, ChatAp
 import { ChatControllerApiImpl } from '@chat-clean-architecture/chat/adapters/controllers';
 import { ChatApiPresenterImpl } from '@chat-clean-architecture/chat/adapters/presenters';
 import { IChatAppFacadeControllerInput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { ChatServerPortImpl } from '@chat-clean-architecture/chat/adapters/network';
+import { ChatServerMemoryImpl } from '@chat-clean-architecture/chat/adapters/network';
 
 export const CHAT_INTERACTOR_PROVIDER = 'CHAT_INTERACTOR_PROVIDER';
 export const CHAT_DB_PROVIDER = 'CHAT_DB_PROVIDER';
@@ -34,7 +34,7 @@ export const controllerApiFactory = (interactor: IChatAppFacadeControllerInput) 
       provide: CHAT_DB_MAPPER_PROVIDER, useFactory: dbMapperFactory,
       inject: [CHAT_DB_PROVIDER]
     },
-    { provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerPortImpl },
+    { provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerMemoryImpl },
     {
       provide: CHAT_INTERACTOR_PROVIDER, useFactory: interactorNetworkFactory,
       inject: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]

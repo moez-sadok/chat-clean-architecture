@@ -5,9 +5,7 @@ import { ChatWsAdapterController } from './proxy/controller/chat-ws.adapter.cont
 
 @Module({
   imports: [ChatMainConfigProvidersModule],
-  controllers: [
-    ChatHttpAdapterController,
-  ],
+  controllers: [ChatHttpAdapterController],
   providers: [ChatWsAdapterController]
 })
-export class ChatApiModule {}
+export class ChatApiModule { }

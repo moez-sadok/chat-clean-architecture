@@ -1,3 +1,4 @@
+<button (click)="chatview.switchView()" >Switch view</button>
 <cca-chat-view *ngIf="chatview.chatDataViewModelDto.defaultView === 'native'"
     [chatPageView]="chatview.chatDataViewModelDto" 
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 

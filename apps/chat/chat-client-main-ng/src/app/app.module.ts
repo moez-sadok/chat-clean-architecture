@@ -16,6 +16,7 @@ import { ChatViewComponent, ChatViewMaterialComponent } from '@chat-clean-archit
     BrowserModule, 
     AppRoutingModule, 
     BrowserAnimationsModule,
+    //
     ChatViewComponent,
     ChatViewMaterialComponent
   ],

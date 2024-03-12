@@ -29,13 +29,13 @@ export class DataBaseMemoryImpl implements IChatDatabase {
   }
 
   //getters
-  getMessageByRoom(roomId: number): MessageTable[] {
-    //perf issue
+  getMessagesByRoom(roomId: number): MessageTable[] {
+    //perf issue (dedicated db + replicat nodes + use pagination + archive db + sharding by period (ex. 3 months))
     return Object.values(this.messages).filter((m) => m.roomId == roomId);
   }
 
   getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable {
-    //perf issue
+    //perf issue (using getParticipantsByUser & getParticipantsByRoom)
     const part = Object.values(this.participants).find(
       (p) => p.chatRoomId === roomId && p.userId === userId
     );
@@ -44,12 +44,12 @@ export class DataBaseMemoryImpl implements IChatDatabase {
   }
 
   getParticipantsByUser(userId: number): ParticpantTable[] {
-    //perf issue
+    //perf issue (revers nosql: userParts.getParticipantsIds())
     return Object.values(this.participants).filter((p) => p.userId === userId);
   }
 
   getParticipantsByRoom(roomId: number): ParticpantTable[] {
-    //perf issue
+    //perf issue (revers nosql: room.getParticipantsIds() add max particpants by room)
     return Object.values(this.participants).filter(
       (p) => p.chatRoomId === roomId
     );

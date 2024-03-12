@@ -11,4 +11,5 @@ export interface IChatView {
   displayChatRoomsMessages(messages: MessageViewModel[]): void;
   receiveMessage( message: MessageViewModel): MessageViewModel | null;
   setActiveRoom(room: RoomViewModel): void;
+  switchView(): void;
 }

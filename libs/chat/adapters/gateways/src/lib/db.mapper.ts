@@ -45,7 +45,7 @@ export class DataBaseMapper implements IChatRepository {
   }
 
   getMessagesByRoom(roomId: number): MessageDto[] {
-    return this.db.getMessageByRoom(roomId)
+    return this.db.getMessagesByRoom(roomId)
       .map((m) => this.dbSerializer.serializeMessage(m));
   }
 

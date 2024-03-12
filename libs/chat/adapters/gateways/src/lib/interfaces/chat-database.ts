@@ -10,7 +10,7 @@ export interface IChatDatabase {
   getChatRooms(): ChatroomTable[];
   getParticipantsByUser(userId: number): ParticpantTable[];
   getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable;
-  getMessageByRoom(roomId: number): MessageTable[];
+  getMessagesByRoom(roomId: number): MessageTable[];
 
   getParticipantById(participantId: number): ParticpantTable;
   getParticipantsByRoom(id: number): ParticpantTable[];

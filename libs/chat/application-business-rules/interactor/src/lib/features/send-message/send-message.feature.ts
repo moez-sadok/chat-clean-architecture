@@ -32,7 +32,6 @@ export class SendMessageFeature implements ISendMessageInput {
     // create the room entity
     const currRomm = this.createRoomEntity(croom);
     this.broadcast(messagedOutput, currRomm); //old this.chatServer.broadcast(messagedOutput, currRomm);
-    
     // presenter
     return this.presenter.receiveNewMessage(messagedOutput);
   }

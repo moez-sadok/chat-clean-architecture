@@ -1,7 +1,7 @@
 import {  IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
-
-export class ChatServerPortImpl implements IChatServerPort {
+// perfs (redis adapter)
+export class ChatServerMemoryImpl implements IChatServerPort {
 
   connectetdUsers: Record<number, IChatClient> = {};
 

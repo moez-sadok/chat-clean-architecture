@@ -2,7 +2,7 @@
 import { IChatAppFacadeControllerInput, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatController } from '../chat.controllor';
 import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
-import { ChatClientServerAdapter } from '@chat-clean-architecture/chat/adapters/network';
+import { ChatServerSocketAdapter } from '@chat-clean-architecture/chat/adapters/network';
 import { Socket } from 'socket.io';
 // Adapter pattern (Object) 
 export class ChatControllerApiImpl implements IChatController {
@@ -19,7 +19,7 @@ export class ChatControllerApiImpl implements IChatController {
 
   connectClient(client: Socket): Promise<boolean> {
     if (typeof client === 'number') return new Promise((resolve) => resolve(false));
-    const chatClient: IChatClient = new ChatClientServerAdapter(client);
+    const chatClient: IChatClient = new ChatServerSocketAdapter(client);
     return this.interactorInputboundry.connectClient(chatClient);
   }
 
