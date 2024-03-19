@@ -68,7 +68,16 @@ export class DataBaseMemoryImpl implements IChatDatabase {
   }
 
   getUserById(userId: number): UserTable {
+    //console.log('user',this.users);
     return this.users[userId];
+  }
+
+  insertUser(user: UserTable): UserTable {
+    const newId = this.lastUserId + 1;
+    const tabelUser = { ...user, id: newId };
+    this.users[newId] = tabelUser;
+    this.lastUserId = newId;
+    return tabelUser;
   }
 
   createDb() {
@@ -120,39 +129,32 @@ export class DataBaseMemoryImpl implements IChatDatabase {
       { id: 5, roomId: 2, participantId: 5, content: 'disco party tonight?' },
     ];
 
-    this.lastRoomId = 2;
+    this.lastRoomId = 3;
     this.lastMessageId = 5;
-    this.lastParticipantId = 7;
+    this.lastUserId = 5;
+    this.lastParticipantId = 9;
   }
 
-  // insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
-  //   const newId = this.lastRoomId + 1;
-  //   const tabelroom = { ...chatRoom, id: newId };
-  //   this.rooms[newId] = tabelroom;
-  //   this.lastRoomId = newId;
-  //   return tabelroom;
-  // }
+  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
+    const newId = this.lastRoomId + 1;
+    const tabelroom = { ...chatRoom, id: newId };
+    this.rooms[newId] = tabelroom;
+    this.lastRoomId = newId;
+    return tabelroom;
+  }
   
-  // removeParticipant(id: number): void {
-  //   if (this.lastParticipantId === id)
-  //     this.lastParticipantId = this.lastParticipantId - 1;
-  //   delete this.participants[id];
-  // }
+  removeParticipant(id: number): void {
+    if (this.lastParticipantId === id)
+      this.lastParticipantId = this.lastParticipantId - 1;
+    delete this.participants[id];
+  }
 
-  // insertParticipant(participant: ParticpantTable): ParticpantTable {
-  //   const newId = this.lastParticipantId + 1;
-  //   const tabelPart = { ...participant, id: newId };
-  //   this.participants[newId] = tabelPart;
-  //   this.lastParticipantId = newId;
-  //   return tabelPart;
-  // }
-
-  // insertUser(user: UserTable): UserTable {
-  //   const newId = this.lastParticipantId + 1;
-  //   const tabelUser = { ...user, id: newId };
-  //   this.users[newId] = tabelUser;
-  //   this.lastUserId = newId;
-  //   return tabelUser;
-  // }
+  insertParticipant(participant: ParticpantTable): ParticpantTable {
+    const newId = this.lastParticipantId + 1;
+    const tabelPart = { ...participant, id: newId };
+    this.participants[newId] = tabelPart;
+    this.lastParticipantId = newId;
+    return tabelPart;
+  }
 
 }

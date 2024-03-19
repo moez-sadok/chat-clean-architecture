@@ -6,6 +6,7 @@ import { ChatControllerApiImpl } from '@chat-clean-architecture/chat/adapters/co
 import { ChatApiPresenterImpl } from '@chat-clean-architecture/chat/adapters/presenters';
 import { IChatAppFacadeControllerInput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatServerMemoryImpl } from '@chat-clean-architecture/chat/adapters/network';
+//import { ChatServerIoAdapter } from '../proxy/controller/chat-server-io-adapter';
 
 export const CHAT_INTERACTOR_PROVIDER = 'CHAT_INTERACTOR_PROVIDER';
 export const CHAT_DB_PROVIDER = 'CHAT_DB_PROVIDER';
@@ -19,7 +20,7 @@ export const dbMapperFactory = (db: IChatDatabase) => {
 };
 
 export const interactorNetworkFactory = (db: IChatRepository, presenter: IChatAppFacadePresenterOutput, chatserver: IChatServerPort) => {
-  return new ChatAppFacadeImpl(db,presenter, chatserver);
+  return new ChatAppFacadeImpl(db, presenter, chatserver);
 };
 
 export const controllerApiFactory = (interactor: IChatAppFacadeControllerInput) => {
@@ -35,6 +36,7 @@ export const controllerApiFactory = (interactor: IChatAppFacadeControllerInput) 
       inject: [CHAT_DB_PROVIDER]
     },
     { provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerMemoryImpl },
+    //{ provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerIoAdapter },
     {
       provide: CHAT_INTERACTOR_PROVIDER, useFactory: interactorNetworkFactory,
       inject: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]

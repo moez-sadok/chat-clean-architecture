@@ -6,6 +6,7 @@ export default {
     'ts-jest': {
       tsconfig: './tests/tsconfig.spec.json',
     },
+   fetch 
   },
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',

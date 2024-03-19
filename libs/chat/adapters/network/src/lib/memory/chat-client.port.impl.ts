@@ -9,7 +9,7 @@ export class ChatClientPortImpl implements IChatClient {
     public presenter?: ISendMessagePresenterOutput) { }
 
   receive(msg: string, roomId: number, receiverId: number, receiverName: string): void {
-    const messageOutput: MessageOutputData = { chatRoomId: roomId, message: msg, authorName: receiverName }
+    const messageOutput: MessageOutputData = { chatRoomId: roomId, message: msg, authorName: receiverName, authorId : receiverId }
     if (this.presenter) this.presenter.receiveNewMessage(messageOutput);
   }
 

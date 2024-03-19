@@ -46,13 +46,13 @@ export class ChatDataSerializer {
 
   public desirializeParticipant(part: ParticpantDto): ParticpantTable {
     if (
-      part.id == undefined ||
+     // part.id == undefined ||
       part.chatroom?.id == undefined ||
       part.user?.id == undefined
     )
       throw new Error('desirializeMessage miss attrs');
     return {
-      id: part.id,
+      id: part.id || -1,
       chatRoomId: part.chatroom.id,
       userId: part.user.id,
       isBot : part.isBot

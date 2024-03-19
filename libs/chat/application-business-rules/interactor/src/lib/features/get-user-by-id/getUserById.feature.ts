@@ -12,8 +12,10 @@ export class GetUserByIdFeature implements IGetUserByIdInput {
 
   getUser(userId: number): Promise<UserOutputData | null> {
     const existUser = this.chatRepository.getUserById(userId);
+   // if(!existUser) existUser = this.chatRepository.addUser({ name: 'autogen', id : userId})
     return new Promise((resolve) => {
       if (existUser) resolve(this.presenter.selectedUser(existUser));
+      else resolve(null)
     });
   }
 

@@ -14,7 +14,7 @@ export class DataBaseMapper implements IChatRepository {
 
   /** insertions */
   addMessage(message: MessageDto): MessageDto {
-    if (!message.from.id) throw new Error('Add message miss attrs: from');
+    if (message.from.id == undefined) throw new Error('Add message miss attrs: from');
     if (message.room.id == undefined) throw new Error('Add message miss attrs: room');
     const tabelMessage = this.dbSerializer.desirializeMessage({
       ...message,
@@ -25,8 +25,10 @@ export class DataBaseMapper implements IChatRepository {
   }
 
   /** getters / selects */
-  getUserById(userId: number): UserDto {
-    return this.dbSerializer.serializeUser(this.db.getUserById(userId));
+  getUserById(userId: number): UserDto | null {
+    const dbUser = this.db.getUserById(userId);
+    if (dbUser) return this.dbSerializer.serializeUser(this.db.getUserById(userId));
+    else return null;
   }
 
   getChatRooms(): ChatroomDto[] {
@@ -54,8 +56,10 @@ export class DataBaseMapper implements IChatRepository {
     return this.dbSerializer.serializeParticipant(partTable);
   }
 
-  getChatRoomsById(roomId: number): ChatroomDto {
-    return this.dbSerializer.serializeRoom(this.db.getRoomById(roomId));
+  getChatRoomsById(roomId: number): ChatroomDto | null {
+    const dbRoom = this.db.getRoomById(roomId);
+    if (dbRoom) return this.dbSerializer.serializeRoom(dbRoom);
+    return null;
   }
 
   private getRoomsByParticipants(
@@ -70,30 +74,33 @@ export class DataBaseMapper implements IChatRepository {
     }, {});
   }
 
-  // getUsers(): UserDto[] {
-  //   return this.db.getUses().map((ut) => this.dbSerializer.serializeUser(ut));
-  // }
+  getUsers(): UserDto[] {
+    return this.db.getUses().map((ut) => this.dbSerializer.serializeUser(ut));
+  }
 
-  // addChatRoom(chatRoom: ChatroomDto): void {
-  //   const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
-  //   this.db.insertChatRoom(tabelroom);
-  // }
+  addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto> {
+    // const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
+    const dbRoom = this.db.insertChatRoom({ name: chatRoom.name , id :chatRoom.id});
+    const roomDto = this.dbSerializer.serializeRoom(dbRoom);
+    return new Promise((resolve) => resolve(roomDto));
+  }
 
-  // addParticipant(participant: ParticpantDto): void {
-  //   if (!participant.chatroom?.id || !participant.user.id)
-  //     throw new Error('Add participant miss attrs');
-  //   const tabelPart = this.dbSerializer.desirializeParticipant(participant);
-  //   this.db.insertParticipant(tabelPart);
-  // }
+  addParticipant(participant: ParticpantDto): void {
+    if (participant.chatroom?.id === undefined || participant.user.id === undefined)
+      throw new Error('Add participant miss attrs');
+    const tabelPart = this.dbSerializer.desirializeParticipant(participant);
+    this.db.insertParticipant(tabelPart);
+  }
 
-  // removeParticipant(participant: ParticpantDto): void {
-  //   if (!participant.id) throw new Error("Can't remouve unfoud participant");
-  //   this.db.removeParticipant(participant.id);
-  // }
+  removeParticipant(participant: ParticpantDto): void {
+    if (!participant.id) throw new Error("Can't remouve unfoud participant");
+    this.db.removeParticipant(participant.id);
+  }
 
-  // addUser(user: UserDto): void {
-  //   if (!user?.id) throw new Error('Add user miss attrs');
-  //   const tabelUser = this.dbSerializer.deserializeUser({ ...user });
-  //   this.db.insertUser(tabelUser);
-  // }
+  addUser(user: UserDto): Promise<UserDto> {
+    if (!user?.id) throw new Error('Add user miss attrs');
+    const tabelUser = this.dbSerializer.deserializeUser({ ...user });
+    const userTable = this.db.insertUser(tabelUser);
+    return new Promise((resolve) => resolve(this.dbSerializer.serializeUser(userTable)));
+  }
 }

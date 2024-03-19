@@ -15,8 +15,10 @@ export class ChatWsAdapterController implements OnGatewayConnection, OnGatewayDi
   private chatController: IChatController
 ) {}
 
-  handleConnection(clientSocket: Socket) {
+  async handleConnection(clientSocket: Socket) {
+    //console.log('server clients counts',(await this.server.fetchSockets()).length)
     return this.chatController.connectClient(clientSocket);
+   
   }
 
   handleDisconnect(client: Socket) {

@@ -11,7 +11,7 @@ export class ChatServerSocketAdapter  implements IChatClient {
   }
 
   receive(msg: string, roomId: number, receiverId: number, receiverName: string): void {
-    const messageOutput: MessageOutputData = { chatRoomId: roomId, message: msg, authorName: receiverName }
+    const messageOutput: MessageOutputData = { chatRoomId: roomId, message: msg, authorName: receiverName, authorId: receiverId }
     this.socket.emit('msgToClient', messageOutput);
   }
 

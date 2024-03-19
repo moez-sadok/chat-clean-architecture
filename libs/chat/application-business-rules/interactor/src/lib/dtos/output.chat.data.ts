@@ -8,6 +8,7 @@ export interface MessageOutputData {
   authorName: string;
   message: string;
   chatRoomId: number;
+  authorId : number;
 }
 
 export interface UserOutputData {

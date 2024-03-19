@@ -14,6 +14,7 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
   getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<MessageOutputData[]> {
     const messagesByRoom = this.chatRepository.getMessagesByRoom(room.roomId);
     const roomDto = this.chatRepository.getChatRoomsById(room.roomId);
+    if(!roomDto) throw new Error('Not existing room id='+room.roomId)
     const messages = messagesByRoom.map((m) => {
       return {
         authorName: m.from.user.name,

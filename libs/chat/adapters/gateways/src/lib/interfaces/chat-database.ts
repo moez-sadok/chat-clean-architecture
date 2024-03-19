@@ -16,9 +16,9 @@ export interface IChatDatabase {
   getParticipantsByRoom(id: number): ParticpantTable[];
   getUserById(userId: number): UserTable;
 
-  //insertUser(user: UserTable): UserTable;
-  //insertChatRoom(chatRoom: ChatroomTable): ChatroomTable;
-  //insertParticipant(participant: ParticpantTable): ParticpantTable;
-  //getUses(): UserTable[];
-  //removeParticipant(id: number): void;
+  insertUser(user: UserTable): UserTable;
+  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable;
+  insertParticipant(participant: ParticpantTable): ParticpantTable;
+  getUses(): UserTable[];
+  removeParticipant(id: number): void;
 }

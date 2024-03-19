@@ -53,15 +53,17 @@ export class ChatUiPresenterImpl implements IChatAppFacadePresenterOutput {
   }
 
   private notifNewMessageOnInactiveRoom(roomId: number, notifsNumber = 0) {
-    console.warn('Send local notif to the user, he is not inside the selected room');
+    //console.warn('Send local notif to the user, he is not inside the selected room');
+    //console.log('notifNewMessageOnInactiveRoom rooms',this.chatWebViewScreen.chatDataViewModelDto.rooms);
     if (!this.chatWebViewScreen.chatDataViewModelDto.rooms)
       throw new Error('Not found rooms in the connect user view');
     const roomHasNewMessageIndex = this.chatWebViewScreen.chatDataViewModelDto.rooms?.findIndex(e => e.roomId === +roomId);
+    // console.log('notifNewMessageOnInactiveRoom roomHasNewMessageIndex',roomHasNewMessageIndex)
     if (roomHasNewMessageIndex == undefined || roomHasNewMessageIndex < 0)
       throw new Error('Room not found to set local notif of new messages' + roomHasNewMessageIndex);
     const roomHasNewMessage = this.chatWebViewScreen.chatDataViewModelDto.rooms[roomHasNewMessageIndex];
     const currentNewMessagesNotif = notifsNumber == -1 ? 0 : roomHasNewMessage.newMessagesNotif
-                                                    ? roomHasNewMessage.newMessagesNotif + 1 : 1;
+      ? roomHasNewMessage.newMessagesNotif + 1 : 1;
     const newRoomView: RoomViewModel = { ...roomHasNewMessage, newMessagesNotif: currentNewMessagesNotif };
     const currRooms = [...this.chatWebViewScreen.chatDataViewModelDto.rooms];
     currRooms[roomHasNewMessageIndex] = newRoomView;

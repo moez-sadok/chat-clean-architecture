@@ -20,30 +20,31 @@ export class SendMessageFeature implements ISendMessageInput {
     // db 
     const participantInRoom = this.chatRepository.getParticpantByUserAndRoom(message.roomId, message.userId);
     const croom = this.chatRepository.getChatRoomsById(message.roomId);
+    if(!croom || croom.id == undefined) throw new Error('Send Message feature: Not found room id='+message.roomId);
     const messagedto: MessageDto = {
       from: participantInRoom, message: message.message, room: croom
     };
     const newMessage = this.chatRepository.addMessage(messagedto);
     const messagedOutput: MessageOutputData = {
       authorName: newMessage.from.user.name, message: newMessage.message,
-      chatRoomId: newMessage.room.id
+      chatRoomId: croom.id, authorId : message.userId
     };
     if (!croom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
     // create the room entity
-    const currRomm = this.createRoomEntity(croom);
+    const currRomm = this.createRoomEntity(croom,croom.id);
     this.broadcast(messagedOutput, currRomm); //old this.chatServer.broadcast(messagedOutput, currRomm);
     // presenter
     return this.presenter.receiveNewMessage(messagedOutput);
   }
 
   private broadcast(msg: MessageOutputData, currRoom: IChatroom): void {
-    const currPart = currRoom.getParticipants()[msg.authorName];
+    const currPart = currRoom.getParticipants()[msg.authorId];
     const message: IMessage = new Message(msg.message, currRoom, currPart);
     currRoom.broadcastMessage(message, currPart);
   }
 
-  private createRoomEntity(roomDto: ChatroomDto): IChatroom {
-    const roomEntity: Chatroom = new Chatroom(roomDto.name, roomDto.id);
+  private createRoomEntity(roomDto: ChatroomDto,roomId: number): IChatroom {
+    const roomEntity: Chatroom = new Chatroom(roomDto.name, roomId);
     const parts: IParticpant[] = Object.values(roomDto.participants).map(partDto => {
       return this.participantFactory(partDto)
     });

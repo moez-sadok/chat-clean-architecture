@@ -5,7 +5,7 @@ import { Message } from './message.impl';
 
 export class Chatroom implements IChatroom {
 
-  private participants: Record<string, IParticpant> = {};
+  private participants: Record<number, IParticpant> = {};
   private messages: IMessage[] = [];
 
   constructor(private name: string,private id:number) {}
@@ -39,14 +39,14 @@ export class Chatroom implements IChatroom {
 
   /** pattern basic methods */
   register(participant: IParticpant) {
-    if (this.participants[participant.getUserName()]) throw new Error('Can not register an existing participant');
-    this.participants[participant.getUserName()] = participant;
+    if (this.participants[participant.getUserId()]) throw new Error('Can not register an existing participant');
+    this.participants[participant.getUserId()] = participant;
     participant.enterChatRoom(this);
   }
 
   broadcastMessage(message: IMessage, from: IParticpant) {
     for (const key in this.participants) {
-      if (this.participants[key].getUserName() !== from.getUserName()) {
+      if (this.participants[key].getUserId() !== from.getUserId()) {
         this.participants[key].receive(message);
       }
     }
@@ -59,9 +59,9 @@ export class Chatroom implements IChatroom {
   }
 
   leave(participant: IParticpant) {
-    if (!this.participants[participant.getUserName()]) throw new Error('Can not found participant to leave');
+    if (!this.participants[participant.getUserId()]) throw new Error('Can not found participant to leave');
     const message = new Message('Leave the room', this, participant);
     this.broadcastMessage(message, participant);
-    delete this.participants[participant.getUserName()];
+    delete this.participants[participant.getUserId()];
   }
 }
