@@ -10,8 +10,9 @@
     "dev": "(start npm run start:ui && start npm run start:api) || (npm run start:ui & npm run start:api)",
     "start": "npm run dev",
     "build": "nx build",
-    "test": "jest test tests --verbose",
-    "dep-graph": "nx dep-graph"
+    "test": "jest test tests --verbose --maxWorkers=4",
+    "dep-graph": "nx dep-graph",
+    "bench-test": "node tests/bench/send-message-bench-test.js"
   },
   "private": true,
   "dependencies": {
@@ -80,6 +81,7 @@
     "prettier": "^2.6.2",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
-    "typescript": "~4.8.2"
+    "typescript": "~4.8.2",
+    "autocannon": "7.15.0"
   }
 }

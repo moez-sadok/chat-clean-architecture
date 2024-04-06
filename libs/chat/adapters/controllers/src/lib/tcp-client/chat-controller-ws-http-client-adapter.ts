@@ -1,6 +1,7 @@
 
 import { ChatClientSocketkAdapter } from '@chat-clean-architecture/chat/adapters/network';
-import {IChatAppFacadePresenterOutput, RoomOutputData,
+import {
+  IChatAppFacadePresenterOutput, RoomOutputData,
   MessageOutputData, UserOutputData
 } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { Socket, io } from 'socket.io-client';
@@ -9,7 +10,7 @@ import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-r
 // Adapter pattern (Object) 
 export class ChatControllerWsHttpClientAdapterImpl implements IChatController {
 
-  constructor(private presentator: IChatAppFacadePresenterOutput, private serverUrl ='') { }
+  constructor(private presentator: IChatAppFacadePresenterOutput, private serverUrl = '') { }
 
   connectClient(userId: number): Promise<boolean> {
     const socket: Socket = io('ws://localhost:8080', {
@@ -17,9 +18,9 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatController {
       auth: { userId: userId },
     });
     socket.id = userId.toString();
-   const clientSocket: IChatClient = new ChatClientSocketkAdapter(socket, this.presentator);
+    const clientSocket: IChatClient = new ChatClientSocketkAdapter(socket, this.presentator);
     return new Promise((resolve) => {
-      if (clientSocket) resolve(true); 
+      if (clientSocket) resolve(true);
       resolve(false);
     });
   }
@@ -51,13 +52,17 @@ export class ChatControllerWsHttpClientAdapterImpl implements IChatController {
   }
 
   sendMessage(roomId: number, userId: number, message: string) {
- //TODO: change by post request or with ws: this.clientSocket.emit('msgToServer', messageData, (val: any) => {});  //for adding e2ee encrypt message in the client side controller
     const msg = { roomId: roomId, userId: userId, message: message };
-    const queryString = this.objToQueryString(msg);
-    const url = `${this.serverUrl}api/send-message?${queryString}`;
-    return fetch(url)
-    .then(res => res.json())
-    .then((res: MessageOutputData) => this.presentator.receiveNewMessage(res));
+    const url = `${this.serverUrl}api/send-message`;
+    return fetch(url, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify(msg)
+    }).then(res => res.json())
+      .then((res: MessageOutputData) => this.presentator.receiveNewMessage(res));
   }
 
   disconnectClient(userId: number): Promise<boolean> {

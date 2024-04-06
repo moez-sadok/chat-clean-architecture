@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Optional, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Optional, Param, Post, Query } from '@nestjs/common';
 import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
 //As proxy ? TO-CHECK
 @Controller()
@@ -23,9 +23,9 @@ export class ChatHttpAdapterController implements IChatController {
     return this.chatController.getRoomMessages(+query.roomId, query.roomName, +query.userId);
   }
 
-  @Get('send-message')
-  sendMessage(@Query() query: any) {
-    return this.chatController.sendMessage(+query.roomId, +query.userId ,query.message, );
+  @Post('send-message')
+  sendMessage(@Body() message:any) {
+    return this.chatController.sendMessage(+message.roomId, +message.userId ,message.message );
   }
 
   //Handled by ChatWsAdapterController , to check by SIP 

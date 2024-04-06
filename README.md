@@ -119,3 +119,8 @@ npx nx generate @nrwl/workspace:library chat/entreprise-business-rules/notifiyer
 npx nx generate @nrwl/workspace:library chat/application-business-rules/network
 npx nx generate @nrwl/workspace:library chat/adapters/network
 ```
+
+# perf-testing
+node tests/bench/send-message-bench-test.js
+or
+autocannon -c 10 -a 1000 -m POST http://localhost:3333/api/send-message --header 'Content-Type: application/json' --body '{ "roomId": "0", "userId": "1", "message": "perf message" }'

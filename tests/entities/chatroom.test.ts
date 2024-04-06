@@ -10,7 +10,7 @@ describe('Chatroom Register ...', () => {
     test('Register a participant inside chatroom', () => {
         const p1 = new Participant('Anna', 1);
         chatroom.register(p1);
-        expect(chatroom.getParticipants()[p1.getUserName()]).toBe(p1);
+        expect(chatroom.getParticipants()[p1.getUserId()]).toBe(p1);
     })
 
     test('Re-Register the same participant inside chatroom', () => {
