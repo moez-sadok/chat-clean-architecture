@@ -29,6 +29,7 @@ export class MainDouble {
     async makeClient(name: string): Promise<ClientViewController> {
         const chatView = new UserWebViewClientImpl();
         const chatPresenter = new ChatUiPresenterImpl(chatView);
+        //perf issue to check
         const chatApp = new ChatAppFacadeImpl(this.chatdbMapper, chatPresenter, this.chatServer);
         const chatController = new ChatControllerMemoryImpl(chatApp, chatPresenter);
 

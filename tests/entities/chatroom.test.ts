@@ -83,3 +83,48 @@ describe('Chatroom send and broadcats messages', () => {
     })
 
 });
+
+describe('Big Chatroom (1 million) send and broadcats messages', () => {
+    const MAX_USERS = 1000000; //take 150 Mb of memory
+    const MAX_CONCURRENT_MESSAGES = 2;
+
+    let chatroom: IChatroom;
+    let pFirst : IParticpant;
+    let pLast : IParticpant;
+    beforeEach(() => {
+        chatroom = new Chatroom('BigRoom', 1);
+        pFirst = new Participant('First', 1);
+        pLast = new Participant('Last', MAX_USERS);
+
+        chatroom.register(pFirst);
+        chatroom.register(pLast);
+        //Add fake participants to the room
+        for (let i = 2; i < MAX_USERS; i++) {
+            chatroom.register(new Participant('P-'+i, i));
+        }
+    });
+
+    test('"First" as a participant sent a message inside the "BigRoom" chatroom ', () => {
+        pFirst.send('Hello');
+        expect(chatroom.getMessages()[0].getcontent()).toBe('Hello');
+        expect(pLast.getLastReceivedMessage().getcontent()).toBe('Hello');
+    })
+
+    test('"First" as a participant sent a message inside the "BigRoom" chatroom with broadcast ', () => {
+        const msg = new Message('Cc',chatroom,pFirst);
+        chatroom.broadcastMessage(msg,pFirst);
+        expect(chatroom.getMessages()[0].getcontent()).toBe('Cc');
+        expect(pLast.getLastReceivedMessage().getcontent()).toBe('Cc');
+    })
+
+    test('Concurrent "First" as a participant sent multi messages inside the "BigRoom" chatroom ', () => {
+        let lastSentMessage = '';
+        for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
+            lastSentMessage = 'msg-'+i;
+            pFirst.send(lastSentMessage);
+        }
+        expect(chatroom.getMessages()[MAX_CONCURRENT_MESSAGES-1].getcontent()).toBe(lastSentMessage);
+        expect(pLast.getLastReceivedMessage().getcontent()).toBe(lastSentMessage);
+    })
+
+});

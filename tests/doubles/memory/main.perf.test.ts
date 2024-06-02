@@ -2,8 +2,8 @@ import { expect, test } from "@jest/globals";
 import { ClientViewController, MainDouble } from "./main";
 import { ChatroomDto } from "../../../libs/chat/application-business-rules/interactor/src";
 
-export const MAX_USERS = 10000;
-export const MAX_CONCURENT_MESSAGES = 10;
+export const MAX_USERS = 10000; // 50000
+export const MAX_CONCURRENT_MESSAGES = 10;
 
 describe('Main Perf Memory Tesing (multi connected user in one room )...', () => {
     const main = new MainDouble();
@@ -51,7 +51,7 @@ describe('Main Perf Memory Tesing (multi connected user in one room )...', () =>
         client2.controller.getRoomMessages(c2room.roomId, c2room.name, client2.id);
 
         let lastSentMessage = '';
-        for (let i = 0; i < MAX_CONCURENT_MESSAGES; i++) {
+        for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
             lastSentMessage = msg+'-i';
             client1.controller.sendMessage(c1room.roomId, client1.id,lastSentMessage );
         }
@@ -63,7 +63,7 @@ describe('Main Perf Memory Tesing (multi connected user in one room )...', () =>
 
     test('Multi users send multi messages', async () => {
         const client1 = clients[0];
-        const client2 = clients[MAX_CONCURENT_MESSAGES - 1];
+        const client2 = clients[MAX_CONCURRENT_MESSAGES - 1];
 
         const c1room = client1.view.chatDataViewModelDto.rooms ? client1.view.chatDataViewModelDto.rooms[0] : null;
         const c2room = client2.view.chatDataViewModelDto.rooms ? client2.view.chatDataViewModelDto.rooms[0] : null;
@@ -73,7 +73,7 @@ describe('Main Perf Memory Tesing (multi connected user in one room )...', () =>
         client2.controller.getRoomMessages(c2room.roomId, c2room.name, client2.id);
 
         let lastSentMessage = '';
-        for (let i = 0; i < MAX_CONCURENT_MESSAGES; i++) {
+        for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
             lastSentMessage = msg+'-i';
             clients[i].controller.sendMessage(c1room.roomId, clients[i].id,lastSentMessage );
         }
