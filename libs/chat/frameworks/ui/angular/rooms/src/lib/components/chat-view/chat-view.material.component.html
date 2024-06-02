@@ -8,7 +8,7 @@
     <div fxFlex="35">
       <mat-card>
         <mat-selection-list #chatRoomsList [multiple]="false">
-          <mat-list-option *ngFor="let chatRoom of chatPageView.rooms" [value]="chatRoom"
+          <mat-list-option *ngFor="let chatRoom of chatPageView.rooms" [value]="chatRoom.name"
             (click)="selectRoom.emit(chatRoom)">
             <div mat-line>{{ chatRoom.name }}
               <span *ngIf="chatRoom.newMessagesNotif" >({{ chatRoom.newMessagesNotif }})</span>

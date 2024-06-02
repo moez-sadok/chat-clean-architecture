@@ -51,6 +51,7 @@ export class ChatPageTcpClientComponent implements OnInit {
       tap((userId) => {
         if (userId != null || userId != undefined) {
           this.activeUserId = +userId;
+          this.chatController.getUserById(+userId);
           this.chatController.connectClient(+userId);
           this.chatController.getUserRooms(+userId);
         }
