@@ -1,6 +1,3 @@
-
-
-
 import { MessageOutputData, RoomOutputData, UserOutputData } from '../dtos/output.chat.data';
 import { IChatRepository } from '../components/chat-repository/repository-gateway';
 import { GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData } from '../dtos/input.chat.data';
@@ -16,34 +13,48 @@ import { IChatServerPort } from '../components/network/chat-server.port';
 
 export class ChatAppFacadeImpl implements IChatAppFacadeControllerInput {
 
+  getUserByIdFeature: GetUserByIdFeature;
+  disconnectClientFeature: DisconnectClientFeature;
+  connectClientFeature: ConnectClientFeature;
+  getRoomsByUserFeature: GetRoomsByUserFeature;
+  getMessagesByRoomFeature: GetMessagesByRoomFeature;
+  sendMessageFeature: SendMessageFeature;
+
   constructor(
     private chatRepository: IChatRepository,
     private presenter: IChatAppFacadePresenterOutput,
     private chatServer: IChatServerPort
-  ) { }
+  ) {
+    this.getUserByIdFeature = new GetUserByIdFeature(this.chatRepository, this.presenter);
+    this.disconnectClientFeature = new DisconnectClientFeature(this.chatServer);
+    this.connectClientFeature = new ConnectClientFeature(this.chatServer);
+    this.getRoomsByUserFeature = new GetRoomsByUserFeature(this.chatRepository, this.presenter);
+    this.getMessagesByRoomFeature = new GetMessagesByRoomFeature(this.chatRepository, this.presenter);
+    this.sendMessageFeature = new SendMessageFeature(this.chatRepository, this.presenter, this.chatServer);
+  }
 
   getUser(userId: number): Promise<UserOutputData | null> {
-   return new GetUserByIdFeature(this.chatRepository,this.presenter).getUser(userId);
+    return this.getUserByIdFeature.getUser(userId);
   }
 
   disconnectClient(userId: number): Promise<boolean> {
-    return new DisconnectClientFeature(this.chatServer).disconnectClient(userId);
+    return this.disconnectClientFeature.disconnectClient(userId);
   }
 
   connectClient(client: any): Promise<boolean> {
-    return new ConnectClientFeature(this.chatServer).connectClient(client)
+    return this.connectClientFeature.connectClient(client)
   }
 
   getRoomsByUser(user: GetRoomsByUserInputData): Promise<RoomOutputData[]> {
-    return new GetRoomsByUserFeature(this.chatRepository,this.presenter).getRoomsByUser(user);
+    return this.getRoomsByUserFeature.getRoomsByUser(user);
   }
 
   getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<MessageOutputData[]> {
-    return new GetMessagesByRoomFeature(this.chatRepository,this.presenter).getChatRoomsMessages(room)
+    return this.getMessagesByRoomFeature.getChatRoomsMessages(room)
   }
 
   sendMessage(message: SendMessageInputData) {
-    return new SendMessageFeature(this.chatRepository,this.presenter,this.chatServer).sendMessage(message);
+    return this.sendMessageFeature.sendMessage(message);
   }
 
 }

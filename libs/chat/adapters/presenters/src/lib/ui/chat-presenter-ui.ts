@@ -42,7 +42,7 @@ export class ChatUiPresenterImpl implements IChatAppFacadePresenterOutput {
     const roomView: RoomViewModel = { roomId: room?.roomId, name: room?.roomName, participantNames: room.participantsNames };
     this.chatWebViewScreen.setActiveRoom(roomView);
     this.chatWebViewScreen.displayChatRoomsMessages(ouputMessages);
-    this.notifNewMessageOnInactiveRoom(room?.roomId, -1)
+    this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
     return messages;
   }
 

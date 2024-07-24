@@ -38,13 +38,13 @@ package "Entities" {
     }
 }
 
-package "NotificationServerComponent" {
+package "Notifier" {
     interface INotify {
         + notify(): boolean
     }
 }
 
-package "ChatServerComponent" {
+package "ChatServer" {
     interface IChatClient {
         + getId(): int
         + receive(): void
