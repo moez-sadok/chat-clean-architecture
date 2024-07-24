@@ -1,11 +1,11 @@
 import { Socket } from 'socket.io-client';
-import { IChatAppFacadePresenterOutput, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+import { ISendMessagePresenterOutput, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 // Adapter design pattern (Object)  (see 2e solution - class )
 // https://refactoring.guru/design-patterns/adapter/typescript/example
 export class ChatClientSocketkAdapter implements IChatClient {
     // socket as the adaptee
-    constructor(private socket: Socket, protected presenter: IChatAppFacadePresenterOutput) {
+    constructor(private socket: Socket, protected presenter: ISendMessagePresenterOutput) {
         this.onReceivedMessage();
     }
 

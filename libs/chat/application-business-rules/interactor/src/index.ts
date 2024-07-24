@@ -8,7 +8,7 @@ export * from './lib/dtos/models/chatroom.dto';
 export * from './lib/dtos/models/message.dto';
 export * from './lib/dtos/models/participant.dto';
 
-export * from './lib/entry-chat-facade/entry.facade.entry.impl';
+export * from './lib/entry-chat-facade/entry.facade.impl';
 export * from './lib/entry-chat-facade/entry.facade.controller';
 export * from './lib/entry-chat-facade/entry.facade.presenter';
 

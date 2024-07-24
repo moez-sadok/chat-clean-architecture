@@ -13,12 +13,12 @@ import { IChatServerPort } from '../components/network/chat-server.port';
 
 export class ChatAppFacadeImpl implements IChatAppFacadeControllerInput {
 
-  getUserByIdFeature: GetUserByIdFeature;
-  disconnectClientFeature: DisconnectClientFeature;
-  connectClientFeature: ConnectClientFeature;
-  getRoomsByUserFeature: GetRoomsByUserFeature;
-  getMessagesByRoomFeature: GetMessagesByRoomFeature;
-  sendMessageFeature: SendMessageFeature;
+  private getUserByIdFeature: GetUserByIdFeature;
+  private disconnectClientFeature: DisconnectClientFeature;
+  private connectClientFeature: ConnectClientFeature;
+  private getRoomsByUserFeature: GetRoomsByUserFeature;
+  private getMessagesByRoomFeature: GetMessagesByRoomFeature;
+  private sendMessageFeature: SendMessageFeature;
 
   constructor(
     private chatRepository: IChatRepository,
