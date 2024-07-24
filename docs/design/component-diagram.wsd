@@ -2,21 +2,23 @@
 
 actor User #F06292
 
-interface IController  #LightBlue
-interface IPresenter #CDE711
+package "Adapters" {
+    interface IController  #LightBlue
+    interface IPresenter #CDE711
+}
 
-package "Core" {
-    ' interface IController  #CDE711
-    ' interface IPresenter #CDE711
-    interface IRepository #FF5722
-    interface INotifier #SpringGreen
+package "NetworkGateway" {
     interface IChatServer #SkyBlue
     interface IChatClient #MediumVioletRed
+}
+package "Core" {
+    interface IRepository #FF5722
+    interface INotifier #SpringGreen
     collections UseCases
     [Entities] #FDD835
 }
 
-package "Client (Browser)" {
+node "Client (Browser)" {
     interface IView #Pink
     [PresenterUI] #CDE711
     [ClientController] #LightBlue
@@ -27,47 +29,49 @@ package "Client (Browser)" {
     GUI --|> IView
 }
 
-package "Database Server" {
+node "Database Server" {
     database ChatDataBase #FF5722
 }
 
-package "Notification Server" {
+node "Notification Server" {
     [Notifier] #SpringGreen
 }
 
-package "Http Server" {
+node "Http_Server" {
     [ServerController]  #LightBlue
     [PresenterAPI] #CDE711
     ServerController --|>  IController
     PresenterAPI --|>  IPresenter
 }
 
-package "Ws Server" {
+node "Ws_Server" {
     ' top to bottom direction
     [ClientSocket] #MediumVioletRed
-    [ChatServer] #SkyBlue
+    [WsServer] #SkyBlue
 
 }
 
 User -down-> GUI : Send Request
 GUI -right-> ClientController : Action:Routing,Click...
 
-ServerController  <.-right-.> ClientController  : HTTP/WS Request
+ServerController  <.--.> ClientController  : HTTP 
 ServerController -right-> UseCases : callUseCase(req)/returnResult()
 
 Entities  <--  UseCases : manageEntities()
 
-IChatServer <|-right- ChatServer
-ClientSocket *-- ChatServer
-IChatClient  <|-right- ClientSocket
+ClientController <.--.> WsServer : WS 
+IChatServer <|-left- WsServer
+ClientSocket *-- WsServer
+IChatClient  <|-left- ClientSocket
 IChatClient *-- IChatServer
-IChatClient <-up- Entities
+IChatClient <-down- Entities
+
 
 IRepository <-up- UseCases  : getOrPersistData()
 ChatDataBase  -up-|>  IRepository
 
-Notifier  --|>  INotifier
-Entities -left-> INotifier : sendNotification(msg)
+Notifier  -left-|>  INotifier
+Entities -right-> INotifier : sendNotification(msg)
 
 ServerController --> PresenterAPI : formatData()
 
@@ -75,6 +79,10 @@ ClientController --> PresenterUI  : present()
 IView <-right- PresenterUI : display()
 
 GUI  -up-> User : See response
+
+' fake fidden line for design adaptation
+ServerController  -up- WsServer #FFFFFF
+IPresenter  -up- IController #FFFFFF
 
 @enduml
 
@@ -118,8 +126,8 @@ GUI  -up-> User : See response
 '     [Presenter] #CDE711
 ' }
 
-' package "ChatServer Package" {
-'     [ChatServer] #SkyBlue
+' package "WsServer Package" {
+'     [WsServer] #SkyBlue
 ' }
 
 ' User --> Controller : Send Request
@@ -127,7 +135,7 @@ GUI  -up-> User : See response
 ' UseCases --> Entity_Package : manageEntities()
 ' ChatRepository  <-right-> UseCases  : getOrPersistData()
 ' UseCases -left-> Presenter : present()
-' UseCases -left-> ChatServer 
+' UseCases -left-> WsServer 
 ' View <-down- Presenter : display()
 ' Entities -left-> Notifier : sendNotification(msg)
 ' View  <-right- User : See response

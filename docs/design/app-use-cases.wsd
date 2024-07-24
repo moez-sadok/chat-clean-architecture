@@ -19,9 +19,8 @@ rectangle ChatDomain {
     usecase "Get room messages" as UCC5 #LightGreen
     usecase "Receive new messages" as UCC9 #LightGreen
     usecase/ UCC6 as "Send message" #LightGreen
-        usecase/ UCC1 as "Connect
-    --
-    Disconnect"
+    usecase UCC1 as "Connect"
+    usecase "Disconnect" as UCC10 
 }
 
 rectangle AdminDomain {
@@ -39,7 +38,8 @@ acs --> UCC7
 acs --> UCC8
 
 UCC4 --> UCC5 : includes
-UCC4 --> UCC9 : includes
+
+UCC1 --> UCC9 : includes
 
 UCA1 --> adm
 UCA2 --> adm
