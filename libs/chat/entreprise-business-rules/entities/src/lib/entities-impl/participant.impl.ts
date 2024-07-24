@@ -2,14 +2,20 @@ import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
 import { IParticpant } from '../interfaces/participant';
 import { Message } from './message.impl';
-import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
+import { IChatClient, INotifiyer } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 
 export class Participant implements IParticpant {
 
   protected chatroom?: IChatroom | null;
+
   protected lastReceivedMessage?: IMessage | null;
 
-  constructor(protected userName: string, protected userId: number, protected client?: IChatClient) { }
+  protected notifiyer?: INotifiyer | null;
+
+  constructor(
+    protected userName: string,
+    protected userId: number,
+    protected client?: IChatClient) { }
 
   getchatRoom(): IChatroom {
     if (!this.chatroom) throw new Error('Participant dont have a chatroom');
@@ -50,8 +56,10 @@ export class Participant implements IParticpant {
       message.getchatRoom().getId(),
       this.getUserId(),
       message.getParticipant().getUserName());
-    //else
-      //console.log('Participant user is not connected, send a push notif...', this.getUserId());
+    else
+     //TO-Compleate
+     // this.notifiyer?.notify(this.getUserId(), message.getcontent())
+     console.log('Participant user is not connected, send a push notif...', this.getUserId());
   }
 
 }

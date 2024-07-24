@@ -22,7 +22,9 @@ export class SendMessageFeature implements ISendMessageInput {
     const croom = this.chatRepository.getChatRoomsById(message.roomId);
     if(!croom || croom.id == undefined) throw new Error('Send Message feature: Not found room id='+message.roomId);
     const messagedto: MessageDto = {
-      from: participantInRoom, message: message.message, room: croom
+      from: participantInRoom, 
+      message: message.message, 
+      room: croom
     };
     const newMessage = this.chatRepository.addMessage(messagedto);
     const messagedOutput: MessageOutputData = {
@@ -30,7 +32,8 @@ export class SendMessageFeature implements ISendMessageInput {
       chatRoomId: croom.id, authorId : message.userId
     };
     if (!croom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
-    // create the room entity
+    //TODO: Optimise by a cache or rooms and update connected/disconnect use cases
+      // create the room entity
     const currRomm = this.createRoomEntity(croom,croom.id);
     this.broadcast(messagedOutput, currRomm); //old this.chatServer.broadcast(messagedOutput, currRomm);
     // presenter

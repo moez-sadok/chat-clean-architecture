@@ -1,0 +1,166 @@
+@startuml
+
+actor User #F06292
+
+interface IController  #LightBlue
+interface IPresenter #CDE711
+
+package "Core" {
+    ' interface IController  #CDE711
+    ' interface IPresenter #CDE711
+    interface IRepository #FF5722
+    interface INotifier #SpringGreen
+    interface IChatServer #SkyBlue
+    interface IChatClient #MediumVioletRed
+    collections UseCases
+    [Entities] #FDD835
+}
+
+package "Client (Browser)" {
+    interface IView #Pink
+    [PresenterUI] #CDE711
+    [ClientController] #LightBlue
+    [GUI] #Pink
+
+    PresenterUI --|>  IPresenter
+    ClientController --|>  IController
+    GUI --|> IView
+}
+
+package "Database Server" {
+    database ChatDataBase #FF5722
+}
+
+package "Notification Server" {
+    [Notifier] #SpringGreen
+}
+
+package "Http Server" {
+    [ServerController]  #LightBlue
+    [PresenterAPI] #CDE711
+    ServerController --|>  IController
+    PresenterAPI --|>  IPresenter
+}
+
+package "Ws Server" {
+    ' top to bottom direction
+    [ClientSocket] #MediumVioletRed
+    [ChatServer] #SkyBlue
+
+}
+
+User -down-> GUI : Send Request
+GUI -right-> ClientController : Action:Routing,Click...
+
+ServerController  <.-right-.> ClientController  : HTTP/WS Request
+ServerController -right-> UseCases : callUseCase(req)/returnResult()
+
+Entities  <--  UseCases : manageEntities()
+
+IChatServer <|-right- ChatServer
+ClientSocket *-- ChatServer
+IChatClient  <|-right- ClientSocket
+IChatClient *-- IChatServer
+IChatClient <-up- Entities
+
+IRepository <-up- UseCases  : getOrPersistData()
+ChatDataBase  -up-|>  IRepository
+
+Notifier  --|>  INotifier
+Entities -left-> INotifier : sendNotification(msg)
+
+ServerController --> PresenterAPI : formatData()
+
+ClientController --> PresenterUI  : present()
+IView <-right- PresenterUI : display()
+
+GUI  -up-> User : See response
+
+@enduml
+
+
+
+' @startuml
+' ' Packages / Component Diagram for chat system
+
+' actor User #F06292
+
+' package "User Interface" {
+'     package "View Package" {
+'         [View]
+'     }
+'     View -up-|>  [GUI] 
+'     View -up-|>  [CLI] 
+'     View -up-|>  [API] 
+' }
+
+' package "Controller Package" {
+'     [Controller] #CDE711
+' } 
+
+' package "Use Case Interactor Package" {
+'     collections UseCases
+' }
+
+' package "Entity_Package" {
+'     [Entities] #FDD835
+' }
+
+' package "Repository Package" {
+'     [ChatRepository] #FF5722
+' }
+
+' package "Notifier Package" {
+'     [Notifier] #Green
+' }
+
+' package "Presentation Package" {
+'     [Presenter] #CDE711
+' }
+
+' package "ChatServer Package" {
+'     [ChatServer] #SkyBlue
+' }
+
+' User --> Controller : Send Request
+' Controller --> UseCases : callUseCase(req)
+' UseCases --> Entity_Package : manageEntities()
+' ChatRepository  <-right-> UseCases  : getOrPersistData()
+' UseCases -left-> Presenter : present()
+' UseCases -left-> ChatServer 
+' View <-down- Presenter : display()
+' Entities -left-> Notifier : sendNotification(msg)
+' View  <-right- User : See response
+
+' @enduml
+
+
+
+
+
+' @startuml
+' Only components
+' actor User #F06292
+
+' collections UseCases
+' [View] #Pink
+' [GUI]  -down-|> View
+' [CLI]  -down-|> View
+' [API]  -down-|> View
+
+' [Controller] #LightBlue
+' [Entities] #FDD835
+' [ChatRepository] #FF5722
+' [Notifier] #SpringGreen
+' [Presenter] #CDE711
+
+' User --> Controller : Send Request
+' Controller --> UseCases : callUseCase(req)
+' UseCases --> Entities : manageEntities()
+' ChatRepository  <-right-> UseCases  : getOrPersistData()
+' UseCases -left-> Presenter : present()
+' View <-down- Presenter : display()
+' Entities -left-> Notifier : sendNotification(msg)
+' View  -right-> User : See response
+
+' @enduml

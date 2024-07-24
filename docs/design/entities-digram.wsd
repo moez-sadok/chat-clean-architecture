@@ -1,0 +1,69 @@
+@startuml
+' Entity Diagram for Chat System
+
+package "Entities" {
+    class UserEntity {
+        - id: int
+        - username: string
+        - email: string
+        - passwordHash: string
+    }
+
+    class RoomEntity {
+        - id: int
+        - name: string
+        - participants: Set<ParticipantEntity>
+        - lastMessages: List<MessageEntity>
+        +register()
+        +brodcast()
+    }
+
+    class ParticipantEntity {
+        - id: int
+        - user: UserEntity
+        - room: RoomEntity
+        - lastSeen: DateTime
+        +enter()
+        +leave()
+        +receive()
+        +send()
+    }
+
+    class MessageEntity {
+        - id: int
+        - content: string
+        - sender: ParticipantEntity
+        - timestamp: DateTime
+        - room: RoomEntity
+    }
+}
+
+package "NotificationServerComponent" {
+    interface INotify {
+        + notify(): boolean
+    }
+}
+
+package "ChatServerComponent" {
+    interface IChatClient {
+        + getId(): int
+        + receive(): void
+    }
+
+    interface IChatServer {
+        + connect(): boolean
+        + disconnect(): boolean
+    }
+}
+
+IChatClient *-- IChatServer
+
+
+RoomEntity "1" -right-> "*" ParticipantEntity
+RoomEntity "1" --> "*" MessageEntity
+UserEntity "1" --> "*" ParticipantEntity
+
+ParticipantEntity o-right- INotify: has
+ParticipantEntity o-- IChatClient: has if connected
+
+@enduml
