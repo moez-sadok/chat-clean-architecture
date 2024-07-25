@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Inject, Optional, Param, Post, Query } from '@nestjs/common';
-import { IChatController } from '@chat-clean-architecture/chat/adapters/controllers';
+import { IChatHttpController } from '@chat-clean-architecture/chat/adapters/controllers';
 
 @Controller()
-export class ChatHttpAdapterController implements IChatController { 
+export class ChatHttpAdapterController implements IChatHttpController { 
 
   constructor(@Optional() @Inject('CHAT_CONTROLLER_PROVIDER') 
-      private chatController: IChatController
+      private chatController: IChatHttpController
   ) { }
 
   @Get('chat-user-rooms/:userId')
@@ -28,18 +28,9 @@ export class ChatHttpAdapterController implements IChatController {
     return this.chatController.sendMessage(+message.roomId, +message.userId ,message.message );
   }
 
-  //Handled by ChatWsAdapterController , to check by SIP 
-  connectClient(client: number | any): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
-
-  disconnectClient(userId: number): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
-
 }
 
-//DI (at is) or extends ChatControllerApiImpl / implements IChatController (with SIP)
+//DI (at is) or extends ChatControllerApiImpl / implements IChatHttpController (with SIP)
 
 // /* First solution: 
 //  create a facade for the app and return the data inside the flow (interactor -> controller)

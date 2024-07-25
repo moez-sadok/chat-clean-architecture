@@ -1,25 +1,13 @@
 
 import { IChatAppFacadeControllerInput, GetRoomsByUserInputData, GetRoomMessagesInputData, SendMessageInputData, RoomOutputData, MessageOutputData, UserOutputData, IChatAppFacadePresenterOutput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-import { IChatController } from '../chat.controllor';
-import { ChatClientPortImpl } from '@chat-clean-architecture/chat/adapters/network';
+import { IChatHttpController } from '../chat.controllor';
 // Adapter pattern (Object) 
-export class ChatControllerMemoryImpl implements IChatController {
+export class ChatControllerMemoryImpl implements IChatHttpController {
 
-  constructor(protected interactorInputboundry: IChatAppFacadeControllerInput,
-    protected presenter: IChatAppFacadePresenterOutput) { }
+  constructor(protected interactorInputboundry: IChatAppFacadeControllerInput) { }
 
   getUserById(userId: number): Promise<UserOutputData | null> {
     return this.interactorInputboundry.getUser(userId);
-  }
-
-  disconnectClient(userId: number): Promise<boolean> {
-    return this.interactorInputboundry.disconnectClient(userId);
-  }
-
-  connectClient(userId: number): Promise<boolean> {
-    if (typeof userId !== 'number') return new Promise((resolve) => resolve(false));
-    const clientSocket = new ChatClientPortImpl(userId,'',this.presenter);
-    return this.interactorInputboundry.connectClient(clientSocket);
   }
 
   getUserRooms(userId: number): Promise<RoomOutputData[]> {
