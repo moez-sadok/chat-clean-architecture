@@ -1,5 +1,5 @@
 
-import { ChatControllerMemoryImpl, ChatServerControllerMemoryImpl, IChatHttpController } from "../../../libs/chat/adapters/controllers/src";
+import { ChatControllerMemoryImpl, ChatServerControllerMemoryImpl, ChatServerControllerMemoryImpl2, IChatHttpController } from "../../../libs/chat/adapters/controllers/src";
 import { DataBaseMapper, IChatDatabase } from "../../../libs/chat/adapters/gateways/src";
 import { ChatServerMemoryImpl } from "../../../libs/chat/adapters/network/src";
 import { ChatUiPresenterImpl, IChatView } from "../../../libs/chat/adapters/presenters/src";
@@ -13,7 +13,7 @@ export interface ClientViewController {
     id: number
 }
 
-export class MainDouble {
+export class MainOptimizeDouble {
 
     dataBase!: IChatDatabase;
     chatdbMapper!: IChatRepository;
@@ -33,13 +33,15 @@ export class MainDouble {
         const chatApp = new ChatAppFacadeImpl(this.chatdbMapper, chatPresenter, this.chatServer);
         // const chatController = new ChatControllerMemoryImpl(chatApp, chatPresenter);
         const chatController = new ChatControllerMemoryImpl(chatApp);
-        const chatServerController = new ChatServerControllerMemoryImpl(chatApp, chatPresenter);
+       // const chatServerController = new ChatServerControllerMemoryImpl(chatApp, chatPresenter);
+        const chatServerController = new ChatServerControllerMemoryImpl2(chatApp);
 
         const addedUser = await this.chatdbMapper.addUser({ id: -1, name: name });
         const currUser = await chatController.getUserById(addedUser.id);
         if (!currUser) throw new Error('Fail in adding user to repository');
 
-        await chatServerController.connectClient(addedUser.id);
+        // await chatServerController.connectClient(addedUser.id);
+        await chatServerController.connectClient(addedUser.id,chatPresenter);
         
         return new Promise((resolve) => {
             resolve({ view: chatView, controller: chatController, id: addedUser.id });

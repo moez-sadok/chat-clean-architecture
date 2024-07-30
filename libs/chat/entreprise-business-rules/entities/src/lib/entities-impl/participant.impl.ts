@@ -56,10 +56,10 @@ export class Participant implements IParticpant {
       message.getchatRoom().getId(),
       this.getUserId(),
       message.getParticipant().getUserName());
-    else
+    //else
      //TO-Compleate
      // this.notifiyer?.notify(this.getUserId(), message.getcontent())
-     console.log('Participant user is not connected, send a push notif...', this.getUserId());
+     //console.log('Participant user is not connected, send a push notif...', this.getUserId());
   }
 
 }

@@ -1,12 +1,14 @@
 import { expect, test } from "@jest/globals";
 import { ClientViewController, MainDouble } from "./main";
 import { ChatroomDto } from "../../../libs/chat/application-business-rules/interactor/src";
+import { MainOptimizeDouble } from "./main.optmize";
 
 export const MAX_USERS = 10000; // 50000
 export const MAX_CONCURRENT_MESSAGES = 10;
 
 describe('Main Perf Memory Tesing (multi connected user in one room )...', () => {
-    const main = new MainDouble();
+    // const main = new MainDouble();
+    const main = new MainOptimizeDouble();
     let clients: ClientViewController[] = [];
     let room: ChatroomDto;
     const msg = 'Hello from main';

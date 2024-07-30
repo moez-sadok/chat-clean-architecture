@@ -19,3 +19,21 @@ export class ChatServerControllerMemoryImpl implements IChatWsController {
   }
 
 }
+
+//whitout presenter on the constructor
+export class ChatServerControllerMemoryImpl2 implements IChatWsController {
+
+  constructor(protected interactorInputboundry: IChatAppFacadeControllerInput) { }
+
+  disconnectClient(userId: number): Promise<boolean> {
+    return this.interactorInputboundry.disconnectClient(userId);
+  }
+
+  connectClient(userId: number,presenter: IChatAppFacadePresenterOutput): Promise<boolean> {
+    if (typeof userId !== 'number') return new Promise((resolve) => resolve(false));
+    const clientSocket = new ChatClientPortImpl(userId,'',presenter);
+    return this.interactorInputboundry.connectClient(clientSocket);
+  }
+
+}
+

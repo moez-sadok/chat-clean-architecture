@@ -85,8 +85,8 @@ describe('Chatroom send and broadcats messages', () => {
 });
 
 describe('Big Chatroom (1 million) send and broadcats messages', () => {
-    const MAX_USERS = 1000000; //take 150 Mb of memory
-    const MAX_CONCURRENT_MESSAGES = 2;
+    const MAX_USERS = 1000000; //take avrg of 150 Mb of memory
+    const MAX_CONCURRENT_MESSAGES = 10; //as concurrent take avrg 1s
 
     let chatroom: IChatroom;
     let pFirst : IParticpant;

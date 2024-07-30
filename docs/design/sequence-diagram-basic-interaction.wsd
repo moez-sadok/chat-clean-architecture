@@ -16,14 +16,10 @@ entity Entities #FDD835
 database ChatRepository #FF5722
 
 User1 -> WsChatServer: Connect
-' WsChatServer -> User1: Connection Acknowledged
-
 User2 -> WsChatServer: Connect
-' WsChatServer -> User2: Connection Acknowledged
 
 User1 -> HttpServer: Send Message "Hello, User2!"
 HttpServer -> UseCases: send()
-UseCases -> UseCases: validate()
 UseCases -> ChatRepository: save()
 UseCases -> Entities : broadcast()
 Entities -> WsChatServer: receive()

@@ -32,9 +32,10 @@ note left #White
 
     **Extensions (Alternate Flows):**
     __Extension 1:__ Message Content is Invalid
-    - Condition: The user enters invalid content (e.g., empty message, prohibited words).
+    - Condition: The user enters invalid content (e.g., empty message, sql attack, prohibited words).
     - Flow:
       - System: Displays an error message indicating the invalid content.
+      - System: Alert admin/security team in case of an sql attack & block next requests
       - User: Corrects the message and resends.
 
     __Extension 2:__ User is Not Part of the Chat Room
@@ -51,7 +52,7 @@ note left #White
       - User: Attempts to resend the message or checks their network connection.
 
     **Special Requirements:**
-    - Performance: The system must deliver the message within 2 seconds of the user clicking the send button.
+    - Performance: The system must deliver the message within 1 seconds of the user clicking the send button.
     - Security: The message content must be sanitized to prevent injection attacks.
     - Usability: The user interface should provide clear feedback on the status of the message (sent, failed, etc.).
 

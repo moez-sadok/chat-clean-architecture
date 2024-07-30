@@ -4,7 +4,7 @@ import { IChatWsController } from '../chat.controllor';
 import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 import { ChatServerSocketAdapter } from '@chat-clean-architecture/chat/adapters/network';
 import { Socket } from 'socket.io';
-// Adapter pattern (Object) 
+// to check using (replaced by the socket controller)
 export class ChatServerControllerApiImpl implements IChatWsController {
 
   constructor(protected interactorInputboundry: IChatAppFacadeControllerInput) { }

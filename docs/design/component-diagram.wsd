@@ -6,17 +6,23 @@ package "Adapters" {
     interface IController  #LightBlue
     interface IPresenter #CDE711
 }
-
-package "NetworkGateway" {
-    interface IChatServer #SkyBlue
-    interface IChatClient #MediumVioletRed
-}
 package "Core" {
     interface IRepository #FF5722
     interface INotifier #SpringGreen
     collections UseCases
     [Entities] #FDD835
+    package "NetworkGateway" {
+        interface IChatServer #SkyBlue
+        interface IChatClient #MediumVioletRed
+    }
 }
+
+' package "Core.NetworkGateway" {
+    '     interface IChatServer #SkyBlue
+    '     interface IChatClient #MediumVioletRed
+    '
+' }
+
 
 node "Client (Browser)" {
     interface IView #Pink
@@ -54,12 +60,12 @@ node "Ws_Server" {
 User -down-> GUI : Send Request
 GUI -right-> ClientController : Action:Routing,Click...
 
-ServerController  <.--.> ClientController  : HTTP 
+ServerController  <.--.> ClientController  : HTTP
 ServerController -right-> UseCases : callUseCase(req)/returnResult()
 
 Entities  <--  UseCases : manageEntities()
 
-ClientController <.--.> WsServer : WS 
+ClientController <.--.> WsServer : WS
 IChatServer <|-left- WsServer
 ClientSocket *-- WsServer
 IChatClient  <|-left- ClientSocket
@@ -94,48 +100,58 @@ IPresenter  -up- IController #FFFFFF
 ' actor User #F06292
 
 ' package "User Interface" {
-'     package "View Package" {
-'         [View]
-'     }
-'     View -up-|>  [GUI] 
-'     View -up-|>  [CLI] 
-'     View -up-|>  [API] 
-' }
+    '     package "View Package" {
+        '         [View]
+        '
+    }
+    '     View -up-|>  [GUI]
+    '     View -up-|>  [CLI]
+    '     View -up-|>  [API]
+    '
+}
 
 ' package "Controller Package" {
-'     [Controller] #CDE711
-' } 
+    '     [Controller] #CDE711
+    '
+}
+
 
 ' package "Use Case Interactor Package" {
-'     collections UseCases
-' }
+    '     collections UseCases
+    '
+}
 
 ' package "Entity_Package" {
-'     [Entities] #FDD835
-' }
+    '     [Entities] #FDD835
+    '
+}
 
 ' package "Repository Package" {
-'     [ChatRepository] #FF5722
-' }
+    '     [ChatRepository] #FF5722
+    '
+}
 
 ' package "Notifier Package" {
-'     [Notifier] #Green
-' }
+    '     [Notifier] #Green
+    '
+}
 
 ' package "Presentation Package" {
-'     [Presenter] #CDE711
-' }
+    '     [Presenter] #CDE711
+    '
+}
 
 ' package "WsServer Package" {
-'     [WsServer] #SkyBlue
-' }
+    '     [WsServer] #SkyBlue
+    '
+}
 
 ' User --> Controller : Send Request
 ' Controller --> UseCases : callUseCase(req)
 ' UseCases --> Entity_Package : manageEntities()
 ' ChatRepository  <-right-> UseCases  : getOrPersistData()
 ' UseCases -left-> Presenter : present()
-' UseCases -left-> WsServer 
+' UseCases -left-> WsServer
 ' View <-down- Presenter : display()
 ' Entities -left-> Notifier : sendNotification(msg)
 ' View  <-right- User : See response

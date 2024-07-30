@@ -9,6 +9,7 @@ export interface IChatHttpController {
 }
 
 export interface IChatWsController {
-  connectClient(client: IChatClient | number | any):Promise<boolean>;
+  // connectClient(client: IChatClient | number | any):Promise<boolean>;
+  connectClient(client: IChatClient | number | any, prsenter?:any):Promise<boolean>;
   disconnectClient(userId: number):Promise<boolean>;
 }
