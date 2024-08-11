@@ -1,5 +1,11 @@
 @startuml
-
+' !theme spacelab
+' !theme materia-outline
+' !theme metal
+' !theme aws-orange
+' !theme sketchy-outline 
+' !theme sketchy
+' !theme reddress-darkorange
 actor User #F06292
 
 package "Adapters" {
@@ -16,13 +22,6 @@ package "Core" {
         interface IChatClient #MediumVioletRed
     }
 }
-
-' package "Core.NetworkGateway" {
-    '     interface IChatServer #SkyBlue
-    '     interface IChatClient #MediumVioletRed
-    '
-' }
-
 
 node "Client (Browser)" {
     interface IView #Pink
@@ -51,10 +50,8 @@ node "Http_Server" {
 }
 
 node "Ws_Server" {
-    ' top to bottom direction
-    [ClientSocket] #MediumVioletRed
+    [ClientSocket] #HotPink
     [WsServer] #SkyBlue
-
 }
 
 User -down-> GUI : Send Request
@@ -91,100 +88,3 @@ ServerController  -up- WsServer #FFFFFF
 IPresenter  -up- IController #FFFFFF
 
 @enduml
-
-
-
-' @startuml
-' ' Packages / Component Diagram for chat system
-
-' actor User #F06292
-
-' package "User Interface" {
-    '     package "View Package" {
-        '         [View]
-        '
-    }
-    '     View -up-|>  [GUI]
-    '     View -up-|>  [CLI]
-    '     View -up-|>  [API]
-    '
-}
-
-' package "Controller Package" {
-    '     [Controller] #CDE711
-    '
-}
-
-
-' package "Use Case Interactor Package" {
-    '     collections UseCases
-    '
-}
-
-' package "Entity_Package" {
-    '     [Entities] #FDD835
-    '
-}
-
-' package "Repository Package" {
-    '     [ChatRepository] #FF5722
-    '
-}
-
-' package "Notifier Package" {
-    '     [Notifier] #Green
-    '
-}
-
-' package "Presentation Package" {
-    '     [Presenter] #CDE711
-    '
-}
-
-' package "WsServer Package" {
-    '     [WsServer] #SkyBlue
-    '
-}
-
-' User --> Controller : Send Request
-' Controller --> UseCases : callUseCase(req)
-' UseCases --> Entity_Package : manageEntities()
-' ChatRepository  <-right-> UseCases  : getOrPersistData()
-' UseCases -left-> Presenter : present()
-' UseCases -left-> WsServer
-' View <-down- Presenter : display()
-' Entities -left-> Notifier : sendNotification(msg)
-' View  <-right- User : See response
-
-' @enduml
-
-
-
-
-
-' @startuml
-' Only components
-' actor User #F06292
-
-' collections UseCases
-' [View] #Pink
-' [GUI]  -down-|> View
-' [CLI]  -down-|> View
-' [API]  -down-|> View
-
-' [Controller] #LightBlue
-' [Entities] #FDD835
-' [ChatRepository] #FF5722
-' [Notifier] #SpringGreen
-' [Presenter] #CDE711
-
-' User --> Controller : Send Request
-' Controller --> UseCases : callUseCase(req)
-' UseCases --> Entities : manageEntities()
-' ChatRepository  <-right-> UseCases  : getOrPersistData()
-' UseCases -left-> Presenter : present()
-' View <-down- Presenter : display()
-' Entities -left-> Notifier : sendNotification(msg)
-' View  -right-> User : See response
-
-' @enduml

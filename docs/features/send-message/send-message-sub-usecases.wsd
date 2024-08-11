@@ -1,5 +1,6 @@
 @startuml
 left to right direction
+title Send message Sub-usecases
 ' Use Case Diagram for Send Message Feature
 
 actor User #F06292
