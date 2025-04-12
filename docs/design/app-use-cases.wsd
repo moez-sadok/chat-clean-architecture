@@ -1,6 +1,9 @@
 @startuml
 left to right direction
 
+title  P-Chat Usecase diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
 actor "Admin" as adm #EC407A
 actor "User " as acs #607D8B
 
@@ -11,7 +14,7 @@ rectangle UserDomain  {
     usecase "Signal another user" as UCC7
 }
 
-rectangle ChatDomain {
+rectangle ChatDomain #33FFCC\356CAE{
     usecase "Get user rooms" as UCC3 #Orange
     usecase "Create a room" as UCC2 #Orange
     usecase "Enter a room" as UCC4 #Orange
@@ -36,13 +39,14 @@ acs --> UCC4
 acs --> UCC6
 acs --> UCC7
 acs --> UCC8
+acs --> UCC10
 
 UCC4 --> UCC5 : includes
 
 UCC1 --> UCC9 : includes
 
-UCA1 --> adm
-UCA2 --> adm
+UCA1 <-- adm
+UCA2 <-- adm
 
 UserDomain  -- AdminDomain #FFFFFF
 

@@ -1,5 +1,7 @@
 @startuml
-' Use Case Specifications for Send Message
+
+title Send message use Case Specifications 
+footer Prodsoft - Moez SADOK @Copyright 2024
 
 note left #White
     **Use Case Name:** Send Message

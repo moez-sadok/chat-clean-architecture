@@ -1,15 +1,15 @@
 @startuml
 
+title Deployment Diagram 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
 actor User #F06292
 
-' !include component-diagram.wsd
-
-node "K8S Cluster" {
-    ' interface LoadBalancer  #LightBlue
+node "K8S Cluster" #33FFCC\356CAE {
     interface IIngress  #MediumVioletRed
     portin LoadBalancer  #LightBlue
 
-    package "prod_namespace"{
+    package "prod_namespace" #White{
         node PodFront #LightPink
         node PodBack #FDD835
         node PodWsServer #LightCyan

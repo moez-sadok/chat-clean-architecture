@@ -1,18 +1,23 @@
 @startsalt MessageForm_Wireframe
 
+title Send message wireframes for Web and Mobile
+footer Prodsoft - Moez SADOK @Copyright 2024
+
 scale 2
 {
     { <color:RoyalBlue>**Web** }
     {
     {SI
         **Rooms**
+        --
         . Family
-        .  __Friends__   
+        .  **__Friends__**   
         . Work
         . Bob
     }|
     {SI
         **Messages**
+        --
         . //Alice//: party tonight?
         . //Bob//: why not
         . //Adam//: where?
@@ -21,7 +26,7 @@ scale 2
     |
     }
     {
-        <&pencil> Message: | "          " | [<&arrow-right> Send ]
+        <&pencil>|"                    " | [<color:Green> Send ]
     }
     --
     { <color:RoyalBlue>**Mobile** }
@@ -30,6 +35,7 @@ scale 2
     {SI
 
         **Messages**
+        --
         . //Alice//: party tonight?
         . //Bob//: why not
         . //Adam//: where?
@@ -37,7 +43,7 @@ scale 2
     }
     |
     {
-      "          " | [<&arrow-right> Send ]
+      "          " | [<color:Green> Send ]
     }
 }
 

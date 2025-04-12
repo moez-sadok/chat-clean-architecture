@@ -1,33 +1,36 @@
 @startuml
-' !theme spacelab
-' !theme materia-outline
-' !theme metal
-' !theme aws-orange
-' !theme sketchy-outline 
-' !theme sketchy
-' !theme reddress-darkorange
-actor User #F06292
 
-package "Adapters" {
-    interface IController  #LightBlue
+!include prodsoft.wsd
+
+title P-CHAT Component Diagram 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User $SECONDARY
+
+package "Adapters" $GARDIANT_LIGHT {
+    interface IController  $PRIMARY_LIGHT
     interface IPresenter #CDE711
 }
-package "Core" {
-    interface IRepository #FF5722
-    interface INotifier #SpringGreen
-    collections UseCases
-    [Entities] #FDD835
-    package "NetworkGateway" {
-        interface IChatServer #SkyBlue
-        interface IChatClient #MediumVioletRed
+
+package "Core"  $GARDIANT_LIGHT{
+    interface IRepository $PRIMARY_LIGHT
+    interface INotifiyer $ACCENT_LIGHT\White
+    collections UseCases #White
+    
+    [Entities] $SECONDARY_VERY_LIGHT
+
+    package "NetworkGateway" #transparent;line:Black;line.bold {
+
+        interface IChatServer  $PRIMARY_LIGHT/LightSeaGreen  
+        interface IChatClient  $SECONDARY_VERY_LIGHT/LightGreen
     }
 }
 
-node "Client (Browser)" {
-    interface IView #Pink
+node "Client (Browser)" $BACKGROUND_LIGHT {
+    interface IView #LimeGreen
     [PresenterUI] #CDE711
-    [ClientController] #LightBlue
-    [GUI] #Pink
+    [ClientController] $PRIMARY_LIGHT
+    [GUI] #LimeGreen
 
     PresenterUI --|>  IPresenter
     ClientController --|>  IController
@@ -35,30 +38,30 @@ node "Client (Browser)" {
 }
 
 node "Database Server" {
-    database ChatDataBase #FF5722
+    database ChatDataBase $PRIMARY
 }
 
 node "Notification Server" {
-    [Notifier] #SpringGreen
+    [Notifiyer] $ACCENT_LIGHT\White
 }
 
-node "Http_Server" {
-    [ServerController]  #LightBlue
+node "Http_Server"  {
+    [ServerController]  $PRIMARY_LIGHT
     [PresenterAPI] #CDE711
     ServerController --|>  IController
     PresenterAPI --|>  IPresenter
 }
 
-node "Ws_Server" {
-    [ClientSocket] #HotPink
-    [WsServer] #SkyBlue
+node "Ws_Server"  {
+    [ClientSocket] $SECONDARY_VERY_LIGHT/LightGreen
+    [WsServer]  $PRIMARY_LIGHT/LightSeaGreen
 }
 
 User -down-> GUI : Send Request
 GUI -right-> ClientController : Action:Routing,Click...
 
 ServerController  <.--.> ClientController  : HTTP
-ServerController -right-> UseCases : callUseCase(req)/returnResult()
+ServerController <.-right-.> UseCases : requestUseCase(req)
 
 Entities  <--  UseCases : manageEntities()
 
@@ -69,12 +72,11 @@ IChatClient  <|-left- ClientSocket
 IChatClient *-- IChatServer
 IChatClient <-down- Entities
 
-
 IRepository <-up- UseCases  : getOrPersistData()
-ChatDataBase  -up-|>  IRepository
+ChatDataBase  -up-|>  IRepository 
 
-Notifier  -left-|>  INotifier
-Entities -right-> INotifier : sendNotification(msg)
+Notifiyer  -left-|>  INotifiyer
+Entities -right-> INotifiyer : sendNotification(msg)
 
 ServerController --> PresenterAPI : formatData()
 
@@ -84,7 +86,7 @@ IView <-right- PresenterUI : display()
 GUI  -up-> User : See response
 
 ' fake fidden line for design adaptation
-ServerController  -up- WsServer #FFFFFF
-IPresenter  -up- IController #FFFFFF
+ServerController  -up[hidden]- WsServer 
+IPresenter  -up[hidden]- IController 
 
 @enduml

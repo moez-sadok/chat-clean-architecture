@@ -1,17 +1,19 @@
 @startuml
+
 left to right direction
-title Send message Sub-usecases
-' Use Case Diagram for Send Message Feature
+title Send message Sub-usecases diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User #F06292
-rectangle  {
+
+rectangle #33FFCC\356CAE {
     usecase/ "Send Message" as UC_SendMessage #LightGreen
     usecase "Validate Message Content" as UC_ValidateContent #LightGreen
     usecase "Validate Room" as UC_ValidateRoom #Orange
     usecase "User is participant of room" as UC_ValidateUser #Orange
     usecase "Get Room" as UC_GetRoom #Orange
     usecase "Broadcast Message" as UC_BroadcastMessage #Orange
-    usecase "Send Notification" as UC_SendNotification #MediumPurple
+    usecase "Send Notification" as UC_SendNotification #33FFCC
     usecase "Save Message" as UC_SaveMessage #LightGreen
     usecase "Present Success" as UC_PresentSuccess
     usecase "Present Error" as UC_PresentError

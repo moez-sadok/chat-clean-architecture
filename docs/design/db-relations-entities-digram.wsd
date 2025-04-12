@@ -1,23 +1,27 @@
 @startuml
+
+title Database tables relations 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
 entity UserDbTable {
     +id: int
     +username: string
     +email: string
 }
 
-entity RoomDbTable {
+entity RoomDbTable #33FFCC\356CAE {
     +id: int
     +name: string
 }
 
-entity ParticipantDbTable {
+entity ParticipantDbTable  #White/356CAE {
     +id: int
     +userId: int
     +roomId: int
     +isBot: boolean
 }
 
-entity MessageDbTable {
+entity MessageDbTable #White/33FFCC {
     +id: int
     +content: string
     +senderId: int

@@ -1,126 +1,164 @@
-# Chat Clean Architecture
+# PChat Application
 
 ✨ **Example of a chat application using clean architecture** ✨
 
-Discover the magic of clean architecture.
+## Table of contents <a id="main_tc"></a>
 
-See: [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+1. [Introduction](#introduction)
 
- <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="angular-logo" width="400px" height="300px"/>
+2. [Scope](#scope)
 
-## 1. Independent of Frameworks:
+   - [2.1 Use case diagram](use-case-diagram)
+   - [2.2 Main chat flow](#main-chat-flow)
 
-In this example, when using Angular or NestJs, we only utilize the necessary features such as Dependency Injection (DI), modules ... 
-The frameworks/lib used as a tool.
-## 2. Testable:
+3. [Features](#features)
 
-Starting with Test-Driven Development (TDD) will be easy, and our business rules can be tested without relying on the UI, database, web server, or any other external elements.
+   - [3.1 Send message](#uc1-send-message)
+     - [a. Sub-Usecase diagram](#uc1-sub-usecase-diagram)
+     - [b. BDD](#uc1-bbd)
+     - [c. Specification](#uc1-specification)
+     - [d. Sequence diagram](#uc1-sequence-diagram)
+     - [f. Wireframe](#uc1-server-cloud-cluster)
 
-This example runs in two environments:
+4. [Architecture ](#Architecture)
 
-- In-memory: Used as an integration test for the full system and runs inside Angular (page: /chat/multi).
-- Network: Uses HTTP and WebSocket, allowing the system's components to be easily split between client and server.
+   - [4.1 Entites](#entites)
+   - [4.2 DB Relationships](#db-relationships)
+   - [4.3 Component diagram](#component-diagram)
+      - [a. Memory - Component diagram](#memory-component-diagram)
+      - [b. ClientServer - Component diagram](#client-server-component-diagram)
+   - [4.4 Deployment digram](#deployment-digram)
 
-## 3. Independent of UI:
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
 
-In this example, we use a native HTML/CSS view and another one using material-components. The UI can be easily changed without affecting the rest of the system. (Note: The API can also be seen as another kind of UI output.)
+# 1. Introduction <a id="introduction"></a>
 
-## 4. Independent of Database:
+P-Chat is an example of a real-time chat application that enables users to interact in chat rooms through messaging features. The platform allows users to create, join, and leave chat rooms while sending and receiving messages in real time.
 
-In this example, we use an in-memory database as a mock and MongoDB. However, you can easily swap it out for MySQL, Cassandra, Oracle, or any other database. Your business rules are not tightly coupled to the database.
+# 2. Scope <a id="scope"></a>
 
-## 5. Independent of any external agency:
+The main domain of the system is the chat domain:
+Manages chat rooms, message exchange, and real-time communication.
 
-In this example, all business rules are decoupled from the outside world. See the dependency graph [Dependencies Graph](#dependencies-graph)
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
 
-# Ecosystem
+## 2.1 Use case diagram
 
-### Languages: [Typescript]() , [Html]() , [Css]()
-### Tools: [Nx workspace]()
-### Frameworks/libs: [Angular]() , [NestJs]() , [Redis]() , [...React]() 
-### Database: [In-memory]() , [...MongoDB]()  
-### Network: [In-memory ]() , [HTTP]() , [WebSocket]() , [...GraphQL]() 
-<br>
-Note: In this example, we use different frameworks/libs to illustrate the power of this architecture and how easily we can replace them.
-<br>
-<br>
+![Use case diagram!](out/docs/design/app-use-cases/app-use-cases.png 'Global use case diagram')
 
-# Demo (in-memory Angular app as the main)
+**List of Actors**
 
-https://stackblitz.com/github/moez-sadok/chat-clean-architecture
+- Admin: Manages user reports and can block users.
+- User: Joins chat rooms, sends and receives messages, and can report other users.
 
-# Installation
-```
-npm i
-```
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
 
-# Run locally
-```
-npm run start
+## 2.2 Main chat flow
 
-npm run start:api
-```
+![Use case diagram!](out/docs/design/sequence-diagram-basic-interaction/sequence-diagram-basic-interaction.png 'Global use case diagram')
 
-## Try with 2 versions
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
 
-Version 1: Full in-memory angular app as main (no need to run the back-end api)
+# 3. Features <a id="features"></a>
 
- - http://localhost:4200/chat/multi 
+The main feature of the application is 'Send message', so we detail the documentation of it
 
-Version 2: With client/server (websockt/http), open in different private tabs
+## 3.1 Send message
 
-- http://localhost:4200/chat/user/1
-- http://localhost:4200/chat/user/2
+### a. Sub-Usecase diagram
 
-# dependencies graph
-```
-npm run dep-graph
-```
+![Send message - Use case diagram!](out/docs/features/send-message/send-message-sub-usecases/send-message-sub-usecases.png 'Send message - Use case diagram')
 
- <img src="nx-dep-graph-image.png" alt="angular-logo" width="780px" height="480px"/>
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
 
-<br>
+### b. Bdd
 
-# Code source structure
+```bash
+Feature: Send Message
+  As a User
+  I want to send a message in a chat room
+  So that all participants can receive it
 
- <img src="code-structure.png" alt="angular-logo" width="300px" height="600px"/>
+Scenario: Online receiver (connected)
+  Given a User wants to send a message
+  When the User sends a SendMessageRequest
+  Then the message content, room, and user are validated
+  And the message is broadcasted to all participants
+  And the message is saved in the chat repository
+  And a SendMessageResponse is returned to the User
 
-# Redis as adapter 
-Many other tools harness the power of port/adapter architecture. For instance, Redis enables the creation and connection of a multi-chat server to support millions of connected users with just three lines of code.
+Scenario: Offline receiver (disconnected)
+  Given a User wants to send a message
+  When the User sends a SendMessageRequest
+  Then the message content, room, and user are validated
+  And the message is saved in the chat repository
+  And a SendMessageResponse is returned to the User
+  And the message is broadcasted to all connected participants of the room
 
-See also: https://socket.io/docs/v4/redis-adapter/
-
-https://docs.nestjs.com/websockets/adapter
-
-To install Redis, please check the official Redis website and see also [NestJS WebSocket Adapter documentation](https://docs.nestjs.com/websockets/adapter).
-
-- Uncomment redis adapter code inside the main.ts of chat-server-main-api 
-```
-  // const redisIoAdapter = new RedisIoAdapter(app);
-  // await redisIoAdapter.connectToRedis();
-  // app.useWebSocketAdapter(redisIoAdapter);
-```
-- Run redis server inside the cmd
-```
-redis-server
-```
-
-# Code scaffolding
-Using Nx console vs code extension or cli:
-
-Generate nest app:
-```
-npx nx generate @nrwl/nest:application chat/chat-server-main-api --frontendProject chat-chat-client-main-ng
+  When one or more participant of the room are offline
+  Then send push notifications to offline participant(s)
 ```
 
-Generate lib:
-```
-npx nx generate @nrwl/workspace:library chat/entreprise-business-rules/notifiyer
-npx nx generate @nrwl/workspace:library chat/application-business-rules/network
-npx nx generate @nrwl/workspace:library chat/adapters/network
-```
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
 
-# perf-testing
-node tests/bench/send-message-bench-test.js
-or
-autocannon -c 10 -a 1000 -m POST http://localhost:3333/api/send-message --header 'Content-Type: application/json' --body '{ "roomId": "0", "userId": "1", "message": "perf message" }'
+### c. Specification
+
+![Send message - Specification!](out/docs/features/send-message/send-message-specifications/send-message-specifications.png 'Send message - Specification')
+
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
+
+### d. Sequence diagram
+
+![Send message - Sequence diagram!](out/docs/features/send-message/send-message-sequence/send-message-sequence.png 'Send message - Sequence diagram')
+
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
+
+### f. Wireframe
+
+![Send message - Wireframe!](out/docs/features/send-message/send-message-wireframe/MessageForm_Wireframe.png 'Send message - Wireframe')
+
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
+
+# Architecture 
+
+   ## 4.1 Entites
+
+   ![Entites!](out/docs/design/entities-digram/entities-digram.png 'Entites')
+
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
+
+   ## 4.2 DB Relationships
+
+   ![DB Relationships!](out/docs/design/db-relations-entities-digram/db-relations-entities-digram.png 'DB Relationships')
+
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
+
+   ##  4.3 Component diagram
+
+   - a. Memory - Component diagram
+
+   ![Component diagram memory](out/docs/design/component-diagram-memory/component-diagram-memory.png 'Component diagram memory')
+
+
+   - b. ClientServer - Component diagram
+
+   ![Component diagram ](out/docs/design/component-diagram/component-diagram.png 'Component diagram ')
+
+<!-- Page-break For PDF generation -->
+<div style="page-break-after: always;"></div>
+
+   ##  4.4 Deployment digram
+
+ ![Deployment diagram ](out/docs/design/deployment-diagram/deployment-diagram.png 'Deployment diagram ')
+

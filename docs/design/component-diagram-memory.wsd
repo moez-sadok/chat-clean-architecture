@@ -1,0 +1,65 @@
+@startuml
+
+!include prodsoft.wsd
+
+title P-CHAT Component Diagram - On memory
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor Users $SECONDARY
+
+package "Core" $GARDIANT_LIGHT {
+
+    package "Adapters" $GARDIANT_LIGHT {
+        interface IController  $PRIMARY_LIGHT
+        interface IPresenter #CDE711
+    }
+
+    interface IRepository $PRIMARY_LIGHT
+    interface INotifiyer $ACCENT_LIGHT\White
+    collections UseCases #White
+
+    [Entities] $SECONDARY_VERY_LIGHT
+
+}
+
+node "Client" $BACKGROUND_LIGHT {
+    interface IView #LimeGreen
+    [PresenterUI] #CDE711
+    [ClientController] $PRIMARY_LIGHT
+    [GUI] #LimeGreen
+
+    PresenterUI --|>  IPresenter
+    ClientController -left-|>  IController
+    GUI --|> IView
+}
+
+node "Database" {
+    database ChatMemoryDB $PRIMARY
+}
+
+node "Notification" {
+    [NotifiyerLogger] $ACCENT_LIGHT\White
+}
+
+Users -down-> GUI : Send Request
+GUI -right-> ClientController : Action:Routing,Click...
+
+IController <.-right-.> UseCases : handle()
+
+Entities  <-down-  UseCases : manageEntities()
+
+IRepository <-up- UseCases  : getOrPersistData()
+ChatMemoryDB  -left-|>  IRepository
+
+NotifiyerLogger  -left-|>  INotifiyer
+Entities -right-> INotifiyer : send(msg)
+
+ClientController --> PresenterUI  : present()
+IView <-right- PresenterUI : display()
+
+GUI  -up-> Users : See response
+
+' fake fidden line for design adaptation
+IPresenter  -up[hidden]- IController
+
+@enduml

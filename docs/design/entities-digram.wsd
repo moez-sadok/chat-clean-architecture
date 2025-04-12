@@ -1,7 +1,11 @@
 @startuml
-' Entity Diagram for Chat System
 
-package "Entities" {
+!include prodsoft.wsd
+
+title P-CHAT Entities Diagram 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+package "Entities" #33FFCC\356CAE{
     class UserEntity {
         - id: int
         - username: string
@@ -58,10 +62,9 @@ package "ChatServer" {
 
 IChatClient *-- IChatServer
 
-
-RoomEntity "1" -right-> "*" ParticipantEntity
-RoomEntity "1" --> "*" MessageEntity
-UserEntity "1" --> "*" ParticipantEntity
+RoomEntity *-right- ParticipantEntity
+RoomEntity o--  MessageEntity
+UserEntity *-- ParticipantEntity
 
 ParticipantEntity o-right- INotify: has
 ParticipantEntity o-- IChatClient: has if connected

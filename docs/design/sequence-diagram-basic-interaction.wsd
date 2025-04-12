@@ -1,28 +1,28 @@
 @startuml
 
-' title as titl Basic sucess sequence flow [without adapters and notifiyer] 
-title Chat System Interaction
-header A simple sequence diagram illustrating two users interacting
-footer Success Flow [without adapters and notifiyer]
+!include prodsoft.wsd
 
-actor User1 #F06292
-actor User2
+title P-CHAT System Interaction
+header Sequence diagram: One room with 3 users, 2 connected and 1 disconnected
+footer Prodsoft - Moez SADOK @Copyright 2024
 
-participant WsChatServer
-participant HttpServer #CDE711
+actor User1 $PRIMARY
+actor User2 $SECONDARY
+control AppSystem $GARDIANT
 
-control UseCases
-entity Entities #FDD835
-database ChatRepository #FF5722
+actor User3 
 
-User1 -> WsChatServer: Connect
-User2 -> WsChatServer: Connect
+User1 -> AppSystem: connect
+User2 -> AppSystem: connect
 
-User1 -> HttpServer: Send Message "Hello, User2!"
-HttpServer -> UseCases: send()
-UseCases -> ChatRepository: save()
-UseCases -> Entities : broadcast()
-Entities -> WsChatServer: receive()
-WsChatServer -> User2: Deliver Message "Hello, User2!"
+User1 -> AppSystem: send("room1","Hello")
+AppSystem -> AppSystem: log()
+AppSystem -> AppSystem : broadcast()
+
+alt #LightGray Disconnected participant
+    AppSystem -> User3 : notify()
+else #b1ffeb Connected participant
+    AppSystem -> User2: deliver("Hello")
+end
 
 @enduml

@@ -1,5 +1,9 @@
 @startuml
-' Sequence Diagram for Clean Architecture Feature: Send Message
+
+!include ../../design/prodsoft.wsd
+
+title Send Message sequence diagram 
+footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User #F06292
 
