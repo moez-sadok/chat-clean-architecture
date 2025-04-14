@@ -1,9 +1,6 @@
-// import { ISendMessagePresenterOutput, MessageOutputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
-// import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
-
-import { MessageOutputData } from "../../../dtos/output.chat.data";
-import { ISendMessagePresenterOutput } from "../../../features/chat";
-import { IChatClient } from "../../../gateways";
+import { MessageOutputData } from "../../../../core/dtos/output.chat.data";
+import { ISendMessagePresenterOutput } from "../../../../core/features/chat";
+import { IChatClient } from "../../../../core/gateways";
 
 export class ChatClientPortImpl implements IChatClient {
 

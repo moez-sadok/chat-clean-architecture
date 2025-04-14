@@ -1,8 +1,5 @@
-import { Socket } from 'socket.io-client';
-// import { ISendMessagePresenterOutput, MessageOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
-// import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
-// // Adapter design pattern (Object)  (see 2e solution - class )
 // https://refactoring.guru/design-patterns/adapter/typescript/example
+import { Socket } from 'socket.io-client';
 import { IChatClient } from '../../../gateways/index';
 import { MessageOutputData } from '../../../dtos/output.chat.data';
 import { ISendMessagePresenterOutput } from '../../../features/chat';

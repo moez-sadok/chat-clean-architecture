@@ -1,12 +1,8 @@
-
-// import { ChatClientSocketkAdapter } from '@chat-clean-architecture/chat/adapters/network';
-// import {IChatAppFacadePresenterOutput } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { Socket, io } from 'socket.io-client';
 import { IChatWsController } from '../chat.controllor';
 import { IChatClient } from '../../gateways/notifiyer/chat-client.port';
-import { ChatClientSocketkAdapter } from '../ws/socket/chat-socket-client-adapter';
+import { ChatClientSocketkAdapter } from './socket/chat-socket-client-adapter';
 import { ISendMessagePresenterOutput } from '../../features/chat';
-// import { IChatClient } from '@chat-clean-architecture/chat/entreprise-business-rules/notifiyer';
 // Adapter pattern (Object) 
 export class ChatControllerWsClientAdapterImpl implements IChatWsController {
 

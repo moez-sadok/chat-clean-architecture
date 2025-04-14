@@ -1,4 +1,3 @@
-// import { IChatAppFacadePresenterOutput, RoomOutputData, MessageOutputData, UserOutputData } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { IChatAppFacadePresenterOutput } from '../../presenter';
 import { UserOutputData, RoomOutputData, MessageOutputData } from '../../dtos/output.chat.data';
 import { IChatHttpController } from '../chat.controllor';

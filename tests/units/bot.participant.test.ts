@@ -1,5 +1,6 @@
 import { expect } from "@jest/globals";
-import { BotParticipant, Chatroom, IParticpant, Participant } from "../../libs/chat/entreprise-business-rules/entities/src";
+// import { BotParticipant, Chatroom, IParticpant, Participant } from "@cca/core-entities";
+import { BotParticipant, Chatroom, IParticpant, Participant } from "../../core/entities/index";
 describe('Bot participant testing', () => {
     let bot: IParticpant;
     beforeEach(() => {

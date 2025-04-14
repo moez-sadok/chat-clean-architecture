@@ -1,6 +1,6 @@
 import { expect, test } from "@jest/globals";
-import { ClientViewController, MainDouble } from "./main";
-import { ChatroomDto } from "../../../libs/chat/application-business-rules/interactor/src";
+import { ClientViewController, MainDouble } from "./doubles/app/main";
+import { ChatroomDto } from "../../core/dtos/models/chatroom.dto";
 
 describe('Main Memory Tesing...', () => {
     const main = new MainDouble();

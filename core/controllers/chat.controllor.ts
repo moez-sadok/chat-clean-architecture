@@ -1,8 +1,5 @@
-// import { MessageOutputData, RoomOutputData, UserOutputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
-// import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
-
-import { IChatClient } from "@cca/core-gateways";
-import { UserOutputData, RoomOutputData, MessageOutputData } from "core/dtos/output.chat.data";
+import { IChatClient } from "../gateways";
+import { UserOutputData, RoomOutputData, MessageOutputData } from "../dtos/output.chat.data";
 
 export interface IChatHttpController {
   getUserById(userId: number): Promise<UserOutputData | null>;

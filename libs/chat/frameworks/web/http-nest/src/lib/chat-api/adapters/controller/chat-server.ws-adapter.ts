@@ -1,5 +1,7 @@
+// import { IChatClient ,IChatServerPort } from '../../gateways/index';
+// import { ChatServerSocketAdapter} from './socket/chat-socket-server-adapter';
 import { ChatServerSocketAdapter } from "@cca/core-controllers";
-import { IChatClient, IChatServerPort } from "@cca/core-gateways";
+import { IChatServerPort, IChatClient } from "@cca/core-gateways";
 import { createServer } from "http";
 import { Server } from "socket.io";
 

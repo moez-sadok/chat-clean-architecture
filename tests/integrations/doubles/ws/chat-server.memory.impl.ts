@@ -1,7 +1,4 @@
-//import {  IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
-//import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
-
-import { IChatServerPort, IChatClient } from "../../../gateways";
+import { IChatServerPort, IChatClient } from "../../../../core/gateways";
 
 // perfs (redis adapter)
 export class ChatServerMemoryImpl implements IChatServerPort {

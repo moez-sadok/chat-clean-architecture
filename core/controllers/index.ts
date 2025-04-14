@@ -1,13 +1,9 @@
 export * from './chat.controllor';
-
-// export * from './memory/chat-controller.impl';
-// export * from './memory/chat-server-controller.impl';
-
-// export * from './api/chat-controller.api.impl';
-// export * from './api/chat-server-controller.api.impl';
-
-export * from './tcp-client/chat-controller-http-client-adapter';
-export * from './tcp-client/chat-controller-ws-client-adapter';
-
+//http
+export * from './http/chat-controller-http-client-adapter';
 //ws
-export * from './ws/index';
+export * from './ws/chat-controller-ws-client-adapter';
+export * from './ws/socket/chat-socket-client-adapter';
+export * from './ws/socket/chat-socket-server-adapter';
+// export * from './ws/chat-server.ws-adapter';
+
