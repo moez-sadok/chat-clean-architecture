@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
+import { UserWebViewClientImpl } from '@cca/core-views';
 import { ActivatedRoute, Params } from '@angular/router';
 import { switchMap, of, tap } from 'rxjs';
 import { InjectionToken } from "@angular/core";
-import { ChatControllerHttpClientAdapterImpl, ChatControllerWsClientAdapterImpl, IChatHttpController, IChatWsController } from "@chat-clean-architecture/chat/adapters/controllers";
-import { ChatUiPresenterImpl, IChatView } from "@chat-clean-architecture/chat/adapters/presenters";
-import { IChatAppFacadePresenterOutput } from "@chat-clean-architecture/chat/application-business-rules/interactor";
+import { ChatControllerHttpClientAdapterImpl, ChatControllerWsClientAdapterImpl, IChatHttpController, IChatWsController } from "@cca/core-controllers";
+import { ChatUiPresenterImpl, IChatView ,IChatAppFacadePresenterOutput } from "@cca/core-presenters";
 
 export const CHAT_PRESENTATOR_PROVIDER = new InjectionToken<IChatAppFacadePresenterOutput>('chat.presentator');
 export const CHAT_VIEW_PROVIDER = new InjectionToken<IChatView>('chat.view');

@@ -15,30 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@chat-clean-architecture/chat/adapters/controllers": [
-        "libs/chat/adapters/controllers/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/adapters/gateways": [
-        "libs/chat/adapters/gateways/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/adapters/network": [
-        "libs/chat/adapters/network/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/adapters/presenters": [
-        "libs/chat/adapters/presenters/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/adapters/views": [
-        "libs/chat/adapters/views/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/application-business-rules/interactor": [
-        "libs/chat/application-business-rules/interactor/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/entreprise-business-rules/entities": [
-        "libs/chat/entreprise-business-rules/entities/src/index.ts"
-      ],
-      "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer": [
-        "libs/chat/entreprise-business-rules/notifiyer/src/index.ts"
-      ],
+      "@cca/core-gateways": [ "./core/gateways/index.ts"],
+      "@cca/core-presenters": [ "./core/presenter/index.ts"],
+      "@cca/core-views": [ "./core/views/index.ts"],
+      "@cca/core-repositories": [ "./core/repositories/index.ts"],
+      "@cca/core-controllers": [ "./core/controllers/index.ts"],
+      "@cca/core-features": [ "./core/features/chat/index.ts"],
+
       "@chat-clean-architecture/chat/frameworks/db/in-memory-db": [
         "libs/chat/frameworks/db/in-memory-db/src/index.ts"
       ],
@@ -60,6 +43,29 @@
       "@chat-clean-architecture/chat/frameworks/web/http-nest": [
         "libs/chat/frameworks/web/http-nest/src/index.ts"
       ]
+      // "@cca/core-entities": [ "./core/entities/index.ts"],
+
+      // "@chat-clean-architecture/chat/core/controllers": [
+      //   "libs/chat/core/controllers/src/index.ts"
+      // ],
+            // "@chat-clean-architecture/chat/core/network": [
+      //   "libs/chat/core/network/src/index.ts"
+      // ],
+      // "@chat-clean-architecture/chat/core/presenters": [
+      //   "libs/chat/core/presenters/src/index.ts"
+      // ],
+      // "@chat-clean-architecture/chat/core/views": [
+      //   "libs/chat/core/views/src/index.ts"
+      // ],
+      // "@chat-clean-architecture/chat/core/interactor": [
+      //   "libs/chat/application-business-rules/interactor/src/index.ts"
+      // ],
+      // "@chat-clean-architecture/chat/core/entities": [
+      //   "libs/chat/entreprise-business-rules/entities/src/index.ts"
+      // ],
+      // "@chat-clean-architecture/chat/core/notifiyer": [
+      //   "libs/chat/entreprise-business-rules/notifiyer/src/index.ts"
+      // ],
     }
   },
   "exclude": ["node_modules", "tmp"]

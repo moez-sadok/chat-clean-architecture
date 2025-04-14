@@ -1,14 +1,15 @@
 import { Component, Inject, Input} from '@angular/core';
 import { CHAT_CONTROLLER_PROVIDER, CHAT_DB_MAPPER_PROVIDER, 
-    CHAT_INTERACTOR_PROVIDER, CHAT_PRESENTATOR_PROVIDER, 
+    // CHAT_INTERACTOR_PROVIDER, 
+    CHAT_PRESENTATOR_PROVIDER, 
     CHAT_SERVER_CONTROLLER_PROVIDER, 
     CHAT_SERVER_PROVIDER_PORT, CHAT_VIEW_PROVIDER, 
-    controllerClientWsAdapterFactory, 
-    controllerMomoryFactory, interactorNetworkFactory, presenterFactory } from '../main-chat-front-provider';
-import { UserWebViewClientImpl } from '@chat-clean-architecture/chat/adapters/views';
+    // controllerClientWsAdapterFactory, controllerMomoryFactory, interactorNetworkFactory, 
+    presenterFactory } from '../main-chat-front-provider';
+import { UserWebViewClientImpl } from '@cca/core-views';
 import { ActivatedRoute } from '@angular/router';
-import { IChatHttpController, IChatWsController } from '@chat-clean-architecture/chat/adapters/controllers';
-import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
+import { IChatHttpController, IChatWsController } from '@cca/core-controllers';
+import { IChatView } from '@cca/core-presenters';
 @Component({
   selector: 'cca-chat-page',
   templateUrl: './chat-page.component.html',
@@ -18,21 +19,21 @@ import { IChatView } from '@chat-clean-architecture/chat/adapters/presenters';
       provide: CHAT_PRESENTATOR_PROVIDER, useFactory: presenterFactory,
       deps: [CHAT_VIEW_PROVIDER]
     },
-    {
-      provide: CHAT_INTERACTOR_PROVIDER,
-      useFactory: interactorNetworkFactory,
-      deps: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]
-    },
-    {
-      provide: CHAT_CONTROLLER_PROVIDER,
-      useFactory: controllerMomoryFactory,
-      deps: [CHAT_INTERACTOR_PROVIDER]
-    },
-    {
-      provide: CHAT_SERVER_CONTROLLER_PROVIDER,
-      useFactory: controllerClientWsAdapterFactory,
-      deps: [CHAT_INTERACTOR_PROVIDER,CHAT_PRESENTATOR_PROVIDER]
-    }
+    // {
+    //   provide: CHAT_INTERACTOR_PROVIDER,
+    //   useFactory: interactorNetworkFactory,
+    //   deps: [CHAT_DB_MAPPER_PROVIDER, CHAT_PRESENTATOR_PROVIDER, CHAT_SERVER_PROVIDER_PORT]
+    // },
+    // {
+    //   provide: CHAT_CONTROLLER_PROVIDER,
+    //   useFactory: controllerMomoryFactory,
+    //   deps: [CHAT_INTERACTOR_PROVIDER]
+    // },
+    // {
+    //   provide: CHAT_SERVER_CONTROLLER_PROVIDER,
+    //   useFactory: controllerClientWsAdapterFactory,
+    //   deps: [CHAT_INTERACTOR_PROVIDER,CHAT_PRESENTATOR_PROVIDER]
+    // }
   ]
 })
 export class ChatPageComponent {

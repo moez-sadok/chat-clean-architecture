@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ChatDataViewModelDto, RoomViewModel } from '@chat-clean-architecture/chat/adapters/presenters';
+import { ChatDataViewModelDto, RoomViewModel } from '@cca/core-presenters';
 
 @Component({
   selector: 'cca-chat-view',

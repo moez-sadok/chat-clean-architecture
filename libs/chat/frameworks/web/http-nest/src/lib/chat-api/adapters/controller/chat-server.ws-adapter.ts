@@ -1,7 +1,5 @@
-import { ChatServerSocketAdapter } from "@chat-clean-architecture/chat/adapters/network";
-import { IChatServerPort } from "@chat-clean-architecture/chat/application-business-rules/interactor";
-import { IChatClient } from "@chat-clean-architecture/chat/entreprise-business-rules/notifiyer";
-
+import { ChatServerSocketAdapter } from "@cca/core-controllers";
+import { IChatClient, IChatServerPort } from "@cca/core-gateways";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
@@ -32,6 +30,7 @@ export class ChatServerWSAdapter implements IChatServerPort {
       });
     });
     this.httpServer.listen(port);
+    console.log(`WebSocket server is running on ws://${host}:${port}`);
   }
 
   getConnectedClient(userId: number): IChatClient {

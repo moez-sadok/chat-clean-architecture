@@ -1,4 +1,5 @@
-import { ChatroomTable, IChatDatabase, MessageTable, ParticpantTable, UserTable } from '@chat-clean-architecture/chat/adapters/gateways';
+import { ChatroomTable, IChatDatabase, MessageTable, ParticpantTable, UserTable } 
+from '@cca/core-repositories';
 
 export class DataBaseMemoryImpl implements IChatDatabase {
   

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
-import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, 
-    CHAT_SERVER_PROVIDER_PORT } from '..//main-chat-front-provider';
-import { ChatServerMemoryImpl } from '@chat-clean-architecture/chat/adapters/network';
+import { CHAT_DB_PROVIDER, CHAT_DB_MAPPER_PROVIDER, dbMapperFactory, CHAT_SERVER_PROVIDER_PORT } from '..//main-chat-front-provider';
+import { ChatServerMemoryImpl } from '@cca/core-controllers';
 
 @Component({
   selector: 'cca-multi-users-chat-page',
