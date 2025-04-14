@@ -81,6 +81,28 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return tabelUser;
   }
 
+  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
+    const newId = this.lastRoomId + 1;
+    const tabelroom = { ...chatRoom, id: newId };
+    this.rooms[newId] = tabelroom;
+    this.lastRoomId = newId;
+    return tabelroom;
+  }
+  
+  removeParticipant(id: number): void {
+    if (this.lastParticipantId === id)
+      this.lastParticipantId = this.lastParticipantId - 1;
+    delete this.participants[id];
+  }
+
+  insertParticipant(participant: ParticpantTable): ParticpantTable {
+    const newId = this.lastParticipantId + 1;
+    const tabelPart = { ...participant, id: newId };
+    this.participants[newId] = tabelPart;
+    this.lastParticipantId = newId;
+    return tabelPart;
+  }
+
   createDb() {
     //init users
     this.users = [
@@ -134,28 +156,6 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     this.lastMessageId = 5;
     this.lastUserId = 5;
     this.lastParticipantId = 9;
-  }
-
-  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
-    const newId = this.lastRoomId + 1;
-    const tabelroom = { ...chatRoom, id: newId };
-    this.rooms[newId] = tabelroom;
-    this.lastRoomId = newId;
-    return tabelroom;
-  }
-  
-  removeParticipant(id: number): void {
-    if (this.lastParticipantId === id)
-      this.lastParticipantId = this.lastParticipantId - 1;
-    delete this.participants[id];
-  }
-
-  insertParticipant(participant: ParticpantTable): ParticpantTable {
-    const newId = this.lastParticipantId + 1;
-    const tabelPart = { ...participant, id: newId };
-    this.participants[newId] = tabelPart;
-    this.lastParticipantId = newId;
-    return tabelPart;
   }
 
 }

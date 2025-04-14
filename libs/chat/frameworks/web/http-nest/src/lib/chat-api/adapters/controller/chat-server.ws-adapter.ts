@@ -1,5 +1,3 @@
-// import { IChatClient ,IChatServerPort } from '../../gateways/index';
-// import { ChatServerSocketAdapter} from './socket/chat-socket-server-adapter';
 import { ChatServerSocketAdapter } from "@cca/core-controllers";
 import { IChatServerPort, IChatClient } from "@cca/core-gateways";
 import { createServer } from "http";
@@ -90,7 +88,7 @@ export class ChatServerWSAdapter implements IChatServerPort {
 
 // }
 
-// // implements IChatServerPort,
+// // implements  IChatServerPort,
 // connectUser(user: IChatClient): boolean {
 //   throw new Error('Method not implemented.');
 // }

@@ -2,12 +2,12 @@ import { IChatView, ChatDataViewModelDto, UserViewModel, MessageViewModel, RoomV
 
 export class UserWebViewClientImpl implements IChatView {
 
+  chatDataViewModelDto!: ChatDataViewModelDto;
+
   switchView(): void {
     const style = this.chatDataViewModelDto.defaultView === 'material' ? 'native' : 'material';
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, defaultView: style };
   }
-
-  chatDataViewModelDto!: ChatDataViewModelDto;
 
   setActiveUser(user: UserViewModel): void {
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeUser: user };
