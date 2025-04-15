@@ -1,5 +1,5 @@
 /******** Abstraction of mediator pattern */
-
+import { IChatClient } from '../../gateways/notifiyer/chat-client.port';
 import { IChatroom } from './chatroom';
 import { IMessage } from './message';
 
@@ -14,6 +14,8 @@ export interface IParticpant {
   receive(message: IMessage): void;
   enterChatRoom(chatroom: IChatroom): void;
   leaveChatRoom(): void;
+  //
+  setClient(client: IChatClient):void;
   //likeMessage(message:MessageDto) :void;
 }
 

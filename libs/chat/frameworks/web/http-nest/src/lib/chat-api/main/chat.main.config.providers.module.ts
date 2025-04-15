@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DataBaseMemoryImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
+import { DataBaseMemoryImpl, DataBaseMemoryPerfImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@cca/core-repositories';
 import { ChatServerWSAdapter } from '../adapters/controller/chat-server.ws-adapter';
 // import { ChatServerWSAdapter } from '@cca/core-controllers';
@@ -15,7 +15,8 @@ export const dbMapperFactory = (db: IChatDatabase) => {
 
 @Module({
   providers: [
-    { provide: CHAT_DB_PROVIDER, useValue: new DataBaseMemoryImpl() },
+    // { provide: CHAT_DB_PROVIDER, useValue: new DataBaseMemoryImpl() },
+    { provide: CHAT_DB_PROVIDER, useValue: new DataBaseMemoryPerfImpl() },
     {
       provide: CHAT_DB_MAPPER_PROVIDER, useFactory: dbMapperFactory,
       inject: [CHAT_DB_PROVIDER]

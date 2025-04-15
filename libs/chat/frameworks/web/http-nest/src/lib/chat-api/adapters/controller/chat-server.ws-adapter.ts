@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 //set in env
 const host = '*';
 const port = 8080;
-
+//optimise by using redis adapter
 export class ChatServerWSAdapter implements IChatServerPort {
 
   wsServer :Server ;

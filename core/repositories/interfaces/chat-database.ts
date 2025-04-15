@@ -12,7 +12,7 @@ export interface IChatDatabase {
 
   //messages
   insertMessage(message: MessageTable): MessageTable;
-  getMessagesByRoom(roomId: number): MessageTable[];
+  getMessagesByRoom(roomId: number,page?: number): MessageTable[];
 
   //participants
   getParticipantById(participantId: number): ParticpantTable;

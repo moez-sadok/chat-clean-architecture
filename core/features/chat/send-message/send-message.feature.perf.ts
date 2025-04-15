@@ -10,12 +10,15 @@ import { Participant } from "../../../entities/entities-impl/participant.impl";
 import { IChatroom } from "../../../entities/interfaces/chatroom";
 import { IMessage } from "../../../entities/interfaces/message";
 import { IParticpant } from "../../../entities/interfaces/participant";
-import { IChatServerPort } from "../../../gateways";
+import { IChatServerPort, RoomsCacheManager } from "../../../gateways";
 import { IChatRepository } from "../../../repositories/chat-repository";
 import { ISendMessageInput } from "./sendMessage.controller.input";
 import { ISendMessagePresenterOutput } from "./sendMessage.presenter.output";
 
-export class SendMessageFeature implements ISendMessageInput {
+export class SendMessagePerfFeature implements ISendMessageInput {
+
+  //TOTO inject it
+  roomsCacheManager: RoomsCacheManager = new RoomsCacheManager();
 
   constructor(
     private chatRepository: IChatRepository,
@@ -24,27 +27,42 @@ export class SendMessageFeature implements ISendMessageInput {
   ) { }
 
   sendMessage(message: SendMessageInputData) {
-    // db 
+    // let participantInRoom;
+    let messagedOutput: MessageOutputData;
+    let currRoom: IChatroom;
+    //check cache
+    const cachedRoom = this.roomsCacheManager.getRoomFromCache(message.roomId);
     const participantInRoom = this.chatRepository.getParticpantByUserAndRoom(message.roomId, message.userId);
     const croom = this.chatRepository.getChatRoomsById(message.roomId);
-    if(!croom || croom.id == undefined) throw new Error('Send Message feature: Not found room id='+message.roomId);
+    if (!croom || croom.id == undefined) throw new Error('Send Message feature: Not found room id=' + message.roomId);
+    if (cachedRoom) {
+      currRoom = cachedRoom;
+    } else {
+      //TODO: Optimise by a cache or rooms and update connected/disconnect use cases
+      // create the room entity
+      currRoom = this.createRoomEntity(croom, croom.id);
+      //update cache
+      this.roomsCacheManager.setRoomToCache(currRoom);
+      this.roomsCacheManager.setUserIdToMapRoomCache(message.userId, croom.id);
+      //is user connected
+      const isUserConnected = this.chatServer.getConnectedClient(message.userId);
+      if (isUserConnected) this.roomsCacheManager.setChatClientToParticipantsOfRoomsCache(isUserConnected);
+    }
+
     const messagedto: MessageDto = {
-      from: participantInRoom, 
-      message: message.message, 
+      from: participantInRoom,
+      message: message.message,
       room: croom
     };
     const newMessage = this.chatRepository.addMessage(messagedto);
-    const messagedOutput: MessageOutputData = {
-      authorName: newMessage.from.user.name, 
+    messagedOutput = {
+      authorName: newMessage.from.user.name,
       message: newMessage.message,
-      chatRoomId: croom.id, 
-      authorId : message.userId
+      chatRoomId: croom.id,
+      authorId: message.userId
     };
     if (!croom) console.log('Room not found: search in database or in service discovery from another chatserver instance')
-    //TODO: Optimise by a cache or rooms and update connected/disconnect use cases
-      // create the room entity
-    const currRomm = this.createRoomEntity(croom,croom.id);
-    this.broadcast(messagedOutput, currRomm); //old this.chatServer.broadcast(messagedOutput, currRomm);
+    this.broadcast(messagedOutput, currRoom); //old this.chatServer.broadcast(messagedOutput, currRomm);
     // presenter
     return this.presenter.receiveNewMessage(messagedOutput);
   }
@@ -55,7 +73,7 @@ export class SendMessageFeature implements ISendMessageInput {
     currRoom.broadcastMessage(message, currPart);
   }
 
-  private createRoomEntity(roomDto: ChatroomDto,roomId: number): IChatroom {
+  private createRoomEntity(roomDto: ChatroomDto, roomId: number): IChatroom {
     const roomEntity: IChatroom = new Chatroom(roomDto.name, roomId);
     const parts: IParticpant[] = Object.values(roomDto.participants).map(partDto => {
       return this.participantFactory(partDto)

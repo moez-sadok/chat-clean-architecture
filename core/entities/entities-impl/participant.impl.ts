@@ -63,4 +63,8 @@ export class Participant implements IParticpant {
      //console.log('Participant user is not connected, send a push notif...', this.getUserId());
   }
 
+  setClient(client: IChatClient) {
+    this.client = client;
+  }
+
 }

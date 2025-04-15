@@ -14,8 +14,8 @@ function startBench() {
     {
       url,
       connections: 100,
-      amount: 1000,
-      // duration: 5,//use duration or amount
+      // amount: 10000,
+      duration: 10,//use duration or amount
       workers: 1,
       requests: [
         {
@@ -24,11 +24,11 @@ function startBench() {
           headers: {'Content-Type': 'application/json' },
           body: JSON.stringify(msg),
         },
-        {
-          method: 'GET',
-          path: '/api/chat-user-rooms/1',
-          headers: {'Content-Type': 'application/json'}
-        },
+        // {
+        //   method: 'GET',
+        //   path: '/api/chat-user-rooms/1',
+        //   headers: {'Content-Type': 'application/json'}
+        // },
       ],
       idReplacement: true,
     },

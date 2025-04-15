@@ -1,8 +1,8 @@
 import { IChatServerPort, IChatClient } from "../../../../core/gateways";
 
-// perfs (redis adapter)
 export class ChatServerMemoryImpl implements IChatServerPort {
 
+  //TOTO manage limits and service mesh / service discovery
   connectetdUsers: Record<number, IChatClient> = {};
 
   getConnectedClient(userId: number): IChatClient {
@@ -14,6 +14,7 @@ export class ChatServerMemoryImpl implements IChatServerPort {
     if (userId === null || userId === undefined) return false;
     if (!this.connectetdUsers[userId]) {
       this.connectetdUsers[userId] = client;
+     // this.getConnectedClient
       return true;
     } else return false;
   }
