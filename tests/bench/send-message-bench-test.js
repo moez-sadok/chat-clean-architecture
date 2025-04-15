@@ -1,6 +1,8 @@
 //run api app localy before 
 'use strict';
-const autocannon = require('autocannon');
+// const autocannon = require('autocannon');
+//for bun
+import autocannon from 'autocannon';
 
 function startBench() {
   const url = 'http://localhost:3333';
@@ -13,9 +15,9 @@ function startBench() {
   const instance = autocannon(
     {
       url,
-      connections: 150,
-      // amount: 10000,
-      duration: 10,//use duration or amount
+      connections: 1000,// 1000 max bun concurrent connections : 206k requests in 11.08s, 62.5 MB read, / p99% 100ms
+      // connections: 150 , max nodejs concurrent connections
+      duration: 10,//use duration or amount //amount: 1000000, // bun 1 million on 100s 
       workers: 1,
       requests: [
         {

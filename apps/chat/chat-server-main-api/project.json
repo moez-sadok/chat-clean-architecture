@@ -35,6 +35,20 @@
         }
       }
     },
+    "serve:bun": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun apps/chat/chat-server-main-api/src/main.ts",
+        "cwd": "."
+      }
+    },
+    "build:bun": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun build apps/chat/chat-server-main-api/src/main.ts --outdir=dist/apps/chat/chat-server-main-api-bun --target bun",
+        "cwd": "."
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

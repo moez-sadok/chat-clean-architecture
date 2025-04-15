@@ -6,10 +6,13 @@
     "ng": "nx",
     "start:ui": "nx serve chat-chat-client-main-ng",
     "start:api": "nx serve chat-chat-server-main-api",
+    "start:api:bun": "nx serve:bun chat-chat-server-main-api",
     "start:redis": "redis-server",
     "dev": "(start npm run start:ui && start npm run start:api) || (npm run start:ui & npm run start:api)",
     "start": "npm run dev",
     "build": "nx build",
+    "build:api": "nx build chat-chat-server-main-api",
+    "build:api:bun": "nx build:bun chat-chat-server-main-api",
     "test": "jest test tests --verbose --maxWorkers=4 --logHeapUsage",
     "dep-graph": "nx dep-graph",
     "bench-test-send-message": "node tests/bench/send-message-bench-test.js",
@@ -85,6 +88,8 @@
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
     "typescript": "~4.8.2",
-    "autocannon": "7.15.0"
-  }
+    "autocannon": "7.15.0",
+    "bun-types": "latest"
+  },
+  "type": "module"
 }
