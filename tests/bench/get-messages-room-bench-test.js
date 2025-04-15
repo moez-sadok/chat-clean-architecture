@@ -19,11 +19,10 @@ function startBench() {
       workers: 1,
       requests: [
         {
-          method: 'POST',
-          path: '/api/send-message',
-          headers: {'Content-Type': 'application/json' },
-          body: JSON.stringify(msg),
-        }
+          method: 'GET',
+          path: 'api/chat-room-messages?userId=2&roomId=0&roomName=Tennis',
+          headers: {'Content-Type': 'application/json'}
+        },
       ],
       idReplacement: true,
     },

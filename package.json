@@ -6,12 +6,16 @@
     "ng": "nx",
     "start:ui": "nx serve chat-chat-client-main-ng",
     "start:api": "nx serve chat-chat-server-main-api",
+    "start:redis": "redis-server",
     "dev": "(start npm run start:ui && start npm run start:api) || (npm run start:ui & npm run start:api)",
     "start": "npm run dev",
     "build": "nx build",
     "test": "jest test tests --verbose --maxWorkers=4 --logHeapUsage",
     "dep-graph": "nx dep-graph",
-    "bench-test": "node tests/bench/send-message-bench-test.js"
+    "bench-test-send-message": "node tests/bench/send-message-bench-test.js",
+    "bench-test-get-rooms": "node tests/bench/get-user-rooms-bench-test.js",
+    "bench-test-get-messages": "node tests/bench/get-messages-room-bench-test.js",
+    "kill-redis": "sudo kill -9 $(lsof -t -i:6379)"
   },
   "private": true,
   "dependencies": {
