@@ -106,25 +106,28 @@ npm i
 
 ### 2.4 Run locally
 
-- Version 1: 
-Full in-memory angular app as main (no need to run the back-end api)
-
-```bash
-npm run start:multi
-#open: http://localhost:4200/chat/multi
-```
-
-- Version 2: 
 With client/server (websockt/http), open in different private tabs
 
 ```bash
 npm run start:ui
-
 npm run start:api
 # Open 2 browser windows and try two users
 # http://localhost:4200/chat/user/1
 # http://localhost:4200/chat/user/2
 ```
+
+Using bun:
+
+ . Install bun globaly
+
+ . add to package.json : "type": "module" 
+
+ . update import on webpack.config.js 
+
+ . npm run use:bun
+
+> For bensh tests also update import autocanon
+
 
 ### 2.5 Redis as adapter
 

@@ -1,6 +1,6 @@
-// const { composePlugins, withNx } = require('@nrwl/webpack');
+const { composePlugins, withNx } = require('@nrwl/webpack');
 //for bun
-import { composePlugins, withNx } from '@nrwl/webpack';
+// import { composePlugins, withNx } from '@nrwl/webpack';
 
 // Nx plugins for webpack.
 module.exports = composePlugins(withNx(), (config) => {

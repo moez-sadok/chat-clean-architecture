@@ -1,8 +1,8 @@
 //run api app localy before 
 'use strict';
-// const autocannon = require('autocannon');
+const autocannon = require('autocannon');
 //for bun
-import autocannon from 'autocannon';
+//import autocannon from 'autocannon';
 
 function startBench() {
   const url = 'http://localhost:3333';
