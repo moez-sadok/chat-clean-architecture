@@ -12,16 +12,17 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
   ) { }
 
   getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<MessageOutputData[]> {
-    const messagesByRoom = this.chatRepository.getMessagesByRoom(room.roomId);
+    // const messagesByRoom = this.chatRepository.getMessagesByRoom(room.roomId);
     const roomDto = this.chatRepository.getChatRoomsById(room.roomId);
-    if(!roomDto) throw new Error('Not existing room id='+room.roomId)
-    const messages = messagesByRoom.map((m) => {
+    if (!roomDto) throw new Error('Not existing room id=' + room.roomId);
+    // const messages = messagesByRoom.map((m) => {
+    const messages = roomDto.messages ? roomDto.messages.map((m) => {
       return {
         authorName: m.from.user.name,
         message: m.message,
         chatRoomId: m.room.id,
       } as MessageOutputData;
-    });
+    }): [];
     const croom: RoomOutputData = {
       roomId: room.roomId, roomName: room.roomName,
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
