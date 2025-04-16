@@ -1,5 +1,7 @@
 //https://docs.nestjs.com/techniques/performance
-import { FastifyAdapter, NestFastifyApplication, } from '@nestjs/platform-fastify'; import { Logger } from '@nestjs/common';
+import { FastifyAdapter, NestFastifyApplication, } from '@nestjs/platform-fastify'; 
+import helmet from '@fastify/helmet'
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 // import { RedisIoAdapter } from '@chat-clean-architecture/chat/frameworks/web/http-nest';
@@ -19,7 +21,9 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
   // await app.listen(port);
+  await app.register(helmet); // fastify helmet security
   await app.listen(port, '0.0.0.0'); //for fastify
+  
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 bootstrap();
