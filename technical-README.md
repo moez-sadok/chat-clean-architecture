@@ -171,14 +171,14 @@ Using Nx console vs code extension or cli:
 Generate nest app:
 
 ```bash
-npx nx generate @nrwl/nest:application chat/chat-server-main-api --frontendProject chat-chat-client-main-ng
+npx nx generate @nx/nest:application chat/chat-server-main-api --frontendProject chat-chat-client-main-ng
 ```
 
 Generate lib:
 
 ```bash
-npx nx generate @nrwl/workspace:library chat/entreprise-business-rules/notifiyer
-npx nx generate @nrwl/workspace:library chat/application-business-rules/network
-npx nx generate @nrwl/workspace:library chat/adapters/network
+npx nx generate @nx/workspace:library chat/entreprise-business-rules/notifiyer
+npx nx generate @nx/workspace:library chat/application-business-rules/network
+npx nx generate @nx/workspace:library chat/adapters/network
 ```
 

@@ -1,0 +1,26 @@
+.display-flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+
+.flex-gap-12{
+  gap: 12px; /* corresponds to fxLayoutGap="12px" */
+}
+
+.flex-gap-8{
+  gap: 8px; /* corresponds to fxLayoutGap="12px" */
+}
+
+.flex-item-auto {
+  flex: 1 1 auto;  /* corresponds to fxFlexFill */
+}
+
+.flex-item-35 {
+  flex: 0 0 35%;   /* corresponds to fxFlex="35" */
+}

@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import { ChatViewComponent } from './chat-view.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+// import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -18,10 +18,11 @@ import { CommonModule } from '@angular/common';
   selector: 'cca-chat-view-mat',
   standalone: true,
   templateUrl: './chat-view.material.component.html',
+  styleUrls: ['./chat-view.material.component.scss'],
   imports: [
     CommonModule,
     //Material components
-    FlexLayoutModule,
+    // FlexLayoutModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
