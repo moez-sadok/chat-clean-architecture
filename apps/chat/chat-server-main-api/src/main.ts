@@ -1,14 +1,15 @@
 //https://docs.nestjs.com/techniques/performance
 import { FastifyAdapter, NestFastifyApplication, } from '@nestjs/platform-fastify'; 
 import helmet from '@fastify/helmet'
+import fastifyCsrf from '@fastify/csrf-protection';
+//
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 // import { RedisIoAdapter } from '@chat-clean-architecture/chat/frameworks/web/http-nest';
 
 async function bootstrap() {
-  //use default nestjs : native express
-  //const app = await NestFactory.create(AppModule); 
+  //use default nestjs : native express //const app = await NestFactory.create(AppModule); 
   //use fastify
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
 
@@ -21,7 +22,11 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
   // Security 
+  app.enableCors();
   await app.register(helmet); // fastify helmet security
+  await app.register(fastifyCsrf);
+  //For rate limiting (DDOS) use nginx ingress
+
   // Listen
   await app.listen(port, '0.0.0.0'); //for fastify // await app.listen(port);
   
