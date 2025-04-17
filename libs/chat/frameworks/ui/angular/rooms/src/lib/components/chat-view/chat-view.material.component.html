@@ -19,7 +19,7 @@
       </mat-card>
     </div>
 
-    <div *ngIf="chatPageView.activeRoom.name" class="flex-item-auto display-flex flex-direction-column flex-wrap flex-gap-12">
+    <div *ngIf="chatPageView.activeRoom.name" class="flex-item-auto display-flex flex-column flex-wrap flex-gap-12">
       <div class="flex-item-auto">
         <mat-card>
           <mat-card-header>
@@ -42,8 +42,8 @@
       <div class="flex-item-auto">
         <mat-card>
           <mat-card-content>
-            <div class="display-flex flex-row flex-gap-8" style="justify-content: space-between; align-items: center;">
-              <input #messageInput matInput class="flex-item-auto" style="height: 38px;" />
+            <div class="display-flex flex-row flex-gap-8 send-message-box" >
+              <input #messageInput matInput class="flex-item-auto input-send-message" />
               <button mat-mini-fab color="warn" aria-label="Send message"
                 (click)="sendMessage.emit(messageInput.value);messageInput.value=''">
                 <mat-icon>send</mat-icon>

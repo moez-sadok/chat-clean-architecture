@@ -1,6 +1,5 @@
 import { Component} from '@angular/core';
-import { ChatViewComponent } from './chat-view.component';
-// import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,7 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+//
+import { ChatViewComponent } from './chat-view.component';
 
 @Component({
   selector: 'cca-chat-view-mat',
@@ -22,7 +22,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     //Material components
-    // FlexLayoutModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,

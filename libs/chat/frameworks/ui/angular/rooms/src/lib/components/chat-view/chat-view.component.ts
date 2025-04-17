@@ -18,9 +18,7 @@ export class ChatViewComponent {
   set chatPageView(value: ChatDataViewModelDto | null) {
     if(value) this._chatPageView = value;
   }
-  get chatPageView() {
-    return this._chatPageView;
-  }
+  get chatPageView() {return this._chatPageView;}
 
   @Output() leaveChatRoom: EventEmitter<number> = new EventEmitter();
   @Output() sendMessage: EventEmitter<string> = new EventEmitter();

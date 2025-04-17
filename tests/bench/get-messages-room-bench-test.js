@@ -6,12 +6,6 @@ const autocannon = require('autocannon');
 
 function startBench() {
   const url = 'http://localhost:3333';
-  const msg = {
-    roomId: 0,
-    userId: 1,
-    message: 'perf message-[<id>]',
-  };
-
   const instance = autocannon(
     {
       url,
