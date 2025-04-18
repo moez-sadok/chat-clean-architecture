@@ -21,6 +21,7 @@
     "bench-test-send-message": "node tests/bench/send-message-bench-test.js",
     "bench-test-get-rooms": "node tests/bench/get-user-rooms-bench-test.js",
     "bench-test-get-messages": "node tests/bench/get-messages-room-bench-test.js",
+    "bench-connect-users" : "artillery run  tests/bench/connect-users-bench-test.yml",
     "kill-redis": "sudo kill -9 $(lsof -t -i:6379)"
   },
   "private": true,
@@ -80,6 +81,8 @@
     "@types/node": "^20.11.21",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "artillery": "^2.0.21",
+    "artillery-engine-socketio-v3": "^1.2.0",
     "autocannon": "7.15.0",
     "bun-types": "latest",
     "cypress": "^13.6.6",

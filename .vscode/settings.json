@@ -1,0 +1,7 @@
+{
+    "yaml.schemas": {
+        "https://www.artillery.io/schema.json": [
+            "file:///Users/moez/workspace/prod-soft-tutos/chat-clean-architecture/tests/bench/connect-users-bench-test.yml"
+        ]
+    }
+}

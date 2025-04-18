@@ -6,6 +6,8 @@ import fastifyCsrf from '@fastify/csrf-protection';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+//import { WsAdapter } from '@nestjs/platform-ws';
+
 // import { RedisIoAdapter } from '@chat-clean-architecture/chat/frameworks/web/http-nest';
 
 async function bootstrap() {
@@ -18,6 +20,10 @@ async function bootstrap() {
   // await redisIoAdapter.connectToRedis();
   // app.useWebSocketAdapter(redisIoAdapter);
 
+  // ws platfform adapter
+  //app.useWebSocketAdapter(new WsAdapter(app));
+
+  // Init app prefix and prot
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
