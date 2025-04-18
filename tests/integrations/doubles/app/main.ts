@@ -37,11 +37,15 @@ export class MainDouble {
     }
 
     async addClientToRoom(userId: number, roomId: number) {
-        const currRoom = await this.backend.chatdbMapper.getChatRoomsById(roomId);
-        if (!currRoom) throw new Error('addClientToRoom room not found');
+        // const currRoom = await this.backend.chatdbMapper.getChatRoomsById(roomId);
+        // if (!currRoom) throw new Error('addClientToRoom room not found');
         const currUser = await this.backend.chatdbMapper.getUserById(userId);
         if (!currUser) throw new Error('addClientToRoom User not added');
-        this.backend.chatdbMapper.addParticipant({ user: { name: currUser.name, id: currUser.id }, chatroom: currRoom })
+        this.backend.chatdbMapper.addParticipant({ 
+            user: { name: currUser.name, id: currUser.id }, 
+            // chatroom: currRoom 
+            chatroom: {id: roomId, name:'',participants: {}} 
+        })
         //await chatController.getUserRooms(addedUser.id);
     }
 

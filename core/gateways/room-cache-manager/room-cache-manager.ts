@@ -1,10 +1,4 @@
-import { ChatroomDto } from "../../dtos/models/chatroom.dto";
-import { ParticpantDto } from "../../dtos/models/participant.dto";
-import { BotParticipant } from "../../entities/entities-impl/bot.participant";
-import { Chatroom } from "../../entities/entities-impl/chat-room.impl";
-import { Participant } from "../../entities/entities-impl/participant.impl";
 import { IChatroom } from "../../entities/interfaces/chatroom";
-import { IParticpant } from "../../entities/interfaces/participant";
 import { IChatClient } from "../notifiyer/chat-client.port";
 
 export class RoomsCacheManager {

@@ -3,5 +3,7 @@ export interface UserTable {
   name: string;
   email?: string;
   //perf
-  participantsIds?: number[];
+  // participantsIds?: number[];
+  // participantsIds?: Set<number>
+  participantsIds?: Record<number,number>;
 }

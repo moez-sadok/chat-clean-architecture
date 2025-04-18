@@ -2,10 +2,10 @@ import { expect, test } from "@jest/globals";
 import { ClientViewController, MainDouble } from "./doubles/app/main";
 import { ChatroomDto } from "../../core/dtos/models/chatroom.dto";
 
-export const MAX_USERS = 10000; // 50000
+export const MAX_USERS = 10000; // perf issui on getChatRoomsByUser (dbMapper)
 export const MAX_CONCURRENT_MESSAGES = 10;
 
-describe('Main Perf Memory Tesing (multi connected user in one room )...', () => {
+describe('Main Perf Memory Tesing ( 10.000 connected user in one room )...', () => {
      const main = new MainDouble();
     let clients: ClientViewController[] = [];
     let room: ChatroomDto;

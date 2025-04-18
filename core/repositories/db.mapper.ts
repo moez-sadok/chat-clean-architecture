@@ -1,7 +1,6 @@
 import { ChatDataSerializer } from './utils/data.serializer';
 import { IChatDatabase } from './interfaces/chat-database';
 import { ChatroomTable } from './tables/chatroom.table';
-import { ParticpantTable } from './tables/participant.table';
 import { IChatRepository } from './chat-repository';
 import { ChatroomDto } from '../dtos/models/chatroom.dto';
 import { MessageDto } from '../dtos/models/message.dto';
@@ -39,14 +38,35 @@ export class DataBaseMapper implements IChatRepository {
   }
 
   getChatRoomsByUser(userId: number): ChatroomDto[] {
+    //checking perf ...
     if (userId === null || userId === undefined)
       throw new Error(' Get ChatRooms By User : user not found');
-    const userParts = this.db.getParticipantsByUser(userId);
-    const rooms = this.getRoomsByParticipants(userParts);
+    const currUser = this.db.getUserById(userId);
+    if (!currUser.participantsIds) return [];
+    const rooms = this.getRoomsByParticipantsIds(currUser.participantsIds);
     const roomsTablearray = Object.keys(rooms).map((id) => rooms[parseInt(id)]);
     return roomsTablearray.map((r) => {
-      return this.dbSerializer.serializeRoom(r);
+      //return this.dbSerializer.serializeRoom(r);
+      return {
+        id: r.id,
+        name: r.name,
+        //perf issue
+        participants: r.participantsIds ? r.participantsIds.map(pid => {
+          return { id: pid, user: { id: userId, name: currUser.name } }
+        }) : {}
+      }
     });
+  }
+
+  private getRoomsByParticipantsIds(partsIds: Record<number, number>): Record<number, ChatroomTable> {
+    //to check (put in db)
+    return Object.values(partsIds).reduce((acc: Record<number, ChatroomTable>, partId) => {
+      const part = this.db.getParticipantById(partId);
+      if (!acc[part.chatRoomId]) {
+        acc[part.chatRoomId] = this.db.getRoomById(part.chatRoomId);
+      }
+      return acc;
+    }, {});
   }
 
   getMessagesByRoom(roomId: number): MessageDto[] {
@@ -65,25 +85,13 @@ export class DataBaseMapper implements IChatRepository {
     return null;
   }
 
-  private getRoomsByParticipants(
-    parts: ParticpantTable[]
-  ): Record<number, ChatroomTable> {
-    //to check (put in db)
-    return parts.reduce((acc: Record<number, ChatroomTable>, curr) => {
-      if (!acc[curr.chatRoomId]) {
-        acc[curr.chatRoomId] = this.db.getRoomById(curr.chatRoomId);
-      }
-      return acc;
-    }, {});
-  }
-
   getUsers(): UserDto[] {
     return this.db.getUses().map((ut) => this.dbSerializer.serializeUser(ut));
   }
 
   addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto> {
     // const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
-    const dbRoom = this.db.insertChatRoom({ name: chatRoom.name , id :chatRoom.id});
+    const dbRoom = this.db.insertChatRoom({ name: chatRoom.name, id: chatRoom.id });
     const roomDto = this.dbSerializer.serializeRoom(dbRoom);
     return new Promise((resolve) => resolve(roomDto));
   }

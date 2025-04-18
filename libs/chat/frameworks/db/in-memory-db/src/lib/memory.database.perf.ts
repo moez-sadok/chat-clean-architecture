@@ -76,14 +76,16 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     // );
   }
 
+  //TO_REMOVE
   getParticipantsByUser(userId: number): ParticpantTable[] {
     const userTable = this.getUserById(userId);
-    if (userTable.participantsIds) return userTable.participantsIds.map((id) => this.participants[id]);
+    if (userTable.participantsIds) return Object.values(userTable.participantsIds).map((id) => this.participants[id]);
     return [];
     //perf issue (revers nosql: userParts.getParticipantsIds())
     //return Object.values(this.participants).filter((p) => p.userId === userId);
   }
 
+  //TO_REMOVE
   getParticipantsByRoom(roomId: number): ParticpantTable[] {
     const roomTable = this.getRoomById(roomId);
     if (roomTable.participantsIds) return roomTable.participantsIds.map((id) => this.participants[id]);
@@ -137,9 +139,9 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     this.participants[newId] = tabelPart;
     this.lastParticipantId = newId;
     //update user participants id
-    const currUser = this.getUserById(participant.userId);
-    if (!currUser.participantsIds) currUser.participantsIds = [];
-    currUser.participantsIds?.push(newId);
+    const currUser = this.users[participant.userId];
+    if (!currUser.participantsIds) currUser.participantsIds = {};
+    currUser.participantsIds[newId] = newId;
     // update room participants id
     const currRoom = this.getRoomById(participant.chatRoomId);
     if (!currRoom.participantsIds) currRoom.participantsIds = [];
@@ -151,19 +153,19 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   createDb() {
     //init users
     this.users = [
-      { id: 0, name: 'Yuri', participantsIds: [0, 3] },
-      { id: 1, name: 'Amelie', participantsIds: [1, 4] },
-      { id: 2, name: 'Samir', participantsIds: [2, 5] },
-      { id: 3, name: 'Sandra', participantsIds: [6, 8] },
-      { id: 4, name: 'Jhon', participantsIds: [7] },
-      { id: 5, name: 'Bot', participantsIds: [9] },
+      { id: 0, name: 'Yuri', participantsIds: { 0: 0, 3: 3 } },
+      { id: 1, name: 'Amelie', participantsIds: { 1: 1, 4: 4 } },
+      { id: 2, name: 'Samir', participantsIds: { 2: 2, 5: 5 } },
+      { id: 3, name: 'Sandra', participantsIds: { 6: 6, 8: 8 } },
+      { id: 4, name: 'Jhon', participantsIds: { 7: 7 } },
+      { id: 5, name: 'Bot', participantsIds: { 9: 9 } }
     ];
 
     this.rooms = [
       { id: 0, name: 'Tennis', participantsIds: [0, 1, 2] },
       { id: 1, name: 'Yuri & Ameli', participantsIds: [0, 1] },
       { id: 2, name: 'Disco', participantsIds: [2, 3, 4] },
-      { id: 3, name: 'Bot & Sandra', participantsIds: [3, 5] },
+      { id: 3, name: 'Bot & Sandra', participantsIds: [3, 5] }
     ];
 
     this.participants = [

@@ -6,5 +6,5 @@ export interface ChatroomDto {
   id: number;
   name: string;
   participants: Record<number, ParticpantDto>;
-  messages?: MessageDto[];
+  messages?: MessageDto[]; //last n 
 }
