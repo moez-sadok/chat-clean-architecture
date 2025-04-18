@@ -27,6 +27,7 @@
    - [4.3 Component diagram](#component-diagram)
       - [a. Memory - Component diagram](#memory-component-diagram)
       - [b. ClientServer - Component diagram](#client-server-component-diagram)
+      - [c. Component Communication - Sequence diagram](#component-communication-sequence-diagram)
    - [4.4 Deployment digram](#deployment-digram)
 
 <!-- Page-break For PDF generation -->
@@ -58,7 +59,7 @@ Manages chat rooms, message exchange, and real-time communication.
 
 ## 2.2 Main chat flow
 
-![Use case diagram!](out/docs/design/sequence-diagram-basic-interaction/sequence-diagram-basic-interaction.png 'Global use case diagram')
+![Sequence diagram basic interaction!](out/docs/design/sequence-diagram-basic-interaction/sequence-diagram-basic-interaction.png 'Sequence diagram basic interaction')
 
 <!-- Page-break For PDF generation -->
 <div style="page-break-after: always;"></div>
@@ -150,10 +151,13 @@ Scenario: Offline receiver (disconnected)
 
    ![Component diagram memory](out/docs/design/component-diagram-memory/component-diagram-memory.png 'Component diagram memory')
 
-
    - b. ClientServer - Component diagram
 
-   ![Component diagram ](out/docs/design/component-diagram/component-diagram.png 'Component diagram ')
+   ![Component diagram ClientServer](out/docs/design/component-diagram/component-diagram.png 'Component diagram ClientServer')
+
+  - c. Component Communication - Sequence diagram
+
+  ![Sequence diagram Component interaction!](out/docs/design/sequence-diagram-basic-interaction-system/sequence-diagram-basic-interaction-system.png 'Sequence diagram Component interaction')
 
 <!-- Page-break For PDF generation -->
 <div style="page-break-after: always;"></div>
