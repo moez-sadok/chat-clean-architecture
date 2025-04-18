@@ -2,7 +2,7 @@ import { MessageOutputData } from "../../../../core/dtos/output.chat.data";
 import { ISendMessagePresenterOutput } from "../../../../core/features/chat";
 import { IChatClient } from "../../../../core/gateways";
 
-export class ChatClientPortImpl implements IChatClient {
+export class ChatClientMemoryImpl implements IChatClient {
 
   constructor(
     protected userId: number,

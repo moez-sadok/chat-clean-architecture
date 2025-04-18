@@ -16,7 +16,7 @@
     "build": "nx build",
     "build:api": "nx build chat-chat-server-main-api",
     "build:api:bun": "nx build:bun chat-chat-server-main-api",
-    "test": "jest test tests --verbose --maxWorkers=4 --logHeapUsage",
+    "test": "jest test tests --verbose --maxWorkers=1 --logHeapUsage",
     "dep-graph": "nx dep-graph",
     "bench-test-send-message": "node tests/bench/send-message-bench-test.js",
     "bench-test-get-rooms": "node tests/bench/get-user-rooms-bench-test.js",

@@ -92,7 +92,6 @@ describe('Big Chatroom (1 million) send and broadcats messages', () => {
     let pFirst : IParticpant;
     let pLast : IParticpant;
     beforeEach(() => {
-        console.time('Big Chatroom (1 million) - Init time');
         chatroom = new Chatroom('BigRoom', 1);
         pFirst = new Participant('First', 1);
         pLast = new Participant('Last', MAX_USERS);
@@ -103,7 +102,6 @@ describe('Big Chatroom (1 million) send and broadcats messages', () => {
         for (let i = 2; i < MAX_USERS; i++) {
             chatroom.register(new Participant('P-'+i, i));
         }
-        console.timeEnd('Big Chatroom (1 million) - Init time');
     });
 
     test('"First" as a participant sent a message inside the "BigRoom" chatroom ', () => {

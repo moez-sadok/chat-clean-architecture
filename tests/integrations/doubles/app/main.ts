@@ -7,7 +7,7 @@ import { ChatroomDto } from "../../../../core/dtos/models/chatroom.dto";
 //doubles
 import { ChatControllerHttpClientMemory } from "../http/chat-controller-client.memory";
 import { AppBackendDouble } from "./app-backend-double";
-import { ChatClientPortImpl } from "../ws/chat-client.port.impl";
+import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
 
 export interface ClientViewController {
     view: IChatView,
@@ -28,7 +28,7 @@ export class MainDouble {
         const currUser = await clientChatController.getUserById(addedUser.id);
         if (!currUser) throw new Error('Fail in adding user to repository');
 
-        const clientWs: IChatClient = new ChatClientPortImpl(addedUser.id, addedUser.name, chatPresenter);
+        const clientWs: IChatClient = new ChatClientMemoryImpl(addedUser.id, addedUser.name, chatPresenter);
         await this.backend.chatServer.connectUser(clientWs);
 
         return new Promise((resolve) => {
