@@ -9,10 +9,10 @@ actor User #F06292
 rectangle #33FFCC\356CAE {
     usecase/ "Send Message" as UC_SendMessage #LightGreen
     usecase "Validate Message Content" as UC_ValidateContent #LightGreen
-    usecase "Validate Room" as UC_ValidateRoom #Orange
-    usecase "User is participant of room" as UC_ValidateUser #Orange
-    usecase "Get Room" as UC_GetRoom #Orange
-    usecase "Broadcast Message" as UC_BroadcastMessage #Orange
+    usecase "Validate Room" as UC_ValidateRoom #Yellow
+    usecase "User is participant of room" as UC_ValidateUser #Yellow
+    usecase "Get Room" as UC_GetRoom #Yellow
+    usecase "Broadcast Message" as UC_BroadcastMessage #Yellow
     usecase "Send Notification" as UC_SendNotification #33FFCC
     usecase "Save Message" as UC_SaveMessage #LightGreen
     usecase "Present Success" as UC_PresentSuccess

@@ -2,7 +2,7 @@
 
 !include prodsoft.wsd
 
-title P-CHAT Component Diagram - On memory
+title P-CHAT Component Diagram - On memory Architecture
 footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor Users $SECONDARY

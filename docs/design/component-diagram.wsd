@@ -2,7 +2,7 @@
 
 !include prodsoft.wsd
 
-title P-CHAT Component Diagram 
+title P-CHAT Component Diagram - Client/Server Architecture
 footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User $SECONDARY

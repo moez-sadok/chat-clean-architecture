@@ -5,7 +5,7 @@ title  P-Chat Usecase diagram
 footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor "Admin" as adm #EC407A
-actor "User " as acs #607D8B
+actor "User " as acs #33FFCC
 
 rectangle UserDomain  {
     usecase/ UCC0 as "Auth
@@ -14,11 +14,11 @@ rectangle UserDomain  {
     usecase "Signal another user" as UCC7
 }
 
-rectangle ChatDomain #33FFCC\356CAE{
-    usecase "Get user rooms" as UCC3 #Orange
-    usecase "Create a room" as UCC2 #Orange
-    usecase "Enter a room" as UCC4 #Orange
-    usecase "Leave a room" as UCC8 #Orange
+rectangle ChatDomain #33FFCC/356CAE{
+    usecase "Get user rooms" as UCC3 #Yellow
+    usecase "Create a room" as UCC2 #Yellow
+    usecase "Enter a room" as UCC4 #Yellow
+    usecase "Leave a room" as UCC8 #Yellow
     usecase "Get room messages" as UCC5 #LightGreen
     usecase "Receive new messages" as UCC9 #LightGreen
     usecase/ UCC6 as "Send message" #LightGreen
