@@ -7,7 +7,7 @@ footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User $SECONDARY
 
-package "Adapters" $GARDIANT_LIGHT {
+package "Core/Adapters" $GARDIANT_LIGHT {
     interface IController  $PRIMARY_LIGHT
     interface IPresenter #CDE711
 }
