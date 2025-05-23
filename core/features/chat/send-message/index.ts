@@ -1,8 +1,8 @@
-import { IChatRepository } from '@cca/core-repositories';
-import { SendMessageFeature } from './send-message.feature';
+// import { SendMessageFeature } from './send-message.feature';
 import { ISendMessagePresenterOutput } from './sendMessage.presenter.output';
-import { IChatServerPort } from 'core/gateways/network/chat-server.port';
 import { SendMessagePerfFeature } from './send-message.feature.perf';
+import { IChatRepository } from '../../../repositories/chat-repository';
+import { IChatServerPort } from '../../../gateways/network/chat-server.port';
 
 export * from './sendMessage.presenter.output';
 export * from './sendMessage.controller.input';
