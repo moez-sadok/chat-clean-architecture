@@ -9,7 +9,7 @@ export class GetRoomsByUserClientView implements IGetRoomsByUserView {
     //SPA
     this.rooms = rooms;
 
-    //SSR (Render the rooms as html)
+    //SSR (Render the rooms as html) and used by presenter api
     // const roomsHtml = rooms.map(room => `<div>${room.name} (${room.roomId})</div>`).join('');
     // return '<div class="rooms-list">' + roomsHtml + '</div>';
   }

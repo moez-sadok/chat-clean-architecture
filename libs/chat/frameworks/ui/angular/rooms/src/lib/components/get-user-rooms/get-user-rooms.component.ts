@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, InjectionToken, Input, Output } from '@angular/core';
+import { IHttpController } from '@cca/core-controllers';
 import {
-  getRoomsByUserClientHttpControllerFactory, IGetUserRoomsHttpController,
+  getRoomsByUserClientHttpControllerFactory,
   GetRoomsByUserClientView, getRoomsByUserPresenterUiFactory,
-  IGetRoomsByUserPresenterOutput, IGetRoomsByUserView, RoomViewModel
+  IGetRoomsByUserPresenter, IGetRoomsByUserView, RoomViewModel
 } from '@cca/core-features';
 
 export const GET_ROOMS_BY_USER_VIEW = new InjectionToken<IGetRoomsByUserView>('GetRoomsByUserView');
-export const GET_ROOMS_BY_USER_PRESENTER = new InjectionToken<IGetRoomsByUserPresenterOutput>('GetRoomsByUserPresenter');
-export const GET_ROOMS_BY_USER_CONTROLLER = new InjectionToken<IGetUserRoomsHttpController>('GetRoomsByUserController');
+export const GET_ROOMS_BY_USER_PRESENTER = new InjectionToken<IGetRoomsByUserPresenter>('GetRoomsByUserPresenter');
+export const GET_ROOMS_BY_USER_CONTROLLER = new InjectionToken<IHttpController>('GetRoomsByUserController');
 
 @Component({
   selector: 'cca-get-user-rooms',
@@ -33,12 +34,12 @@ export class GetUserRoomsComponent {
   @Output() selectRoom: EventEmitter<RoomViewModel> = new EventEmitter();
 
   @Input() set userId(id: number) {
-    if (id >= 0) this.getUserRoomsHttpController.getUserRooms({ userId: id })
+    if (id >= 0) this.getUserRoomsHttpController.handle({ userId: id })
   }
 
   constructor(
     @Inject(GET_ROOMS_BY_USER_VIEW) public getRoomsView: IGetRoomsByUserView,
-    @Inject(GET_ROOMS_BY_USER_CONTROLLER) public getUserRoomsHttpController: IGetUserRoomsHttpController
+    @Inject(GET_ROOMS_BY_USER_CONTROLLER) public getUserRoomsHttpController: IHttpController
   ) { }
 
 }

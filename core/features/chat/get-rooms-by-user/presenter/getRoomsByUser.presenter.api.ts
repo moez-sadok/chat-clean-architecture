@@ -1,7 +1,7 @@
 import { GetRoomsByUserResponseData } from "../interactor/getRoomsByUser.response.data";
-import { IGetRoomsByUserPresenterOutput } from "../controller/getRoomsByUser.presenter.output";
+import { IGetRoomsByUserPresenter } from "../controller/getRoomsByUser.presenter";
 
-export class GetRoomsByUserPresenterAPI implements IGetRoomsByUserPresenterOutput {
+export class GetRoomsByUserPresenterAPI implements IGetRoomsByUserPresenter {
    selectedRoomsByUser(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[] {
     return rooms;
   }

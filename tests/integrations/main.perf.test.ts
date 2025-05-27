@@ -16,7 +16,7 @@ describe('Main Perf Memory Tesing ( 20.000 connected user in one room )...', () 
         for (let i = 0; i < MAX_USERS; i++) {
             const newClient = await main.makeClient('user-' + i);
             await main.addClientToRoom(newClient.id, room.id);
-            newClient.getRoomsController.getUserRooms({userId:newClient.id});
+            newClient.getRoomsController.handle({userId:newClient.id});
             clients.push(newClient);
         }
         console.timeEnd('Main Perf Memory Tesing - Init time')

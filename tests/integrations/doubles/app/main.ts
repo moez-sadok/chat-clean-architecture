@@ -1,5 +1,5 @@
 
-import { IChatHttpController } from "../../../../core/controllers";
+import { IChatHttpController, IHttpController } from "../../../../core/controllers";
 import { ChatUiPresenterImpl,  IChatView } from "../../../../core/presenter";
 import { UserWebViewClientImpl } from "../../../../core/views";
 import { IChatClient } from "../../../../core/gateways";
@@ -8,7 +8,6 @@ import { ChatroomDto } from "../../../../core/dtos/models/chatroom.dto";
 import { ChatControllerHttpClientMemory, GetUserRoomsHttpControllerClientMemory } from "../http/chat-controller-client.memory";
 import { AppBackendDouble } from "./app-backend-double";
 import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
-import { IGetUserRoomsHttpController } from "../../../../core/features/chat/get-rooms-by-user/controller/http/getRoomsByUser.controller.http";
 import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/features/chat/get-rooms-by-user";
 import { IGetRoomsByUserView } from "../../../../core/features/chat/get-rooms-by-user/presenter/getRoomsByUser.view";
 
@@ -16,7 +15,7 @@ export interface ClientViewController {
     view: IChatView,
     controller: IChatHttpController,
     getRoomsView: IGetRoomsByUserView,
-    getRoomsController: IGetUserRoomsHttpController,
+    getRoomsController: IHttpController,
     id: number
 }
 

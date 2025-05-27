@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { UserWebViewClientImpl } from '@cca/core-views';
 import { ActivatedRoute, Params } from '@angular/router';
 import { switchMap, of, tap } from 'rxjs';
 import { InjectionToken } from "@angular/core";
 import { ChatControllerHttpClientAdapterImpl, ChatControllerWsClientAdapterImpl, IChatHttpController, IChatWsController } from "@cca/core-controllers";
-import { ChatUiPresenterImpl, IChatView, IChatAppFacadePresenterOutput, ChatDataViewModelDto } from "@cca/core-presenters";
+import { ChatUiPresenterImpl, IChatView, IChatAppFacadePresenterOutput } from "@cca/core-presenters";
 import { CommonModule } from '@angular/common';
-// import { RoomViewModel } from '@cca/core-features';
 import { GetUserRoomsComponent } from '../../components/get-user-rooms/get-user-rooms.component';
 
 export const CHAT_PRESENTATOR_PROVIDER = new InjectionToken<IChatAppFacadePresenterOutput>('chat.presentator');
@@ -72,7 +71,6 @@ export class ChatPageComponent {
           this.activeUserId = +userId;
           this.chatController.getUserById(+userId);
           this.wsController.connectClient(+userId);
-          // this.chatController.getUserRooms(+userId);
         }
       })).subscribe(); //TODO use Angular 16 input by route resolver - don't forget to unsubscribe in ondestroy
   }

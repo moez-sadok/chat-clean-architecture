@@ -14,8 +14,8 @@ describe('Main Memory Tesing...', () => {
         room = await main.addNewRoom('test-room');
         await main.addClientToRoom(client1.id,room.id);
         await main.addClientToRoom(client2.id,room.id);
-        client1.getRoomsController.getUserRooms({userId:client1.id});
-        client2.getRoomsController.getUserRooms({userId:client2.id});
+        client1.getRoomsController.handle({userId:client1.id});
+        client2.getRoomsController.handle({userId:client2.id});
     });
 
     test('Sent message', async () => {

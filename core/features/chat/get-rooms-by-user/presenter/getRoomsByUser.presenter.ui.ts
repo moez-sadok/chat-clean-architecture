@@ -1,9 +1,9 @@
 import { GetRoomsByUserResponseData } from "../interactor/getRoomsByUser.response.data";
-import { IGetRoomsByUserPresenterOutput } from "../controller/getRoomsByUser.presenter.output";
+import { IGetRoomsByUserPresenter } from "../controller/getRoomsByUser.presenter";
 import { RoomViewModel } from "./getRoomsByUser.view.model";
 import { IGetRoomsByUserView } from "./getRoomsByUser.view";
 
-export class GetRoomsByUserPresenterUi implements IGetRoomsByUserPresenterOutput {
+export class GetRoomsByUserPresenterUi implements IGetRoomsByUserPresenter {
 
   constructor(public view: IGetRoomsByUserView) {}
 

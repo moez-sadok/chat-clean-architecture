@@ -1,5 +1,5 @@
 import { GetRoomsByUserResponseData } from "../interactor/getRoomsByUser.response.data";
 
-export interface IGetRoomsByUserPresenterOutput {
+export interface IGetRoomsByUserPresenter {
     selectedRoomsByUser(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[];
 }

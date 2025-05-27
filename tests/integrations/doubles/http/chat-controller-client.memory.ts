@@ -1,18 +1,18 @@
 import { IChatAppFacadePresenterOutput } from '../../../../core/presenter';
 import { UserOutputData, MessageOutputData } from '../../../../core/dtos/output.chat.data';
 import { IChatHttpController } from '../../../../core/controllers/chat.controllor';
-import { GetRoomsByUserResponseData, IGetRoomsByUserPresenterOutput } from '../../../../core/features/chat/get-rooms-by-user';
-import { IGetUserRoomsHttpController } from '../../../../core/features/chat/get-rooms-by-user/controller/http/getRoomsByUser.controller.http';
+import { GetRoomsByUserResponseData, IGetRoomsByUserPresenter } from '../../../../core/features/chat/get-rooms-by-user';
 import { GetRoomsByUserRequestData } from '../../../../core/features/chat/get-rooms-by-user/interactor/getRoomsByUser.request.data';
+import { IHttpController } from '../../../../core/controllers';
 
-export class GetUserRoomsHttpControllerClientMemory implements IGetUserRoomsHttpController{
+export class GetUserRoomsHttpControllerClientMemory implements IHttpController{
 
-  constructor(public presenter: IGetRoomsByUserPresenterOutput,
-    private apicontroller: IGetUserRoomsHttpController, 
+  constructor(public presenter: IGetRoomsByUserPresenter,
+    private apiGetUserRoomsHttpController: IHttpController, 
   ) {}
 
-  async getUserRooms(input: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {
-    const res =  await this.apicontroller.getUserRooms(input);
+  async handle(input: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {
+    const res =  await this.apiGetUserRoomsHttpController.handle(input);
     if(res) this.presenter.selectedRoomsByUser(res);
     return new Promise((resolve) => resolve(res));
   }
@@ -30,12 +30,6 @@ export class ChatControllerHttpClientMemory implements IChatHttpController {
     if(res) this.presentator.selectedUser(res);
     return new Promise((resolve) => resolve(res));
   }
-
-  // async getUserRooms(userId: number): Promise<GetRoomsByUserResponseData[]> {
-  //   const res =  await this.apicontroller.getUserRooms(userId);
-  //   if(res) this.presentator.selectedRoomsByUser(res);
-  //   return new Promise((resolve) => resolve(res));
-  // }
 
   async getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageOutputData[]> {
     const room = { userId: userId, roomId: roomId, roomName: roomName }; //as GetRoomMessagesInputData

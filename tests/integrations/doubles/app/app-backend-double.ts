@@ -1,13 +1,12 @@
 
-import { IChatHttpController } from "../../../../core/controllers";
+import { IChatHttpController, IHttpController } from "../../../../core/controllers";
 import { DataBaseMapper, IChatDatabase, IChatRepository } from "../../../../core/repositories";
 import { ChatServerMemoryImpl } from "../ws/chat-server.memory.impl";
-import { GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, IChatView, SendMessagePresenterApi } from "../../../../core/presenter";
+import { GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, SendMessagePresenterApi } from "../../../../core/presenter";
 import { IChatServerPort } from "../../../../core/gateways";
 import { DataBaseMemoryImpl, DataBaseMemoryPerfImpl } from "../../../../libs/chat/frameworks/db/in-memory-db/src";
 import { ChatHttpControllerApiMemory, GetUserRoomsHttpControllerApiMemory } from "../http/chat-controller.api-memory";
 import { GetRoomsByUserFeature, GetUserByIdFeature, GetMessagesByRoomFeature, SendMessageFeature, IGetRoomsByUserRequester, IGetUserByIdInput, IGetMessagesByRoomInput, ISendMessageInput, SendMessagePerfFeature, GetRoomsByUserPresenterAPI } from "../../../../core/features/chat";
-import { IGetUserRoomsHttpController } from "../../../../core/features/chat/get-rooms-by-user/controller/http/getRoomsByUser.controller.http";
 
 export class AppBackendDouble {
 
@@ -15,7 +14,7 @@ export class AppBackendDouble {
     chatdbMapper!: IChatRepository;
     chatServer!: IChatServerPort;
     // api controller
-    getUserRoomsHttpControllerApi!: IGetUserRoomsHttpController;
+    getUserRoomsHttpControllerApi!: IHttpController;
     apiChatController!: IChatHttpController; //as facade
     //features
     getRoomsByUserFeature: IGetRoomsByUserRequester;

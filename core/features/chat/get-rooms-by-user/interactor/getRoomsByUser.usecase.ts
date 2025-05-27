@@ -1,4 +1,3 @@
-import { IChatRepository } from "../../../../repositories/chat-repository";
 import { IGetRoomsByUserRequester } from "./getRoomsByUser.requester";
 import { GetRoomsByUserRequestData } from "./getRoomsByUser.request.data";
 import { GetRoomsByUserResponseData } from "./getRoomsByUser.response.data";
@@ -7,9 +6,7 @@ import { IChatRoomsRepository } from "../repositories/user-rooms.repository";
 export class GetRoomsByUserFeature implements IGetRoomsByUserRequester {
 
   constructor(
-    // private chatRepository: IChatRepository
     private chatRepository: IChatRoomsRepository
-    
   ) { }
 
   getRoomsByUser(user: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {

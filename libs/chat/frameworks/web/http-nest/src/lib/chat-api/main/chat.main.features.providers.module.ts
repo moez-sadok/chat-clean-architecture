@@ -24,7 +24,6 @@ import { CHAT_DB_MAPPER_PROVIDER, CHAT_SERVER_PROVIDER_PORT, ChatMainConfigProvi
     { provide: GET_ROOMS_ByUserPresenter, useValue: new GetRoomsByUserPresenterAPI() },
     {
       provide: GET_ROOMS_ByUserFeature, useFactory: getRoomsByUserFeatureFactory,
-      // inject: [CHAT_DB_MAPPER_PROVIDER, GET_ROOMS_ByUserPresenter]
       inject: [CHAT_DB_MAPPER_PROVIDER]
     },
     // get messages by room

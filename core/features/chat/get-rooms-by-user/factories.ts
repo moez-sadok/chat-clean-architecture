@@ -1,7 +1,7 @@
 import { IChatRepository } from '../../../repositories/chat-repository';
-import { IGetRoomsByUserPresenterOutput } from './controller/getRoomsByUser.presenter.output';
+import { IGetRoomsByUserPresenter } from './controller/getRoomsByUser.presenter';
 import { GetUserRoomsClientHttpController } from './controller/http/getRoomsByUser.client.controller.http';
-import { GetRoomsByUserFeature } from './interactor/getRoomsByUser.feature';
+import { GetRoomsByUserFeature } from './interactor/getRoomsByUser.usecase';
 import { GetRoomsByUserPresenterUi } from './presenter/getRoomsByUser.presenter.ui';
 import { IGetRoomsByUserView } from './presenter/getRoomsByUser.view';
 
@@ -20,6 +20,6 @@ export const getRoomsByUserPresenterUiFactory = (view: IGetRoomsByUserView) => {
 };
 
 // controller
-export const getRoomsByUserClientHttpControllerFactory = (presenter: IGetRoomsByUserPresenterOutput) => {
+export const getRoomsByUserClientHttpControllerFactory = (presenter: IGetRoomsByUserPresenter) => {
     return new GetUserRoomsClientHttpController(presenter,'');
 };
