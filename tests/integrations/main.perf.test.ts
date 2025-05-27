@@ -2,10 +2,10 @@ import { expect, test } from "@jest/globals";
 import { ClientViewController, MainDouble } from "./doubles/app/main";
 import { ChatroomDto } from "../../core/dtos/models/chatroom.dto";
 
-export const MAX_USERS = 10000; // perf issui on getChatRoomsByUser (dbMapper)
+export const MAX_USERS = 20000; // perf issue on getChatRoomsByUser (dbMapper)
 export const MAX_CONCURRENT_MESSAGES = 10;
 
-describe('Main Perf Memory Tesing ( 10.000 connected user in one room )...', () => {
+describe('Main Perf Memory Tesing ( 20.000 connected user in one room )...', () => {
      const main = new MainDouble();
     let clients: ClientViewController[] = [];
     let room: ChatroomDto;
@@ -16,7 +16,7 @@ describe('Main Perf Memory Tesing ( 10.000 connected user in one room )...', () 
         for (let i = 0; i < MAX_USERS; i++) {
             const newClient = await main.makeClient('user-' + i);
             await main.addClientToRoom(newClient.id, room.id);
-            newClient.controller.getUserRooms(newClient.id);
+            newClient.getRoomsController.getUserRooms({userId:newClient.id});
             clients.push(newClient);
         }
         console.timeEnd('Main Perf Memory Tesing - Init time')
@@ -26,8 +26,8 @@ describe('Main Perf Memory Tesing ( 10.000 connected user in one room )...', () 
         const firstClient = clients[0];
         const lastClient = clients[MAX_USERS - 1];
 
-        const c1room = firstClient.view.chatDataViewModelDto.rooms ? firstClient.view.chatDataViewModelDto.rooms[0] : null;
-        const c2room = lastClient.view.chatDataViewModelDto.rooms ? lastClient.view.chatDataViewModelDto.rooms[0] : null;
+        const c1room = firstClient.getRoomsView.rooms ? firstClient.getRoomsView.rooms[0] : null;
+        const c2room = lastClient.getRoomsView.rooms ? lastClient.getRoomsView.rooms[0] : null;
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
         firstClient.controller.getRoomMessages(c1room.roomId, c1room.name, firstClient.id);
@@ -45,8 +45,8 @@ describe('Main Perf Memory Tesing ( 10.000 connected user in one room )...', () 
         const firstClient = clients[0];
         const lastClient = clients[MAX_USERS - 1];
 
-        const c1room = firstClient.view.chatDataViewModelDto.rooms ? firstClient.view.chatDataViewModelDto.rooms[0] : null;
-        const c2room = lastClient.view.chatDataViewModelDto.rooms ? lastClient.view.chatDataViewModelDto.rooms[0] : null;
+        const c1room = firstClient.getRoomsView.rooms ? firstClient.getRoomsView.rooms[0] : null;
+        const c2room = lastClient.getRoomsView.rooms ? lastClient.getRoomsView.rooms[0] : null;
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
         firstClient.controller.getRoomMessages(c1room.roomId, c1room.name, firstClient.id);
@@ -67,8 +67,8 @@ describe('Main Perf Memory Tesing ( 10.000 connected user in one room )...', () 
         const firstClient = clients[0];
         const lastClient = clients[MAX_CONCURRENT_MESSAGES - 1];
 
-        const c1room = firstClient.view.chatDataViewModelDto.rooms ? firstClient.view.chatDataViewModelDto.rooms[0] : null;
-        const c2room = lastClient.view.chatDataViewModelDto.rooms ? lastClient.view.chatDataViewModelDto.rooms[0] : null;
+        const c1room = firstClient.getRoomsView.rooms ? firstClient.getRoomsView.rooms[0] : null;
+        const c2room = lastClient.getRoomsView.rooms ? lastClient.getRoomsView.rooms[0] : null;
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
         firstClient.controller.getRoomMessages(c1room.roomId, c1room.name, firstClient.id);

@@ -5,13 +5,18 @@ import { UserWebViewClientImpl } from "../../../../core/views";
 import { IChatClient } from "../../../../core/gateways";
 import { ChatroomDto } from "../../../../core/dtos/models/chatroom.dto";
 //doubles
-import { ChatControllerHttpClientMemory } from "../http/chat-controller-client.memory";
+import { ChatControllerHttpClientMemory, GetUserRoomsHttpControllerClientMemory } from "../http/chat-controller-client.memory";
 import { AppBackendDouble } from "./app-backend-double";
 import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
+import { IGetUserRoomsHttpController } from "../../../../core/features/chat/get-rooms-by-user/controller/http/getRoomsByUser.controller.http";
+import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/features/chat/get-rooms-by-user";
+import { IGetRoomsByUserView } from "../../../../core/features/chat/get-rooms-by-user/presenter/getRoomsByUser.view";
 
 export interface ClientViewController {
     view: IChatView,
     controller: IChatHttpController,
+    getRoomsView: IGetRoomsByUserView,
+    getRoomsController: IGetUserRoomsHttpController,
     id: number
 }
 
@@ -20,10 +25,16 @@ export class MainDouble {
     backend: AppBackendDouble = new AppBackendDouble();
 
     async makeClient(name: string): Promise<ClientViewController> {
+
+        const getRoomsByUserView = new GetRoomsByUserClientView();
+        const getRoomsByUserPresenter = new GetRoomsByUserPresenterUi(getRoomsByUserView);
+        const clientGetRoomsController = new GetUserRoomsHttpControllerClientMemory( getRoomsByUserPresenter,this.backend.getUserRoomsHttpControllerApi);
+
+        
         const chatView = new UserWebViewClientImpl();
         const chatPresenter = new ChatUiPresenterImpl(chatView);
         const clientChatController = new ChatControllerHttpClientMemory(this.backend.apiChatController, chatPresenter);
-
+       
         const addedUser = await this.backend.chatdbMapper.addUser({ id: -1, name: name });
         const currUser = await clientChatController.getUserById(addedUser.id);
         if (!currUser) throw new Error('Fail in adding user to repository');
@@ -32,7 +43,13 @@ export class MainDouble {
         await this.backend.chatServer.connectUser(clientWs);
 
         return new Promise((resolve) => {
-            resolve({ view: chatView, controller: clientChatController, id: addedUser.id });
+            resolve({ 
+                view: chatView, id: addedUser.id ,
+                controller: clientChatController, 
+                //
+                getRoomsView: getRoomsByUserView,
+                getRoomsController: clientGetRoomsController   
+            });
         });
     }
 

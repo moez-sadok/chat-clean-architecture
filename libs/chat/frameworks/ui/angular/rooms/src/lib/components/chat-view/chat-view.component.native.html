@@ -2,13 +2,8 @@
 
   <div class="margin-12 padding-12 card-border">
     <h2>{{ chatPageView.activeUser.name }}</h2>
-    <ul>
-      <li class="padding-12 cursor-pointer" *ngFor="let chatRoom of chatPageView.rooms" [value]="chatRoom"
-        (click)="selectRoom.emit(chatRoom)">
-        <b>{{ chatRoom.name }}</b>
-        <span *ngIf="chatRoom.newMessagesNotif" >({{ chatRoom.newMessagesNotif }})</span>
-      </li>
-    </ul>
+    <cca-get-user-rooms [userId]="chatPageView.activeUser.id"
+      (selectRoom)="selectRoom.emit($event)"></cca-get-user-rooms>
   </div>
 
   <div class="margin-12" *ngIf="chatPageView.activeRoom.name">

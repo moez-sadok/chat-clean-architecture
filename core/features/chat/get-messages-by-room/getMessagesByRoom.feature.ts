@@ -1,6 +1,7 @@
 import { GetRoomMessagesInputData } from "../../../dtos/input.chat.data";
-import { MessageOutputData, RoomOutputData } from "../../../dtos/output.chat.data";
+import { MessageOutputData } from "../../../dtos/output.chat.data";
 import { IChatRepository } from "../../../repositories/chat-repository";
+import { GetRoomsByUserResponseData } from "../get-rooms-by-user";
 import { IGetMessagesByRoomInput } from "./getMessagesByRoom.controller.input";
 import { IGetMessagesByRoomPresenterOutput } from "./getMessagesByRoom.presenter.output";
 
@@ -23,7 +24,7 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
         chatRoomId: m.room.id,
       } as MessageOutputData;
     }): [];
-    const croom: RoomOutputData = {
+    const croom: GetRoomsByUserResponseData = {
       roomId: room.roomId, roomName: room.roomName,
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
     };

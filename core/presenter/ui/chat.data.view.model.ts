@@ -1,5 +1,7 @@
+import { RoomViewModel } from "../../features/chat/get-rooms-by-user";
+
 export interface ChatDataViewModelDto {
-  rooms?: RoomViewModel[];
+  // rooms?: RoomViewModel[];
 
   activeRoom: RoomViewModel;
   activeUser: UserViewModel;
@@ -19,12 +21,12 @@ export interface MessageViewModel {
   participantName: string;
 }
 
-export interface RoomViewModel {
-  roomId: number;
-  name: string;
-  participantNames?: string[];
-  newMessagesNotif?: number;
-}
+// export interface RoomViewModel {
+//   roomId: number;
+//   name: string;
+//   participantNames?: string[];
+//   newMessagesNotif?: number;
+// }
 
 export interface UserViewModel {
   id: number;

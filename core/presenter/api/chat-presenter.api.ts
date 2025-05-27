@@ -1,12 +1,6 @@
-import { IGetRoomsByUserPresenterOutput } from "../../features/chat/get-rooms-by-user/getRoomsByUser.presenter.output";
-import { MessageOutputData, RoomOutputData, UserOutputData } from "../../dtos/output.chat.data";
-import { IGetMessagesByRoomPresenterOutput, IGetUserByIdPresenterOutput, ISendMessagePresenterOutput } from "@cca/core-features";
+import { MessageOutputData, UserOutputData } from "../../dtos/output.chat.data";
+import { IGetUserByIdPresenterOutput, IGetMessagesByRoomPresenterOutput, ISendMessagePresenterOutput } from "../../features/chat";
 
-export class GetRoomsByUserPresenterAPI implements IGetRoomsByUserPresenterOutput {
-  selectedRoomsByUser(rooms: RoomOutputData[]): RoomOutputData[] {
-    return rooms;
-  }
-}
 
 export class GetUserByIdPresenterAPI implements IGetUserByIdPresenterOutput {
   selectedUser(user: UserOutputData): UserOutputData {
@@ -15,7 +9,7 @@ export class GetUserByIdPresenterAPI implements IGetUserByIdPresenterOutput {
 }
 
 export class GetMessagesByRoomPresenterApi implements IGetMessagesByRoomPresenterOutput {
-  selectChatRoomsMessages(messages: MessageOutputData[], room: RoomOutputData): MessageOutputData[] {
+  selectChatRoomsMessages(messages: MessageOutputData[]): MessageOutputData[] {
     return messages;
   }
 }

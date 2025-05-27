@@ -1,14 +1,14 @@
-<button (click)="chatview.switchView()" >Switch view</button>
-<cca-chat-view *ngIf="chatview.chatDataViewModelDto.defaultView === 'native'"
-    [chatPageView]="chatview.chatDataViewModelDto" 
+<!-- <button (click)="chatview.switchView()">Switch view</button> -->
+<!-- <cca-chat-view *ngIf="chatview.chatDataViewModelDto.defaultView === 'native'"
+    [chatPageView]="chatview.chatDataViewModelDto"
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 
     (sendMessage)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
         activeUserId, $event)">
 </cca-chat-view>
 
-<cca-chat-view-mat  *ngIf="chatview.chatDataViewModelDto.defaultView === 'material'" 
-    [chatPageView]="chatview.chatDataViewModelDto" 
+<cca-chat-view-mat *ngIf="chatview.chatDataViewModelDto.defaultView === 'material'"
+    [chatPageView]="chatview.chatDataViewModelDto"
     (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)" 
     (sendMessage)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
-        activeUserId, $event)">
-</cca-chat-view-mat> 
+     activeUserId, $event)">
+</cca-chat-view-mat> -->

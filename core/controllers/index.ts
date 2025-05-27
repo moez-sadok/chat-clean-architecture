@@ -1,4 +1,5 @@
 export * from './chat.controllor';
+export * from './http.controllor';
 //http
 export * from './http/chat-controller-http-client-adapter';
 //ws

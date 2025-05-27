@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ChatDataViewModelDto, RoomViewModel } from '@cca/core-presenters';
+import { RoomViewModel } from '@cca/core-features';
+import { ChatDataViewModelDto } from '@cca/core-presenters';
+import { GetUserRoomsComponent } from "../get-user-rooms/get-user-rooms.component";
 
 @Component({
   selector: 'cca-chat-view',
@@ -8,8 +10,9 @@ import { ChatDataViewModelDto, RoomViewModel } from '@cca/core-presenters';
   styleUrls: ['./chat-view.component.native.scss'],
   standalone: true,
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+    GetUserRoomsComponent
+]
 })
 export class ChatViewComponent {
 

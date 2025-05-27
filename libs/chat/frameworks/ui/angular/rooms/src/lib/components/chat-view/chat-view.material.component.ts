@@ -33,6 +33,6 @@ import { ChatViewComponent } from './chat-view.component';
     MatMenuModule,
     MatSelectModule,
     MatFormFieldModule
-  ]
+]
 })
 export class ChatViewMaterialComponent extends ChatViewComponent{}

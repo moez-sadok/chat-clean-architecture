@@ -1,8 +1,13 @@
-import { IChatView, ChatDataViewModelDto, UserViewModel, MessageViewModel, RoomViewModel } from "../presenter";
+import { RoomViewModel } from "../features/chat/get-rooms-by-user";
+import { IChatView, ChatDataViewModelDto, UserViewModel, MessageViewModel } from "../presenter";
 
 export class UserWebViewClientImpl implements IChatView {
 
   chatDataViewModelDto!: ChatDataViewModelDto;
+
+  // displayChatPageRooms(rooms: RoomViewModel[]): void {
+  //   this.chatDataViewModelDto = {...this.chatDataViewModelDto, rooms : rooms};
+  // }
 
   switchView(): void {
     const style = this.chatDataViewModelDto.defaultView === 'material' ? 'native' : 'material';
@@ -15,10 +20,6 @@ export class UserWebViewClientImpl implements IChatView {
 
   displayChatRoomsMessages(messages: MessageViewModel[]): void {
     this.chatDataViewModelDto = { ...this.chatDataViewModelDto, activeRoomMessages: messages };
-  }
-
-  displayChatPageRooms(rooms: RoomViewModel[]): void {
-    this.chatDataViewModelDto = {...this.chatDataViewModelDto, rooms : rooms};
   }
 
   setActiveRoom(room: RoomViewModel) {

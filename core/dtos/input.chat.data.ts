@@ -1,6 +1,6 @@
-export interface GetRoomsByUserInputData {
-  userId: number;
-}
+// export interface GetRoomsByUserRequestData {
+//   userId: number;
+// }
 
 export interface GetRoomMessagesInputData {
   roomId: number;

@@ -4,11 +4,11 @@ import {
   GET_ROOMS_ByUserFeature,
   GET_ROOMS_ByUserPresenter, GET_USER_ByIdFeature,
   GET_USER_ByIdPresenter, getMessagesByRoomFeatureFactory,
-  getRoomsByUserFeatureFactory, getUserByIdFeatureFactory,
+  getRoomsByUserFeatureFactory, GetRoomsByUserPresenterAPI, getUserByIdFeatureFactory,
   SEND_MESSAGE_Feature, SEND_MESSAGE_Presenter,
   sendMessageFeatureFactory
 } from '@cca/core-features';
-import { GetMessagesByRoomPresenterApi, GetRoomsByUserPresenterAPI, GetUserByIdPresenterAPI, SendMessagePresenterApi } from '@cca/core-presenters';
+import { GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, SendMessagePresenterApi } from '@cca/core-presenters';
 import { CHAT_DB_MAPPER_PROVIDER, CHAT_SERVER_PROVIDER_PORT, ChatMainConfigProvidersModule } from './chat.main.config.providers.module';
 
 @Module({
@@ -24,7 +24,8 @@ import { CHAT_DB_MAPPER_PROVIDER, CHAT_SERVER_PROVIDER_PORT, ChatMainConfigProvi
     { provide: GET_ROOMS_ByUserPresenter, useValue: new GetRoomsByUserPresenterAPI() },
     {
       provide: GET_ROOMS_ByUserFeature, useFactory: getRoomsByUserFeatureFactory,
-      inject: [CHAT_DB_MAPPER_PROVIDER, GET_ROOMS_ByUserPresenter]
+      // inject: [CHAT_DB_MAPPER_PROVIDER, GET_ROOMS_ByUserPresenter]
+      inject: [CHAT_DB_MAPPER_PROVIDER]
     },
     // get messages by room
     { provide: GET_MESSAGES_ByRoomPresenter, useValue: new GetMessagesByRoomPresenterApi() },
@@ -43,7 +44,9 @@ import { CHAT_DB_MAPPER_PROVIDER, CHAT_SERVER_PROVIDER_PORT, ChatMainConfigProvi
     GET_USER_ByIdFeature,
     GET_ROOMS_ByUserFeature,
     GET_MESSAGES_ByRoomFeature,
-    SEND_MESSAGE_Feature
+    SEND_MESSAGE_Feature,
+    //
+    GET_ROOMS_ByUserPresenter
   ]
 })
 export class ChatMainFeaturesProvidersModule { }

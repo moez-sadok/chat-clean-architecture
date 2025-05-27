@@ -1,8 +1,8 @@
-export interface RoomOutputData {
-  roomName: string;
-  roomId: number;
-  participantsNames?: string[];
-}
+// export interface GetRoomsByUserResponseData {
+//   roomName: string;
+//   roomId: number;
+//   participantsNames?: string[];
+// }
 
 export interface MessageOutputData {
   authorName: string;

@@ -1,7 +1,8 @@
 import { IChatAppFacadePresenterOutput } from '../../presenter';
-import { UserOutputData, RoomOutputData, MessageOutputData } from '../../dtos/output.chat.data';
+import { UserOutputData, MessageOutputData } from '../../dtos/output.chat.data';
 import { IChatHttpController } from '../chat.controllor';
 // Adapter pattern (Object) 
+
 export class ChatControllerHttpClientAdapterImpl implements IChatHttpController {
 
   constructor(
@@ -18,14 +19,14 @@ export class ChatControllerHttpClientAdapterImpl implements IChatHttpController 
       });
   }
 
-  getUserRooms(userId: number): Promise<RoomOutputData[]> {
-    const url = `${this.serverUrl}${'api/chat-user-rooms'}/${userId}`;
-    return fetch(url)
-      .then(res => res.json())
-      .then((res: RoomOutputData[]) => 
-         this.presentator.selectedRoomsByUser(res)
-    );
-  }
+  // getUserRooms(userId: number): Promise<GetRoomsByUserResponseData[]> {
+  //   const url = `${this.serverUrl}${'api/chat-user-rooms'}/${userId}`;
+  //   return fetch(url)
+  //     .then(res => res.json())
+  //     .then((res: GetRoomsByUserResponseData[]) => 
+  //        this.presentator.selectedRoomsByUser(res)
+  //   );
+  // }
 
   getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageOutputData[]> {
     const room = { userId: userId, roomId: roomId, roomName: roomName }; //as GetRoomMessagesInputData
