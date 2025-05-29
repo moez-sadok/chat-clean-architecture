@@ -1,0 +1,80 @@
+@startuml
+
+!include prodsoft.wsd
+!pragma teoz true
+
+title Components interaction - sequence diagram
+footer Prodsoft - Moez SADOK @Copyright 2025
+
+actor UserGUI as User #F06292
+
+box "Adapters" $GARDIANT_LIGHT
+
+box "Client" #fff7fe
+boundary WebView #fe9cbd
+boundary UiPresenter #89fce5
+boundary ClientHttpController #f4ff9e
+end box
+
+box "Server" #d8fff5\White
+boundary ApiHttpController #CDE711
+boundary ApiPresenter #11e7bc
+end box
+end box
+
+box "Core" #b1ffeb\9fc2ee
+box "Server" #b1ffeb\9fc2ee
+' interactor
+control UseCase
+entity Entities #FDD835
+end box
+end box
+
+box "Gateways/Externals" #fff7b1\9fc2ee
+database Repository #fa72ff
+boundary WsServer #CDE711
+boundary Notifier $ACCENT_LIGHT\White
+end box
+
+' Step 1
+activate WebView #fe9cbd
+User -> ClientHttpController : SendRequest
+activate ClientHttpController #f4ff9e
+ClientHttpController -> ClientHttpController : formatRequest
+' Step 2:
+ClientHttpController -> ApiHttpController : sendHttpRequest
+activate ApiHttpController #CDE711
+ApiHttpController -> ApiHttpController : readAndFormatRequest
+ApiHttpController -> UseCase : callUseCase
+' Step 3:
+activate UseCase
+UseCase -> Entities : use
+& Entities -> WsServer 
+& Entities -> Notifier 
+UseCase -> Repository : readOrPersist(data)
+UseCase -> ApiHttpController : returnResponse
+' Step 4:
+deactivate UseCase
+ApiHttpController -> ApiPresenter
+activate ApiPresenter #11e7bc
+ApiPresenter -> ApiPresenter : formatResponse
+ApiPresenter  ->  ApiHttpController
+deactivate ApiPresenter
+' Step 5
+ApiHttpController -> ClientHttpController : returnHttpResponse
+deactivate ApiHttpController
+ClientHttpController -> UiPresenter
+deactivate ClientHttpController
+' Step 6
+activate UiPresenter #89fce5
+UiPresenter -> UiPresenter : formatUiResponse
+UiPresenter -> WebView : updateViewState
+deactivate UiPresenter
+' Step 7
+WebView -> User : displayResponse
+deactivate WebView
+
+@enduml
+
+
+

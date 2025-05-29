@@ -7,17 +7,17 @@ footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User $SECONDARY
 
-package "Adapters" $GARDIANT_LIGHT {
-    interface IController  $PRIMARY_LIGHT
+package "Core/Adapters" $GARDIANT_LIGHT {
+    interface IHttpController  $PRIMARY_LIGHT
     interface IPresenter #CDE711
 }
 
 package "Core"  $GARDIANT_LIGHT{
-    interface IRepository $PRIMARY_LIGHT
+    interface IRepository #fa72ff
     interface INotifiyer $ACCENT_LIGHT\White
     collections UseCases #White
     
-    [Entities] $SECONDARY_VERY_LIGHT
+    [Entities] #FDD835
 
     package "NetworkGateway" #transparent;line:Black;line.bold {
 
@@ -26,33 +26,33 @@ package "Core"  $GARDIANT_LIGHT{
     }
 }
 
-node "Client (Browser)" $BACKGROUND_LIGHT {
+node "Client (Browser)" #fff7fe {
     interface IView #LimeGreen
     [PresenterUI] #CDE711
     [ClientController] $PRIMARY_LIGHT
     [GUI] #LimeGreen
 
     PresenterUI --|>  IPresenter
-    ClientController --|>  IController
+    ClientController --|>  IHttpController
     GUI --|> IView
 }
 
 node "Database Server" {
-    database ChatDataBase $PRIMARY
+    database ChatDataBase #fa72ff
 }
 
 node "Notification Server" {
     [Notifiyer] $ACCENT_LIGHT\White
 }
 
-node "Http_Server"  {
+node "Http_Server" #d8fff5\White {
     [ServerController]  $PRIMARY_LIGHT
     [PresenterAPI] #CDE711
-    ServerController --|>  IController
+    ServerController --|>  IHttpController
     PresenterAPI --|>  IPresenter
 }
 
-node "Ws_Server"  {
+node "Ws_Server" #CDE711/White {
     [ClientSocket] $SECONDARY_VERY_LIGHT/LightGreen
     [WsServer]  $PRIMARY_LIGHT/LightSeaGreen
 }
@@ -87,6 +87,6 @@ GUI  -up-> User : See response
 
 ' fake fidden line for design adaptation
 ServerController  -up[hidden]- WsServer 
-IPresenter  -up[hidden]- IController 
+IPresenter  -up[hidden]- IHttpController 
 
 @enduml

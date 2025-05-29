@@ -1,0 +1,97 @@
+@startuml
+
+!include prodsoft.wsd
+
+title P-CHAT Component Diagram - Layers
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User $SECONDARY
+
+package "Adapters/C.P" #d8fff5\White {
+    interface IHttpController  $PRIMARY_LIGHT
+    interface IPresenter #CDE711
+}
+
+    package "Application" #f88c8c/White;line:Black;line.bold {
+        interface IRepository #fa72ff
+        collections UseCases #White
+        component Notifiyer #transparent;line:Black;line.bold{
+             interface INotif $ACCENT_LIGHT\White
+             [NotifStrategy] #White
+        }
+    }
+
+    package "BusinessRules" #FDD835/White;line:Black;line.bold {
+        [Entities] #FDD835/White
+        interface INotifiyer $ACCENT_LIGHT\White
+    }
+
+node "Client (Browser)" #afd8ff\White {
+    interface IView #LimeGreen
+    [PresenterUI] #CDE711
+    [ClientController] $PRIMARY_LIGHT
+    [GUI] #LimeGreen
+
+    PresenterUI --|>  IPresenter
+    ClientController -up-|>  IHttpController
+    GUI --|> IView
+}
+
+package "Adapters/DbGateway" #d8fff5\White {
+    [DataMapper] #fa72ff/White
+}
+
+node "Database Server" #afd8ff\White {
+    database ChatDataBase #fa72ff/White
+}
+
+package "Adapters/NotifGateway" #d8fff5\White {
+ [NotificationFactory] $ACCENT_LIGHT\White
+}
+
+node "External" #afd8ff\White{
+    [PushNotificationServer] $ACCENT_LIGHT\White
+    [MailServer] $ACCENT_LIGHT\White
+}
+
+node "Http_Server" #afd8ff\White {
+    [ServerController]  $PRIMARY_LIGHT
+    [PresenterAPI] #CDE711
+    ServerController --|>  IHttpController
+    PresenterAPI --|>  IPresenter
+}
+
+User -down-> GUI : Send Request
+GUI -right-> ClientController : Action:Routing,Click...
+
+ServerController  -[hidden]- ClientController
+ClientController  -up[hidden]- PresenterAPI
+
+IHttpController <.-right-.> UseCases : handleHttpRequest()
+
+Entities  <--  UseCases : manageEntities()
+
+IRepository <-up- UseCases  : getOrPersistData()
+DataMapper  -up-|>  IRepository
+DataMapper -down-> ChatDataBase
+
+INotif   <|-right- NotificationFactory
+NotifStrategy --> INotif
+NotifStrategy  --|>  INotifiyer
+NotificationFactory -left-> PushNotificationServer
+NotificationFactory --> MailServer
+
+PushNotificationServer  -down[hidden]- MailServer
+
+Entities -right-> INotifiyer : sendNotification(msg)
+
+ServerController --> PresenterAPI : formatData()
+
+ClientController --> PresenterUI  : present()
+IView <-right- PresenterUI : display()
+
+GUI  -up-> User : See response
+
+IPresenter  -up[hidden]- IHttpController
+
+@enduml

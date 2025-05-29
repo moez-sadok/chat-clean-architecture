@@ -4,9 +4,7 @@ import { ParticpantDto } from "../dtos/models/participant.dto";
 import { UserDto } from "../dtos/models/user.dto";
 import { IChatRoomsRepository } from "../features/chat/get-rooms-by-user/repositories/user-rooms.repository";
 
-// export interface IChatRoomsRepository {
-//   getChatRoomsByUser(userId: number): ChatroomDto[];
-// }
+
 //chat repository
 export interface IChatRepository extends IChatRoomsRepository {
 
