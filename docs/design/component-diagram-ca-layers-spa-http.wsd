@@ -2,7 +2,7 @@
 
 !include prodsoft.wsd
 
-title P-CHAT Component Diagram - Layers [Clean Architecture: SPA + HTTP]
+title P-CHAT Component Diagram [Layers clean architecture: SPA + HTTP]
 header  Without notification and socket components | Optional: ApiPresenter
 footer Prodsoft - Moez SADOK @Copyright 2024
 
@@ -12,7 +12,7 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
 
     node "ClientBrowser" #afd8ff\White  {
 
-        component [MainFrontEnd\n(SPA: WebView + PresenterUI)] as MainFrontEnd 
+        component [MainFrontEnd\n(SPA: WebView + PresenterUI)] as MainFrontEnd
         rectangle  ClientController $PRIMARY_LIGHT
         [GUI] #LimeGreen
         MainFrontEnd -[hidden]- GUI
@@ -23,6 +23,7 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
         package "Application" #f88c8c/White;line:Black;line.bold {
             interface IRepository #fa72ff
             collections UseCases #White
+            ' collections DTOs #White
 
             package "BusinessRules" #FDD835/White;line:Black;line.bold {
                 [Entities] #FDD835/White
@@ -33,7 +34,7 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
         component "DbGateway" #transparent;line:Black;line.bold {
             interface IDataAccess #fa72ff/White
             rectangle ChatRepository #transparent
-            rectangle [DataMapper\n(or ORM)] as DataMapper #transparent
+            rectangle "DataMapper\n(or ORM)" as DataMapper #transparent
         }
 
         component Controller #transparent;line:Black;line.bold{
@@ -52,8 +53,7 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
     }
 
     node "HttpServer" #afd8ff\White {
-        ' [MainBackEnd]
-         component [MainBackEnd\n(Adaptes + App + Entities)] as MainBackEnd 
+        component [MainBackEnd\n(DbGateway + App + Entities)] as MainBackEnd
         rectangle ServerController  $PRIMARY_LIGHT
     }
 
@@ -64,39 +64,46 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
 
 }
 
-' MainBackEnd -down-> Adapters : instanciate()
-' MainBackEnd -down-> Application : instanciate()
-' MainBackEnd -down-> BusinessRules : instanciate()
-
 Application -left[hidden]- IHttpController
 
 User -right-> GUI : 1. sendRequest
 GUI -right-> ClientController : 2. Action:Routing,Click...
-ClientController <.right. ServerController : 12. returnHttpResponse()
-ClientController -right-> ServerController : 3. handleHttpRequest()
-ServerController -down-> UseCases : 4. call()
-ServerController <.down. UseCases : 11. returnRes()
+ClientController .right. ServerController : 3. handleHttpRequest() \n12. returnHttpResponse()
+ServerController .down. UseCases : 4. call() \n 11. returnRes()
+IHttpController -down-> UseCases
 UseCases -right-> Entities  : 5. manageEntities()
+ServerController -down-|>  IHttpController #Black
 
-GUI -down-> WebView : 15. observe()
-PresenterUI --|>  IPresenter
-WebView -right-|> IView
-ClientController -down-|>  IHttpController
+IRepository .up. UseCases : 6. dataReq \n10. dataRes
+IRepository <-up- UseCases
+ChatRepository  -up-|>  IRepository #Black
+ChatRepository -left-> IDataAccess : 7.persistOrSelect()
+ChatRepository -right-> DataMapper : 9. mapToEntity()
+DataAccess -up-|> IDataAccess #Black
+DataAccess -right-> ChatDataBase : 8. manageDB()
+DataMapper -up-> Entities: mapping() \n Optional DTOs
 
+
+PresenterUI --|>  IPresenter #Black
+WebView -right-|> IView #Black
+ClientController -down-|>  IHttpController #Black
 ClientController --> PresenterUI  : 13. present()
 IView <-right- PresenterUI : 14. display()
+GUI -down-> WebView : 15. observe()
 GUI  -up-> User : 16. seeResponse
 IPresenter  -up[hidden]- IHttpController
 
-ServerController -down-|>  IHttpController
+' MainBackEnd -down-> Adapters : instanciate()
+' MainBackEnd -down-> Application : instanciate()
+' MainBackEnd -down-> BusinessRules : instanciate()
 
-IRepository <-up- UseCases : 6. dataReq
-IRepository .up.> UseCases : 10. dataRes
-ChatRepository  -up-|>  IRepository
-ChatRepository -left-> IDataAccess : 7.persistOrSelect()
-ChatRepository -right-> DataMapper : 9. mapToEntity()
-DataAccess -up-|> IDataAccess
-DataAccess -right-> ChatDataBase : 8. manageDB()
-DataMapper -up-> Entities: useForMapping()
+' MainFrontEnd -down-> View : instanciate()
+' MainFrontEnd -down-> Presenter : instanciate()
+
+' Using DTOs (to-check)
+' collections DTOs #White (inside Application)
+' DataMapper -up[hidden]-> Application
+' DataMapper -up-> DTOs : useForMapping()
+' DTOs -up-> Entities
 
 @enduml

@@ -7,34 +7,34 @@ footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor Users $SECONDARY
 
-package "Core" $GARDIANT_LIGHT {
+node "Client" $BACKGROUND_LIGHT {
+    interface IView #LimeGreen
 
-    package "Adapters" $GARDIANT_LIGHT {
-        interface IController  $PRIMARY_LIGHT
-        interface IPresenter #CDE711
-    }
+    [GUI] #LimeGreen
+    GUI --|> IView
+}
 
+package "Adapters" #77ff8b/White {
+    interface IController  $PRIMARY_LIGHT
+    interface IPresenter #CDE711
+
+    [PresenterUI] #CDE711
+    [ClientController] $PRIMARY_LIGHT
+
+    PresenterUI -right-|>  IPresenter
+    ClientController -right-|>  IController
+}
+
+package "Application" #ff7777/White {
     interface IRepository $PRIMARY_LIGHT
     interface INotifiyer $ACCENT_LIGHT\White
     collections UseCases #White
 
     [Entities] $SECONDARY_VERY_LIGHT
-
-}
-
-node "Client" $BACKGROUND_LIGHT {
-    interface IView #LimeGreen
-    [PresenterUI] #CDE711
-    [ClientController] $PRIMARY_LIGHT
-    [GUI] #LimeGreen
-
-    PresenterUI --|>  IPresenter
-    ClientController -left-|>  IController
-    GUI --|> IView
 }
 
 node "Database" {
-    database ChatMemoryDB $PRIMARY
+    database ChatMemoryDB 
 }
 
 node "Notification" {
@@ -54,12 +54,10 @@ ChatMemoryDB  -left-|>  IRepository
 NotifiyerLogger  -left-|>  INotifiyer
 Entities -right-> INotifiyer : send(msg)
 
-ClientController --> PresenterUI  : present()
+ClientController -down-> IPresenter  : present()
 IView <-right- PresenterUI : display()
 
 GUI  -up-> Users : See response
-
-' fake fidden line for design adaptation
-IPresenter  -up[hidden]- IController
+ClientController -[hidden]- PresenterUI
 
 @enduml
