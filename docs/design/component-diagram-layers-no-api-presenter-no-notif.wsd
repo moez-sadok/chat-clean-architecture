@@ -2,7 +2,8 @@
 
 !include prodsoft.wsd
 
-title P-CHAT Component Diagram - Layers (No APiPresenter)
+title P-CHAT Component Diagram - Layers [Clean Architecture: SPA + HTTP]
+header  Without notification and socket components | Optional: ApiPresenter
 footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User $SECONDARY
@@ -10,7 +11,8 @@ actor User $SECONDARY
 package "FramworksDrivers" #90baff\White;line:Black;line.bold {
 
     node "ClientBrowser" #afd8ff\White  {
-        [MainFrontEnd]
+
+        component [MainFrontEnd\n(SPA: WebView + PresenterUI)] as MainFrontEnd 
         rectangle  ClientController $PRIMARY_LIGHT
         [GUI] #LimeGreen
         MainFrontEnd -[hidden]- GUI
@@ -50,7 +52,8 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
     }
 
     node "HttpServer" #afd8ff\White {
-        [MainBackEnd]
+        ' [MainBackEnd]
+         component [MainBackEnd\n(Adaptes + App + Entities)] as MainBackEnd 
         rectangle ServerController  $PRIMARY_LIGHT
     }
 
@@ -61,14 +64,18 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
 
 }
 
+' MainBackEnd -down-> Adapters : instanciate()
+' MainBackEnd -down-> Application : instanciate()
+' MainBackEnd -down-> BusinessRules : instanciate()
+
 Application -left[hidden]- IHttpController
 
 User -right-> GUI : 1. sendRequest
 GUI -right-> ClientController : 2. Action:Routing,Click...
 ClientController <.right. ServerController : 12. returnHttpResponse()
 ClientController -right-> ServerController : 3. handleHttpRequest()
-ServerController --> UseCases : 4. call()
-ServerController <.. UseCases : 11. returnResponse()
+ServerController -down-> UseCases : 4. call()
+ServerController <.down. UseCases : 11. returnRes()
 UseCases -right-> Entities  : 5. manageEntities()
 
 GUI -down-> WebView : 15. observe()

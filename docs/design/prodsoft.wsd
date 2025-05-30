@@ -48,7 +48,7 @@ skinparam node {
 }
 
 skinparam arrow {
-	Thickness 2
+	Thickness 3
     Color $SECONDARY
     FontColor $ACCENT
 }
