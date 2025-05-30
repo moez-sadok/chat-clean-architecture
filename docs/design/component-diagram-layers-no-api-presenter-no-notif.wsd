@@ -1,0 +1,95 @@
+@startuml
+
+!include prodsoft.wsd
+
+title P-CHAT Component Diagram - Layers (No APiPresenter)
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User $SECONDARY
+
+package "FramworksDrivers" #90baff\White;line:Black;line.bold {
+
+    node "ClientBrowser" #afd8ff\White  {
+        [MainFrontEnd]
+        rectangle  ClientController $PRIMARY_LIGHT
+        [GUI] #LimeGreen
+        MainFrontEnd -[hidden]- GUI
+    }
+
+    package "Adapters" #baffd8\White;line:Black;line.bold {
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+            interface IRepository #fa72ff
+            collections UseCases #White
+
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+                [Entities] #FDD835/White
+            }
+
+        }
+
+        component "DbGateway" #transparent;line:Black;line.bold {
+            interface IDataAccess #fa72ff/White
+            rectangle ChatRepository #transparent
+            rectangle [DataMapper\n(or ORM)] as DataMapper #transparent
+        }
+
+        component Controller #transparent;line:Black;line.bold{
+            interface IHttpController  $PRIMARY_LIGHT
+            interface IPresenter #CDE711
+        }
+
+        component Presenter #transparent;line:Black;line.bold{
+            interface IView #LimeGreen
+            rectangle PresenterUI #CDE711
+        }
+
+        component View #transparent;line:Black;line.bold{
+            rectangle  WebView #LightGreen
+        }
+    }
+
+    node "HttpServer" #afd8ff\White {
+        [MainBackEnd]
+        rectangle ServerController  $PRIMARY_LIGHT
+    }
+
+    node "Database Server" #afd8ff\White {
+        database ChatDataBase #fc9eff/White
+        rectangle DataAccess #fc9eff/White
+    }
+
+}
+
+Application -left[hidden]- IHttpController
+
+User -right-> GUI : 1. sendRequest
+GUI -right-> ClientController : 2. Action:Routing,Click...
+ClientController <.right. ServerController : 12. returnHttpResponse()
+ClientController -right-> ServerController : 3. handleHttpRequest()
+ServerController --> UseCases : 4. call()
+ServerController <.. UseCases : 11. returnResponse()
+UseCases -right-> Entities  : 5. manageEntities()
+
+GUI -down-> WebView : 15. observe()
+PresenterUI --|>  IPresenter
+WebView -right-|> IView
+ClientController -down-|>  IHttpController
+
+ClientController --> PresenterUI  : 13. present()
+IView <-right- PresenterUI : 14. display()
+GUI  -up-> User : 16. seeResponse
+IPresenter  -up[hidden]- IHttpController
+
+ServerController -down-|>  IHttpController
+
+IRepository <-up- UseCases : 6. dataReq
+IRepository .up.> UseCases : 10. dataRes
+ChatRepository  -up-|>  IRepository
+ChatRepository -left-> IDataAccess : 7.persistOrSelect()
+ChatRepository -right-> DataMapper : 9. mapToEntity()
+DataAccess -up-|> IDataAccess
+DataAccess -right-> ChatDataBase : 8. manageDB()
+DataMapper -up-> Entities: useForMapping()
+
+@enduml

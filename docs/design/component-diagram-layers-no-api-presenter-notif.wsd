@@ -70,6 +70,7 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
 
     node "Database Server" #afd8ff\White {
         database ChatDataBase #fc9eff/White
+        component DataAccess #fc9eff/White
     }
 
     node "External" #afd8ff\White{
@@ -79,37 +80,38 @@ package "FramworksDrivers" #90baff\White;line:Black;line.bold {
 
 }
 
-Application -up[hidden]- IHttpController
+' Application -up[hidden]- IHttpController
+' HttpServer -right[hidden]- ClientBrowser
+
 User -right-> GUI : Send Request
 GUI -right-> ClientController : Action:Routing,Click...
 GUI -down-> WebView : observe()
 PresenterUI --|>  IPresenter
-WebView --|> IView
+WebView -right-|> IView
 ClientController --|>  IHttpController
 
 ClientController --> PresenterUI  : present()
 IView <-right- PresenterUI : display()
 GUI  -up-> User : See response
-IPresenter  -up[hidden]- IHttpController
+' IPresenter  -up[hidden]- IHttpController
 
-ServerController --|>  IHttpController
+ServerController -down-|>  IHttpController
 
-IHttpController <.-right-.> UseCases : callUseCases()
-ClientController <.-left-.> ServerController : handleHttpRequest()
+' IHttpController <.-right-.> UseCases : callUseCases()
+ClientController <.-right-.> ServerController : handleHttpRequest()
+ServerController <.--.> UseCases : callUseCases()
+Entities  <-up-  UseCases : manageEntities()
 
 IRepository <-up- UseCases  
-' : getOrPersistData()
 DataMapper  -up-|>  IRepository
-DataMapper --> ChatDataBase
+DataAccess -up-|> DataMapper 
+DataAccess -right-> ChatDataBase
 
 INotif   <|-- NotificationFactory
 NotifStrategy -right-> INotif
 NotifStrategy  -left-|>  INotifiyer
 NotificationFactory --> PushNotificationServer
 NotificationFactory --> MailServer
-
 Entities -right-> INotifiyer : sendNotification(msg)
-Entities  <-up-  UseCases : manageEntities()
-
 
 @enduml
