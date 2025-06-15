@@ -1,4 +1,4 @@
-import { RoomViewModel } from "../features/chat/get-rooms-by-user";
+import { RoomViewModel } from "../application/usecases/get-rooms-by-user";
 import { IChatView, ChatDataViewModelDto, UserViewModel, MessageViewModel } from "../presenter";
 
 export class UserWebViewClientImpl implements IChatView {

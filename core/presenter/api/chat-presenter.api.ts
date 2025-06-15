@@ -1,5 +1,5 @@
 import { MessageOutputData, UserOutputData } from "../../dtos/output.chat.data";
-import { IGetUserByIdPresenterOutput, IGetMessagesByRoomPresenterOutput, ISendMessagePresenterOutput } from "../../features/chat";
+import { IGetUserByIdPresenterOutput, IGetMessagesByRoomPresenterOutput, ISendMessagePresenterOutput } from "../../application/usecases";
 
 
 export class GetUserByIdPresenterAPI implements IGetUserByIdPresenterOutput {

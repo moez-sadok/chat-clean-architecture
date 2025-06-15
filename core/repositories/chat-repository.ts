@@ -2,7 +2,7 @@ import { ChatroomDto } from "../dtos/models/chatroom.dto";
 import { MessageDto } from "../dtos/models/message.dto";
 import { ParticpantDto } from "../dtos/models/participant.dto";
 import { UserDto } from "../dtos/models/user.dto";
-import { IChatRoomsRepository } from "../features/chat/get-rooms-by-user/repositories/user-rooms.repository";
+import { IChatRoomsRepository } from "../application/usecases/get-rooms-by-user/repositories/user-rooms.repository";
 
 
 //chat repository

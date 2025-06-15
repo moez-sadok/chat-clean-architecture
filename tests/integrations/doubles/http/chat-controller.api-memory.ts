@@ -1,6 +1,6 @@
-import { GetRoomsByUserResponseData, IGetMessagesByRoomInput, IGetRoomsByUserPresenter, IGetRoomsByUserRequester, IGetUserByIdInput, ISendMessageInput } from "../../../../core/features/chat";
+import { GetRoomsByUserResponseData, IGetMessagesByRoomInput, IGetRoomsByUserPresenter, IGetRoomsByUserRequester, IGetUserByIdInput, ISendMessageInput } from "../../../../core/application/usecases";
 import { IChatHttpController } from "../../../../core/controllers/chat.controllor";
-import { GetRoomsByUserRequestData } from "../../../../core/features/chat/get-rooms-by-user/interactor/getRoomsByUser.request.data";
+import { GetRoomsByUserRequestData } from "../../../../core/application/usecases/get-rooms-by-user/interactor/getRoomsByUser.request.data";
 import { IHttpController } from "../../../../core/controllers";
 
 export class GetUserRoomsHttpControllerApiMemory implements IHttpController{

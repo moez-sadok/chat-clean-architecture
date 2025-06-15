@@ -20,7 +20,7 @@
       "@cca/core-views": [ "./core/views/index.ts"],
       "@cca/core-repositories": [ "./core/repositories/index.ts"],
       "@cca/core-controllers": [ "./core/controllers/index.ts"],
-      "@cca/core-features": [ "./core/features/chat/index.ts"],
+      "@cca/core-features": [ "./core/application/usecases/index.ts"],
       "@cca/core-entities": [ "./core/entities/index.ts"],
       
       "@chat-clean-architecture/chat/frameworks/db/in-memory-db": [

@@ -1,8 +1,8 @@
 import { IChatAppFacadePresenterOutput } from '../../../../core/presenter';
 import { UserOutputData, MessageOutputData } from '../../../../core/dtos/output.chat.data';
 import { IChatHttpController } from '../../../../core/controllers/chat.controllor';
-import { GetRoomsByUserResponseData, IGetRoomsByUserPresenter } from '../../../../core/features/chat/get-rooms-by-user';
-import { GetRoomsByUserRequestData } from '../../../../core/features/chat/get-rooms-by-user/interactor/getRoomsByUser.request.data';
+import { GetRoomsByUserResponseData, IGetRoomsByUserPresenter } from '../../../../core/application/usecases/get-rooms-by-user';
+import { GetRoomsByUserRequestData } from '../../../../core/application/usecases/get-rooms-by-user/interactor/getRoomsByUser.request.data';
 import { IHttpController } from '../../../../core/controllers';
 
 export class GetUserRoomsHttpControllerClientMemory implements IHttpController{

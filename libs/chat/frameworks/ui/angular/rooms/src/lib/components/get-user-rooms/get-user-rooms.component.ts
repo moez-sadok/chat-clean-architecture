@@ -16,7 +16,7 @@ export class GetUserRoomsComponent {
 
   @Output() selectRoom: EventEmitter<RoomViewModel> = new EventEmitter();
 
-  @Input() set userId(id: number) {
+  @Input() set userId(id: number ) {
     if (id >= 0) this.httpApiClientController.getUserRooms(id)
   }
 

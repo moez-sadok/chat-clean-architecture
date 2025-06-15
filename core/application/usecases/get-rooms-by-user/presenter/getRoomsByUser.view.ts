@@ -1,4 +1,4 @@
-import { RoomViewModel } from "../presenter/getRoomsByUser.view.model";
+import { RoomViewModel } from "./getRoomsByUser.view.model";
 
 export interface IGetRoomsByUserView {
   rooms: RoomViewModel[];

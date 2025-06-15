@@ -1,6 +1,6 @@
 // import { UserOutputData } from "@chat-clean-architecture/chat/application-business-rules/interactor";
 import { UserOutputData } from "../../dtos/output.chat.data";
-import { RoomViewModel } from "../../features/chat/get-rooms-by-user";
+import { RoomViewModel } from "../../application/usecases/get-rooms-by-user";
 import { ChatDataViewModelDto, MessageViewModel } from "./chat.data.view.model";
 
 /* interface pattern : for the client view */

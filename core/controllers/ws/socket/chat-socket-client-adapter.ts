@@ -2,7 +2,7 @@
 import { Socket } from 'socket.io-client';
 import { IChatClient } from '../../../gateways/index';
 import { MessageOutputData } from '../../../dtos/output.chat.data';
-import { ISendMessagePresenterOutput } from '../../../features/chat';
+import { ISendMessagePresenterOutput } from '../../../application/usecases';
 
 export class ChatClientSocketkAdapter implements IChatClient {
     // socket as the adaptee

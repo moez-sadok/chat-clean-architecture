@@ -2,7 +2,7 @@ import { Socket, io } from 'socket.io-client';
 import { IChatWsController } from '../chat.controllor';
 import { IChatClient } from '../../domain/chat-client';
 import { ChatClientSocketkAdapter } from './socket/chat-socket-client-adapter';
-import { ISendMessagePresenterOutput } from '../../features/chat';
+import { ISendMessagePresenterOutput } from '../../application/usecases';
 // Adapter pattern (Object) 
 export class ChatControllerWsClientAdapterImpl implements IChatWsController {
 

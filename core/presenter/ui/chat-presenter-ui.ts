@@ -1,5 +1,5 @@
 import { UserOutputData, MessageOutputData } from '../../dtos/output.chat.data';
-import { GetRoomsByUserResponseData, RoomViewModel } from '../../features/chat';
+import { GetRoomsByUserResponseData, RoomViewModel } from '../../application/usecases';
 import { IChatAppFacadePresenterOutput } from '../entry.facade.presenter';
 import { MessageViewModel } from './chat.data.view.model';
 import { IChatView } from './chat.view';

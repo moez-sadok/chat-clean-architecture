@@ -1,0 +1,112 @@
+@startuml
+
+!include prodsoft.wsd
+
+title P-CHAT Component Diagram [Layers clean architecture: SSR + HTTP]
+header  Without notification and socket components | Optional: ApiPresenter
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User 
+
+package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
+
+
+    node "ClientBrowser" as ClientBrowser #afd8ff\White  {
+     rectangle "HTMLRender\nHTTP" as Browser #White
+    }
+
+    package "Adapters" #baffd8\White;line:Black;line.bold {
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+            
+            component Interactor #transparent;line:Black;line.bold{
+                interface IRepository #f88c8c
+                interface IUseCaseRequester #Gray
+                rectangle UseCase #White
+            }
+            ' collections DTOs #White
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+                [Entities] #FDD835/White
+            }
+        }
+
+        component "PersistanceGateway" #transparent;line:Black;line.bold {
+            interface IDataSource #baffd8
+            rectangle Repository #transparent
+            rectangle "DataMapper" as DataMapper #transparent
+        }
+
+        component "Controller\n" as Controller #transparent;line:Black;line.bold{
+            interface IHttpController  $PRIMARY_LIGHT
+            interface IPresenter #CDE711
+            rectangle HttpServerSSRAdapter  #transparent
+        }
+
+        component Presenter #transparent;line:Black;line.bold{
+            interface IView #LimeGreen
+            rectangle PresenterSSR #transparent
+        }
+
+        component View #transparent;line:Black;line.bold{
+            rectangle  WebHtmlView #transparent
+        }
+    }
+
+    node "HttpServer" #afd8ff\White {
+        component [MainServerApp\n(HttpServerSSRAdapter + PersistanceGateway \n Application + Entities)] as MainServerApp #transparent;line:Black;line.bold
+        rectangle APIController  $PRIMARY_LIGHT/White
+        MainServerApp -down[hidden]- APIController
+    }
+
+    node "Database Server" #afd8ff\White {
+        database AppDataBase $PRIMARY_LIGHT/afd8ff
+        rectangle DataSource $PRIMARY_LIGHT/White
+    }
+
+}
+
+' User -right-> APIController : 1. setRoute(url)\n (navigation)
+' Browser -.left.-> User :  15. seeRendredHtmlPage()
+' User -.right.-> Browser : 1. setRoute(url)
+User <-.right.-> Browser : 1. setRoute(url) \n 15. seeRendredHtmlPage()
+
+' ClientBrowser -left-> User : 
+ClientBrowser <-.right.-> APIController : 2. handleHttpRequest(url) \n14. returnHttpResponse(): html
+' UserInterface -right-> SPAController : 2. forwardUserRequest()
+' HttpClientAdapter .right. HttpServerSSRAdapter : 3. handleHttpRequest() \n12. returnHttpResponse()
+' SPAController .right. APIController :  3. handleHttpRequest() \n12. returnHttpResponse()
+
+APIController -down-> HttpServerSSRAdapter : 3. use
+
+APIController -[hidden]up-> HttpServer
+
+IHttpController -down-> IUseCaseRequester : 4. invokeUseCase() \n 11. deliverUseCaseResult()
+
+UseCase -up-|> IUseCaseRequester
+
+UseCase -right-> Entities  : 5. applyBusinessRules()
+
+HttpServerSSRAdapter -down-|>  IHttpController #Black
+
+IRepository <-up- UseCase: 6. requestData() \n10. returnData()
+
+Repository  -up-|>  IRepository #Black
+Repository -right-> IDataSource : 7.queryOrPersistData()
+Repository -left-> DataMapper : 9. mapToEntity()
+
+DataSource -left-|> IDataSource #Black
+DataSource -right-> AppDataBase : 8. runDBCommand()
+
+' DataMapper -up-> BusinessRules: mapping() \n Optional DTOs
+' DataMapper -[hidden]up-> IView
+DataMapper -up-> Entities: mapping() \n Optional DTOs
+
+HttpServerSSRAdapter --> IPresenter : 13. format()
+HttpServerSSRAdapter -left-> IView
+' HttpClientAdapter -down-> IPresenter : 13. format()
+PresenterSSR -left-|>  IPresenter #Black
+WebHtmlView -left-|> IView #Black
+
+IView <-- PresenterSSR : 14. renderUi()
+
+@enduml

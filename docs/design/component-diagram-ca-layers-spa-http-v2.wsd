@@ -32,7 +32,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
             }
         }
 
-        component "DatabaseGateway" #transparent;line:Black;line.bold {
+        component "PersistanceGateway" #transparent;line:Black;line.bold {
             interface IDataSource #baffd8
             rectangle Repository #transparent
             rectangle "DataMapper" as DataMapper #transparent
@@ -56,7 +56,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
     }
 
     node "HttpServer" #afd8ff\White {
-        component [MainServerApp\n(HttpServerAdapter + DatabaseGateway \n Application + Entities)] as MainServerApp #transparent;line:Black;line.bold
+        component [MainServerApp\n(HttpServerAdapter + PersistanceGateway \n Application + Entities)] as MainServerApp #transparent;line:Black;line.bold
         rectangle APIController  $PRIMARY_LIGHT/White
         MainServerApp -down[hidden]- APIController
     }
@@ -71,7 +71,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 User -right-> UserInterface : 1. triggerUserIntent()\n (navigation,click...)
 UserInterface -right-> SPAController : 2. forwardUserRequest()
 ' HttpClientAdapter .right. HttpServerAdapter : 3. handleHttpRequest() \n12. returnHttpResponse()
-SPAController .right. APIController :  3. handleHttpRequest() \n12. returnHttpResponse()
+SPAController .right. APIController :  3. handleHttpRequest() \n12. returnHttpResponse():json
 
 APIController -down-> HttpServerAdapter :use
 SPAController -down-> HttpClientAdapter :use

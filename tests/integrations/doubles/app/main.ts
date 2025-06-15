@@ -8,8 +8,8 @@ import { ChatroomDto } from "../../../../core/dtos/models/chatroom.dto";
 import { ChatControllerHttpClientMemory, GetUserRoomsHttpControllerClientMemory } from "../http/chat-controller-client.memory";
 import { AppBackendDouble } from "./app-backend-double";
 import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
-import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/features/chat/get-rooms-by-user";
-import { IGetRoomsByUserView } from "../../../../core/features/chat/get-rooms-by-user/presenter/getRoomsByUser.view";
+import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/application/usecases/get-rooms-by-user";
+import { IGetRoomsByUserView } from "../../../../core/application/usecases/get-rooms-by-user/presenter/getRoomsByUser.view";
 
 export interface ClientViewController {
     view: IChatView,
