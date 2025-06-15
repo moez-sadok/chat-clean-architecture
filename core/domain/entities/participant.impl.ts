@@ -1,5 +1,5 @@
-import { IChatClient } from '../../gateways/notifiyer/chat-client.port';
-import { INotifiyer } from '../../gateways/notifiyer/push-notif.port';
+import { IChatClient } from '../chat-client';
+import { INotifiyer } from '../push-notif.port';
 import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
 import { IParticpant } from '../interfaces/participant';

@@ -7,11 +7,11 @@ export class GetRoomsByUserPresenterUi implements IGetRoomsByUserPresenter {
 
   constructor(public view: IGetRoomsByUserView) {}
 
-  selectedRoomsByUser(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[] {
+  present(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[] {
     const roomsVM = rooms.map((e) => { 
       return { name: e.roomName, roomId: e.roomId } as RoomViewModel; 
     })
-    this.view.displayChatPageRooms(roomsVM);
+    this.view.render(roomsVM);
     return rooms;
   }
 

@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { UserWebViewClientImpl } from '@cca/core-views';
-import { ActivatedRoute, Params } from '@angular/router';
-import { switchMap, of, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { InjectionToken } from "@angular/core";
 import { ChatControllerHttpClientAdapterImpl, ChatControllerWsClientAdapterImpl, IChatHttpController, IChatWsController } from "@cca/core-controllers";
 import { ChatUiPresenterImpl, IChatView, IChatAppFacadePresenterOutput } from "@cca/core-presenters";
@@ -55,24 +54,16 @@ export const controllerClientWsAdapterFactory = (presentator: IChatAppFacadePres
 })
 export class ChatPageComponent {
 
-  public activeUserId = 0;
-
   constructor(protected route: ActivatedRoute,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatHttpController,
     @Inject(CHAT_SERVER_CONTROLLER_PROVIDER) public wsController: IChatWsController,
-    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView) { }
+    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView) {
 
-  // get user id from url (router param)
-  ngOnInit(): void {
-    this.route.params.pipe(
-      switchMap((params: Params) => { return of(params['userId']); }),
-      tap((userId) => {
-        if (userId != null || userId != undefined) {
-          this.activeUserId = +userId;
-          this.chatController.getUserById(+userId);
-          this.wsController.connectClient(+userId);
-        }
-      })).subscribe(); //TODO use Angular 16 input by route resolver - don't forget to unsubscribe in ondestroy
+    const userId = +this.route.snapshot.paramMap.get('userId')!;
+    if (userId != null) {
+      this.chatController.getUserById(userId);
+      this.wsController.connectClient(userId);
+    }
   }
 
 }

@@ -5,12 +5,7 @@ export class GetRoomsByUserClientView implements IGetRoomsByUserView {
 
   rooms: RoomViewModel[] = [];
 
-  displayChatPageRooms(rooms: RoomViewModel[]): void {
-    //SPA
+  render(rooms: RoomViewModel[]): void {
     this.rooms = rooms;
-
-    //SSR (Render the rooms as html) and used by presenter api
-    // const roomsHtml = rooms.map(room => `<div>${room.name} (${room.roomId})</div>`).join('');
-    // return '<div class="rooms-list">' + roomsHtml + '</div>';
   }
 }

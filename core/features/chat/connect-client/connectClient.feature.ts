@@ -1,6 +1,6 @@
 
 import { IChatServerPort } from '../../../gateways/network/chat-server.port';
-import { IChatClient } from '../../../gateways/notifiyer/chat-client.port';
+import { IChatClient } from '../../../domain/chat-client';
 import { IConnectClientInput } from './connectClient.feature.input';
 
 export class ConnectClientFeature implements IConnectClientInput {

@@ -1,6 +1,6 @@
 import { Socket, io } from 'socket.io-client';
 import { IChatWsController } from '../chat.controllor';
-import { IChatClient } from '../../gateways/notifiyer/chat-client.port';
+import { IChatClient } from '../../domain/chat-client';
 import { ChatClientSocketkAdapter } from './socket/chat-socket-client-adapter';
 import { ISendMessagePresenterOutput } from '../../features/chat';
 // Adapter pattern (Object) 

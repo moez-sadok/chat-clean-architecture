@@ -3,7 +3,7 @@
   <div class="margin-12 padding-12 card-border">
     <h2>{{ chatview.chatDataViewModelDto.activeUser.name }}</h2>
     <cca-get-user-rooms [userId]="chatview.chatDataViewModelDto.activeUser.id"
-      (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,activeUserId)"></cca-get-user-rooms>
+      (selectRoom)="chatController.getRoomMessages($event.roomId,$event.name,chatview.chatDataViewModelDto.activeUser.id)"></cca-get-user-rooms>
   </div>
 
   <div class="margin-12" *ngIf="chatview.chatDataViewModelDto.activeRoom.name">
@@ -20,7 +20,7 @@
     <div class="display-flex">
       <input class="padding-vertical-4" #messageInput matInput />
       <button class="send-button" (click)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
-        activeUserId, messageInput.value);messageInput.value=''">
+        chatview.chatDataViewModelDto.activeUser.id, messageInput.value);messageInput.value=''">
         {{ chatview.chatDataViewModelDto.sendButtonLabel }}
       </button>
     </div>

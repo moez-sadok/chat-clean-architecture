@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { DataBaseMemoryImpl, DataBaseMemoryPerfImpl } from '@chat-clean-architecture/chat/frameworks/db/in-memory-db';
 import { IChatDatabase, DataBaseMapper } from '@cca/core-repositories';
 import { ChatServerWSAdapter } from '../adapters/controller/chat-server.ws-adapter';
-// import { ChatServerWSAdapter } from '@cca/core-controllers';
 
 export const CHAT_DB_PROVIDER = 'CHAT_DB_PROVIDER';
 export const CHAT_DB_MAPPER_PROVIDER = 'CHAT_DB_MAPPER_PROVIDER';
-export const CHAT_PRESENTATOR_PROVIDER = 'CHAT_PRESENTATOR_PROVIDER';
 export const CHAT_SERVER_PROVIDER_PORT = 'CHAT_SERVER_PROVIDER_PORT';
 
 export const dbMapperFactory = (db: IChatDatabase) => {

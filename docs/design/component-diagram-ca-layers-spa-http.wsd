@@ -8,7 +8,7 @@ footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User $SECONDARY
 
-package "FramworksDrivers" #90baff\White;line:Black;line.bold {
+package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
     node "ClientBrowser" #afd8ff\White  {
 

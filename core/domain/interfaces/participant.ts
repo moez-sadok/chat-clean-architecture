@@ -1,5 +1,5 @@
 /******** Abstraction of mediator pattern */
-import { IChatClient } from '../../gateways/notifiyer/chat-client.port';
+import { IChatClient } from '../chat-client';
 import { IChatroom } from './chatroom';
 import { IMessage } from './message';
 

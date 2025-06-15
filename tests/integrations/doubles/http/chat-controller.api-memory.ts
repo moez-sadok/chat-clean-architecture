@@ -11,7 +11,7 @@ export class GetUserRoomsHttpControllerApiMemory implements IHttpController{
 
   async handle(input: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {
     const res =  await this.getRoomsByUserFeature.getRoomsByUser(input);
-    if(res) this.presenter.selectedRoomsByUser(res);
+    if(res) this.presenter.present(res);
     return new Promise((resolve) => resolve(res));
   }
 

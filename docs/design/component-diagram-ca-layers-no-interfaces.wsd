@@ -1,0 +1,116 @@
+@startuml
+
+!include prodsoft.wsd
+
+title P-CHAT Component Diagram [Layers clean architecture]
+header  SPA + HTTP + WS
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User 
+
+package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
+
+    node "ClientBrowser" #afd8ff\White  {
+        rectangle  "SPAController\n[HttpClientAdapter]" as HttpClientAdapter $PRIMARY_LIGHT
+        rectangle  "SPAController\n[WebSocketClientAdapter]" as WebSocketClientAdapter $PRIMARY_LIGHT
+        [UserInterface] $PRIMARY_LIGHT/LightGreen
+    }
+
+    package "Adapters" #baffd8\White;line:Black;line.bold {
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+                [Entities] #FDD835/White
+            }
+            component Interactor #transparent;line:Black;line.bold{
+                collections UseCases #White
+            }
+        }
+
+        component "PersistenceGateway" #transparent;line:Black;line.bold
+        component "NotificationGateway" #transparent;line:Black;line.bold
+        component "WebSocketController" as WebSocketController $PRIMARY_LIGHT/baffd8;line:Black;line.bold
+        component "EncryptionService\n(for E2EE)" as EncryptionService #transparent;line:Black;line.bold
+
+        component HttpController $PRIMARY_LIGHT/baffd8;line:Black;line.bold
+        component Presenter $PRIMARY_LIGHT/LightGreen;line:Black;line.bold
+        component View $PRIMARY_LIGHT/LightGreen;line:Black;line.bold
+    }
+
+    node "HttpServer" #afd8ff\White {
+        rectangle "APIController\n[HttpServerAdapter]" as HttpServerAdapter  $PRIMARY_LIGHT
+    }
+
+    node "WSServer" #afd8ff\White {
+        rectangle "APIController\n[WebSocketServerAdapter]" as WebSocketServerAdapter  $PRIMARY_LIGHT
+    }
+
+    node "Database Server" #afd8ff\White {
+        database RelationalDB #afd8ff\White
+        database DocumentDB #afd8ff\White
+    }
+
+    node "Storage" #afd8ff\White {
+        storage LocalStorage #afd8ff\White
+        file FileSystem #afd8ff\White
+    }
+
+    node "External Server" #afd8ff\White {
+        rectangle Mail #transparent
+        rectangle PushNotification #transparent
+    }
+
+    node "ExternalLib" #afd8ff\White {
+        rectangle WebCryptoApi #transparent
+        rectangle libsodium #transparent
+    }
+
+}
+
+User <.> UserInterface 
+
+Interactor -down[hidden]- Entities
+
+UserInterface -down-> HttpClientAdapter
+UserInterface -up-> WebSocketClientAdapter
+UserInterface -> View
+
+HttpClientAdapter .down. HttpServerAdapter : handleHttpRequest()\n (or invoke usecases \nas encrypt or decrypt\nmessage locally)
+WebSocketClientAdapter .right. WebSocketServerAdapter :  handleWsRequest() 
+WebSocketController  <|-left- Presenter  #Black
+UseCases -left-> Entities
+HttpClientAdapter -->  HttpController 
+HttpServerAdapter -left->  HttpController 
+WebSocketServerAdapter -down->  WebSocketController 
+WebSocketClientAdapter -down->  WebSocketController 
+HttpController -right-> UseCases 
+WebSocketController -->  UseCases 
+EncryptionService -down-|> Interactor #Black
+
+PersistenceGateway  -up-|>  Interactor #Black
+RelationalDB -up-|> PersistenceGateway #Black
+DocumentDB -up-|> PersistenceGateway #Black
+LocalStorage -up-|> PersistenceGateway #Black
+FileSystem -up-|> PersistenceGateway #Black
+
+NotificationGateway -left-|> Interactor #Black
+Mail   -left-|>  NotificationGateway #Black
+PushNotification  -left-|> NotificationGateway #Black
+Mail -up[hidden]-> PushNotification
+
+Presenter -down-|>  HttpController #Black
+
+View -right-|> Presenter #Black 
+
+FrameworksDrivers -[hidden]- ExternalLib 
+WebCryptoApi --|> EncryptionService #Black
+libsodium --|> EncryptionService #Black
+
+' flow of controll
+' FrameworksDrivers -right-> Adapters
+' Adapters -right-> Application
+' Application -right-> BusinessRules
+
+
+@enduml

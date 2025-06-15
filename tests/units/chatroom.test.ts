@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { Chatroom, IChatroom, IParticpant, Message, Participant } from  "../../core/entities/index";
+import { Chatroom, IChatroom, IParticpant, Message, Participant } from  "../../core/domain/index";
 
 describe('Chatroom Register ...', () => {
     let chatroom: IChatroom;

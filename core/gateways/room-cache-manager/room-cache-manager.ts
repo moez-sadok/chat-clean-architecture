@@ -1,5 +1,5 @@
-import { IChatroom } from "../../entities/interfaces/chatroom";
-import { IChatClient } from "../notifiyer/chat-client.port";
+import { IChatroom } from "../../domain/interfaces/chatroom";
+import { IChatClient } from "../../domain/chat-client";
 
 export class RoomsCacheManager {
 

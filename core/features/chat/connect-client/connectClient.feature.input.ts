@@ -1,4 +1,4 @@
-import { IChatClient } from "../../../gateways/notifiyer/chat-client.port";
+import { IChatClient } from "../../../domain/chat-client";
 
 export interface IConnectClientInput {
   connectClient(client: IChatClient):Promise<boolean>;

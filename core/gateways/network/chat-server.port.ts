@@ -1,4 +1,4 @@
-import { IChatClient } from "../notifiyer/chat-client.port";
+import { IChatClient } from "../../domain/chat-client";
 
 export interface IChatServerPort {
   connectUser(user: IChatClient): boolean;

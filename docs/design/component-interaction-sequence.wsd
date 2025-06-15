@@ -3,41 +3,44 @@
 !include prodsoft.wsd
 !pragma teoz true
 
-title Components interaction - sequence diagram
+title P-Chat Components interaction - sequence diagram
 footer Prodsoft - Moez SADOK @Copyright 2025
 
-actor UserGUI as User #F06292
+actor UserGUI as User $GARDIANT_VB
 
-box "Adapters" $GARDIANT_LIGHT
+box "Adapters" #baffd8\White
 
-box "Client" #fff7fe
-boundary WebView #fe9cbd
+box "Client" #baffd8\White
+boundary WebView #9cfea7
 boundary UiPresenter #89fce5
 boundary ClientHttpController #f4ff9e
 end box
 
 box "Server" #d8fff5\White
 boundary ApiHttpController #CDE711
-boundary ApiPresenter #11e7bc
+boundary ApiPrresenteOptional as ApiPresenter #11e7bc
+' boundary ApiPresenter  #11e7bc
 end box
 end box
 
-box "Core" #b1ffeb\9fc2ee
-box "Server" #b1ffeb\9fc2ee
+box "Application" #f88c8c/White
+box "BusinessRules" #transparent
 ' interactor
 control UseCase
 entity Entities #FDD835
 end box
 end box
 
-box "Gateways/Externals" #fff7b1\9fc2ee
+box "Adapters/Gateways" #baffd8\White
+box "DB-Externals" #afd8ff\baffd8;line:Black;line.bold
 database Repository #fa72ff
 boundary WsServer #CDE711
 boundary Notifier $ACCENT_LIGHT\White
 end box
+end box
 
 ' Step 1
-activate WebView #fe9cbd
+activate WebView #9cfea7
 User -> ClientHttpController : SendRequest
 activate ClientHttpController #f4ff9e
 ClientHttpController -> ClientHttpController : formatRequest
