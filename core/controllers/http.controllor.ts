@@ -5,6 +5,8 @@ export interface IHttpController {
 
 
 //generic
-// export interface IHttpController<T,R> {
+// export interface IHttpController<U,P,T,R> {
+//   usecase: U; //InputBoundary , Optional (e.g. for SSR)
+//   presenter: T; //OutputBoundary, Optional (e.g. for SSR)
 //   handle(req: T): Promise<R>;
 // }

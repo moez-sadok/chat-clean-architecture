@@ -1,0 +1,98 @@
+@startuml
+
+!include ../design/prodsoft.wsd
+
+title Clean architecture component Diagram [SSR + HTTP]
+footer Prodsoft - Moez SADOK @Copyright 2025
+
+actor User
+
+package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
+
+    package "Adapters" #baffd8\White;line:Black;line.bold {
+
+        component "PersistanceGateway" #transparent;line:Black;line.bold {
+            interface IDataSource #baffd8
+            rectangle "DataMapper" as DataMapper #transparent
+            rectangle Repository #transparent
+        }
+
+        component "Presenter\n" as Presenter #transparent;line:Black;line.bold{
+            interface IView #LimeGreen
+            rectangle PresenterUI #transparent
+            rectangle "ViewModel\n<<DataStructure>>"  as ViewModel #transparent;line:DarkGreen;
+        }
+
+        component View #transparent;line:Black;line.bold{
+            rectangle  WebHtmlView #transparent
+        }
+
+        component "Controller\n" as Controller #transparent;line:Black;line.bold{
+        
+            interface IHttpController $PRIMARY_LIGHT
+            rectangle HttpControllerSSRAdapter  #transparent
+        }
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+                [Entities] #FDD835/White
+            }
+
+            component Interactor #transparent;line:Black;line.bold{
+                interface IRepository #f88c8c
+                interface "IUseCaseRequester\n(InputPort)" as IUseCaseRequester #Gray
+                rectangle UseCase #White
+                interface "IPresenter\n(OutputPort)" as IPresenter  #CDE711
+            }
+            ' collections DTOs #White
+        }
+    }
+
+    node "HttpServer" #afd8ff\White {
+        rectangle APIController  $PRIMARY_LIGHT/White
+    }
+
+     node "ClientBrowser" #afd8ff\White  {
+        rectangle "HTMLRender\nHTTP" as Browser #White
+    }
+
+    node "Database Server" #afd8ff\White {
+        database DomainDataBase $PRIMARY_LIGHT/afd8ff
+        rectangle DataSource $PRIMARY_LIGHT/White
+    }
+}
+
+User <..> Browser : 1. setRoute(url) \n 17. seeHtmlPage()
+Browser <.down.> APIController :  2. handleHttpRequest() \n16. returnHttpResponse():html
+APIController -left-> IHttpController :3.invoke() \n\n 15.returnHtml()
+
+' HttpControllerSSRAdapter -down-> IPresenter :13.getViewModel()\n\n\n\n
+HttpControllerSSRAdapter -down-> IPresenter : \n13.\ngetViewModel()
+
+' : \n13. getViewModel()
+HttpControllerSSRAdapter --> IUseCaseRequester : 4. execute()
+HttpControllerSSRAdapter -right-|>  IHttpController #Black
+HttpControllerSSRAdapter -left-> IView : 14. generateView(vm)
+
+UseCase -up-|> IUseCaseRequester :\n
+UseCase -up-> IPresenter : 11. present()
+UseCase -left-> Entities  : 10. applyBusinessRules()
+UseCase -down-> IRepository : 5. requestData() \n9. returnData()
+
+PresenterUI -down-|>  IPresenter #Black
+WebHtmlView -left-|> IView #Black
+' IView <-left- PresenterUI : 11. renderUi()
+ViewModel <-down- PresenterUI : 12. format()
+IView -left-> ViewModel 
+
+Repository  -up-|>  IRepository #Black
+Repository -right-> IDataSource : 6.queryOrPersistData()
+Repository -left-> DataMapper : 8. mapToEntity()
+DataSource -left-|> IDataSource #Black
+DataSource -up-> DomainDataBase : 7. runDBCommand() \n (Sql, NoSQL, etc.)
+
+DataMapper -up[hidden]-> PresenterUI
+DataMapper -up-> Entities: mapping() \n Optional DTOs
+
+@enduml

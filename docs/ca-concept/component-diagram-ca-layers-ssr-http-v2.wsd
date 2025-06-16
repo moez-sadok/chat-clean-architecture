@@ -1,6 +1,6 @@
 @startuml
 
-!include prodsoft.wsd
+!include ../design/prodsoft.wsd
 
 title P-CHAT Component Diagram [Layers clean architecture: SSR + HTTP]
 header  Without notification and socket components | Optional: ApiPresenter
@@ -23,6 +23,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
                 interface IRepository #f88c8c
                 interface IUseCaseRequester #Gray
                 rectangle UseCase #White
+                 interface IPresenter #CDE711
             }
             ' collections DTOs #White
             package "BusinessRules" #FDD835/White;line:Black;line.bold {
@@ -38,7 +39,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
         component "Controller\n" as Controller #transparent;line:Black;line.bold{
             interface IHttpController  $PRIMARY_LIGHT
-            interface IPresenter #CDE711
+            ' interface IPresenter #CDE711
             rectangle HttpServerSSRAdapter  #transparent
         }
 
@@ -53,7 +54,8 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
     }
 
     node "HttpServer" #afd8ff\White {
-        component [MainServerApp\n(HttpServerSSRAdapter + PersistanceGateway \n Application + Entities)] as MainServerApp #transparent;line:Black;line.bold
+        ' component [MainServerApp\n(HttpServerSSRAdapter + PersistanceGateway \n Application + Entities)] as MainServerApp #transparent;line:Black;line.bold
+        component [MainServerApp] as MainServerApp #transparent;line:Black;line.bold
         rectangle APIController  $PRIMARY_LIGHT/White
         MainServerApp -down[hidden]- APIController
     }
@@ -65,48 +67,43 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
 }
 
-' User -right-> APIController : 1. setRoute(url)\n (navigation)
-' Browser -.left.-> User :  15. seeRendredHtmlPage()
-' User -.right.-> Browser : 1. setRoute(url)
-User <-.right.-> Browser : 1. setRoute(url) \n 15. seeRendredHtmlPage()
+ClientBrowser -[hidden]left-> HttpServer  
+User <-.down.-> ClientBrowser : 1. setRoute(url) \n 14. seeHtmlPage()
+Browser <-.left.-> APIController : 2. handleHttpRequest(url) \n13. returnHttpResponse(): html
 
-' ClientBrowser -left-> User : 
-ClientBrowser <-.right.-> APIController : 2. handleHttpRequest(url) \n14. returnHttpResponse(): html
-' UserInterface -right-> SPAController : 2. forwardUserRequest()
-' HttpClientAdapter .right. HttpServerSSRAdapter : 3. handleHttpRequest() \n12. returnHttpResponse()
-' SPAController .right. APIController :  3. handleHttpRequest() \n12. returnHttpResponse()
+' ClientBrowser -[hidden]left-> HttpServer  
+' User <-.right.-> Browser : 1. setRoute(url) \n 16. seeHtmlPage()
+' Browser <-.right.-> APIController : 2. handleHttpRequest(url) \n15. returnHttpResponse(): html
 
-APIController -down-> HttpServerSSRAdapter : 3. use
+
+APIController -down-> HttpServerSSRAdapter : use
 
 APIController -[hidden]up-> HttpServer
 
-IHttpController -down-> IUseCaseRequester : 4. invokeUseCase() \n 11. deliverUseCaseResult()
+IHttpController -down-> IUseCaseRequester : 3. invokeUseCase() 
 
-UseCase -up-|> IUseCaseRequester
+UseCase -up-> IPresenter : 10. formatUseCaseResult()
 
-UseCase -right-> Entities  : 5. applyBusinessRules()
+UseCase -left-|> IUseCaseRequester
+
+UseCase -right-> Entities  : 4. applyBusinessRules()
 
 HttpServerSSRAdapter -down-|>  IHttpController #Black
 
-IRepository <-up- UseCase: 6. requestData() \n10. returnData()
+IRepository <-up- UseCase: 5. requestData() \n9. returnData()
 
 Repository  -up-|>  IRepository #Black
-Repository -right-> IDataSource : 7.queryOrPersistData()
-Repository -left-> DataMapper : 9. mapToEntity()
-
-DataSource -left-|> IDataSource #Black
-DataSource -right-> AppDataBase : 8. runDBCommand()
-
-' DataMapper -up-> BusinessRules: mapping() \n Optional DTOs
-' DataMapper -[hidden]up-> IView
+Repository -left-> IDataSource : 6.queryOrPersistData()
+Repository -left-> DataMapper : 8. mapToEntity()
+DataSource -up-|> IDataSource #Black
+DataSource -right-> AppDataBase : 7. runDBCommand()
 DataMapper -up-> Entities: mapping() \n Optional DTOs
 
-HttpServerSSRAdapter --> IPresenter : 13. format()
-HttpServerSSRAdapter -left-> IView
-' HttpClientAdapter -down-> IPresenter : 13. format()
-PresenterSSR -left-|>  IPresenter #Black
+HttpServerSSRAdapter --> IPresenter 
+HttpServerSSRAdapter -left-> IView : 12. getHTML()
+PresenterSSR -up-|>  IPresenter #Black
 WebHtmlView -left-|> IView #Black
 
-IView <-- PresenterSSR : 14. renderUi()
+IView <-- PresenterSSR : 11. renderUi()
 
 @enduml

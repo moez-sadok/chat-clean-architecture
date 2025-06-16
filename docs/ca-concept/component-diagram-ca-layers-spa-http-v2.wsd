@@ -1,6 +1,6 @@
 @startuml
 
-!include prodsoft.wsd
+!include ../design/prodsoft.wsd
 
 title P-CHAT Component Diagram [Layers clean architecture: SPA + HTTP]
 header  Without notification and socket components | Optional: ApiPresenter
