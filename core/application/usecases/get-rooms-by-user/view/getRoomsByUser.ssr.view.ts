@@ -2,9 +2,9 @@ import { IGetRoomsByUserSSRView } from "../presenter/getRoomsByUser.view";
 import { RoomViewModel } from "../presenter/getRoomsByUser.view.model";
 
 export class GetRoomsByUserSSRView implements IGetRoomsByUserSSRView {
-  
+
   render(rooms: RoomViewModel[]): string {
-     return this.toHtml(rooms);
+    return this.toHtml(rooms);
   }
 
   private toHtml(rooms: RoomViewModel[]): string {
@@ -18,13 +18,15 @@ export class GetRoomsByUserSSRView implements IGetRoomsByUserSSRView {
       }
     </style>
   `;
-    const script = `
-    <script>
-      function selectRoom(roomId) {
-        window.location.href = '/chat/' + roomId;
-      }
-    </script>
-  `;
+    //   const script = `
+    //   <script>
+    //     function selectRoom(roomId) {
+    //       window.location.href = '/chat/' + roomId;
+    //     }
+    //   </script>
+    // `;
+    // <body>
+    //     ${script}
     let htmlString = '<ul>';
     htmlString += rooms.map(room => `
     <li class="padding-12 cursor-pointer" data-room-id="${room.roomId}" onclick="selectRoom('${room.roomId}')">
@@ -42,7 +44,6 @@ export class GetRoomsByUserSSRView implements IGetRoomsByUserSSRView {
         ${style}
       </head>
       <body>
-        ${script}
         ${htmlString}
       </body>
     </html>

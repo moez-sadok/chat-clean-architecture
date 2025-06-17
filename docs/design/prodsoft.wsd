@@ -34,7 +34,6 @@ skinparam title {
 	FontColor	                 $ACCENT
 	FontSize	    	         18
 	BorderRoundCorner            8
-	BackgroundColor              $GARDIANT_VB
 }
 
 skinparam package {

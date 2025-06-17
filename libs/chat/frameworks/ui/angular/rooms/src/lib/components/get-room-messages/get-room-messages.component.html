@@ -1,3 +1,19 @@
-<p>
-  get-room-messages works!
-</p>
+<div  *ngIf="chatview.chatDataViewModelDto.activeRoom.name">
+
+  <div>
+    <div><b>{{ chatview.chatDataViewModelDto.activeRoom.name }}</b></div>
+    <div class="divider">{{chatview.chatDataViewModelDto.activeRoom.participantNames}}</div>
+    <br>
+    <div *ngFor="let message of chatview.chatDataViewModelDto.activeRoomMessages">
+      <p> <b>{{ message.participantName }}</b>: {{ message.content }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="display-flex margin-12">
+  <input class="padding-vertical-4" #messageInput matInput />
+  <button class="send-button" (click)="chatController.sendMessage(chatview.chatDataViewModelDto.activeRoom.roomId,
+        chatview.chatDataViewModelDto.activeUser.id, messageInput.value);messageInput.value=''">
+    {{ chatview.chatDataViewModelDto.sendButtonLabel }}
+  </button>
+</div> -->

@@ -2,8 +2,8 @@
 
 !include ../design/prodsoft.wsd
 
-title P-CHAT Component Diagram [Layers clean architecture: SPA + HTTP]
-header  Without notification and socket components | Optional: ApiPresenter
+title Clean architecture component diagram [SPA + HTTP] 
+header  No flow respect (usecase -> present) but clean archi respected (p.78) and Ipresenter stay on the interactor side
 footer Prodsoft - Moez SADOK @Copyright 2024
 
 actor User 
@@ -11,7 +11,7 @@ actor User
 package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
     node "ClientBrowser" #afd8ff\White  {
-        component [MainWebApp (SPA)\n(HttpClientAdapter + WebView \n PresenterUI)] as MainWebApp #transparent;line:Black;line.bold
+        component [MainWebApp (SPA)\n(HttpClientAdapter + WebJsonView \n PresenterUI)] as MainWebApp #transparent;line:Black;line.bold
         rectangle  SPAController $PRIMARY_LIGHT/White
         [UserInterface] $PRIMARY_LIGHT/LightGreen
         MainWebApp -[hidden]- UserInterface
@@ -23,8 +23,9 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
             
             component Interactor #transparent;line:Black;line.bold{
                 interface IRepository #f88c8c
-                interface IUseCaseRequester #Gray
+                interface "IUseCaseRequester\n(InputPort)" as IUseCaseRequester #Gray
                 rectangle UseCase #White
+                interface "IPresenter\n(OutputPort)" as IPresenter  #CDE711
             }
             ' collections DTOs #White
             package "BusinessRules" #FDD835/White;line:Black;line.bold {
@@ -40,7 +41,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
         component "Controller\n" as Controller #transparent;line:Black;line.bold{
             interface IHttpController  $PRIMARY_LIGHT
-            interface IPresenter #CDE711
+            ' interface IPresenter #CDE711
             rectangle HttpServerAdapter  #transparent
             rectangle HttpClientAdapter  #transparent
         }
@@ -48,10 +49,11 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
         component Presenter #transparent;line:Black;line.bold{
             interface IView #LimeGreen
             rectangle PresenterUI #transparent
+            rectangle "ViewModel\n<<DataStructure>>"  as ViewModel #transparent;line:DarkGreen;
         }
 
         component View #transparent;line:Black;line.bold{
-            rectangle  WebView #transparent
+            rectangle  WebJsonView #transparent
         }
     }
 
@@ -61,52 +63,48 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
         MainServerApp -down[hidden]- APIController
     }
 
-    node "Database Server" #afd8ff\White {
-        database AppDataBase $PRIMARY_LIGHT/afd8ff
+   node "DatabaseServer" #afd8ff\White {
+        database "DomainDataBase\n(Sql, NoSql, etc.)" as DomainDataBase $PRIMARY_LIGHT/afd8ff
         rectangle DataSource $PRIMARY_LIGHT/White
     }
 
 }
 
-User -right-> UserInterface : 1. triggerUserIntent()\n (navigation,click...)
+User <-right-> UserInterface : 1. triggerUserIntent()\n (navigation,click...) \n\n 19. presentToUser()
 UserInterface -right-> SPAController : 2. forwardUserRequest()
-' HttpClientAdapter .right. HttpServerAdapter : 3. handleHttpRequest() \n12. returnHttpResponse()
-SPAController .right. APIController :  3. handleHttpRequest() \n12. returnHttpResponse():json
+SPAController .right. APIController :  3. handleHttpRequest() \n14. returnHttpResponse():json
 
-APIController -down-> HttpServerAdapter :use
-SPAController -down-> HttpClientAdapter :use
+APIController -down-> IHttpController : 4.invoke() \n 13.returnJson()
+SPAController -down-> IHttpController : 15. sendJson()
 
-APIController -[hidden]up-> HttpServer
+UseCase -up-|> IUseCaseRequester
+HttpServerAdapter -down-> IUseCaseRequester :5. execute() \n12.returnResult()
+UseCase -right-> Entities  : 11. applyBusinessRules()
 
-IHttpController -down-> IUseCaseRequester : 4. invokeUseCase() \n 11. deliverUseCaseResult()
+HttpServerAdapter -up-|>  IHttpController #Black
+HttpClientAdapter -up-|>  IHttpController #Black
 
-UseCase -right-|> IUseCaseRequester
+' HttpClientAdapter -left-> IPresenter : 16. present()
+' PresenterUI -right-|>  IPresenter #Black
 
-UseCase -right-> Entities  : 5. applyBusinessRules()
-
-HttpServerAdapter -down-|>  IHttpController #Black
+HttpClientAdapter --> IPresenter : 16. present()
+PresenterUI --|>  IPresenter #Black
 
 IRepository <-up- UseCase: 6. requestData() \n10. returnData()
-
 Repository  -up-|>  IRepository #Black
 Repository -right-> IDataSource : 7.queryOrPersistData()
 Repository -left-> DataMapper : 9. mapToEntity()
 
 DataSource -up-|> IDataSource #Black
-DataSource -left-> AppDataBase : 8. runDBCommand()
-
-' DataMapper -up-> BusinessRules: mapping() \n Optional DTOs
+DataSource -left-> DomainDataBase : 8. runDBCommand()
 DataMapper -[hidden]up-> IView
 DataMapper -up-> Entities: mapping() \n Optional DTOs
 
-HttpClientAdapter -down-> IPresenter : 13. format()
-PresenterUI -right-|>  IPresenter #Black
-WebView --|> IView #Black
-HttpClientAdapter -down-|>  IHttpController #Black
+WebJsonView --|> IView #Black
 
-IView <-right- PresenterUI : 14. renderUi()
-UserInterface -down-> WebView : 15. observe()
-UserInterface  -up-> User : 16. presentToUser()
+IView -right-> ViewModel 
+ViewModel <-right- PresenterUI : 17. format()
+UserInterface -down-> WebJsonView : 18. observe(vm)
 
 ' MainServerApp -down-> Adapters : instanciate()
 ' MainServerApp -down-> Application : instanciate()

@@ -1,5 +1,5 @@
 import { GetRoomMessagesInputData } from "../../../dtos/input.chat.data";
-import { MessageOutputData } from "../../../dtos/output.chat.data";
+import { GetMessagesOutputData, MessageOutputData } from "../../../dtos/output.chat.data";
 import { IChatRepository } from "../../../repositories/chat-repository";
 import { GetRoomsByUserResponseData } from "../get-rooms-by-user";
 import { IGetMessagesByRoomInput } from "./getMessagesByRoom.controller.input";
@@ -12,7 +12,7 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
     private presenter: IGetMessagesByRoomPresenterOutput
   ) { }
 
-  getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<MessageOutputData[]> {
+  getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<GetMessagesOutputData> {
     // const messagesByRoom = this.chatRepository.getMessagesByRoom(room.roomId);
     const roomDto = this.chatRepository.getChatRoomsById(room.roomId);
     if (!roomDto) throw new Error('Not existing room id=' + room.roomId);
@@ -25,7 +25,9 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
       } as MessageOutputData;
     }): [];
     const croom: GetRoomsByUserResponseData = {
-      roomId: room.roomId, roomName: room.roomName,
+      roomId: room.roomId, 
+      // roomName: room.roomName,
+      roomName: roomDto.name,
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
     };
     return new Promise((resolve) => {

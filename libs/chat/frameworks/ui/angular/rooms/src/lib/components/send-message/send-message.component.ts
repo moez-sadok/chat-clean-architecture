@@ -6,26 +6,28 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'cca-get-room-messages',
-  templateUrl: './get-room-messages.component.html',
-  styleUrls: ['./get-room-messages.component.scss'],
+  selector: 'cca-send-message',
+  templateUrl: './send-message.component.html',
+  styleUrls: ['./send-message.component.scss'],
   standalone: true,
   imports: [
     CommonModule
   ]
 })
-export class GetRoomMessagesComponent {
+export class SendMessageComponent {
 
-  constructor(
-    private route: ActivatedRoute,
+  roomId!: number;
+  userId!: number;
+
+  constructor(private route: ActivatedRoute,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatHttpController,
     @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView) {
-    this.route.paramMap.subscribe(params => {
-      const userId = +params.get('userId')!;
-      const roomId = params.get('roomId') ? +params.get('roomId')! : null;
-      if (userId != null && roomId != null) this.chatController.getRoomMessages(roomId, userId);
-    });
 
+    this.route.paramMap.subscribe(params => {
+      this.userId = +params.get('userId')!;
+      this.roomId = params.get('roomId') ? +params.get('roomId')! : -1;
+    });
   }
+
 
 }

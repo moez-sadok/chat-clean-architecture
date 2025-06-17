@@ -1,4 +1,4 @@
-import { UserOutputData, MessageOutputData } from '../../dtos/output.chat.data';
+import { UserOutputData, MessageOutputData, GetMessagesOutputData } from '../../dtos/output.chat.data';
 import { GetRoomsByUserResponseData, RoomViewModel } from '../../application/usecases';
 import { IChatAppFacadePresenterOutput } from '../entry.facade.presenter';
 import { MessageViewModel } from './chat.data.view.model';
@@ -38,7 +38,7 @@ export class ChatUiPresenterImpl  implements IChatAppFacadePresenterOutput {
     return message;
   }
 
-  selectChatRoomsMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): MessageOutputData[] {
+  selectChatRoomsMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): GetMessagesOutputData {
     const ouputMessages: MessageViewModel[] = messages.map((m) => {
       return { content: m.message, roomId: m.chatRoomId, participantName: m.authorName };
     });
@@ -46,7 +46,8 @@ export class ChatUiPresenterImpl  implements IChatAppFacadePresenterOutput {
     this.chatWebViewScreen.setActiveRoom(roomView);
     this.chatWebViewScreen.displayChatRoomsMessages(ouputMessages);
     this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
-    return messages;
+    // return messages;
+    return { messages: messages, roomName: room.roomName};
   }
 
   // selectedRoomsByUser(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[] {

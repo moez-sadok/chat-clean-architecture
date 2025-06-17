@@ -1,0 +1,104 @@
+@startuml
+
+!include ../design/prodsoft.wsd
+
+title Clean architecture component diagram [SPA + HTTP] 
+header  Flow respect (usecase -> present) , Only view observed by UI
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User 
+
+package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
+
+    node "ClientBrowser" #afd8ff\White  {
+        component [MainWebApp (SPA)\n(HttpClientAdapter + WebJsonView)] as MainWebApp #transparent;line:Black;line.bold
+        rectangle  SPAController $PRIMARY_LIGHT/White
+        [UserInterface] $PRIMARY_LIGHT/LightGreen
+        MainWebApp -[hidden]- UserInterface
+    }
+
+    package "Adapters" #baffd8\White;line:Black;line.bold {
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+            
+            component Interactor #transparent;line:Black;line.bold{
+                interface IRepository #f88c8c
+                interface "IUseCaseRequester\n(InputPort)" as IUseCaseRequester #Gray
+                rectangle UseCase #White
+                interface "IPresenter\n(OutputPort)" as IPresenter  #CDE711
+            }
+            ' collections DTOs #White
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+                [Entities] #FDD835/White
+            }
+        }
+
+        component "PersistenceGateway" #transparent;line:Black;line.bold {
+            interface IDataSource #baffd8
+            rectangle Repository #transparent
+            rectangle "DataMapper" as DataMapper #transparent
+        }
+
+        component "Controller\n" as Controller #transparent;line:Black;line.bold{
+            interface IHttpController  $PRIMARY_LIGHT
+            rectangle HttpServerAdapter  #transparent
+            rectangle HttpClientAdapter  #transparent
+        }
+
+        component "Presenter\n" as Presenter #transparent;line:Black;line.bold{
+            interface IView #LimeGreen
+            rectangle PresenterUI #transparent
+            rectangle "ViewModel\n<<DataStructure>>"  as ViewModel #transparent;line:DarkGreen;
+        }
+
+        component View #transparent;line:Black;line.bold{
+            rectangle  WebJsonView #transparent
+        }
+    }
+
+    node "HttpServer" #afd8ff\White {
+        component [MainServerApp\n(HttpServerAdapter + PresenterUI \n PersistenceGateway + Application + Entities)] as MainServerApp #transparent;line:Black;line.bold
+        rectangle APIController  $PRIMARY_LIGHT/White
+        MainServerApp -down[hidden]- APIController
+    }
+
+   node "DatabaseServer" #afd8ff\White {
+        database "(Sql, NoSql, etc.)\nDomainDataBase" as DomainDataBase $PRIMARY_LIGHT/afd8ff
+        rectangle DataSource $PRIMARY_LIGHT/White
+    }
+
+}
+
+User <.-right-.> UserInterface : 1. triggerUserIntent()\n (navigation,click...) \n\n 24. presentToUser()
+UserInterface -right-> SPAController : 2. forwardUserRequest()
+SPAController <.right.> APIController :  3. handleHttpRequest() \n20. returnHttpResponse():json
+
+APIController -down-> IHttpController : 4.invoke() \n 19.returnJson()
+SPAController -down-> IHttpController : 21. sendVm()
+
+HttpServerAdapter -down-> IUseCaseRequester :5. execute() \n18.returnViewModel()
+HttpServerAdapter -up-|>  IHttpController #Black
+HttpClientAdapter -right-|>  IHttpController #Black
+HttpClientAdapter -left-> IView : 22. generateViewModel()
+PresenterUI --|>  IPresenter #Black
+
+UseCase -up-|> IUseCaseRequester
+UseCase -up-|> IPresenter : 16. present()
+UseCase -right-> Entities  : 11. applyBusinessRules()
+UseCase -down-> IRepository: 6. requestData() \n10. returnData()
+
+Repository  -up-|>  IRepository #Black
+Repository -right-> IDataSource : 7.queryOrPersistData()
+Repository -left-> DataMapper : 9. mapToEntity()
+
+DataSource -|> IDataSource #Black
+DataSource -up-> DomainDataBase : 8. runDBCommand()
+DataMapper -[hidden]up-> ViewModel
+DataMapper -up-> Entities: mapping() \n Optional DTOs
+
+WebJsonView --|> IView #Black
+IView -down-> ViewModel 
+ViewModel <-right- PresenterUI : 17. format()
+UserInterface -down-> WebJsonView : 23. observe(vm)
+
+@enduml

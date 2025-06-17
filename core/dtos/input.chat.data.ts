@@ -4,7 +4,7 @@
 
 export interface GetRoomMessagesInputData {
   roomId: number;
-  roomName: string;
+  // roomName: string;
 }
 
 export interface SendMessageInputData {

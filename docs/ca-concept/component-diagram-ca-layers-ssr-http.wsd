@@ -11,7 +11,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
     package "Adapters" #baffd8\White;line:Black;line.bold {
 
-        component "PersistanceGateway" #transparent;line:Black;line.bold {
+        component "PersistenceGateway" #transparent;line:Black;line.bold {
             interface IDataSource #baffd8
             rectangle "DataMapper" as DataMapper #transparent
             rectangle Repository #transparent
@@ -57,8 +57,8 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
         rectangle "HTMLRender\nHTTP" as Browser #White
     }
 
-    node "Database Server" #afd8ff\White {
-        database DomainDataBase $PRIMARY_LIGHT/afd8ff
+    node "DatabaseServer" #afd8ff\White {
+        database "(Sql, NoSql, etc.)\nDomainDataBase" as DomainDataBase $PRIMARY_LIGHT/afd8ff
         rectangle DataSource $PRIMARY_LIGHT/White
     }
 }
@@ -73,7 +73,7 @@ HttpControllerSSRAdapter -down-> IPresenter : \n13.\ngetViewModel()
 ' : \n13. getViewModel()
 HttpControllerSSRAdapter --> IUseCaseRequester : 4. execute()
 HttpControllerSSRAdapter -right-|>  IHttpController #Black
-HttpControllerSSRAdapter -left-> IView : 14. generateView(vm)
+HttpControllerSSRAdapter -left-> IView : 14. generateView()\n ViewModel > Html
 
 UseCase -up-|> IUseCaseRequester :\n
 UseCase -up-> IPresenter : 11. present()
@@ -90,7 +90,7 @@ Repository  -up-|>  IRepository #Black
 Repository -right-> IDataSource : 6.queryOrPersistData()
 Repository -left-> DataMapper : 8. mapToEntity()
 DataSource -left-|> IDataSource #Black
-DataSource -up-> DomainDataBase : 7. runDBCommand() \n (Sql, NoSQL, etc.)
+DataSource -up-> DomainDataBase : 7. runDBCommand() 
 
 DataMapper -up[hidden]-> PresenterUI
 DataMapper -up-> Entities: mapping() \n Optional DTOs

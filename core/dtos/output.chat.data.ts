@@ -4,6 +4,11 @@
 //   participantsNames?: string[];
 // }
 
+export interface GetMessagesOutputData {
+  messages: MessageOutputData[];
+  roomName: string;
+}
+
 export interface MessageOutputData {
   authorName: string;
   message: string;

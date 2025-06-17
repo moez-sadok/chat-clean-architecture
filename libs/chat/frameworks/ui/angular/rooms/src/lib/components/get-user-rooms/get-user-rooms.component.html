@@ -1,6 +1,6 @@
 <ul>
   <li class="padding-12 cursor-pointer" *ngFor="let chatRoom of getRoomsView.rooms" [value]="chatRoom"
-    (click)="selectRoom.emit(chatRoom)">
+    (click)="getRoomsController.openRoom(userId,chatRoom.roomId)">
     <b>{{ chatRoom.name }}</b>
     <span *ngIf="chatRoom.newMessagesNotif">({{ chatRoom.newMessagesNotif }})</span>
   </li>
