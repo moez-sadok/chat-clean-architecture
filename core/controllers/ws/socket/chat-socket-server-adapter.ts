@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io';
 import { IChatClient } from '../../../gateways/index';
-import { MessageOutputData } from '../../../dtos/output.chat.data';
+import { MessageOutputData } from '../../../application/usecases/get-messages-by-room';
 //Adapter pattern (object)
 export class ChatServerSocketAdapter  implements IChatClient {
 

@@ -4,15 +4,12 @@ import { IChatView } from '@cca/core-presenters';
 import { CHAT_CONTROLLER_PROVIDER, CHAT_VIEW_PROVIDER } from '../../pages/chat-page/chat-page.main.providers';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'cca-send-message',
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule]
 })
 export class SendMessageComponent {
 
@@ -21,7 +18,9 @@ export class SendMessageComponent {
 
   constructor(private route: ActivatedRoute,
     @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatHttpController,
-    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView) {
+    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView,
+    //@Inject(GET_MESSAGES_BY_ROOM_VIEW) public getMessagechatview: IGetMessagesByRoomView,
+  ) {
 
     this.route.paramMap.subscribe(params => {
       this.userId = +params.get('userId')!;

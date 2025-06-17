@@ -2,7 +2,6 @@ import { SendMessageInputData } from "../../../dtos/input.chat.data";
 import { ChatroomDto } from "../../../dtos/models/chatroom.dto";
 import { MessageDto } from "../../../dtos/models/message.dto";
 import { ParticpantDto } from "../../../dtos/models/participant.dto";
-import { MessageOutputData } from "../../../dtos/output.chat.data";
 import { BotParticipant } from "../../../domain/entities/bot.participant";
 import { Chatroom } from "../../../domain/entities/chat-room.impl";
 import { Message } from "../../../domain/entities/message.impl";
@@ -14,6 +13,7 @@ import { IChatServerPort, RoomsCacheManager } from "../../../gateways";
 import { IChatRepository } from "../../../repositories/chat-repository";
 import { ISendMessageInput } from "./sendMessage.controller.input";
 import { ISendMessagePresenterOutput } from "./sendMessage.presenter.output";
+import { MessageOutputData } from "../get-messages-by-room";
 
 export class SendMessagePerfFeature implements ISendMessageInput {
 

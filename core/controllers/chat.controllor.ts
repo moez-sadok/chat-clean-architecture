@@ -1,9 +1,9 @@
 import { IChatClient } from "../gateways";
-import { UserOutputData, GetMessagesOutputData } from "../dtos/output.chat.data";
+import { UserOutputData } from "../dtos/output.chat.data";
 
 export interface IChatHttpController {
   getUserById(userId: number): Promise<UserOutputData | null>;
-  getRoomMessages(roomId: number, userId: number): Promise<GetMessagesOutputData>;
+  // getRoomMessages(roomId: number, userId: number): Promise<GetMessagesOutputData>;
   sendMessage(roomId: number, userId: number, message: string): void;
   // getUserRooms(userId: number): Promise<GetRoomsByUserResponseData[]>;
 }

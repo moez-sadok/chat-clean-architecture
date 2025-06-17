@@ -34,7 +34,7 @@ export class ChatControllerHttpClientMemory implements IChatHttpController {
   async getRoomMessages(roomId: number, roomName: string, userId: number): Promise<MessageOutputData[]> {
     const room = { userId: userId, roomId: roomId, roomName: roomName }; //as GetRoomMessagesInputData
     const res =  await this.apicontroller.getRoomMessages(roomId,roomName,userId);
-    if(res) this.presentator.selectChatRoomsMessages(res,room);
+    if(res) this.presentator.presentMessages(res,room);
     return new Promise((resolve) => resolve(res));
   }
 

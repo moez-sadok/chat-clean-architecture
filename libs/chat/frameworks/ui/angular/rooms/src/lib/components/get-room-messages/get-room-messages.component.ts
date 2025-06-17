@@ -1,29 +1,27 @@
 import { Component, Inject } from '@angular/core';
-import { IChatHttpController } from '@cca/core-controllers';
-import { IChatView } from '@cca/core-presenters';
-import { CHAT_CONTROLLER_PROVIDER, CHAT_VIEW_PROVIDER } from '../../pages/chat-page/chat-page.main.providers';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT, GET_MESSAGES_BY_ROOM_VIEW, getMessagesByRoomProviders } from './get-room-messages.main.providers';
+import { GetRoomMessagesSpaClient } from './get-room-messages.spa.client';
+import { IGetMessagesByRoomView } from 'core/application/usecases/get-messages-by-room';
 
 @Component({
   selector: 'cca-get-room-messages',
   templateUrl: './get-room-messages.component.html',
   styleUrls: ['./get-room-messages.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule],
+  providers: [...getMessagesByRoomProviders]
 })
 export class GetRoomMessagesComponent {
 
   constructor(
     private route: ActivatedRoute,
-    @Inject(CHAT_CONTROLLER_PROVIDER) public chatController: IChatHttpController,
-    @Inject(CHAT_VIEW_PROVIDER) public chatview: IChatView) {
+    @Inject(GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT) public chatController: GetRoomMessagesSpaClient,
+    @Inject(GET_MESSAGES_BY_ROOM_VIEW) public chatview: IGetMessagesByRoomView) {
     this.route.paramMap.subscribe(params => {
-      const userId = +params.get('userId')!;
       const roomId = params.get('roomId') ? +params.get('roomId')! : null;
-      if (userId != null && roomId != null) this.chatController.getRoomMessages(roomId, userId);
+      if (roomId != null) this.chatController.getRoomMessages(roomId);
     });
 
   }

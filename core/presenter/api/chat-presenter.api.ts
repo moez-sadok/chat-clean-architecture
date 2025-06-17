@@ -1,20 +1,9 @@
-import { GetMessagesOutputData, MessageOutputData, UserOutputData } from "../../dtos/output.chat.data";
-import { IGetUserByIdPresenterOutput, IGetMessagesByRoomPresenterOutput, ISendMessagePresenterOutput, GetRoomsByUserResponseData } from "../../application/usecases";
-
-
+import { UserOutputData } from "../../dtos/output.chat.data";
+import { IGetUserByIdPresenterOutput, ISendMessagePresenterOutput, MessageOutputData } from "../../application/usecases";
 export class GetUserByIdPresenterAPI implements IGetUserByIdPresenterOutput {
   selectedUser(user: UserOutputData): UserOutputData {
     return user;
   }
-}
-
-export class GetMessagesByRoomPresenterApi implements IGetMessagesByRoomPresenterOutput {
-  selectChatRoomsMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): GetMessagesOutputData {
-    return { messages: messages, roomName: room.roomName };
-  }
-  // selectChatRoomsMessages(messages: MessageOutputData[]): MessageOutputData[] {
-  //   return messages;
-  // }
 }
 
 export class SendMessagePresenterApi implements ISendMessagePresenterOutput {
@@ -23,4 +12,13 @@ export class SendMessagePresenterApi implements ISendMessagePresenterOutput {
   }
 }
 
+// //toremove
+// export class GetMessagesByRoomPresenterApi implements IGetMessagesByRoomPresenterOutput {
+//   presentMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): GetMessagesOutputData {
+//     return { messages: messages, roomName: room.roomName };
+//   }
+//   // presentMessages(messages: MessageOutputData[]): MessageOutputData[] {
+//   //   return messages;
+//   // }
+// }
 

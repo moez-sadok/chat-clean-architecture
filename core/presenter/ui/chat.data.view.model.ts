@@ -3,9 +3,9 @@ import { RoomViewModel } from "../../application/usecases/get-rooms-by-user";
 export interface ChatDataViewModelDto {
   // rooms?: RoomViewModel[];
 
-  activeRoom: RoomViewModel;
+  // activeRoom: RoomViewModel;
   activeUser: UserViewModel;
-  activeRoomMessages: MessageViewModel[];
+  // activeRoomMessages: MessageViewModel[];
 
   inputMessage?: string;
   sendButtonLabel: string;
@@ -15,11 +15,11 @@ export interface ChatDataViewModelDto {
   defaultView ?: 'native' | 'material';
 }
 
-export interface MessageViewModel {
-  roomId: number;
-  content: string;
-  participantName: string;
-}
+// export interface MessageViewModel {
+//   roomId: number;
+//   content: string;
+//   participantName: string;
+// }
 
 // export interface RoomViewModel {
 //   roomId: number;

@@ -1,9 +1,9 @@
-import { GetRoomMessagesInputData } from "../../../dtos/input.chat.data";
-import { GetMessagesOutputData, MessageOutputData } from "../../../dtos/output.chat.data";
-import { IChatRepository } from "../../../repositories/chat-repository";
-import { GetRoomsByUserResponseData } from "../get-rooms-by-user";
+import { GetRoomMessagesInputData } from "../../../../dtos/input.chat.data";
+import { IChatRepository } from "../../../../repositories/chat-repository";
+import { GetRoomsByUserResponseData } from "../../get-rooms-by-user";
 import { IGetMessagesByRoomInput } from "./getMessagesByRoom.controller.input";
 import { IGetMessagesByRoomPresenterOutput } from "./getMessagesByRoom.presenter.output";
+import { GetMessagesOutputData, MessageOutputData } from "./getMessagesByRoom.response.data";
 
 export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
 
@@ -31,7 +31,7 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
     };
     return new Promise((resolve) => {
-      resolve(this.presenter.selectChatRoomsMessages(messages, croom));
+      resolve(this.presenter.presentMessages(messages, croom));
     });
   }
 

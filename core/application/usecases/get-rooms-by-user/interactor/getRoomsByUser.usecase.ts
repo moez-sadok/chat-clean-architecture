@@ -6,11 +6,11 @@ import { IChatRoomsRepository } from "../repositories/user-rooms.repository";
 export class GetRoomsByUserFeature implements IGetRoomsByUserRequester {
 
   constructor(
-    private chatRepository: IChatRoomsRepository
+    private roomsRepository: IChatRoomsRepository
   ) { }
 
   getRoomsByUser(user: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {
-    const rooms = this.chatRepository.getChatRoomsByUser(user.userId).map((r) => {
+    const rooms = this.roomsRepository.getChatRoomsByUser(user.userId).map((r) => {
       return {
         roomId: r.id,
         roomName: r.name

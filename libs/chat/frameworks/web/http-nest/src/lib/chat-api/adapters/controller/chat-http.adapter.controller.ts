@@ -21,11 +21,11 @@ export class ChatHttpAdapterController implements IChatHttpController {
     return this.getUserByIdFeature.getUser(+params.userId);
   }
 
-  @Get('chat-room-messages')
-  getRoomMessages(@Query() query: any) {
-    //+query.userId
-    return this.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: +query.roomId, roomName: query.roomName });
-  }
+  // @Get('chat-room-messages')
+  // getRoomMessages(@Query() query: any) {
+  //   //+query.userId
+  //   return this.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: +query.roomId });
+  // }
 
   @Post('send-message')
   sendMessage(@Body() message: any) {

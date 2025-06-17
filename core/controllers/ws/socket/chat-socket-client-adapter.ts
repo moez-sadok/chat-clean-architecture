@@ -1,8 +1,7 @@
 // https://refactoring.guru/design-patterns/adapter/typescript/example
 import { Socket } from 'socket.io-client';
 import { IChatClient } from '../../../gateways/index';
-import { MessageOutputData } from '../../../dtos/output.chat.data';
-import { ISendMessagePresenterOutput } from '../../../application/usecases';
+import { ISendMessagePresenterOutput, MessageOutputData } from '../../../application/usecases';
 
 export class ChatClientSocketkAdapter implements IChatClient {
     // socket as the adaptee

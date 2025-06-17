@@ -1,7 +1,7 @@
-import { UserOutputData, MessageOutputData, GetMessagesOutputData } from '../../dtos/output.chat.data';
-import { GetRoomsByUserResponseData, RoomViewModel } from '../../application/usecases';
+import { MessageOutputData, MessageViewModel } from '../../application/usecases/get-messages-by-room';
+import { UserOutputData } from '../../dtos/output.chat.data';
 import { IChatAppFacadePresenterOutput } from '../entry.facade.presenter';
-import { MessageViewModel } from './chat.data.view.model';
+// import { MessageViewModel } from './chat.data.view.model';
 import { IChatView } from './chat.view';
 
 export class ChatUiPresenterImpl  implements IChatAppFacadePresenterOutput {
@@ -10,13 +10,13 @@ export class ChatUiPresenterImpl  implements IChatAppFacadePresenterOutput {
     //init empty view model
     this.chatWebViewScreen.chatDataViewModelDto = {
      // rooms: [],
-      activeRoomMessages: [],
-      activeRoom: { name: '', roomId: -1 },
+      // activeRoomMessages: [],
+      // activeRoom: { name: '', roomId: -1 },
       activeUser: { name: '', id: -1 },
       sendButtonLabel: 'Send',
       menuItemLeaveRoomLabel: 'Leave room',
       menuItemAddParticipantLabel: 'Add',
-      defaultView: 'native',
+      defaultView: 'native'
     };
   }
 
@@ -26,29 +26,30 @@ export class ChatUiPresenterImpl  implements IChatAppFacadePresenterOutput {
   }
 
   receiveNewMessage(message: MessageOutputData): MessageOutputData {
-    //for adding e2ee decrypt message in the client side presenter
-    const messageInput: MessageViewModel = {
-      content: message.message,
-      participantName: message.authorName, roomId: message.chatRoomId
-    };
-    //check if the room is active (opened)
-    if (message.chatRoomId === this.chatWebViewScreen.chatDataViewModelDto.activeRoom?.roomId)
-      this.chatWebViewScreen.receiveMessage(messageInput);
-   else this.notifNewMessageOnInactiveRoom(message.chatRoomId);
+  //   //for adding e2ee decrypt message in the client side presenter
+  //   const messageInput: MessageViewModel = {
+  //     content: message.message,
+  //     participantName: message.authorName, roomId: message.chatRoomId
+  //   };
+  //   //check if the room is active (opened)
+  //   if (message.chatRoomId === this.chatWebViewScreen.chatDataViewModelDto.activeRoom?.roomId)
+  //     this.chatWebViewScreen.receiveMessage(messageInput);
+  //  else this.notifNewMessageOnInactiveRoom(message.chatRoomId);
     return message;
   }
 
-  selectChatRoomsMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): GetMessagesOutputData {
-    const ouputMessages: MessageViewModel[] = messages.map((m) => {
-      return { content: m.message, roomId: m.chatRoomId, participantName: m.authorName };
-    });
-    const roomView: RoomViewModel = { roomId: room?.roomId, name: room?.roomName, participantNames: room.participantsNames };
-    this.chatWebViewScreen.setActiveRoom(roomView);
-    this.chatWebViewScreen.displayChatRoomsMessages(ouputMessages);
-    this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
-    // return messages;
-    return { messages: messages, roomName: room.roomName};
-  }
+  //to remove
+  // presentMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): GetMessagesOutputData {
+  //   const ouputMessages: MessageViewModel[] = messages.map((m) => {
+  //     return { content: m.message, roomId: m.chatRoomId, participantName: m.authorName };
+  //   });
+  //   const roomView: RoomViewModel = { roomId: room?.roomId, name: room?.roomName, participantNames: room.participantsNames };
+  //   this.chatWebViewScreen.setActiveRoom(roomView);
+  //   //this.chatWebViewScreen.displayChatRoomsMessages(ouputMessages);
+  //   this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
+  //   // return messages;
+  //   return { messages: messages, roomName: room.roomName};
+  // }
 
   // selectedRoomsByUser(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[] {
   //   const roomsVM = rooms.map((e) => { return { name: e.roomName, roomId: e.roomId } as RoomViewModel; })

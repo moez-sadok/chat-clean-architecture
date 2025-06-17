@@ -14,9 +14,11 @@ import { getChatPageFacadeProviders } from './chat-page.main.providers';
   imports: [
     CommonModule,
     ConnectUserComponent,
+    SendMessageComponent,
+    //full isolated
     GetUserRoomsComponent,
     GetRoomMessagesComponent,
-    SendMessageComponent
+
   ],
   providers: [...getChatPageFacadeProviders]
 })
