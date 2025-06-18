@@ -3,12 +3,12 @@ import { UserOutputData  } from '../../dtos/output.chat.data';
 import { IChatHttpController } from '../chat.controllor';
 import { IGetMessagesByRoomPresenterOutput, MessageOutputData } from '../../application/usecases/get-messages-by-room';
 // Adapter pattern (Object) 
-
+// Refactoring ... (to remove)
 export class ChatControllerHttpClientAdapterImpl implements IChatHttpController {
 
   constructor(
     private presentator: IChatAppFacadePresenterOutput, 
-    // private getMessagesPresentator: IGetMessagesByRoomPresenterOutput
+    private getMessagesRoomPresentator: IGetMessagesByRoomPresenterOutput
   ) 
     { }
 
@@ -35,8 +35,8 @@ export class ChatControllerHttpClientAdapterImpl implements IChatHttpController 
       body: JSON.stringify(msg)
     }).then(res => res.json())
       .then((res: MessageOutputData) => 
-       this.presentator.receiveNewMessage(res)
-      //  this.getMessagesPresentator.presentMessages();
+      //  this.presentator.receiveNewMessage(res)
+       this.getMessagesRoomPresentator.presentNewMessage(res)
     );
   }
 

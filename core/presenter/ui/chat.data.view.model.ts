@@ -1,11 +1,11 @@
-import { RoomViewModel } from "../../application/usecases/get-rooms-by-user";
+//Refactoring ...
+export interface UserViewModel {
+  id: number;
+  name: string;
+}
 
 export interface ChatDataViewModelDto {
-  // rooms?: RoomViewModel[];
-
-  // activeRoom: RoomViewModel;
   activeUser: UserViewModel;
-  // activeRoomMessages: MessageViewModel[];
 
   inputMessage?: string;
   sendButtonLabel: string;
@@ -13,7 +13,13 @@ export interface ChatDataViewModelDto {
   menuItemAddParticipantLabel: string;
 
   defaultView ?: 'native' | 'material';
+
+  // rooms?: RoomViewModel[];
+  // activeRoom: RoomViewModel;
+  // activeRoomMessages: MessageViewModel[];
+
 }
+
 
 // export interface MessageViewModel {
 //   roomId: number;
@@ -28,7 +34,4 @@ export interface ChatDataViewModelDto {
 //   newMessagesNotif?: number;
 // }
 
-export interface UserViewModel {
-  id: number;
-  name: string;
-}
+

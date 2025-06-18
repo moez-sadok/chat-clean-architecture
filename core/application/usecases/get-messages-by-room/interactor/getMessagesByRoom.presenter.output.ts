@@ -4,5 +4,6 @@ import { MessageOutputData, GetMessagesOutputData } from "./getMessagesByRoom.re
 export interface IGetMessagesByRoomPresenterOutput {
     // presentMessages(messages: MessageOutputData[],room:GetRoomsByUserResponseData): MessageOutputData[];
     presentMessages(messages: MessageOutputData[],room:GetRoomsByUserResponseData): GetMessagesOutputData;
+    presentNewMessage(message: MessageOutputData): MessageOutputData;
     
 }

@@ -1,7 +1,5 @@
 import { InjectionToken } from "@angular/core";
 import { IHttpController } from "@cca/core-controllers";
-// import { GetMessagesByRoomClientView, getMessagesByRoomPresenterUiFactory, IGetMessagesByRoomView, IGetMessagesByRoomPresenter, getMessagesByRoomAPIClientControllerAdapter } from "@cca/core-features";
-// import { GetUserRoomsSpaClient } from "./get-user-rooms.spa.client";
 import { Router } from "@angular/router";
 import { GetRoomMessagesSpaClient } from "./get-room-messages.spa.client";
 import { IGetMessagesByRoomView, getMessagesByRoomPresenterUiFactory, getMessagesByRoomAPIClientControllerAdapter, GetMessagesByRoomClientView, IGetMessagesByRoomPresenterOutput } from "@cca/core-features";
@@ -25,8 +23,8 @@ export const getMessagesByRoomProviders = [
   },
   {  //HTTP_API_CLIENT service
     provide: GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT,
-    useFactory: (apiClientControllerAdapter: IHttpController, router: Router) => {
-      return new GetRoomMessagesSpaClient(apiClientControllerAdapter, router);
+    useFactory: (apiClientControllerAdapter: IHttpController) => {
+      return new GetRoomMessagesSpaClient(apiClientControllerAdapter);
     },
     deps: [GET_MESSAGES_ByRoomApiClientControllerAdapter, Router]
   },

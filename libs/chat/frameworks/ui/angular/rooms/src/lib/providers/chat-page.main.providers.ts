@@ -1,7 +1,11 @@
 import { InjectionToken } from "@angular/core";
 import { IChatHttpController, IChatWsController, ChatControllerHttpClientAdapterImpl, ChatControllerWsClientAdapterImpl } from "@cca/core-controllers";
+import { IGetMessagesByRoomPresenterOutput } from "@cca/core-features";
 import { IChatAppFacadePresenterOutput, IChatView, ChatUiPresenterImpl } from "@cca/core-presenters";
 import { UserWebViewClientImpl } from "@cca/core-views";
+import { GET_MESSAGES_BY_ROOM_PRESENTER } from "../components/get-room-messages/get-room-messages.main.providers";
+
+// Refactoring ... (to remove)
 
 export const CHAT_PRESENTATOR_PROVIDER = new InjectionToken<IChatAppFacadePresenterOutput>('chat.presentator');
 export const CHAT_VIEW_PROVIDER = new InjectionToken<IChatView>('chat.view');
@@ -13,11 +17,11 @@ export const presenterFactory = (view: IChatView) => {
 };
 
 // net controller (http/ws)
-export const controllerClientAdapterFactory = (presentator: IChatAppFacadePresenterOutput) => {
-  return new ChatControllerHttpClientAdapterImpl(presentator);
+export const controllerClientAdapterFactory = (presentator: IChatAppFacadePresenterOutput,getMessagesRoomPresentator: IGetMessagesByRoomPresenterOutput) => {
+  return new ChatControllerHttpClientAdapterImpl(presentator,getMessagesRoomPresentator);
 };
 
-export const controllerClientWsAdapterFactory = (presentator: IChatAppFacadePresenterOutput) => {
+export const controllerClientWsAdapterFactory = (presentator: IGetMessagesByRoomPresenterOutput) => {
   return new ChatControllerWsClientAdapterImpl(presentator);
 };
 
@@ -30,11 +34,11 @@ export const getChatPageFacadeProviders = [
     {
       provide: CHAT_CONTROLLER_PROVIDER,
       useFactory: controllerClientAdapterFactory,
-      deps: [CHAT_PRESENTATOR_PROVIDER]
+      deps: [CHAT_PRESENTATOR_PROVIDER,GET_MESSAGES_BY_ROOM_PRESENTER ]
     },
     {
       provide: CHAT_SERVER_CONTROLLER_PROVIDER,
       useFactory: controllerClientWsAdapterFactory,
-      deps: [CHAT_PRESENTATOR_PROVIDER]
+      deps: [GET_MESSAGES_BY_ROOM_PRESENTER]
     }
 ]

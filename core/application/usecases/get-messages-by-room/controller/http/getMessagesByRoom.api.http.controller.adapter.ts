@@ -13,7 +13,6 @@ export class GetRoomMessagesApiHttpControllerAdapter implements IHttpController 
 
   async handle(input: GetRoomMessagesInputData): Promise<GetMessagesOutputData> {
     const res = await this.usecase.getChatRoomsMessages(input);
-    console.log('api res',res);
     return this.presenterApi.presentMessages(
       res.messages,{roomName :res.roomName,roomId: input.roomId});
   }

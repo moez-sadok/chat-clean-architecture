@@ -2,7 +2,7 @@ import { InjectionToken } from "@angular/core";
 import { IHttpController } from "@cca/core-controllers";
 import { GetRoomsByUserClientView, getRoomsByUserPresenterUiFactory, IGetRoomsByUserView, IGetRoomsByUserPresenter, getRoomsByUserAPIClientControllerAdapter } from "@cca/core-features";
 import { GetUserRoomsSpaClient } from "./get-user-rooms.spa.client";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 export const GET_ROOMS_BY_USER_VIEW = new InjectionToken<IGetRoomsByUserView>('GetRoomsByUserView');
 export const GET_ROOMS_BY_USER_PRESENTER = new InjectionToken<IGetRoomsByUserPresenter>('GetRoomsByUserPresenter');
@@ -21,11 +21,11 @@ export const getRoomsByUserProviders = [
     provide: GET_ROOMS_ByUserApiClientControllerAdapter, useFactory: getRoomsByUserAPIClientControllerAdapter,
     deps: [GET_ROOMS_BY_USER_PRESENTER]
   },
-  {  //HTTP_API_CLIENT service
+  {//HTTP_API_CLIENT service
     provide: GET_ROOMS_BY_USER_HTTP_API_CLIENT,
-    useFactory: (apiClientControllerAdapter: IHttpController, router: Router) => {
-      return new GetUserRoomsSpaClient(apiClientControllerAdapter, router);
+    useFactory: (apiClientControllerAdapter: IHttpController, router: Router, route: ActivatedRoute) => {
+      return new GetUserRoomsSpaClient(apiClientControllerAdapter, router,route);
     },
-    deps: [GET_ROOMS_ByUserApiClientControllerAdapter, Router]
+    deps: [GET_ROOMS_ByUserApiClientControllerAdapter, Router,ActivatedRoute]
   },
 ]

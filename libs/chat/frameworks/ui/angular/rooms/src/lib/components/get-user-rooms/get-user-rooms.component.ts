@@ -3,7 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { IGetRoomsByUserView } from '@cca/core-features';
 import { GET_ROOMS_BY_USER_HTTP_API_CLIENT, GET_ROOMS_BY_USER_VIEW, getRoomsByUserProviders } from './get-user-rooms.main.providers';
 import { GetUserRoomsSpaClient } from './get-user-rooms.spa.client';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 //full independent 
 @Component({
@@ -11,7 +11,10 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './get-user-rooms.component.html',
   styleUrls: ['./get-user-rooms.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   providers: [...getRoomsByUserProviders]
 })
 export class GetUserRoomsComponent {

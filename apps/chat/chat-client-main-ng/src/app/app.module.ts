@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChatPageComponent } from '@chat-clean-architecture/chat/frameworks/ui/angular/rooms';
-
 @NgModule({
   declarations: [
     AppComponent
@@ -13,9 +11,7 @@ import { ChatPageComponent } from '@chat-clean-architecture/chat/frameworks/ui/a
   imports: [
     BrowserModule, 
     AppRoutingModule, 
-    BrowserAnimationsModule,
-    //
-    ChatPageComponent
+    BrowserAnimationsModule
   ],
   bootstrap: [AppComponent],
 })

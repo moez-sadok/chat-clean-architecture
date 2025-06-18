@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT, GET_MESSAGES_BY_ROOM_VIEW, getMessagesByRoomProviders } from './get-room-messages.main.providers';
+import { GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT, GET_MESSAGES_BY_ROOM_VIEW } from './get-room-messages.main.providers';
 import { GetRoomMessagesSpaClient } from './get-room-messages.spa.client';
 import { IGetMessagesByRoomView } from 'core/application/usecases/get-messages-by-room';
 
@@ -10,8 +10,7 @@ import { IGetMessagesByRoomView } from 'core/application/usecases/get-messages-b
   templateUrl: './get-room-messages.component.html',
   styleUrls: ['./get-room-messages.component.scss'],
   standalone: true,
-  imports: [CommonModule],
-  providers: [...getMessagesByRoomProviders]
+  imports: [CommonModule]
 })
 export class GetRoomMessagesComponent {
 
@@ -27,3 +26,15 @@ export class GetRoomMessagesComponent {
   }
 
 }
+
+// see mobile messages page 
+// @Component({
+//   selector: 'cca-get-room-messages-mobile',
+//   templateUrl: './get-room-messages.component.html',
+//   styleUrls: ['./get-room-messages.component.scss'],
+//   standalone: true,
+//   imports: [CommonModule],
+//   providers: [...getMessagesByRoomProviders]
+// injected by the parent page (not full standlone as path/ use the mobile one)
+// })
+// export class GetRoomMessagesMobileComponent extends GetRoomMessagesComponent {}

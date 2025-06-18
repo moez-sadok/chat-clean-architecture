@@ -1,4 +1,4 @@
-import { GetRoomsByUserResponseData, RoomViewModel } from "../../get-rooms-by-user";
+import { GetRoomsByUserResponseData } from "../../get-rooms-by-user";
 import { IGetMessagesByRoomPresenterOutput } from "../interactor/getMessagesByRoom.presenter.output";
 import { MessageOutputData, GetMessagesOutputData } from "../interactor/getMessagesByRoom.response.data";
 import { IGetMessagesByRoomView } from "./getMessagesByRoom.view";
@@ -9,19 +9,21 @@ export class GetMessagesByRoomPresenterUi implements IGetMessagesByRoomPresenter
   constructor(public view: IGetMessagesByRoomView) { }
 
   presentMessages(messages: MessageOutputData[], room: GetRoomsByUserResponseData): GetMessagesOutputData {
-    console.log('room',room)
     const ouputMessages: MessageViewModel[] = messages.map((m) => {
       return { content: m.message, roomId: m.chatRoomId, participantName: m.authorName };
     });
-    // const roomView: RoomViewModel = { roomId: room?.roomId, name: room?.roomName, participantNames: room.participantsNames };
     this.view.setActiveRoom(room.roomId, room.roomName);
     this.view.render(ouputMessages);
-    this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
-    // return messages;
+    //this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
     return { messages: messages, roomName: room.roomName, roomId: room.roomId };
   }
 
-  private notifNewMessageOnInactiveRoom(roomId: number, notifsNumber = 0) {
+  presentNewMessage(message: MessageOutputData): MessageOutputData {
+    this.view.receiveNewMessage(message);
+    return message;
+  }
+
+  //private notifNewMessageOnInactiveRoom(roomId: number, notifsNumber = 0) {
     // if (!this.chatWebViewScreen.chatDataViewModelDto.rooms)
     //   throw new Error('Not found rooms in the connect user view');
     // const roomHasNewMessageIndex = this.chatWebViewScreen.chatDataViewModelDto.rooms?.findIndex(e => e.roomId === +roomId);
@@ -34,6 +36,6 @@ export class GetMessagesByRoomPresenterUi implements IGetMessagesByRoomPresenter
     // const currRooms = [...this.chatWebViewScreen.chatDataViewModelDto.rooms];
     // currRooms[roomHasNewMessageIndex] = newRoomView;
     // this.chatWebViewScreen.displayChatPageRooms(currRooms);
-  }
+  //}
 
 }
