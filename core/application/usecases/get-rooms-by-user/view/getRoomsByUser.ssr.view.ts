@@ -18,15 +18,12 @@ export class GetRoomsByUserSSRView implements IGetRoomsByUserSSRView {
       }
     </style>
   `;
-    //   const script = `
-    //   <script>
+  //TODO change by router
+    //const script = ` <script>
     //     function selectRoom(roomId) {
-    //       window.location.href = '/chat/' + roomId;
+    //       window.location.href = '/' + roomId;
     //     }
-    //   </script>
-    // `;
-    // <body>
-    //     ${script}
+    //   </script>`;
     let htmlString = '<ul>';
     htmlString += rooms.map(room => `
     <li class="padding-12 cursor-pointer" data-room-id="${room.roomId}" onclick="selectRoom('${room.roomId}')">
@@ -48,5 +45,7 @@ export class GetRoomsByUserSSRView implements IGetRoomsByUserSSRView {
       </body>
     </html>
   `;
+    // <body>
+    //     ${script}
   }
 }

@@ -40,9 +40,11 @@ export class ChatServerWSAdapter implements IChatServerPort {
   connectUser(client: IChatClient): boolean {
     const userId = client.getId();
     if (userId === null || userId === undefined) return false;
-    if (this.connectetdUsers[userId]) return false;
-    this.connectetdUsers[userId] = client;
-    return true;
+    // if (this.connectetdUsers[userId]) return false;
+    // this.connectetdUsers[userId] = client;
+    // return true;
+     if (!this.connectetdUsers[userId]) this.connectetdUsers[userId] = client;
+     return true;
   }
 
   disconnectUser(userId: number): boolean {

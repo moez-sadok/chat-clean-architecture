@@ -2,7 +2,8 @@
 
 !include ../design/prodsoft.wsd
 
-title Clean architecture component Diagram [SSR + HTTP]
+title Clean architecture component diagram [SSR + HTTP]
+header Server side rendering (SSR) use case structure and flow
 footer Prodsoft - Moez SADOK @Copyright 2025
 
 actor User
@@ -19,7 +20,7 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
 
         component "Presenter\n" as Presenter #transparent;line:Black;line.bold{
             interface IView #LimeGreen
-            rectangle PresenterUI #transparent
+            rectangle PresenterWeb #transparent
             rectangle "ViewModel\n<<DataStructure>>"  as ViewModel #transparent;line:DarkGreen;
         }
 
@@ -63,12 +64,13 @@ package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
     }
 }
 
-User <..> Browser : 1. setRoute(url) \n 17. seeHtmlPage()
+User <.left.> Browser : 1.navigate(url) \n 17. webPage()
 Browser <.down.> APIController :  2. handleHttpRequest() \n16. returnHttpResponse():html
 APIController -left-> IHttpController :3.invoke() \n\n 15.returnHtml()
 
 ' HttpControllerSSRAdapter -down-> IPresenter :13.getViewModel()\n\n\n\n
-HttpControllerSSRAdapter -down-> IPresenter : \n13.\ngetViewModel()
+HttpControllerSSRAdapter -down-> IPresenter : \n13.get()\nViewModel
+
 
 ' : \n13. getViewModel()
 HttpControllerSSRAdapter --> IUseCaseRequester : 4. execute()
@@ -80,10 +82,10 @@ UseCase -up-> IPresenter : 11. present()
 UseCase -left-> Entities  : 10. applyBusinessRules()
 UseCase -down-> IRepository : 5. requestData() \n9. returnData()
 
-PresenterUI -down-|>  IPresenter #Black
+PresenterWeb -down-|>  IPresenter #Black
 WebHtmlView -left-|> IView #Black
-' IView <-left- PresenterUI : 11. renderUi()
-ViewModel <-down- PresenterUI : 12. format()
+' IView <-left- PresenterWeb : 11. renderUi()
+ViewModel <-down- PresenterWeb : 12. format()
 IView -left-> ViewModel 
 
 Repository  -up-|>  IRepository #Black
@@ -92,7 +94,7 @@ Repository -left-> DataMapper : 8. mapToEntity()
 DataSource -left-|> IDataSource #Black
 DataSource -up-> DomainDataBase : 7. runDBCommand() 
 
-DataMapper -up[hidden]-> PresenterUI
+DataMapper -up[hidden]-> PresenterWeb
 DataMapper -up-> Entities: mapping() \n Optional DTOs
 
 @enduml

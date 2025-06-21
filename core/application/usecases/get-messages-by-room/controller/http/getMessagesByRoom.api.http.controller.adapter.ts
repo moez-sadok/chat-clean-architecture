@@ -1,7 +1,7 @@
 import { IHttpController } from "../../../../../controllers";
-import { GetRoomMessagesInputData } from "../../../../../dtos/input.chat.data";
 import { IGetMessagesByRoomInput } from "../../interactor/getMessagesByRoom.controller.input";
 import { IGetMessagesByRoomPresenterOutput } from "../../interactor/getMessagesByRoom.presenter.output";
+import { GetRoomMessagesInputData } from "../../interactor/getMessagesByRoom.request.data";
 import { GetMessagesOutputData } from "../../interactor/getMessagesByRoom.response.data";
 
 export class GetRoomMessagesApiHttpControllerAdapter implements IHttpController {

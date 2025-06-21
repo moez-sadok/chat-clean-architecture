@@ -2,7 +2,7 @@
 ## Prodsoft - Moez SADOK @Copyright 2024
 
 Feature: Send Message
-  As a User
+  As a connected User
   I want to send a message in a chat room
   So that all participants can receive it
 

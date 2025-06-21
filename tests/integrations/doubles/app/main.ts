@@ -5,18 +5,24 @@ import { UserWebViewClientImpl } from "../../../../core/views";
 import { IChatClient } from "../../../../core/gateways";
 import { ChatroomDto } from "../../../../core/dtos/models/chatroom.dto";
 //doubles
-import { ChatControllerHttpClientMemory, GetUserRoomsHttpControllerClientMemory } from "../http/chat-controller-client.memory";
+import { ChatControllerHttpClientMemory, GetRoomMessagesHttpControllerClientMemory, GetUserRoomsHttpControllerClientMemory } from "../http/chat-controller-client.memory";
 import { AppBackendDouble } from "./app-backend-double";
 import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
 import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/application/usecases/get-rooms-by-user";
 import { IGetRoomsByUserView } from "../../../../core/application/usecases/get-rooms-by-user/presenter/getRoomsByUser.view";
+import { GetMessagesByRoomClientView, GetMessagesByRoomPresenterUi, IGetMessagesByRoomView } from "../../../../core/application/usecases";
 
 export interface ClientViewController {
+    id: number
+    //Refactoring ...
     view: IChatView,
     controller: IChatHttpController,
+    //
     getRoomsView: IGetRoomsByUserView,
     getRoomsController: IHttpController,
-    id: number
+    //
+    getMessagesView: IGetMessagesByRoomView,
+    getMessagesController : IHttpController,
 }
 
 export class MainDouble {
@@ -28,8 +34,11 @@ export class MainDouble {
         const getRoomsByUserView = new GetRoomsByUserClientView();
         const getRoomsByUserPresenter = new GetRoomsByUserPresenterUi(getRoomsByUserView);
         const clientGetRoomsController = new GetUserRoomsHttpControllerClientMemory( getRoomsByUserPresenter,this.backend.getUserRoomsHttpControllerApi);
-
         
+        const getMessagesByRoomView = new GetMessagesByRoomClientView();
+        const getMessagesByRoomPresenter = new GetMessagesByRoomPresenterUi(getMessagesByRoomView);
+        const clientGetMessagesController = new GetRoomMessagesHttpControllerClientMemory( getMessagesByRoomPresenter,this.backend.getMessagesRoomHttpControllerApi);
+
         const chatView = new UserWebViewClientImpl();
         const chatPresenter = new ChatUiPresenterImpl(chatView);
         const clientChatController = new ChatControllerHttpClientMemory(this.backend.apiChatController, chatPresenter);
@@ -43,26 +52,26 @@ export class MainDouble {
 
         return new Promise((resolve) => {
             resolve({ 
-                view: chatView, id: addedUser.id ,
+                id: addedUser.id,
+                view: chatView,
                 controller: clientChatController, 
                 //
                 getRoomsView: getRoomsByUserView,
-                getRoomsController: clientGetRoomsController   
+                getRoomsController: clientGetRoomsController,
+                //
+                getMessagesView: getMessagesByRoomView,
+                getMessagesController: clientGetMessagesController
             });
         });
     }
 
     async addClientToRoom(userId: number, roomId: number) {
-        // const currRoom = await this.backend.chatdbMapper.getChatRoomsById(roomId);
-        // if (!currRoom) throw new Error('addClientToRoom room not found');
         const currUser = await this.backend.chatdbMapper.getUserById(userId);
         if (!currUser) throw new Error('addClientToRoom User not added');
         this.backend.chatdbMapper.addParticipant({ 
             user: { name: currUser.name, id: currUser.id }, 
-            // chatroom: currRoom 
             chatroom: {id: roomId, name:'',participants: {}} 
         })
-        //await chatController.getUserRooms(addedUser.id);
     }
 
     addNewRoom(name: string): Promise<ChatroomDto> {

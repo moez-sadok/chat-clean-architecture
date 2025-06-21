@@ -23,12 +23,13 @@ describe('Main Memory Tesing...', () => {
         const c2room = client2.getRoomsView.rooms ? client2.getRoomsView.rooms[0] : null;
         
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
-        client1.controller.getRoomMessages(c1room.roomId, c1room.name, client1.id);
-        client2.controller.getRoomMessages(c2room.roomId, c2room.name, client2.id);
+        client1.getMessagesController.handle({roomId:c1room.roomId});
+        client2.getMessagesController.handle({roomId:c2room.roomId});
 
+        
         client1.controller.sendMessage(c1room.roomId, client1.id, msg);
 
-        const client2Msgs = await client2.controller.getRoomMessages(c1room.roomId, c1room.name, client2.id);
+        const client2Msgs = (await client2.getMessagesController.handle({ roomId: c1room.roomId})).messages;
         const lastMsg = client2Msgs[client2Msgs.length - 1].message;
         expect(lastMsg).toBe(msg);
     })

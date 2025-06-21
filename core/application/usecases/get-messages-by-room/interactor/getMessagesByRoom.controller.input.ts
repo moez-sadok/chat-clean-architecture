@@ -1,4 +1,5 @@
-import { GetRoomMessagesInputData } from "../../../../dtos/input.chat.data";
+
+import { GetRoomMessagesInputData } from "./getMessagesByRoom.request.data";
 import { GetMessagesOutputData } from "./getMessagesByRoom.response.data";
 
 export interface IGetMessagesByRoomInput {

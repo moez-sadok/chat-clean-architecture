@@ -34,7 +34,7 @@ describe('Server Main Perf Memory Tesing ( 200.000 connected user in one room ).
 
         main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: firstClient.getId(), message: msg })
 
-        const lastClientMsgs = await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId, roomName: c1room.roomName });
+        const lastClientMsgs = (await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId })).messages;
         const lastMsg = lastClientMsgs[lastClientMsgs.length - 1].message;
         expect(lastMsg).toBe(msg);
     })
@@ -57,7 +57,7 @@ describe('Server Main Perf Memory Tesing ( 200.000 connected user in one room ).
             //firstClient.controller.sendMessage(c1room.roomId, firstClient.id, lastSentMessage);
         }
 
-        const lastClientMsgs = await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId, roomName: c1room.roomName });
+        const lastClientMsgs = (await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId })).messages;
         const lastMsg = lastClientMsgs[lastClientMsgs.length - 1].message;
         expect(lastMsg).toBe(lastSentMessage);
     })
@@ -78,7 +78,7 @@ describe('Server Main Perf Memory Tesing ( 200.000 connected user in one room ).
             main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: clients[i].getId(), message: lastSentMessage })
         }
 
-        const lastClientMsgs = await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId, roomName: c1room.roomName });
+        const lastClientMsgs = (await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId})).messages;
         const lastMsg = lastClientMsgs[lastClientMsgs.length - 1].message;
         expect(lastMsg).toBe(lastSentMessage);
      })

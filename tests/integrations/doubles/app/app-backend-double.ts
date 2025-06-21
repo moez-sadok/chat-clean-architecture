@@ -2,19 +2,20 @@
 import { IChatHttpController, IHttpController } from "../../../../core/controllers";
 import { DataBaseMapper, IChatDatabase, IChatRepository } from "../../../../core/repositories";
 import { ChatServerMemoryImpl } from "../ws/chat-server.memory.impl";
-import { GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, SendMessagePresenterApi } from "../../../../core/presenter";
+import { GetUserByIdPresenterAPI, SendMessagePresenterApi } from "../../../../core/presenter";
 import { IChatServerPort } from "../../../../core/gateways";
 import { DataBaseMemoryImpl, DataBaseMemoryPerfImpl } from "../../../../libs/chat/frameworks/db/in-memory-db/src";
-import { ChatHttpControllerApiMemory, GetUserRoomsHttpControllerApiMemory } from "../http/chat-controller.api-memory";
-import { GetRoomsByUserFeature, GetUserByIdFeature, GetMessagesByRoomFeature, SendMessageFeature, IGetRoomsByUserRequester, IGetUserByIdInput, IGetMessagesByRoomInput, ISendMessageInput, SendMessagePerfFeature, GetRoomsByUserPresenterAPI } from "../../../../core/application/usecases";
+import { ChatHttpControllerApiMemory, GetMessagesRoomHttpControllerApiMemory, GetUserRoomsHttpControllerApiMemory } from "../http/chat-controller.api-memory";
+import { GetRoomsByUserFeature, GetUserByIdFeature, GetMessagesByRoomFeature, SendMessageFeature, IGetRoomsByUserRequester, IGetUserByIdInput, IGetMessagesByRoomInput, ISendMessageInput, SendMessagePerfFeature, GetRoomsByUserPresenterAPI, GetMessagesByRoomPresenterApi } from "../../../../core/application/usecases";
 
 export class AppBackendDouble {
 
     dataBase!: IChatDatabase;
     chatdbMapper!: IChatRepository;
     chatServer!: IChatServerPort;
-    // api controller
+    // api controllers
     getUserRoomsHttpControllerApi!: IHttpController;
+    getMessagesRoomHttpControllerApi!: IHttpController;
     apiChatController!: IChatHttpController; //as facade
     //features
     getRoomsByUserFeature: IGetRoomsByUserRequester;
@@ -35,10 +36,10 @@ export class AppBackendDouble {
         // this.sendMessageFeature = new SendMessageFeature(this.chatdbMapper, new SendMessagePresenterApi(), this.chatServer);
         this.sendMessageFeature = new SendMessagePerfFeature(this.chatdbMapper, new SendMessagePresenterApi(), this.chatServer);
         // init api controller
-        this.apiChatController = new ChatHttpControllerApiMemory(this.getUserByIdFeature, this.getMessagesByRoomFeature, this.sendMessageFeature);
+        this.apiChatController = new ChatHttpControllerApiMemory(this.getUserByIdFeature, this.sendMessageFeature);
         // controller by feature
         this.getUserRoomsHttpControllerApi = new GetUserRoomsHttpControllerApiMemory(new GetRoomsByUserPresenterAPI(), this.getRoomsByUserFeature);
-   
+        this.getMessagesRoomHttpControllerApi = new GetMessagesRoomHttpControllerApiMemory(new GetMessagesByRoomPresenterApi(),this.getMessagesByRoomFeature)
     }
 
 }

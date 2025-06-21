@@ -29,11 +29,11 @@ Controller -> UseCaseInteractor : sendMessage(request)
 ' Step 3: The UseCaseInteractor validates the MessageEntity, RoomEntity, and UserEntity.
 UseCaseInteractor -> MessageEntity : validate(content)
 UseCaseInteractor -> ChatRepository : getRoom(roomId)
-UseCaseInteractor -> RoomEntity : validate(room)
-UseCaseInteractor -> RoomEntity : userIsParticipant(user)
-' Step 4: If validation succeeds, the UseCaseInteractor interacts with the ChatRepository and RoomEntity.
 UseCaseInteractor -> RoomEntity : makeRoomEntity(roomId) 
 note left: **Optimise**: Make a Cache/ServiceDiscovery of rooms \n& update connect/disconnect use cases
+' Step 4: validation
+UseCaseInteractor -> RoomEntity : validate(room)
+UseCaseInteractor -> RoomEntity : userIsParticipant(user)
 
 ' Step 5: The RoomEntity broadcasts the message to participants.
 RoomEntity -> ParticipantEntity : broadcast(msg)
