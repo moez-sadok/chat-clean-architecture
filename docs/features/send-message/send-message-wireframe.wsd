@@ -1,0 +1,85 @@
+@startsalt MessageForm_Wireframe
+
+title Send message wireframes for Web and Mobile
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+scale 2
+{
+    { <color:RoyalBlue>**Web** }
+    {
+    {SI
+        **Rooms**
+        --
+        . Family
+        .  **__Friends__**   
+        . Work
+        . Bob
+    }|
+    {SI
+        **Messages**
+        --
+        . //Alice//: party tonight?
+        . //Bob//: why not
+        . //Adam//: where?
+        .
+    }
+    |
+    }
+    {
+        <&pencil>|"                    " | [<color:Green> Send ]
+    }
+    --
+    { <color:RoyalBlue>**Mobile** }
+
+    [<&arrow-left>  __Friends__ ]    
+    {SI
+
+        **Messages**
+        --
+        . //Alice//: party tonight?
+        . //Bob//: why not
+        . //Adam//: where?
+        .
+    }
+    |
+    {
+      "          " | [<color:Green> Send ]
+    }
+}
+
+@endsalt
+
+
+' @startuml
+' !unquoted procedure SALT(x)
+' "{{
+' salt
+' %invoke_procedure("_"+x)
+' }}
+' " as x
+' !endprocedure 
+
+' !procedure _choose()
+' {+
+' <b>an example
+' choose one option
+' ()one
+' ()two
+' [ok]
+' }
+' !endprocedure 
+
+' !procedure _wait()
+' {+
+' <b>please wait
+' operation in progress
+' <&clock>
+' [cancel]
+' }
+' !endprocedure 
+
+' (*) --> SALT(choose)
+' choose -right-> SALT(wait)
+' ' wait -right-> SALT(success)
+' ' wait -down-> SALT(error)
+' @enduml

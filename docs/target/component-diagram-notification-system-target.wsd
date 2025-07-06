@@ -1,0 +1,57 @@
+@startuml
+
+!include ../design/prodsoft.wsd
+
+title P-CHAT Component Diagram - Notification System v1 ...
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+package "FramworksDrivers" #90baff\White;line:Black;line.bold {
+
+    package "Adapters" #d8fff5\White;line:Black;line.bold {
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+            collections UseCases #White
+
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+                [Entities] #FDD835/White
+                interface INotification $ACCENT_LIGHT\White
+            }
+
+            component Notifiyer #transparent;line:Black;line.bold{
+                rectangle NotificationContext #White
+                interface INotifStrategy
+                interface IStrategyFactory
+            }
+        }
+
+        package "Adapters/NotifGateway" #d8fff5\White {
+            rectangle NotificationFactory #transparent
+        }
+
+    }
+
+    node "External" #afd8ff\White{
+        [PushNotificationServer] $ACCENT_LIGHT\White
+        [MailServer] $ACCENT_LIGHT\White
+    }
+
+}
+
+' BusinessRules -right[hidden]- Notifiyer
+UseCases --> Entities : manageEntities()
+Entities -left-> INotification : sendNotification()
+
+NotificationFactory -right-|> IStrategyFactory  #Black
+
+NotificationContext ..> INotifStrategy : use
+NotificationContext -right-|> INotification  #Black
+ NotificationContext -down[hidden]-> IStrategyFactory
+IStrategyFactory -> INotifStrategy : .              .
+
+PushNotificationServer --|> INotifStrategy #Black
+MailServer --|> INotifStrategy #Black
+
+NotificationFactory ..> PushNotificationServer
+NotificationFactory ..> MailServer
+
+@enduml

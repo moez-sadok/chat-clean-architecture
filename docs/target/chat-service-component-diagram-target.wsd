@@ -1,0 +1,167 @@
+@startuml
+allowmixing
+
+!include ../design/prodsoft.wsd
+
+title P-CHAT Entities - Chatserver Diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+package "FrameworksDrivers" #90baff\White;line:Black;line.bold {
+
+    node "Browser" #afd8ff\White {
+        rectangle "SPAController\n[WebSocketClientAdapter]" as SPAController  $PRIMARY_LIGHT
+    }
+
+    node "WSServer" #afd8ff\White {
+        collections "WSController\n[WSServerClientAdapter]" as WSClientController  $PRIMARY_LIGHT
+        rectangle "WSController\n[WSServerAdapter]" as WSController  $PRIMARY_LIGHT
+    }   
+
+    node "HTTPServer" #afd8ff\White {
+        rectangle "HttpController\n[HttpServerAdapter]" as FHttpController  $PRIMARY_LIGHT
+    }  
+
+    package "Adapters" #baffd8\White;line:Black;line.bold {
+
+        component "WSController\n" as WsController #transparent;line:Black;line.bold{
+            interface IWSClientController  $PRIMARY_LIGHT {
+                onEvent(event, handler: ());
+                emit(event,payload);
+            }
+
+            interface IWSServerController {
+                serve();
+                connect();
+                disconnect();
+            }
+            rectangle WSClientAdapter  #transparent
+            rectangle WSClientServerAdapter  #transparent
+            rectangle WSServerAdapter  #transparent
+
+            ' rectangle ChatServiceImp
+        }
+
+        component "ChatGateway\n" as ChatGateway #transparent;line:Black;line.bold{
+            rectangle ChatServiceImp
+            rectangle ConnectedUserImp
+            ChatServiceImp -down[hidden]- ConnectedUserImp
+        }
+
+       component "HttpController\n" as HttpController #transparent;line:Black;line.bold{
+            interface IHttpClientController  $PRIMARY_LIGHT {
+                handler(req):res
+            }
+            rectangle HttpControllerServerAdapter  #transparent
+
+        }
+
+
+        package "Application" #f88c8c/White;line:Black;line.bold {
+
+            component ChatService #transparent;line:Black;line.bold{
+                interface IChatService {
+                    + connect()
+                    + disconnect()
+                    + getConnectedUser()
+                }
+
+                class ClientEmitter {
+                    + getId(): int
+                    + emit(): void
+                }
+
+                interface IConnectedUser {
+                    + getId(): in
+                    + on(): void
+                }
+            }
+
+            component ConnectUserInteractor #transparent;line:Black;line.bold{
+                rectangle ConnectUserUseCase #transparent
+            }
+
+            component SendMessageInteractor #transparent;line:Black;line.bold{
+                rectangle SendMessageUseCase #transparent
+                rectangle RoomFactory #transparent
+            }
+
+            package "BusinessRules" #FDD835/White;line:Black;line.bold {
+
+                package "Entities" #LightGrey{
+          
+                   class UserEntity {
+                        +setEmitter()
+                        +getEmitter()
+                    }
+
+                    class ParticipantEntity {
+                        +receive()
+                        +send()
+                        ' +setEmitter()
+                    }
+
+                    class RoomsEntity {
+                        +broadcast()
+                    }
+             
+                }
+
+                package "Emitter" {
+                    interface IClientEmitter {
+                        + getId(): int
+                        + emit(): void
+                    }
+
+                }
+            }
+
+        }
+    }
+
+
+}
+
+WSController -down[hidden]- WSClientController
+
+WSClientController --> IWSClientController
+WSController -right-> IWSServerController
+SPAController -right-> IWSClientController
+
+IWSServerController  <|--  WSServerAdapter
+IWSClientController <|-- WSClientAdapter 
+IWSClientController <|-down- WSClientServerAdapter
+WSServerAdapter --> WSClientServerAdapter
+
+FHttpController --> IHttpClientController
+IHttpClientController <|-- HttpControllerServerAdapter
+HttpControllerServerAdapter --> SendMessageUseCase
+' SendMessageUseCase --> RoomsEntity
+RoomFactory --> IChatService
+SendMessageUseCase -> RoomFactory : createRoomEntity()
+RoomFactory --> RoomsEntity
+ConnectUserUseCase --> UserEntity
+WSServerAdapter -right-> ConnectUserUseCase
+WSClientAdapter --> ConnectedUserImp
+ConnectUserUseCase -down-> IChatService
+
+WSServerAdapter -down-> ChatServiceImp
+ChatServiceImp -right-|> IChatService
+ConnectedUserImp -right-|> IConnectedUser
+
+ClientEmitter -right-|> IClientEmitter
+IChatService -down-* IConnectedUser
+ClientEmitter -left-> IConnectedUser
+
+ParticipantEntity -left-* UserEntity
+ParticipantEntity -up-* RoomsEntity
+UserEntity o-- IClientEmitter: has if connected
+
+
+@enduml
+
+
+' | Relationship                       | Type        | Meaning                                           |
+' | ---------------------------------- | ----------- | ------------------------------------------------- |
+' | `RoomEntity *- ParticipantEntity`  | Composition | A Room owns multiple Participants                 |
+' | `RoomEntity o- MessageEntity`      | Aggregation | A Room has Messages, but doesn't "own" them fully |
+' | `UserEntity *-- ParticipantEntity` | Composition | A User owns their Participant entities            |

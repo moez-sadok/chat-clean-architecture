@@ -1,0 +1,75 @@
+{
+  "name": "chat-chat-server-main-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/chat/chat-server-main-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/chat/chat-server-main-api",
+        "main": "apps/chat/chat-server-main-api/src/main.ts",
+        "tsConfig": "apps/chat/chat-server-main-api/tsconfig.app.json",
+        "assets": ["apps/chat/chat-server-main-api/src/assets"],
+        "webpackConfig": "apps/chat/chat-server-main-api/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "chat-chat-server-main-api:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "chat-chat-server-main-api:build:production"
+        }
+      }
+    },
+    "serve:bun": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun apps/chat/chat-server-main-api/src/main.ts",
+        "cwd": "."
+      }
+    },
+    "build:bun": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun build apps/chat/chat-server-main-api/src/main.ts --outdir=dist/apps/chat/chat-server-main-api-bun --target bun",
+        "cwd": "."
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/chat/chat-server-main-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/chat/chat-server-main-api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,54 @@
+@startuml
+
+title Deployment Diagram 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+node "K8S Cluster" #33FFCC\356CAE {
+    interface IIngress  #MediumVioletRed
+    portin LoadBalancer  #LightBlue
+
+    package "prod_namespace" #White{
+        node PodFront #LightPink
+        node PodBack #FDD835
+        node PodWsServer #LightCyan
+        node PodNotifiyer #LightGreen
+        database Database #FF5722
+        agent "IngressRules" as Ingress << mychat.com >>
+
+        ' PodFront -.right.> PodBack
+        ' PodBack -.right.> PodWsServer
+        PodBack -down-> Database
+        Ingress -down-> PodFront : /
+        Ingress -down-> PodBack : /api
+        Ingress -down-> PodWsServer : /ws
+        PodBack -down-> PodNotifiyer
+    }
+}
+
+cloud ObjectStorage #SkyBlue
+LoadBalancer -down-> IIngress
+IIngress -down-> Ingress
+User -down-> LoadBalancer
+Ingress -left-> ObjectStorage : /files
+
+
+' package "staging_namespace"{
+    '     node PodFrontStaging
+    '     node PodBackStaging
+    '     database Database
+    '     ' replace docker compose
+    '     component IngressStaging
+
+    '     PodFrontStaging -.left.> PodBackStaging
+    '     PodBackStaging -down-> Database
+    '     IngressStaging -down-> PodFrontStaging
+    '     IngressStaging -down-> PodBackStaging
+    '
+' }
+
+' cloud ObjectStorageStaging #SkyBlue
+' Ingress -down-> IngressStaging
+' IngressStaging -right-> ObjectStorageStaging
+

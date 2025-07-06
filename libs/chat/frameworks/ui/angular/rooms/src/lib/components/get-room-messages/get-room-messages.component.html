@@ -1,0 +1,11 @@
+<div  *ngIf="chatview.roomName">
+  <div>
+    <div><b>{{ chatview.roomName}}</b></div>
+    <!-- <div class="divider">{{chatview.participantNames}}</div> -->
+    <div class="divider"></div>
+    <br>
+    <div *ngFor="let message of chatview.messages">
+      <p> <b>{{ message.participantName }}</b>: {{ message.content }}</p>
+    </div>
+  </div>
+</div>

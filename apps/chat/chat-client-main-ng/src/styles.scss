@@ -1,0 +1,29 @@
+/* global styles  */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.padding-12 { padding: 12px;}
+
+.margin-12 {  margin: 12px;}
+
+.padding-vertical-4 { padding: 4px 0px;}
+
+.cursor-pointer { cursor: pointer;}
+
+.display-flex {  display: flex;}
+
+.card-border {
+     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    --mdc-elevated-card-container-color: #fff;
+}
+
+.cca-button{
+    margin-left: 8px;
+    border-radius: 16px;
+}
+
+.divider{
+    padding-bottom: 4px;
+    border-bottom: 2px solid lightgray;
+}

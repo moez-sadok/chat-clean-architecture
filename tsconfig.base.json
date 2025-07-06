@@ -1,0 +1,46 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@cca/core-controllers": ["./core/controllers/index.ts"],
+      "@cca/core-domain": ["./core/domain/index.ts"],
+      "@cca/core-features": ["./core/application/index.ts"],
+      "@cca/core-gateways": ["./core/gateways/index.ts"],
+
+      "@cca/frameworks/db/in-memory-db": [
+        "libs/chat/frameworks/db/in-memory-db/src/index.ts"
+      ],
+      "@cca/frameworks/db/mongo-db": [
+        "libs/chat/frameworks/db/mongo-db/src/index.ts"
+      ],
+      "@cca/frameworks/ui/angular/rooms": [
+        "libs/chat/frameworks/ui/angular/rooms/src/index.ts"
+      ],
+      "@cca/frameworks/ui/react": [
+        "libs/chat/frameworks/ui/react/src/index.ts"
+      ],
+      "@cca/frameworks/web/graph-ql": [
+        "libs/chat/frameworks/web/graph-ql/src/index.ts"
+      ],
+      "@cca/frameworks/web/http-nest": [
+        "libs/chat/frameworks/web/http-nest/src/index.ts"
+      ],
+      "@cca/drivers/socketIo/client": ["libs/chat/drivers/socketIo/client/src/index.ts"],
+      "@cca/drivers/socketIo/server": ["libs/chat/drivers/socketIo/server/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

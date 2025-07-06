@@ -1,0 +1,47 @@
+@startuml
+
+!include prodsoft.wsd
+!pragma teoz true
+
+title P-CHAT System Interaction
+' header Sequence diagram: User 1 & 2 are connected / User3 is disconnected
+header Sequence diagram: One room with 3 users, 2 connected and 1 disconnected
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User1 $PRIMARY
+actor User2 $SECONDARY
+
+participant WsChatServer
+participant HttpServer
+
+control UseCases $GARDIANT
+entity Entities $SECONDARY_LIGHT
+database ChatRepository $PRIMARY_LIGHT
+
+participant Notifiyer $ACCENT_LIGHT\White
+
+actor User3 
+
+User1 -> WsChatServer: Connect
+& WsChatServer -> UseCases 
+& UseCases -> Entities : register(Emitter)
+
+User2 -> WsChatServer: Connect
+& WsChatServer -> UseCases 
+& UseCases -> Entities : register(Emitter)
+
+User1 -> HttpServer: Send Message "Hello"
+HttpServer -> UseCases: send()
+UseCases -> ChatRepository: log()
+
+UseCases -> Entities : broadcast()
+
+alt #LightGray Disconnected participant
+    Entities -> Notifiyer : sendNotification(msg)
+    Notifiyer -> User3 : notify(msg)
+else #b1ffeb Connected participant
+    Entities -> WsChatServer: receive()
+    WsChatServer -> User2: Deliver Message "Hello"
+end
+
+@enduml

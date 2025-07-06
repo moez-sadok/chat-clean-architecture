@@ -1,0 +1,36 @@
+{
+  "extends": ["../../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "chatCleanArchitecture",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "cca",
+            "style": "kebab-case"
+          }
+        ]
+      },
+      "extends": [
+        "plugin:@nx/nx/angular",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ]
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@nx/nx/angular-template"],
+      "rules": {}
+    }
+  ]
+}

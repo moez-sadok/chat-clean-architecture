@@ -1,0 +1,145 @@
+@startuml
+
+!include ../../design/prodsoft.wsd
+
+title Send Message sequence diagram 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+boundary View #CDA719
+boundary Controller #CDE711
+boundary Presenter #CDE711
+control UseCaseInteractor
+
+entity MessageEntity #FDD835
+entity RoomEntity #FDD835
+entity ParticipantEntity #FDD835
+' entity UserEntity #FDD835
+
+database ChatRepository #FF5722
+boundary ChatServer #CDE711
+boundary Notifier #Green
+
+' Step 1: The User sends a SendMessageRequest to the Controller.
+User -> Controller : Send Message Request
+Controller -> Controller : formatInputRequest()
+' Step 2: The Controller forwards this request to the UseCaseInteractor by calling the sendMessage method.
+Controller -> UseCaseInteractor : sendMessage(request)
+' Step 3: The UseCaseInteractor validates the MessageEntity, RoomEntity, and UserEntity.
+UseCaseInteractor -> MessageEntity : validate(content)
+UseCaseInteractor -> ChatRepository : getRoom(roomId)
+UseCaseInteractor -> RoomEntity : makeRoomEntity(roomId) 
+note left: **Optimise**: Make a Cache/ServiceDiscovery of rooms \n& update connect/disconnect use cases
+' Step 4: validation
+UseCaseInteractor -> RoomEntity : validate(room)
+UseCaseInteractor -> RoomEntity : userIsParticipant(user)
+
+' Step 5: The RoomEntity broadcasts the message to participants.
+RoomEntity -> ParticipantEntity : broadcast(msg)
+' Step 6: Each ParticipantEntity notifies the Notifier to send notifications.
+alt Participant connected
+    ParticipantEntity -> ChatServer : sendToConnectedParticipants(msg)
+else Participant disconnected
+    ParticipantEntity -> Notifier : sendNotificationToDisconnectedParticipants(msg)
+end
+' Step 7: The UseCaseInteractor asks the ChatRepository to save the message.
+UseCaseInteractor -> ChatRepository : save(msg)
+' Step 8: The ChatRepository persists the message.
+ChatRepository -> ChatRepository : persist()
+' Step 9: The UseCaseInteractor instructs the Presenter to present success.
+UseCaseInteractor -> Presenter : presentSuccess(msg)
+' Step 10: The Presenter formats the response.
+Presenter -> Presenter : formatResponse(res)
+' Step 11: The Presenter returns the formatted response to the View.
+Presenter -> View : display()
+' Step 12: The user see the response.
+View -> User : See Response
+
+@enduml
+
+
+
+
+
+
+' @startuml
+' ' Full Sequence Diagram for Clean Architecture Feature: Send Message
+
+' actor User #F06292
+
+' boundary View #CDA719
+' boundary Controller #CDE711
+' boundary Presenter #CDE711
+
+' control UseCaseInteractor
+' entity MessageEntity #FDD835
+' entity RoomEntity #FDD835
+' entity ParticipantEntity #FDD835
+' entity UserEntity #FDD835
+' database ChatRepository #FF5722
+
+' boundary Notifier #Green
+
+' ' Main Success Scenario (Basic Flow)
+' User -> Controller : SendMessageRequest
+' Controller -> Controller : formatInputRequest()
+' Controller -> UseCaseInteractor : sendMessage(request)
+' UseCaseInteractor -> MessageEntity : validate(content)
+' UseCaseInteractor -> RoomEntity : validate(room)
+' UseCaseInteractor -> UserEntity : validate(user)
+
+' alt validation fails
+'     UseCaseInteractor -> Presenter : presentError()
+'     Presenter -> View : displayError()
+'     View -> User : See error
+' else validation succeeds
+'     UseCaseInteractor -> ChatRepository : getRoom(roomId)
+'     UseCaseInteractor -> RoomEntity : makeRoom(roomId)
+'     RoomEntity -> ParticipantEntity : broadcast(msg)
+'     ParticipantEntity -> Notifier : sendNotification(msg)
+'     UseCaseInteractor -> ChatRepository : save(msg)
+'     UseCaseInteractor -> Presenter : presentSuccess(msg)
+'     Presenter -> Presenter : formatResponse(res)
+'     Presenter -> View : display()
+'     View -> User : See Response
+' end
+
+' ' Extensions (Alternate Flows)
+' group Extension 1: Message Content is Invalid
+'     User -> Controller : SendMessageRequest(invalid content)
+'     Controller -> UseCaseInteractor : sendMessage(request)
+'     UseCaseInteractor -> MessageEntity : validate(content)
+'     UseCaseInteractor -> Presenter : presentError(invalid content)
+'     Presenter -> View : displayError()
+'     View -> User : See error
+' end
+
+' group Extension 2: Invalid Chat Room or User is Not Part of the Chat Room
+'     User -> Controller : SendMessageRequest(invalid chat room or user)
+'     Controller -> UseCaseInteractor : sendMessage(request)
+'     UseCaseInteractor -> RoomEntity : validate(room)
+'     UseCaseInteractor -> UserEntity : validate(user)
+'     UseCaseInteractor -> Presenter : presentError(not in chat room)
+'     Presenter -> View : displayError()
+'     View -> User : See error
+' end
+
+' group Extension 3: Message Delivery Failure
+'     User -> Controller : SendMessageRequest
+'     Controller -> UseCaseInteractor : sendMessage(request)
+'     UseCaseInteractor -> MessageEntity : validate(content)
+'     UseCaseInteractor -> RoomEntity : validate(room)
+'     UseCaseInteractor -> UserEntity : validate(user)
+'     UseCaseInteractor -> ChatRepository : getRoom(roomId)
+'     UseCaseInteractor -> RoomEntity : makeRoom(roomId)
+'     RoomEntity -> ParticipantEntity : broadcast(msg)
+'     ParticipantEntity -> Notifier : sendNotification(msg)
+'     Notifier -> Notifier : delivery failure
+'     Notifier -> UseCaseInteractor : deliveryError()
+'     UseCaseInteractor -> Presenter : presentWarning(notif failure)
+'     Presenter -> View : displayWarning()
+'     View -> User : See warning
+' end
+
+' @enduml

@@ -1,0 +1,34 @@
+@startuml
+
+left to right direction
+title Send message usecase diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+rectangle #33FFCC\356CAE {
+    ' usecase/ "Send Message" as UC_SendMessage #LightGreen
+    usecase "Send Message" as UC_SendMessage #LightGreen
+    usecase "Validate Message Content" as UC_ValidateContent #LightGreen
+    usecase "Validate Room" as UC_ValidateRoom #Yellow
+    usecase "User is participant of room" as UC_ValidateUser #Yellow
+    usecase "Get Room" as UC_GetRoom #Yellow
+    usecase "Broadcast Message" as UC_BroadcastMessage #Yellow
+    usecase "Send Notification" as UC_SendNotification #33FFCC
+    usecase "Save Message" as UC_SaveMessage #LightGreen
+    usecase "Present Success" as UC_PresentSuccess
+    usecase "Present Error" as UC_PresentError
+}
+
+User --> UC_SendMessage
+UC_SendMessage --> UC_ValidateContent : <<include>>
+UC_SendMessage --> UC_ValidateRoom : <<include>>
+UC_SendMessage --> UC_ValidateUser : <<include>>
+UC_SendMessage --> UC_GetRoom : <<include>>
+UC_SendMessage --> UC_BroadcastMessage : <<include>>
+UC_BroadcastMessage --> UC_SendNotification : <<extend>>
+UC_SendMessage --> UC_SaveMessage : <<include>>
+UC_SendMessage --> UC_PresentSuccess : <<include>>
+UC_SendMessage .> UC_PresentError : <<extend>>
+
+@enduml

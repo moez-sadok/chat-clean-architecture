@@ -1,0 +1,62 @@
+@startuml
+left to right direction
+
+title  P-Chat - application usecase diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor "Admin" as adm #EC407A
+actor "User " as acs #607D8B
+
+rectangle UserDomain  {
+    usecase/ UCC0 as "Auth
+    --
+    register,login,..."
+    usecase "Signal another user" as UCC7
+}
+
+rectangle ChatDomain #33FFCC\356CAE{
+    usecase "Get user rooms" as UCC3 #LightGreen
+    usecase "Get user by id" as UCC11 #LightGreen
+    usecase "Get room messages" as UCC5 #LightGreen
+
+    usecase "Register to message receiver" as UCC9 #LightGreen
+    usecase UCC6 as "Send message" #LightGreen
+    usecase UCC1 as "Connect"
+    usecase "Disconnect" as UCC10
+
+}
+
+rectangle AdminDomain {
+    usecase "See Signaled users" as UCA1 #F8BBD0
+    usecase "Block Signaled user" as UCA2 #F8BBD0
+}
+
+acs --> UCC0
+acs --> UCC1
+
+acs --> UCC3
+acs --> UCC5
+acs --> UCC6
+acs --> UCC7
+
+acs --> UCC10
+
+UCC1 --> UCC9 : includes
+UCC1 --> UCC11 : includes
+
+UCA1 <-- adm
+UCA2 <-- adm
+
+UserDomain  -- AdminDomain #FFFFFF
+
+@enduml
+
+
+' acs --> UCC2
+' acs --> UCC8
+' UCC4 --> UCC5 : includes
+' usecase "Create a room" as UCC2 #Yellow
+' usecase "Enter a room" as UCC4 #Orange
+' usecase "Leave a room" as UCC8 #Yellow
+' usecase "Receive new messages" as UCC9 #LightGreen
+' usecase/ UCC6 as "Send message" #LightGreen

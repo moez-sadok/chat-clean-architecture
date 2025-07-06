@@ -1,0 +1,27 @@
+config:
+  target: "http://localhost:8080"
+  processor: "./connect-user-idgenerator.js"
+  phases:
+    - duration: 120
+      arrivalRate: 100
+      rampTo: 400
+  engines:
+    socketio-v3: {}
+
+scenarios:
+  - engine: socketio-v3
+    name: "Connect with dynamic userId"
+    flow:
+      - function: "generateUserId"
+      - connect:
+          auth:
+            userId: "{{ userId }}"
+      - emit:
+          channel: "msgToClient"
+          data:
+            text: "Hello from {{ userId }}"
+      - think: 20
+      - emit:
+          channel: "msgToClient"
+          data:
+            text: "Bye from {{ userId }}"

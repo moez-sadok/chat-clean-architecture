@@ -1,0 +1,37 @@
+@startuml
+
+title Database tables relations 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+entity UserDbTable {
+    +id: int
+    +username: string
+    +email: string
+}
+
+entity RoomDbTable #33FFCC\356CAE {
+    +id: int
+    +name: string
+}
+
+entity ParticipantDbTable  #White/356CAE {
+    +id: int
+    +userId: int
+    +roomId: int
+    +isBot: boolean
+}
+
+entity MessageDbTable #White/33FFCC {
+    +id: int
+    +content: string
+    +senderId: int
+    +timestamp: DateTime
+    +roomId: int
+}
+
+RoomDbTable "1" -right-> "*" ParticipantDbTable
+ParticipantDbTable "1" --> "*" MessageDbTable
+RoomDbTable "1" --> "*" MessageDbTable 
+UserDbTable "1" --> "*" ParticipantDbTable
+
+@enduml

@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "https://www.artillery.io/schema.json": [
+            "file:///Users/moez/workspace/prod-soft-tutos/chat-clean-architecture/tests/bench/connect-users-bench-test.yml",
+            "git:/Users/moez/workspace/prod-soft-tutos/chat-clean-architecture/tests/bench/connect-users-bench-test.yml?%7B%22path%22%3A%22%2FUsers%2Fmoez%2Fworkspace%2Fprod-soft-tutos%2Fchat-clean-architecture%2Ftests%2Fbench%2Fconnect-users-bench-test.yml%22%2C%22ref%22%3A%22937acd1b0e3faf611806365ab175119bcfbeace5%22%7D"
+        ]
+    }
+}

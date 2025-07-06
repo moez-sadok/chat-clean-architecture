@@ -1,0 +1,55 @@
+'' Author: Moez SADOK - Prodsoft
+''
+!$THEME = "Prodsoft"
+' deep blue
+!$PRIMARY = "#33FFCC"
+!$PRIMARY_LIGHT = "#b1ffeb"
+
+' aqua green
+!$SECONDARY = "#356CAE"
+!$SECONDARY_LIGHT = "#9fc2ee"
+!$SECONDARY_VERY_LIGHT = "#c7e0ff"
+' dark indigo
+!$ACCENT = "#14154C"
+!$ACCENT_LIGHT = "#b975ff"
+' Grey
+!$DarkGray = "#DarkGray"
+!$LightGrey = "#LightGrey"
+' BACKGROUND
+!$BACKGROUND = "#FCFCFC"
+!$BACKGROUND_LIGHT = %lighten($LightGrey, 10)
+
+!$GARDIANT = "#356CAE\33FFCC"
+!$GARDIANT_LIGHT = "#b1ffeb/9fc2ee"
+!$GARDIANT_VT = "#356CAE-33FFCC"
+!$GARDIANT_VB = "#33FFCC-9fc2ee"
+
+skinparam  {
+    defaultFontSize   15
+    DefaultFontStyle  bold
+    RoundCorner 10
+}
+
+skinparam title {
+	FontColor	                 $ACCENT
+	FontSize	    	         18
+	BorderRoundCorner            8
+}
+
+skinparam package {
+	BorderColor $SECONDARY/$PRIMARY
+	BorderThickness 3
+}
+
+skinparam node {
+	BorderColor $ACCENT
+	BorderThickness 2
+}
+
+skinparam arrow {
+	Thickness 2
+    Color $SECONDARY
+    FontColor $ACCENT
+}
+
+

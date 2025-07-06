@@ -1,0 +1,84 @@
+@startuml
+
+!include ../design/prodsoft.wsd
+
+title P-CHAT Entities Diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+package "BusinessRules" #FDD835/White;line:Black;line.bold {
+
+    package "Entities" #LightGrey{
+
+
+        class UserEntity {
+            - id: int
+            - username: string
+            - email: string
+            +setEmitter()
+        }
+
+        class RoomEntity {
+            - id: int
+            - name: string
+            - participants: Set<ParticipantEntity>
+            - lastMessages: List<MessageEntity>
+            +register()
+            +broadcast()
+        }
+
+        class ParticipantEntity {
+            - id: int
+            - user: UserEntity
+            - room: RoomEntity
+            - lastSeen: DateTime
+            +enter()
+            +leave()
+            +receive()
+            +send()
+        }
+
+        class MessageEntity {
+            - id: int
+            - content: string
+            - sender: ParticipantEntity
+            - timestamp: DateTime
+            - room: RoomEntity
+        }
+    }
+
+    package "Notifier" {
+        interface INotifier {
+            + notify(): boolean
+        }
+    }
+
+    package "Emitter" {
+        interface IClientEmitter {
+            + getId(): int
+            + emit(): void
+        }
+
+    }
+}
+
+RoomEntity o-right-  MessageEntity
+UserEntity o-- INotifier: has
+ParticipantEntity -left-* UserEntity
+ParticipantEntity -up-* RoomEntity
+UserEntity o-- IClientEmitter: has if connected
+
+@enduml
+
+
+' IChatClient -left-* IChatServer
+' RoomEntity *-right- ParticipantEntity
+' UserEntity *-- ParticipantEntity
+' ParticipantEntity o-right- INotifier: has
+' ' ParticipantEntity -right-> INotifier: use
+' ParticipantEntity o-- IChatClient: has if connected
+
+' | Relationship                       | Type        | Meaning                                           |
+' | ---------------------------------- | ----------- | ------------------------------------------------- |
+' | `RoomEntity *- ParticipantEntity`  | Composition | A Room owns multiple Participants                 |
+' | `RoomEntity o- MessageEntity`      | Aggregation | A Room has Messages, but doesn't "own" them fully |
+' | `UserEntity *-- ParticipantEntity` | Composition | A User owns their Participant entities            |

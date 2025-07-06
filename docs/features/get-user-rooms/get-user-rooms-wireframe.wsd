@@ -1,0 +1,69 @@
+@startsalt MessageForm_Wireframe
+
+title Get user rooms wireframes for Web and Mobile
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+scale 2
+{
+    { <color:RoyalBlue>**Web** }
+    {
+    {SI
+        **Rooms**
+        --
+        . Family
+        . Friends    
+        . Work
+        . Bob
+    }
+    |
+    }
+    --
+    { <color:RoyalBlue>**Mobile** }
+
+    {SI
+        **Rooms**
+        --
+        . Family
+        . Friends (1) 
+        . Work
+        . Bob
+    }
+
+}
+
+@endsalt
+
+
+' @startuml
+' !unquoted procedure SALT(x)
+' "{{
+' salt
+' %invoke_procedure("_"+x)
+' }}
+' " as x
+' !endprocedure 
+
+' !procedure _choose()
+' {+
+' <b>an example
+' choose one option
+' ()one
+' ()two
+' [ok]
+' }
+' !endprocedure 
+
+' !procedure _wait()
+' {+
+' <b>please wait
+' operation in progress
+' <&clock>
+' [cancel]
+' }
+' !endprocedure 
+
+' (*) --> SALT(choose)
+' choose -right-> SALT(wait)
+' ' wait -right-> SALT(success)
+' ' wait -down-> SALT(error)
+' @enduml

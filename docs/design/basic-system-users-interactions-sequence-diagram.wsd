@@ -1,0 +1,28 @@
+@startuml
+
+!include prodsoft.wsd
+
+title P-CHAT System Interaction
+header Sequence diagram: One room with 3 users, 2 connected and 1 disconnected
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User1 $PRIMARY
+actor User2 $SECONDARY
+control AppSystem $GARDIANT
+
+actor User3 
+
+User1 -> AppSystem: connect
+User2 -> AppSystem: connect
+
+User1 -> AppSystem: send("room1","Hello")
+' AppSystem -> AppSystem: log()
+AppSystem -> AppSystem : broadcast()         
+
+alt #LightGray Disconnected participant
+    AppSystem -> User3 : notify()
+else #b1ffeb Connected participant
+    AppSystem -> User2: deliver("Hello")
+end
+
+@enduml

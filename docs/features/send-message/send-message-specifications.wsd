@@ -1,0 +1,66 @@
+@startuml
+
+title Send message use Case Specifications 
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+note left #White
+    **Use Case Name:** Send Message
+    **Use Case ID:** UC-01
+
+    **Actors:**
+    - User
+    - System
+
+    **Preconditions:**
+    - The user must be authenticated and logged into the system.
+    - The user must be part of a chat room.
+
+    **Postconditions:**
+    - The message is delivered to all participants in the chat room.
+    - The message is stored in the chat history.
+
+    **Triggers:**
+    - The user decides to send a message to a chat room.
+
+    **Main Success Scenario (Basic Flow):**
+    1. User: Navigates to the chat room interface.
+    2. System: Displays the chat room interface, including the message input field and send button.
+    3. User: Types a message into the input field.
+    4. User: Clicks the send button.
+    5. System: Validates the message content.
+    6. System: Saves the message to the chat history.
+    7. System: Broadcasts the message to all participants in the chat room.
+    8. System: Displays the new message in the chat room interface for all participants.
+
+    **Extensions (Alternate Flows):**
+    __Extension 1:__ Message Content is Invalid
+    - Condition: The user enters invalid content (e.g., empty message, sql attack, prohibited words).
+    - Flow:
+      - System: Displays an error message indicating the invalid content.
+      - System: Alert admin/security team in case of an sql attack & block next requests
+      - User: Corrects the message and resends.
+
+    __Extension 2:__ User is Not Part of the Chat Room
+    - Condition: The user attempts to send a message to a chat room they are not part of.
+    - Flow:
+      - System: Displays an error message indicating that the user is not part of the chat room.
+      - User: Requests to join the chat room or selects a different chat room.
+
+    __Extension 3:__ Message Delivery Failure
+    - Condition: The system encounters an issue while broadcasting the message (e.g., network failure).
+    - Flow:
+      - System: Logs the delivery failure.
+      - System: Displays a message to the user indicating that the message could not be delivered.
+      - User: Attempts to resend the message or checks their network connection.
+
+    **Special Requirements:**
+    - Performance: The system must deliver the message within 1 seconds of the user clicking the send button.
+    - Security: The message content must be sanitized to prevent injection attacks.
+    - Usability: The user interface should provide clear feedback on the status of the message (sent, failed, etc.).
+
+    **Assumptions:**
+    - The user has a stable internet connection.
+    - The chat room is active and available.
+end note
+
+@enduml

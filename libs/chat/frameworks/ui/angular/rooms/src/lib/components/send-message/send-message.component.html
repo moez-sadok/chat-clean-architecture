@@ -1,0 +1,7 @@
+<div *ngIf="roomId>=0" class="display-flex">
+  <input class="padding-vertical-4" #messageInput matInput />
+  <button class="cca-button" (click)="sendMessageController.sendMessage(roomId,
+        userId, messageInput.value);messageInput.value=''">
+    {{ sendMessageView.sentMessageViewModel.sendButtonLabel }}
+  </button>
+</div>
