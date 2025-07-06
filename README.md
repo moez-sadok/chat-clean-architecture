@@ -25,9 +25,9 @@
    - [4.1 Entites](#entites)
    - [4.2 DB Relationships](#db-relationships)
    - [4.3 Component diagram](#component-diagram)
-      - [a. Component diagram](#memory-component-diagram)
+      - [a. Component diagram](#app-component-diagram)
       - [b. Component interaction diagram](#interaction-component-diagram)
-      - [c. Component digram - detail Http and SPA](#component-communication-sequence-diagram)
+      <!-- - [c. Component digram - detail Http and SPA](#component-http-spa-diagram) -->
    - [4.4 Deployment digram](#deployment-digram)
 
 5. [Demo](#demo)
@@ -168,7 +168,7 @@ Scenario: Offline receiver (disconnected)
 
    ## 4.2 DB Relationships
 
-   ![DB Relationships!](out/docs/design/db-relations-entities-digram/db-relations-entities-digram.png 'DB Relationships')
+   ![DB Relationships!](out/docs/design/data-relations-tables-digram/data-relations-tables-digram.png 'DB Relationships')
 
 <!-- Page-break For PDF generation -->
 <div style="page-break-after: always;"></div>
@@ -190,8 +190,6 @@ Scenario: Offline receiver (disconnected)
    ##  4.4 Deployment digram
 
  ![Deployment diagram ](out/docs/design/deployment-diagram/deployment-diagram.png 'Deployment diagram ')
-
-
 
 ## 5. Demo <a id="demo"></a>
 
