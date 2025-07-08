@@ -1,26 +1,42 @@
-
 ## TODO
-- Enhance documentation
-- Add mongo db or mysql (as second db test)
-- Add graphql  (as second api test)
-- Add react for the ui (as second ui Framework test)
-- Add uml diagrams 
-- Make an  adapter for websoket socket (client) (for IClientUser) CleintEmmiter and apply new design as chat service (apply the new target uml diagram)
+
+- Enhance documentation. (DDD style)
+- Enhance naming and structure (UseCaseInteractor --|> UseCase), no interactor folder on usecases
+- Apply the complete flow (`UseCase -> Presenter`) as discussed below for all use cases.
+- Add MongoDB or MySQL as a second database for testing.
+- Add GraphQL as a second API for testing.
+- Add a React version of the UI (as an alternative front-end framework).
+- Add UML diagrams.
+- Add End-to-End Encryption (E2EE).
+- Implement a WebSocket client adapter (`IClientUser`, `ClientEmitter`, `ChatService`) and apply the new design based on the updated chat service (see the target UML diagram.)
+- Review NX use (packages restriction by layers)
 
 ## DONE
-- Split interactor facade to usecases (ISP & SRP)
-- Add a use case from scratch using TDD (testing using jest)
-- Make redis adapter optional (use native ws to run in stackblitz)
-- Replace the main config in nestjs api by the DI
-- Replace the front-end interactor (by controller / presenter facade)
-- Comment unused interfaces methods
 
-## Disscutions
-- Check the communication model for http: 2 solutions ( app/controller facade (used in the back-end) book-p237 or relation controller / presenter (used in the front-end part) book-p72) (both are used) https://softwareengineering.stackexchange.com/questions/357052/clean-architecture-use-case-containing-the-presenter-or-returning-data
+- Clean old layers version (based on a lib by component)
+- Split Interactor Facade into individual Use Cases (applying ISP & SRP).
+- Add a new use case from scratch using TDD (with Jest tests).
+- Make the Redis adapter optional (fallback to native WebSocket for StackBlitz compatibility).
+- Replace NestJS API main config with dependency injection (DI).
+- Replace front-end interactor with a Controller/Presenter Facade.
+- Comment out unused interface methods.
 
-- GetMessagePresenter resuablity (UseCaseX -invoque-> UseCaseYPrenter) : https://stackoverflow.com/questions/28892833/clean-architecture-robert-martin-how-to-connect-use-cases/28929194#28929194
+## Discussions
 
-- Muli screen case (not used in this projet) : https://softwareengineering.stackexchange.com/questions/403579/clean-architecture-use-case-spanning-multiple-ui-elements
+- **HTTP communication model**  
+  Two solutions are possible:  
+  - `App -> Controller Facade` (used in the back-end) [Book, p. 237]  
+  - `Controller -> Presenter` (used in the front-end) [Book, p. 72]  
+  Both patterns are used in the project.  
+  🔗 https://softwareengineering.stackexchange.com/questions/357052/clean-architecture-use-case-containing-the-presenter-or-returning-data
 
+- **Presenter reusability**  
+  Can a presenter be reused across use cases?  
+  Example: `UseCaseX -> invokes -> UseCaseYPresenter`  
+  🔗 https://stackoverflow.com/questions/28892833/clean-architecture-robert-martin-how-to-connect-use-cases/28929194#28929194
 
-- Clearness receivemessageusecase ? (connectuser -include-> receiveNewMessage)
+- **Multi-screen case** *(not currently used in this project)*  
+  🔗 https://softwareengineering.stackexchange.com/questions/403579/clean-architecture-use-case-spanning-multiple-ui-elements
+
+- **Clarification on `ReceiveMessageUseCase`**  
+  Should `ConnectUserUseCase` include `ReceiveNewMessageUseCase`?

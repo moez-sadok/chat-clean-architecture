@@ -1,0 +1,144 @@
+<h1>Building P‑CHAT: A Real-Time Chat App with Clean Architecture</h1>
+
+<p><em>An in-depth look at P‑CHAT’s structure, using Clean Architecture to build a scalable, testable, and secure chat system.</em></p>
+<hr/>
+
+<h2>🔰 Introduction</h2>
+<p><strong>P‑CHAT</strong> is a proof-of-concept for a real-time chat application developed with Clean Architecture principles. It combines a modern frontend (SPA) with a NestJS backend and supports HTTP, WebSocket, and end-to-end encryption (E2EE).</p>
+<p>The source code is available here: <a href="https://github.com/moez-sadok/chat-clean-architecture" target="_blank">github.com/moez-sadok/chat-clean-architecture</a></p>
+
+<h2>📚 References</h2>
+<p>
+The P‑CHAT architecture is inspired by the foundational principles described by <strong>Robert C. Martin (Uncle Bob)</strong>:
+</p>
+
+<p>
+🔗 <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank">
+The Clean Architecture – Uncle Bob (cleancoder.com)
+</a>
+<img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" >
+</p>
+
+<h2>🧱 Component Diagram & Architecture Layers</h2>
+
+<p>The P‑CHAT architecture follows Clean Architecture by organizing code into clear concentric layers:</p>
+<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-components-diagram/app-components-diagram.png">
+
+
+<p>📌 Note: Color usage in the diagram follows a strict legend to visually separate Clean Architecture layers. This color coding respects the Clean Architecture convention and is consistently applied across all diagrams in the repository.</p>
+
+<ul>
+  <li><strong>Entities</strong> – Core business logic (e.g. Message, User, Room)</li>
+  <li><strong>Use Cases</strong> – Application-specific logic (e.g. send message, join room)</li>
+  <li><strong>Adapters</strong> – Controllers, Presenters, Gateways, Views</li>
+  <li><strong>Frameworks & Drivers</strong> – External technologies: database, storage, web server, crypto libraries</li>
+</ul>
+<p>This separation helps enforce dependency rules and keeps the system modular, scalable, and testable.</p>
+
+
+<h3>Entities</h3>
+
+
+<p>Entities like <code>Message</code>, <code>Participant</code>, and <code>Room</code> are the most abstract part of the application. They are free of dependencies and express core business rules.</p>
+<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/business-rules-entities-digram/business-rules-entities-digram.png"></omg>
+
+<p>📌 <strong>Design Note:</strong> The system uses the <strong>Mediator pattern</strong>, where the <strong>Room</strong> acts as the mediator coordinating message flow between <strong>Participants</strong> (colleagues).</p>
+
+<h2>🧠 Application Core (Use Cases)</h2>
+
+<p>
+In this architecture, each business operation is encapsulated within a dedicated <strong>UseCase Interactor</strong>, which serves as the execution unit for a specific application behavior — such as sending a message, joining a room, or get user rooms.
+</p>
+
+<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-componentes-usecase-adapters/app-componentes-usecase-adapters.png"></omg>
+
+<p><strong>📌 Note:</strong> While using the <code>I</code> prefix for interfaces (e.g., <code>IRepository</code>, <code>IPresenter</code>) is not generally recommended in modern software conventions, it is applied here intentionally to clarify the distinction between abstractions and implementations—especially in diagrams and educational contexts.</p>
+
+
+<p>
+The <strong>Usecase Interactor</strong> acts as the central coordinator, implementing the use case (InputPort / Requester) by:
+</p>
+<ul>
+  <li>Validating inputs received from controllers (HTTP or WebSocket),</li>
+  <li>Accessing and persisting data through the abstract <code>PersistenceGateway</code> (IRepository),</li>
+  <li>Applying domain logic by interacting with core <code>Entities</code>,</li>
+  <li>Formatting results via the <code>Presenter</code> (OututPort), which transforms the output into a UI-ready format consumed by the <code>View</code>.</li>
+</ul>
+
+<p>
+This design ensures that use cases remain independent of frameworks and interfaces, relying only on abstract ports. It reflects Uncle Bob’s Clean Architecture principle where the interactor 
+<em>“controls the flow of data to and from the entities, and directs the entities to use their enterprise-wide business rules.”</em>
+</p>
+
+<p>
+The result is a modular, testable, and extensible structure where the application layer is fully decoupled from infrastructure concerns like storage, network, or UI rendering.
+</p>
+
+
+
+<h3>Input and Output Boundaries</h3>
+<p>Controllers send data to the use cases through input boundaries, while output is returned through presenters. This enforces direction of dependencies from the outside-in.</p>
+
+<h2>🌐 HTTP Communication</h2>
+<p>P‑CHAT uses HTTP for key actions such as:</p>
+<ul>
+  <li>User login, logout, and authentication</li>
+  <li>Fetching room or message history</li>
+  <li>Sending messages (by default or when WebSocket is unavailable)</li>
+</ul>
+
+<p>The flow:</p>
+<ol>
+  <li>
+    The <strong>SPA client</strong> initiates a request using the <code>HttpClientAdapter</code>, typically via a service or effect (e.g. login, send message).
+  </li>
+  <li>
+    The request is received by the NestJS <strong><code>HttpServerAdapter</code></strong>, which serves as the transport-layer entry point on the backend.
+  </li>
+  <li>
+    The corresponding <strong>HTTP controller</strong> parses the incoming request and delegates the execution to the appropriate <code>UseCase</code> within the application layer.
+  </li>
+  <li>
+    Once the <code>UseCase</code> completes, a <strong><code>Presenter</code></strong> formats the result into a <code>ViewModel</code>—a structure optimized for frontend rendering.
+  </li>
+  <li>
+    The frontend’s <strong><code>View</code></strong> observes changes in the ViewModel, triggering UI updates, and the response is received via the <code>HttpClientAdapter</code>.
+  </li>
+</ol>
+
+<h2>🔄 WebSocket Communication</h2>
+WebSockets power full-duplex messaging:
+
+- Clients use WebSocketClientAdapter
+- Server responds via WebSocketServerAdapter
+- Use cases handle the logic via WebSocketController
+
+<h2>🔐 End-to-End Encryption (E2EE)</h2>
+<p>Before a message leaves the client, it is encrypted using browser-native APIs such as <code>WebCryptoApi</code> or third-party libs like <code>libsodium</code>.</p>
+<p>The <code>EncryptionService</code> handles this on the client side. The backend simply stores and routes encrypted data — it never sees the decrypted content.
+This design ensures strong privacy: only sender and recipient can decrypt messages.</p>
+
+<h2>🗃️ Storage, Cache & Notifications</h2>
+<ul>
+  <li><strong>MongoDB/Sql</strong> is used for chat and user data persistence</li>
+  <li><strong>Redis</strong> supports state, pub/sub, and caching</li>
+  <li><strong>NotificationGateway</strong> connects to email or push systems</li>
+  <li><strong>LocalStorage</strong> and <strong>FileSystem</strong> are used for offline caching and storing local certificate files</li>
+</ul>
+
+<h2>🧩 Clean Architecture Benefits</h2>
+<ul>
+  <li><strong>Testability</strong>: You can test use cases without a server or database</li>
+  <li><strong>Independence</strong>: You can change the database, UI, or framework without touching core logic</li>
+  <li><strong>Modularity</strong>: Each component is isolated and follows SRP (Single Responsibility Principle)</li>
+  <li><strong>Flexibility</strong>: Add support for new transports like GraphQL, gRPC, or CLI easily</li>
+</ul>
+
+
+<h2>✅ Conclusion</h2>
+<p><strong>P‑CHAT</strong> proves that Clean Architecture is practical for modern, real-time apps with WebSockets, HTTP, and layered infrastructure.</p>
+<p>This foundation supports growth, team collaboration, and confidence in refactoring. By keeping business logic decoupled, the system is adaptable and testable at every layer.</p>
+
+<hr/>
+<p><strong>About the Author</strong><br/>
+Moez SADOK – Founder at <strong>Prodsoft</strong>, passionate about scalable software, modular design, and Clean Architecture in real-world projects.</p>
