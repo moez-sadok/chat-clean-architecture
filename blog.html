@@ -66,14 +66,9 @@ The <strong>Usecase Interactor</strong> acts as the central coordinator, impleme
 </ul>
 
 <p>
-This design ensures that use cases remain independent of frameworks and interfaces, relying only on abstract ports. It reflects Uncle Bob’s Clean Architecture principle where the interactor 
-<em>“controls the flow of data to and from the entities, and directs the entities to use their enterprise-wide business rules.”</em>
+This design guarantees that use cases are isolated from frameworks, transport mechanisms, and UI layers by depending solely on abstract interfaces (ports). 
+As a result, the application layer remains clean, modular, and highly testable — fully decoupled from concerns such as storage engines, communication protocols, or presentation frameworks.
 </p>
-
-<p>
-The result is a modular, testable, and extensible structure where the application layer is fully decoupled from infrastructure concerns like storage, network, or UI rendering.
-</p>
-
 
 
 <h3>Input and Output Boundaries</h3>
@@ -112,6 +107,28 @@ WebSockets power full-duplex messaging:
 - Clients use WebSocketClientAdapter
 - Server responds via WebSocketServerAdapter
 - Use cases handle the logic via WebSocketController
+
+<h2>🗄️ Data Persistence and Repository Gateway</h2>
+
+<p>
+To keep the business logic independent from how data is stored or retrieved, the application relies on clear interface boundaries. This way, the core logic works with abstract contracts and stays completely unaware of the underlying database or storage technology.
+</p>
+
+<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/component-diagram-ca-layers-repository-gateway-db/component-diagram-ca-layers-repository-gateway-db.png">
+
+<p>As shown in the diagram:</p>
+<ol>
+  <li>The <strong>Interactor</strong> (Use Case) communicates with the data layer via the <code>IRepository</code> interface.</li>
+  <li>The concrete <strong>Repository</strong> implements this interface and serves as a bridge to the actual data source.</li>
+  <li>It calls the <code>IDataSource</code>, which performs queries or commands against the <strong>DomainDataBase</strong> (SQL, NoSQL, or others).</li>
+  <li>The <strong>DataMapper</strong> transforms raw data into rich <code>Entities</code>, ensuring domain integrity.</li>
+  <li>The Interactor receives fully mapped, framework-agnostic domain objects.</li>
+</ol>
+
+<p>
+This structure ensures that the application remains modular and testable, and that any storage technology can be replaced without affecting the business logic.
+</p>
+
 
 <h2>🔐 End-to-End Encryption (E2EE)</h2>
 <p>Before a message leaves the client, it is encrypted using browser-native APIs such as <code>WebCryptoApi</code> or third-party libs like <code>libsodium</code>.</p>
