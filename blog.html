@@ -22,7 +22,12 @@ The Clean Architecture – Uncle Bob (cleancoder.com)
 <h2>🧱 Component Diagram & Architecture Layers</h2>
 
 <p>The P‑CHAT architecture follows Clean Architecture by organizing code into clear concentric layers:</p>
-<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-components-diagram/app-components-diagram.png">
+<!-- <img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-components-diagram/app-components-diagram.png"> -->
+
+<div style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-components-diagram/app-components-diagram.png" 
+  style="width: 100%; max-width: 780px; height: auto;" />
+</div>
 
 
 <p>📌 Note: Color usage in the diagram follows a strict legend to visually separate Clean Architecture layers. This color coding respects the Clean Architecture convention and is consistently applied across all diagrams in the repository.</p>
@@ -40,7 +45,12 @@ The Clean Architecture – Uncle Bob (cleancoder.com)
 
 
 <p>Entities like <code>Message</code>, <code>Participant</code>, and <code>Room</code> are the most abstract part of the application. They are free of dependencies and express core business rules.</p>
-<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/business-rules-entities-digram/business-rules-entities-digram.png"></omg>
+<!-- <img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/business-rules-entities-digram/business-rules-entities-digram.png"></omg> -->
+
+<div style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/business-rules-entities-digram/business-rules-entities-digram.png" 
+  style="width: 100%; max-width: 780px; height: auto;" />
+</div>
 
 <p>📌 <strong>Design Note:</strong> The system uses the <strong>Mediator pattern</strong>, where the <strong>Room</strong> acts as the mediator coordinating message flow between <strong>Participants</strong> (colleagues).</p>
 
@@ -50,7 +60,13 @@ The Clean Architecture – Uncle Bob (cleancoder.com)
 In this architecture, each business operation is encapsulated within a dedicated <strong>UseCase Interactor</strong>, which serves as the execution unit for a specific application behavior — such as sending a message, joining a room, or get user rooms.
 </p>
 
-<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-componentes-usecase-adapters/app-componentes-usecase-adapters.png"></omg>
+<!-- <img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-componentes-usecase-adapters/app-componentes-usecase-adapters.png"></omg> -->
+
+<div style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-componentes-usecase-adapters/app-componentes-usecase-adapters.png" 
+  style="width: 100%; max-width: 780px; height: auto;" />
+</div>
+
 
 <p><strong>📌 Note:</strong> While using the <code>I</code> prefix for interfaces (e.g., <code>IRepository</code>, <code>IPresenter</code>) is not generally recommended in modern software conventions, it is applied here intentionally to clarify the distinction between abstractions and implementations—especially in diagrams and educational contexts.</p>
 
@@ -114,7 +130,12 @@ WebSockets power full-duplex messaging:
 To keep the business logic independent from how data is stored or retrieved, the application relies on clear interface boundaries. This way, the core logic works with abstract contracts and stays completely unaware of the underlying database or storage technology.
 </p>
 
-<img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/component-diagram-ca-layers-repository-gateway-db/component-diagram-ca-layers-repository-gateway-db.png">
+<!-- <img width="90%" src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/component-diagram-ca-layers-repository-gateway-db/component-diagram-ca-layers-repository-gateway-db.png"> -->
+
+<div style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/component-diagram-ca-layers-repository-gateway-db/component-diagram-ca-layers-repository-gateway-db.png" 
+  style="width: 100%; max-width: 780px; height: auto;" />
+</div>
 
 <p>As shown in the diagram:</p>
 <ol>
@@ -143,18 +164,112 @@ This design ensures strong privacy: only sender and recipient can decrypt messag
   <li><strong>LocalStorage</strong> and <strong>FileSystem</strong> are used for offline caching and storing local certificate files</li>
 </ul>
 
+<h2>🚀 Deployment as a Detail</h2>
+
+<p>
+One of the key ideas in Clean Architecture is that <strong>deployment is a detail</strong>. This means the architecture doesn't dictate <em>where</em> a use case must run — whether on the server, in the browser, or on a mobile device — as long as the code respects the separation of concerns and architectural boundaries.
+</p>
+
+<p>
+In our chat application, for example, we can implement end-to-end encryption (E2EE) by introducing use cases like <code>EncryptMessageUseCase</code> and <code>DecryptMessageUseCase</code>, which are executed on the frontend (SPA). These use cases are pure application logic (interactors), free of any framework or platform-specific code. They depend only on abstract interfaces like <code>EncryptionService</code>, and can be easily tested, extended, or replaced.
+<br />
+<strong>Similarly, <code>PersistenceGateway</code> as an interface can be implemented using browser storage mechanisms such as LocalStorage, IndexedDB, or even the client’s filesystem (e.g., for managing certificates).</strong>
+</p>
+
+<p>
+To orchestrate this, we can add a new interactor such as <code>SendMessageE2EEInteractor</code>. This approach follows the <strong>Open/Closed Principle (OCP)</strong>: our system is <em>open for extension</em>, but <em>closed for modification</em>. We can introduce new behaviors (like E2EE support) by plugging in new components that reuse or wrap existing use cases.
+</p>
+
+<p>
+By treating deployment location (frontend vs. backend) as a technical detail and keeping logic modular, we preserve the clarity, testability, and scalability that Clean Architecture was designed for — even in advanced scenarios like secure messaging.
+</p>
+
+
 <h2>🧩 Clean Architecture Benefits</h2>
+
 <ul>
-  <li><strong>Testability</strong>: You can test use cases without a server or database</li>
-  <li><strong>Independence</strong>: You can change the database, UI, or framework without touching core logic</li>
-  <li><strong>Modularity</strong>: Each component is isolated and follows SRP (Single Responsibility Principle)</li>
-  <li><strong>Flexibility</strong>: Add support for new transports like GraphQL, gRPC, or CLI easily</li>
+  <li>
+    <strong>🔍 Testability:</strong> 
+    Thanks to clear separation of concerns and dependency inversion, you can test use cases and business logic in isolation — without requiring a running server, database, or front-end environment.
+  </li>
+  
+  <li>
+    <strong>🧱 Independence:</strong> 
+    Each layer is decoupled from specific frameworks, databases, or delivery mechanisms. You can replace the UI (e.g., switch from Angular to React), change the database (e.g., SQL to NoSQL), or move from REST to GraphQL — without rewriting the core business logic.
+  </li>
+  
+  <li>
+    <strong>📦 Modularity:</strong> 
+    Components follow the Single Responsibility Principle (SRP), making them easier to understand, maintain, and evolve. This also encourages clean code organization and team autonomy.
+  </li>
+  
+  <li>
+    <strong>🔌 Flexibility:</strong> 
+    New delivery mechanisms (such as WebSocket, GraphQL, gRPC, or CLI) can be integrated by simply adding new adapters — without modifying core use cases or entities.
+  </li>
+  
+  <li>
+    <strong>📐 Scalability:</strong> 
+    The architecture is well-suited for growing systems with many features, contributors, or long-term maintenance needs. Its structure promotes refactoring and onboarding new developers without technical debt accumulation.
+  </li>
+
+  <li>
+    <strong>🚀 Reusability:</strong> 
+    Core domain logic and use cases can be reused across multiple interfaces — for example, web, mobile, or batch jobs — by plugging in different adapters around the same application core.
+  </li>
+  
+  <li>
+    <strong>📚 Maintainability:</strong> 
+    Because logic is isolated and clearly layered, bug fixing, updates, and feature additions are safer and less likely to introduce side effects in unrelated parts of the system.
+  </li>
 </ul>
 
 
+<h2>🧱 Limitations and Trade-offs of Clean Architecture</h2>
+
+<p>
+While Clean Architecture provides strong benefits like separation of concerns, testability, and long-term maintainability, it also comes with certain drawbacks to consider:
+</p>
+
+<ul>
+  <li>
+    <strong>🚧 Increased Complexity for Small Projects:</strong> 
+    The layered structure and strict interface separation can feel excessive for small or short-term applications. Simpler architectures might offer faster results in such contexts.
+  </li>
+
+  <li>
+    <strong>📁 More Boilerplate Code:</strong> 
+    Maintaining independence between layers often requires writing extra interfaces, DTOs, and mappers — increasing code volume and effort.
+  </li>
+
+  <li>
+    <strong>🧠 Steeper Learning Curve:</strong> 
+    Clean Architecture introduces abstract concepts like input/output ports, entities, SOLID principles, OOP Design Patterns and dependency inversion. These can be challenging for teams new to the approach, especially for junior developers.
+  </li>
+
+  <li>
+    <strong>🕰️ Slower Initial Velocity:</strong> 
+    Projects may start slower due to the time spent designing boundaries and writing abstraction layers. However, this upfront cost usually pays off in the long term.
+  </li>
+
+  <li>
+    <strong>🧩 Framework-Agnostic by Design — But Requires Discipline:</strong> 
+    While decoupling from frameworks provides flexibility, it also means more manual wiring and strict adherence to architecture principles. Teams must stay disciplined to avoid shortcutting the design.
+  </li>
+</ul>
+
+
+
 <h2>✅ Conclusion</h2>
-<p><strong>P‑CHAT</strong> proves that Clean Architecture is practical for modern, real-time apps with WebSockets, HTTP, and layered infrastructure.</p>
-<p>This foundation supports growth, team collaboration, and confidence in refactoring. By keeping business logic decoupled, the system is adaptable and testable at every layer.</p>
+
+<p>
+P‑CHAT demonstrates how Clean Architecture can be successfully applied to a modern, real-time, and secure chat application. By clearly separating concerns and depending only on abstractions, the system remains flexible, testable, and maintainable.
+</p>
+
+<p>
+This architectural discipline allows the project to evolve safely and scale across new interfaces or platforms, all while preserving the integrity of the application core. Clean Architecture doesn’t just bring structure — it empowers growth and long-term maintainability.
+</p>
+
 
 <hr/>
 <p><strong>About the Author</strong><br/>
