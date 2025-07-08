@@ -16,7 +16,15 @@ The P‑CHAT architecture is inspired by the foundational principles described b
 🔗 <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank">
 The Clean Architecture – Uncle Bob (cleancoder.com)
 </a>
-<img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" >
+</p>
+
+<!-- <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" > -->
+
+<div style="text-align: center;">
+  <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg"
+  style="width: 100%; max-width: 780px; height: auto;" />
+</div>
+
 </p>
 
 <h2>🧱 Component Diagram & Architecture Layers</h2>
@@ -26,7 +34,7 @@ The Clean Architecture – Uncle Bob (cleancoder.com)
 
 <div style="text-align: center;">
   <img src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-components-diagram/app-components-diagram.png" 
-  style="width: 100%; max-width: 780px; height: auto;" />
+  style="width: 100%; max-width: 860px; height: auto;" />
 </div>
 
 
@@ -64,7 +72,7 @@ In this architecture, each business operation is encapsulated within a dedicated
 
 <div style="text-align: center;">
   <img src="https://raw.githubusercontent.com/moez-sadok/chat-clean-architecture/refs/heads/main/out/docs/design/app-componentes-usecase-adapters/app-componentes-usecase-adapters.png" 
-  style="width: 100%; max-width: 780px; height: auto;" />
+  style="width: 100%; max-width: 640px; height: auto;" />
 </div>
 
 
@@ -89,8 +97,7 @@ As a result, the application layer remains clean, modular, and highly testable �
 
 <h3>Input and Output Boundaries</h3>
 <p>Controllers send data to the use cases through input boundaries, while output is returned through presenters. This enforces direction of dependencies from the outside-in.</p>
-
-<h2>🌐 HTTP Communication</h2>
+<p>  🔜 A dedicated article exploring controller, presenter, and view adapters — including HTTP, WebSocket, SSR, SPA, and  API — will be published soon.</p> <h2>🌐 HTTP Communication</h2>
 <p>P‑CHAT uses HTTP for key actions such as:</p>
 <ul>
   <li>User login, logout, and authentication</li>
@@ -270,6 +277,9 @@ P‑CHAT demonstrates how Clean Architecture can be successfully applied to a mo
 This architectural discipline allows the project to evolve safely and scale across new interfaces or platforms, all while preserving the integrity of the application core. Clean Architecture doesn’t just bring structure — it empowers growth and long-term maintainability.
 </p>
 
+<p>
+Moreover, this example includes most of the essential components typically required in real-world web or mobile business applications — such as delivery platforms, e-commerce, banking systems, IoT dashboards, ride-hailing services, and more. It serves as a solid foundation for building complex systems that demand real-time communication, reliable data persistence, and secure user interactions.
+</p>
 
 <hr/>
 <p><strong>About the Author</strong><br/>

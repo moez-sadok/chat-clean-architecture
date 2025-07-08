@@ -63,7 +63,7 @@ In addition, this POC aims to showcase the application of key software engineeri
 
 ⚠️ Note: This project is still actively being refactored and improved. Updates are made regularly to enhance documentation, code quality, structure, and architectural consistency.
 
-👉 See this article on our blog: [P‑CHAT and Clean Architecture](https://prodsoft.fr/en/2024/09/16/pchat-clean-architecture/)
+👉 See this article on our blog: [P‑CHAT and Clean Architecture](https://prodsoft.fr/en/2025/07/08/pchat-clean-architecture/)
 
 # 2. Scope <a id="scope"></a>
 
