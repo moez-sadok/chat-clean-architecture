@@ -3,7 +3,7 @@ import { IChatServerPort } from '../../ports/chat-server.port';
 import { IChatClient } from '../../../domain/ports/chat-client';
 import { IConnectClientInput } from './connectClient.feature.input';
 
-export class ConnectClientFeature implements IConnectClientInput {
+export class ConnectClientUseCase implements IConnectClientInput {
 
   constructor(
     private chatServer: IChatServerPort

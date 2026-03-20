@@ -1,9 +1,9 @@
 import { ChatroomDto } from './chatroom.dto';
-import { ParticpantDto } from './participant.dto';
+import { ParticipantDto } from './participant.dto';
 
 export interface MessageDto {
   id?: number;
-  from: ParticpantDto;
+  from: ParticipantDto;
   room: ChatroomDto;
   message: string;
   date?: Date;

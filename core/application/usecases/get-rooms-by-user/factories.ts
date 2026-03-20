@@ -3,8 +3,8 @@ import { IGetRoomsByUserPresenter, IGetRoomsByUserSSRPresenter } from './control
 import { GetUserRoomsApiHttpControllerAdapter } from './controller/http/getRoomsByUser.api.http.controller.adapter';
 import { GetUserRoomsSSRHttpControllerAdapter } from './controller/http/getRoomsByUser.ssr.http.controller.adapter';
 import { IGetRoomsByUserRequester, IGetRoomsByUserSSRRequester } from './interactor/getRoomsByUser.requester';
-import { GetRoomsByUserFeature } from './interactor/getRoomsByUser.usecase';
-import { GetRoomsByUserSSRFeature } from './interactor/getRoomsByUser.usecase.ssr';
+import { GetRoomsByUserUseCase } from './interactor/getRoomsByUser.usecase';
+import { GetRoomsByUserSSRUseCase } from './interactor/getRoomsByUser.usecase.ssr';
 import { GetRoomsByUserPresenterSSR } from './presenter/getRoomsByUser.presenter.ssr';
 import { GetRoomsByUserPresenterUi } from './presenter/getRoomsByUser.presenter.ui';
 import { IGetRoomsByUserSSRView, IGetRoomsByUserView } from './presenter/getRoomsByUser.view';
@@ -23,13 +23,13 @@ export const GET_ROOMS_ByUserSSRPresenter = 'GET_ROOMS_ByUserSSRPresenter';
 export const getRoomsByUserFeatureFactory = (
   chatRepository: IChatRepository
 ) => { 
-  return new GetRoomsByUserFeature(chatRepository);
+  return new GetRoomsByUserUseCase(chatRepository);
 };// api & spa
 export const getRoomsByUserSSRFeatureFactory = (
   chatRepository: IChatRepository,
   presenter: IGetRoomsByUserSSRPresenter
 ) => { 
-  return new GetRoomsByUserSSRFeature(chatRepository,presenter);
+  return new GetRoomsByUserSSRUseCase(chatRepository,presenter);
 };
 // presenter
 export const getRoomsByUserPresenterUiFactory = (view: IGetRoomsByUserView) => {

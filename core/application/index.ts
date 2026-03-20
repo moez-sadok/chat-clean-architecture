@@ -1,4 +1,5 @@
 export * from './usecases/send-message/index';
+export * from './mappers/room-entity.mapper';
 export * from './usecases/get-messages-by-room/index';
 export * from './usecases/get-rooms-by-user/index';
 export * from './usecases/get-user-by-id/index';

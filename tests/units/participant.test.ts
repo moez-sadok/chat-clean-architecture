@@ -1,8 +1,8 @@
 import { expect, test } from "@jest/globals";
-import { Chatroom, IParticpant, Participant }  from "../../core/domain/index";
+import { Chatroom, IParticipant, Participant }  from "../../core/domain/index";
 
 describe('Participant testing', () => {
-    let participant: IParticpant;
+    let participant: IParticipant;
     beforeEach(() => {
         participant = new Participant('Anna', 1);
     });

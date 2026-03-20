@@ -1,6 +1,6 @@
 import { ChatroomDto } from "../../dtos/models/chatroom.dto";
 import { MessageDto } from "../../dtos/models/message.dto";
-import { ParticpantDto } from "../../dtos/models/participant.dto";
+import { ParticipantDto } from "../../dtos/models/participant.dto";
 import { UserDto } from "../../dtos/models/user.dto";
 import { IChatRoomsRepository } from "../usecases/get-rooms-by-user/repositories/user-rooms.repository";
 
@@ -14,11 +14,11 @@ export interface IChatRepository extends IChatRoomsRepository {
   getChatRoomsById(roomId: number): ChatroomDto | null ;
   getMessagesByRoom(roomId: number): MessageDto[];
   addMessage(message: MessageDto): MessageDto;
-  getParticpantByUserAndRoom(roomId: number, userId: number): ParticpantDto;
+  getParticpantByUserAndRoom(roomId: number, userId: number): ParticipantDto;
 
   addUser(user: UserDto): Promise<UserDto>;
-  addParticipant(participant: ParticpantDto): void;
-  removeParticipant(participant: ParticpantDto): void;
+  addParticipant(participant: ParticipantDto): void;
+  removeParticipant(participant: ParticipantDto): void;
   getUsers(): UserDto[];
   addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto>;
 }

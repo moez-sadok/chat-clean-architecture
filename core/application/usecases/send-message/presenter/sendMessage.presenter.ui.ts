@@ -7,6 +7,7 @@ export class SendMessagePresenterUi implements ISendMessagePresenterOutput {
   constructor(private view: ISendMessageView) {}
 
   receiveNewMessage(message: SendMessageOutputData): SendMessageOutputData {
+    this.view.display(message.message);
     return message;
   }
 }

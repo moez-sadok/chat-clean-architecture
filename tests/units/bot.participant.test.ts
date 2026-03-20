@@ -1,8 +1,8 @@
 import { expect } from "@jest/globals";
-// import { BotParticipant, Chatroom, IParticpant, Participant } from "@cca/core-entities";
-import { BotParticipant, Chatroom, IParticpant, Participant } from "../../core/domain/index";
+// import { BotParticipant, Chatroom, IParticipant, Participant } from "@cca/core-entities";
+import { BotParticipant, Chatroom, IParticipant, Participant } from "../../core/domain/index";
 describe('Bot participant testing', () => {
-    let bot: IParticpant;
+    let bot: IParticipant;
     beforeEach(() => {
         bot = new BotParticipant('Bot', 1);
     });

@@ -3,7 +3,7 @@ import { GetRoomsByUserRequestData } from "./getRoomsByUser.request.data";
 import { GetRoomsByUserResponseData } from "./getRoomsByUser.response.data";
 import { IChatRoomsRepository } from "../repositories/user-rooms.repository";
 
-export class GetRoomsByUserFeature implements IGetRoomsByUserRequester {
+export class GetRoomsByUserUseCase implements IGetRoomsByUserRequester {
 
   constructor(
     private roomsRepository: IChatRoomsRepository

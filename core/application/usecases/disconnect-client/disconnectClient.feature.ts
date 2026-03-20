@@ -1,7 +1,7 @@
 import { IChatServerPort } from '../../ports/chat-server.port';
 import { IDisconnectClientInput } from './disconnectClient.controller.input';
 
-export class DisconnectClientFeature implements IDisconnectClientInput {
+export class DisconnectClientUseCase implements IDisconnectClientInput {
 
   constructor(
     private chatServer: IChatServerPort

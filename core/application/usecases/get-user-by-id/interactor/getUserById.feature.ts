@@ -4,7 +4,7 @@ import { IGetUserByIdInput } from './getUserById.controller.input';
 import { IGetUserByIdPresenterOutput } from './getUserById.presenter.output';
 import { UserOutputData } from './getUserById.response.data';
 
-export class GetUserByIdFeature implements IGetUserByIdInput {
+export class GetUserByIdUseCase implements IGetUserByIdInput {
 
   constructor(
     private chatRepository: IChatRepository,

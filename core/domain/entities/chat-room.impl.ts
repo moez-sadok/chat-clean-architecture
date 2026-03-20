@@ -1,11 +1,11 @@
 import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
-import { IParticpant } from '../interfaces/participant';
+import { IParticipant } from '../interfaces/participant';
 import { Message } from './message.impl';
 
 export class Chatroom implements IChatroom {
 
-  private participants: Record<number, IParticpant> = {};
+  private participants: Record<number, IParticipant> = {};
   private messages: IMessage[] = [];
 
   constructor(private name: string,private id:number) {}
@@ -18,7 +18,7 @@ export class Chatroom implements IChatroom {
     return this.name;
   }
 
-  getParticipants(): Record<string, IParticpant> {
+  getParticipants(): Record<string, IParticipant> {
     return this.participants;
   }
 
@@ -27,7 +27,7 @@ export class Chatroom implements IChatroom {
   }
 
   //setters
-  setParticipants(parts: IParticpant[]): void {
+  setParticipants(parts: IParticipant[]): void {
     for (let i = 0; i < parts.length; i++) {
       this.register(parts[i]);
     }
@@ -38,13 +38,13 @@ export class Chatroom implements IChatroom {
   }
 
   /** pattern basic methods */
-  register(participant: IParticpant) {
+  register(participant: IParticipant) {
     if (this.participants[participant.getUserId()]) throw new Error('Can not register an existing participant');
     this.participants[participant.getUserId()] = participant;
     participant.enterChatRoom(this);
   }
 
-  broadcastMessage(message: IMessage, from: IParticpant) {
+  broadcastMessage(message: IMessage, from: IParticipant) {
     for (const key in this.participants) {
       if (this.participants[key].getUserId() !== from.getUserId()) {
         this.participants[key].receive(message);
@@ -58,7 +58,7 @@ export class Chatroom implements IChatroom {
     this.messages.push(message);
   }
 
-  leave(participant: IParticpant) {
+  leave(participant: IParticipant) {
     if (!this.participants[participant.getUserId()]) throw new Error('Can not found participant to leave');
     const message = new Message('Leave the room', this, participant);
     this.broadcastMessage(message, participant);

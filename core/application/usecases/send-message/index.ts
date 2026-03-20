@@ -12,6 +12,9 @@ export * from './presenter/sendMessage.view';
 //view
 export * from './view/sendMessage.web.view';
 
+//repository port (ISP)
+export * from './repositories/send-message.repository';
+
 //interactor
 export * from './interactor/sendMessage.presenter.output';
 export * from './interactor/sendMessage.controller.input';

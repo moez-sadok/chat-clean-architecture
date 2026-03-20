@@ -1,12 +1,12 @@
-// import { ChatroomDto, UserDto, ParticpantDto, MessageDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
+// import { ChatroomDto, UserDto, ParticipantDto, MessageDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatroomDto } from '../../../dtos/models/chatroom.dto';
 import { MessageDto } from '../../../dtos/models/message.dto';
-import { ParticpantDto } from '../../../dtos/models/participant.dto';
+import { ParticipantDto } from '../../../dtos/models/participant.dto';
 import { UserDto } from '../../../dtos/models/user.dto';
 import { IChatDatabase } from '../interfaces/chat-database';
 import { ChatroomTable } from '../tables/chatroom.table';
 import { MessageTable } from '../tables/message.table';
-import { ParticpantTable } from '../tables/participant.table';
+import { ParticipantTable } from '../tables/participant.table';
 import { UserTable } from '../tables/user.table';
 //import { Chatroom } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 //serialisation / desirialisation (utils for gateway part)
@@ -39,7 +39,7 @@ export class ChatDataSerializer {
     };
   }
 
-  public serializeParticipant(oTable: ParticpantTable): ParticpantDto {
+  public serializeParticipant(oTable: ParticipantTable): ParticipantDto {
     return {
       id: oTable.id,
       user: this.serializeUser(this.db.getUserById(oTable.userId)),
@@ -48,7 +48,7 @@ export class ChatDataSerializer {
     };
   }
 
-  public desirializeParticipant(part: ParticpantDto): ParticpantTable {
+  public desirializeParticipant(part: ParticipantDto): ParticipantTable {
     if (
      // part.id == undefined ||
       part.chatroom?.id == undefined ||

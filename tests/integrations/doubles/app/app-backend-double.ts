@@ -4,7 +4,7 @@ import { DataBaseMapper, IChatDatabase } from "../../../../core/gateways/persist
 import { ChatServerMemoryImpl } from "../ws/chat-server.memory.impl";
 import { DataBaseMemoryImpl, DataBaseMemoryPerfImpl } from "../../../../libs/chat/frameworks/db/in-memory-db/src";
 import { GetMessagesRoomHttpControllerApiMemory, GetUserByIdHttpControllerApiMemory, GetUserRoomsHttpControllerApiMemory, SendMessageHttpControllerApiMemory } from "../http/chat-controller.api-memory";
-import { GetRoomsByUserFeature, GetUserByIdFeature, GetMessagesByRoomFeature, SendMessageFeature, IGetRoomsByUserRequester, IGetUserByIdInput, IGetMessagesByRoomInput, ISendMessageInput, SendMessagePerfFeature, GetRoomsByUserPresenterAPI, GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, SendMessagePresenterApi, IChatServerPort, IChatRepository } from "../../../../core/application";
+import { GetRoomsByUserUseCase, GetUserByIdUseCase, GetMessagesByRoomUseCase, IGetRoomsByUserRequester, IGetUserByIdInput, IGetMessagesByRoomInput, ISendMessageInput, SendMessageUseCase, GetRoomsByUserPresenterAPI, GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, SendMessagePresenterApi, IChatServerPort, IChatRepository } from "../../../../core/application";
 
 export class AppBackendDouble {
 
@@ -38,11 +38,10 @@ export class AppBackendDouble {
         this.chatServer = new ChatServerMemoryImpl();
 
         // init features
-        this.getRoomsByUserFeature = new GetRoomsByUserFeature(this.chatdbMapper);
-        this.getUserByIdFeature = new GetUserByIdFeature(this.chatdbMapper, this.getUserByIdPresenterAPI);
-        this.getMessagesByRoomFeature = new GetMessagesByRoomFeature(this.chatdbMapper,this.getMessagesByRoomPresenterApi);
-        // this.sendMessageFeature = new SendMessageFeature(this.chatdbMapper, this.sendMessagePresenterApi, this.chatServer);
-        this.sendMessageFeature = new SendMessagePerfFeature(this.chatdbMapper, this.sendMessagePresenterApi, this.chatServer);
+        this.getRoomsByUserFeature = new GetRoomsByUserUseCase(this.chatdbMapper);
+        this.getUserByIdFeature = new GetUserByIdUseCase(this.chatdbMapper, this.getUserByIdPresenterAPI);
+        this.getMessagesByRoomFeature = new GetMessagesByRoomUseCase(this.chatdbMapper, this.getMessagesByRoomPresenterApi);
+        this.sendMessageFeature = new SendMessageUseCase(this.chatdbMapper, this.sendMessagePresenterApi, this.chatServer);
 
         // init api controllers by feature
         this.getUserRoomsHttpControllerApi = new GetUserRoomsHttpControllerApiMemory(this.getRoomsByUserPresenterAPI, this.getRoomsByUserFeature);

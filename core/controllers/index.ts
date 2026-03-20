@@ -1,3 +1,3 @@
-export * from './ws.chat.controllor';
-export * from './http.controllor';
+export * from './ws.chat.controller';
+export * from './http.controller';
 

@@ -1,20 +1,20 @@
 import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
-import { IParticpant } from '../interfaces/participant';
+import { IParticipant } from '../interfaces/participant';
 
 export class Message implements IMessage {
   
   content?: string;
   chatroom?: IChatroom | null;
-  participant?: IParticpant | null;
+  participant?: IParticipant | null;
 
-  constructor(content: string, chatRoom: IChatroom, participant: IParticpant) {
+  constructor(content: string, chatRoom: IChatroom, participant: IParticipant) {
     this.content = content;
     this.participant = participant;
     this.chatroom = chatRoom;
   }
 
-  getParticipant(): IParticpant {
+  getParticipant(): IParticipant {
     if (!this.participant) throw new Error('Not found participant for this message');
     return this.participant;
   }

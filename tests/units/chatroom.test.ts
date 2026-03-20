@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { Chatroom, IChatroom, IParticpant, Message, Participant } from  "../../core/domain/index";
+import { Chatroom, IChatroom, IParticipant, Message, Participant } from  "../../core/domain/index";
 
 describe('Chatroom Register ...', () => {
     let chatroom: IChatroom;
@@ -46,9 +46,9 @@ describe('Chatroom Leave ...', () => {
 
 describe('Chatroom send and broadcats messages', () => {
     let chatroom: IChatroom;
-    let p1 : IParticpant;
-    let p2 : IParticpant;
-    let p3 : IParticpant;
+    let p1 : IParticipant;
+    let p2 : IParticipant;
+    let p3 : IParticipant;
     beforeEach(() => {
         chatroom = new Chatroom('Girls', 1);
         p1 = new Participant('Lili', 1);
@@ -89,8 +89,8 @@ describe('Big Chatroom (1 million) send and broadcats messages', () => {
     const MAX_CONCURRENT_MESSAGES = 10; //as concurrent take avrg 1s
 
     let chatroom: IChatroom;
-    let pFirst : IParticpant;
-    let pLast : IParticpant;
+    let pFirst : IParticipant;
+    let pLast : IParticipant;
     beforeEach(() => {
         chatroom = new Chatroom('BigRoom', 1);
         pFirst = new Participant('First', 1);

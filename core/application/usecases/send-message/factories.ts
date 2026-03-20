@@ -1,7 +1,7 @@
 // import { SendMessageFeature } from './send-message.feature';
 import { ISendMessagePresenterOutput } from './interactor/sendMessage.presenter.output';
-import { SendMessagePerfFeature } from './interactor/send-message.feature.perf';
-import { IChatRepository } from '../../ports/chat-repository';
+import { SendMessageUseCase } from './interactor/send-message.feature.perf';
+import { ISendMessageRepository } from './repositories/send-message.repository';
 import { IChatServerPort } from '../../ports/chat-server.port';
 import { SendMessagePresenterUi } from './presenter/sendMessage.presenter.ui';
 import { SendMessageApiHttpControllerAdapter } from './controller/http/sendMessage.api.http.controller.adapter';
@@ -15,12 +15,12 @@ export const SEND_MESSAGEApiServerControllerAdapter = 'SEND_MESSAGEApiServerCont
 
 
 export const sendMessageFeatureFactory = (
-     chatRepository: IChatRepository,
+     chatRepository: ISendMessageRepository,
      presenter: ISendMessagePresenterOutput,
      chatServer: IChatServerPort
 ) => {
      // return new SendMessageFeature(chatRepository, presenter, chatServer);
-     return new SendMessagePerfFeature(chatRepository, presenter, chatServer);
+     return new SendMessageUseCase(chatRepository, presenter, chatServer);
 };
 
 // presenter ui

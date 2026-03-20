@@ -1,6 +1,6 @@
 import { ChatroomTable } from '../tables/chatroom.table';
 import { MessageTable } from '../tables/message.table';
-import { ParticpantTable } from '../tables/participant.table';
+import { ParticipantTable } from '../tables/participant.table';
 import { UserTable } from '../tables/user.table';
 
 //TODO (ISP)
@@ -16,11 +16,11 @@ export interface IChatDatabase {
   getMessagesByRoom(roomId: number,page?: number): MessageTable[];
 
   //participants
-  getParticipantById(participantId: number): ParticpantTable;
-  getParticipantsByRoom(id: number): ParticpantTable[];
-  getParticipantsByUser(userId: number): ParticpantTable[];
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable;
-  insertParticipant(participant: ParticpantTable): ParticpantTable;
+  getParticipantById(participantId: number): ParticipantTable;
+  getParticipantsByRoom(id: number): ParticipantTable[];
+  getParticipantsByUser(userId: number): ParticipantTable[];
+  getParticipantByRoomAndUser(roomId: number, userId: number): ParticipantTable;
+  insertParticipant(participant: ParticipantTable): ParticipantTable;
   removeParticipant(id: number): void;
 
   //users

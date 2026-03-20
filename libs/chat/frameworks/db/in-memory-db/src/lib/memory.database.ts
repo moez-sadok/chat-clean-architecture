@@ -1,4 +1,4 @@
-import { ChatroomTable, IChatDatabase, MessageTable, ParticpantTable, UserTable } 
+import { ChatroomTable, IChatDatabase, MessageTable, ParticipantTable, UserTable } 
 from '@cca/core-gateways';
 
 export class DataBaseMemoryImpl implements IChatDatabase {
@@ -10,7 +10,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
 
   private users: Record<number, UserTable> = {};
   private rooms: Record<number, ChatroomTable> = {};
-  private participants: Record<number, ParticpantTable> = {};
+  private participants: Record<number, ParticipantTable> = {};
   private messages: Record<number, MessageTable> = {};
 
   constructor() {
@@ -35,7 +35,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return Object.values(this.messages).filter((m) => m.roomId == roomId);
   }
 
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable {
+  getParticipantByRoomAndUser(roomId: number, userId: number): ParticipantTable {
     //perf issue (using getParticipantsByUser & getParticipantsByRoom)
     const part = Object.values(this.participants).find(
       (p) => p.chatRoomId === roomId && p.userId === userId
@@ -44,12 +44,12 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return part;
   }
 
-  getParticipantsByUser(userId: number): ParticpantTable[] {
+  getParticipantsByUser(userId: number): ParticipantTable[] {
     //perf issue (revers nosql: userParts.getParticipantsIds())
     return Object.values(this.participants).filter((p) => p.userId === userId);
   }
 
-  getParticipantsByRoom(roomId: number): ParticpantTable[] {
+  getParticipantsByRoom(roomId: number): ParticipantTable[] {
     //perf issue (revers nosql: room.getParticipantsIds() add max particpants by room)
     return Object.values(this.participants).filter(
       (p) => p.chatRoomId === roomId
@@ -64,7 +64,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return this.rooms[roomId];
   }
 
-  getParticipantById(participantId: number): ParticpantTable {
+  getParticipantById(participantId: number): ParticipantTable {
     return this.participants[participantId];
   }
 
@@ -95,7 +95,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     delete this.participants[id];
   }
 
-  insertParticipant(participant: ParticpantTable): ParticpantTable {
+  insertParticipant(participant: ParticipantTable): ParticipantTable {
     const newId = this.lastParticipantId + 1;
     const tabelPart = { ...participant, id: newId };
     this.participants[newId] = tabelPart;

@@ -2,7 +2,7 @@ import { ChatroomDto } from './chatroom.dto';
 import { UserDto } from './user.dto';
 
 // Colleagues
-export interface ParticpantDto {
+export interface ParticipantDto {
   id?: number;
   user: UserDto;
   chatroom?: ChatroomDto | null;

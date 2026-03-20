@@ -2,7 +2,8 @@ import { IChatRepository } from '../../ports/chat-repository';
 import { GetRoomMessagesApiHttpControllerAdapter } from './controller/http/getMessagesByRoom.api.http.controller.adapter';
 import { GetRoomMessagesAPIHttpControllerClientAdapter } from './controller/http/getMessagesByRoom.api.http.controller.client.adapter';
 import { IGetMessagesByRoomInput } from './interactor/getMessagesByRoom.controller.input';
-import { GetMessagesByRoomFeature } from './interactor/getMessagesByRoom.feature';
+import { GetMessagesByRoomUseCase } from './interactor/getMessagesByRoom.feature';
+
 import { IGetMessagesByRoomPresenterOutput } from './interactor/getMessagesByRoom.presenter.output';
 import { GetMessagesByRoomPresenterUi } from './presenter/getMessagesByRoom.presenter.ui';
 import { IGetMessagesByRoomView } from './presenter/getMessagesByRoom.view';
@@ -18,7 +19,7 @@ export const GET_MESSAGES_ByRoomApiServerControllerAdapter = 'GET_MESSAGES_ByRoo
 export const getMessagesByRoomFeatureFactory = (
   chatRepository: IChatRepository,
   presenter: IGetMessagesByRoomPresenterOutput
-) => { return new GetMessagesByRoomFeature(chatRepository, presenter);};
+) => { return new GetMessagesByRoomUseCase(chatRepository, presenter);};
 
 // presenter ui
 export const getMessagesByRoomPresenterUiFactory = (view: IGetMessagesByRoomView) => {

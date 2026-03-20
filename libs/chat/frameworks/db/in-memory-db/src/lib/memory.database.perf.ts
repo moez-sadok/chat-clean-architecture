@@ -1,4 +1,4 @@
-import { ChatroomTable, IChatDatabase, MessageTable, ParticpantTable, UserTable }
+import { ChatroomTable, IChatDatabase, MessageTable, ParticipantTable, UserTable }
   from '@cca/core-gateways';
 
 export class DataBaseMemoryPerfImpl implements IChatDatabase {
@@ -10,7 +10,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
 
   private users: Record<number, UserTable> = {};
   private rooms: Record<number, ChatroomTable> = {};
-  private participants: Record<number, ParticpantTable> = {};
+  private participants: Record<number, ParticipantTable> = {};
   private messages: Record<number, MessageTable> = {};
   private cacheMessagesByRoom: Record<number, MessageTable[]> = {};
 
@@ -64,7 +64,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     // return Object.values(this.messages).filter((m) => m.roomId == roomId);
   }
 
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticpantTable {
+  getParticipantByRoomAndUser(roomId: number, userId: number): ParticipantTable {
     const partsByUser = this.getParticipantsByUser(userId);
     const partsByRoom = this.getParticipantsByRoom(roomId);
     const part = partsByUser.find((p) => partsByRoom.includes(p));
@@ -77,7 +77,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   }
 
   //TO_REMOVE
-  getParticipantsByUser(userId: number): ParticpantTable[] {
+  getParticipantsByUser(userId: number): ParticipantTable[] {
     const userTable = this.getUserById(userId);
     if (userTable.participantsIds) return Object.values(userTable.participantsIds).map((id) => this.participants[id]);
     return [];
@@ -86,7 +86,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   }
 
   //TO_REMOVE
-  getParticipantsByRoom(roomId: number): ParticpantTable[] {
+  getParticipantsByRoom(roomId: number): ParticipantTable[] {
     const roomTable = this.getRoomById(roomId);
     if (roomTable.participantsIds) return roomTable.participantsIds.map((id) => this.participants[id]);
     return [];
@@ -102,7 +102,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     return this.rooms[roomId];
   }
 
-  getParticipantById(participantId: number): ParticpantTable {
+  getParticipantById(participantId: number): ParticipantTable {
     return this.participants[participantId];
   }
 
@@ -133,7 +133,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     delete this.participants[id];
   }
 
-  insertParticipant(participant: ParticpantTable): ParticpantTable {
+  insertParticipant(participant: ParticipantTable): ParticipantTable {
     const newId = this.lastParticipantId + 1;
     const tabelPart = { ...participant, id: newId };
     this.participants[newId] = tabelPart;

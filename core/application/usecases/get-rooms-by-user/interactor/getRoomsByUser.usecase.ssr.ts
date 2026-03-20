@@ -6,7 +6,7 @@ import { IGetRoomsByUserSSRPresenter } from "../controller/getRoomsByUser.presen
 
 //Optional (the presenter can be used also by the controller as api or ui)
 //but this respect more the clean architecture flow (p72, p.273)
-export class GetRoomsByUserSSRFeature implements IGetRoomsByUserSSRRequester {
+export class GetRoomsByUserSSRUseCase implements IGetRoomsByUserSSRRequester {
 
   constructor(
     private chatRepository: IChatRoomsRepository,

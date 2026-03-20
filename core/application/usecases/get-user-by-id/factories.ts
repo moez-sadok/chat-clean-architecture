@@ -2,7 +2,7 @@ import { IChatRepository } from '../../ports/chat-repository';
 import { GetUserByIdApiHttpControllerAdapter } from './controller/http/getUserById.api.http.controller.adapter';
 import { GetUserByIdAPIHttpControllerClientAdapter } from './controller/http/getUserById.api.http.controller.client.adapter';
 import { IGetUserByIdInput } from './interactor/getUserById.controller.input';
-import { GetUserByIdFeature } from './interactor/getUserById.feature';
+import { GetUserByIdUseCase } from './interactor/getUserById.feature';
 import { IGetUserByIdPresenterOutput } from './interactor/getUserById.presenter.output';
 import { UserByIdPresenterUi } from './presenter/getUserById.presenter.ui';
 import { IGetUserByIdView } from './presenter/getUserById.view';
@@ -18,7 +18,7 @@ export const GET_USER_ByIdApiServerControllerAdapter = 'GET_USER_ByIdApiServerCo
 export const getUserByIdFeatureFactory = (
   chatRepository: IChatRepository,
   presenter: IGetUserByIdPresenterOutput
-) => { return new GetUserByIdFeature(chatRepository, presenter);};
+) => { return new GetUserByIdUseCase(chatRepository, presenter);};
 
 // presenter ui
 export const getUserByIdPresenterUiFactory = (view: IGetUserByIdView) => {

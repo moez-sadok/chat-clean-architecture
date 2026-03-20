@@ -1,21 +1,21 @@
 /******** Abstraction of mediator pattern */
 
 import { IMessage } from './message';
-import { IParticpant } from './participant';
+import { IParticipant } from './participant';
 
 // Mediator // Colleagues in Iparticipant
 export interface IChatroom {
   //getters
   getName(): string;
   getId(): number;
-  getParticipants(): Record<string, IParticpant>;
+  getParticipants(): Record<string, IParticipant>;
   getMessages(): IMessage[];
   //methods
-  setParticipants(parts: IParticpant[]): void;
+  setParticipants(parts: IParticipant[]): void;
   setMessages(messages: IMessage[]): void;
-  register(participant: IParticpant): void;
-  broadcastMessage(message: IMessage, from: IParticpant): void;
-  leave(participant: IParticpant): void;
+  register(participant: IParticipant): void;
+  broadcastMessage(message: IMessage, from: IParticipant): void;
+  leave(participant: IParticipant): void;
 }
 
 // client main use example (one room):

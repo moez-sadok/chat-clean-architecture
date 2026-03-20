@@ -2,10 +2,10 @@ import { IChatClient } from '../ports/chat-client';
 import { INotifiyer } from '../ports/push-notif.port';
 import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
-import { IParticpant } from '../interfaces/participant';
+import { IParticipant } from '../interfaces/participant';
 import { Message } from './message.impl';
 
-export class Participant implements IParticpant {
+export class Participant implements IParticipant {
 
   protected chatroom?: IChatroom | null;
 

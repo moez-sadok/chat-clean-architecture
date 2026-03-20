@@ -6,7 +6,7 @@ import { IGetMessagesByRoomPresenterOutput } from "./getMessagesByRoom.presenter
 import { GetRoomMessagesInputData } from "./getMessagesByRoom.request.data";
 import { GetMessagesOutputData, MessageOutputData } from "./getMessagesByRoom.response.data";
 
-export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
+export class GetMessagesByRoomUseCase implements IGetMessagesByRoomInput {
 
   constructor(
     private chatRepository: IChatRepository,
@@ -18,17 +18,16 @@ export class GetMessagesByRoomFeature implements IGetMessagesByRoomInput {
     // console.log('getChatRoomsMessages', room);
     const roomDto = this.chatRepository.getChatRoomsById(room.roomId);
     if (!roomDto) throw new Error('Not existing room id=' + room.roomId);
-    // const messages = messagesByRoom.map((m) => {
-    const messages = roomDto.messages ? roomDto.messages.map((m) => {
+    const messages = this.chatRepository.getMessagesByRoom(room.roomId).map((m) => {
       return {
         authorName: m.from.user.name,
         message: m.message,
         chatRoomId: m.room.id,
+        authorId: m.from.user.id,
       } as MessageOutputData;
-    }): [];
+    });
     const croom: GetRoomsByUserResponseData = {
-      roomId: room.roomId, 
-      // roomName: room.roomName,
+      roomId: room.roomId,
       roomName: roomDto.name,
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
     };

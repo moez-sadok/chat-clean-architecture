@@ -1,4 +1,4 @@
-export interface ParticpantTable {
+export interface ParticipantTable {
   id: number;
   userId: number;
   chatRoomId: number;

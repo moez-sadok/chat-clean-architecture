@@ -4,7 +4,7 @@ import { ChatroomTable } from './tables/chatroom.table';
 import { IChatRepository } from '../../application/ports/chat-repository';
 import { ChatroomDto } from '../../dtos/models/chatroom.dto';
 import { MessageDto } from '../../dtos/models/message.dto';
-import { ParticpantDto } from '../../dtos/models/participant.dto';
+import { ParticipantDto } from '../../dtos/models/participant.dto';
 import { UserDto } from '../../dtos/models/user.dto';
 
 export class DataBaseMapper implements IChatRepository {
@@ -50,10 +50,14 @@ export class DataBaseMapper implements IChatRepository {
       return {
         id: r.id,
         name: r.name,
-        //perf issue
-        participants: r.participantsIds ? r.participantsIds.map(pid => {
-          return { id: pid, user: { id: userId, name: currUser.name } }
-        }) : {}
+        participants: r.participantsIds
+          ? r.participantsIds.reduce((acc: Record<number, ParticipantDto>, pid) => {
+              const part = this.db.getParticipantById(pid);
+              const partUser = this.db.getUserById(part.userId);
+              acc[partUser.id] = { id: pid, user: { id: partUser.id, name: partUser.name }, isBot: part.isBot };
+              return acc;
+            }, {})
+          : {}
       }
     });
   }
@@ -74,7 +78,7 @@ export class DataBaseMapper implements IChatRepository {
       .map((m) => this.dbSerializer.serializeMessage(m));
   }
 
-  getParticpantByUserAndRoom(roomId: number, userId: number): ParticpantDto {
+  getParticpantByUserAndRoom(roomId: number, userId: number): ParticipantDto {
     const partTable = this.db.getParticipantByRoomAndUser(roomId, userId);
     return this.dbSerializer.serializeParticipant(partTable);
   }
@@ -96,14 +100,14 @@ export class DataBaseMapper implements IChatRepository {
     return new Promise((resolve) => resolve(roomDto));
   }
 
-  addParticipant(participant: ParticpantDto): void {
+  addParticipant(participant: ParticipantDto): void {
     if (participant.chatroom?.id === undefined || participant.user.id === undefined)
       throw new Error('Add participant miss attrs');
     const tabelPart = this.dbSerializer.desirializeParticipant(participant);
     this.db.insertParticipant(tabelPart);
   }
 
-  removeParticipant(participant: ParticpantDto): void {
+  removeParticipant(participant: ParticipantDto): void {
     if (!participant.id) throw new Error("Can't remouve unfoud participant");
     this.db.removeParticipant(participant.id);
   }

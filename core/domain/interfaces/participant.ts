@@ -4,7 +4,7 @@ import { IChatroom } from './chatroom';
 import { IMessage } from './message';
 
 // Colleagues // Mediator in chat room
-export interface IParticpant {
+export interface IParticipant {
   getUserName(): string;
   getUserId(): number;
   getchatRoom(): IChatroom;
