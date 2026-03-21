@@ -1,0 +1,28 @@
+@startuml
+
+!include ../../design/prodsoft.wsd
+
+title Connect Client sequence diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+boundary WsChatController #CDE711
+control UseCaseInteractor
+
+boundary ChatServer #Green
+
+' Step 1: The User opens the chat application, triggering a WebSocket connection.
+User -> WsChatController : WebSocket connection event
+' Step 2: The controller creates an IChatClient and calls the use case.
+WsChatController -> WsChatController : create IChatClient(userId)
+WsChatController -> UseCaseInteractor : connectClient(client)
+' Step 3: The UseCaseInteractor delegates to the ChatServer.
+UseCaseInteractor -> ChatServer : connectUser(client)
+' Step 4: The ChatServer registers the client.
+ChatServer -> ChatServer : register client
+ChatServer --> UseCaseInteractor : boolean (success/failure)
+' Step 5: The result is returned.
+UseCaseInteractor --> WsChatController : Promise<boolean>
+
+@enduml

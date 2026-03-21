@@ -1,0 +1,25 @@
+@startuml
+
+left to right direction
+title Get Rooms by User usecase diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+rectangle #33FFCC\356CAE {
+    usecase "Get Rooms by User" as UC_GetRoomsByUser #LightGreen
+    usecase "Query Rooms by UserId" as UC_QueryRooms #Yellow
+    usecase "Map DTOs to Response" as UC_MapDTOs #LightGreen
+    usecase "Present Rooms (API)" as UC_PresentAPI
+    usecase "Present Rooms (SSR)" as UC_PresentSSR
+    usecase "Render View (SSR)" as UC_RenderView #33FFCC
+}
+
+User --> UC_GetRoomsByUser
+UC_GetRoomsByUser --> UC_QueryRooms : <<include>>
+UC_GetRoomsByUser --> UC_MapDTOs : <<include>>
+UC_GetRoomsByUser --> UC_PresentAPI : <<include>>
+UC_GetRoomsByUser .> UC_PresentSSR : <<extend>>
+UC_PresentSSR --> UC_RenderView : <<include>>
+
+@enduml

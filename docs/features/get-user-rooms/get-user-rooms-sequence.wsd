@@ -1,0 +1,53 @@
+@startuml
+
+!include ../../design/prodsoft.wsd
+
+title Get Rooms by User sequence diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+boundary View #CDA719
+boundary Controller #CDE711
+boundary Presenter #CDE711
+control UseCaseInteractor
+
+database ChatRepository #FF5722
+
+' Step 1: The User requests their rooms list.
+User -> Controller : GetRoomsByUser Request (userId)
+Controller -> Controller : formatInputRequest()
+
+alt SPA Flow (returns Promise)
+    ' Step 2: The Controller calls the UseCaseInteractor.
+    Controller -> UseCaseInteractor : getRoomsByUser(request)
+    ' Step 3: The UseCaseInteractor queries the repository.
+    UseCaseInteractor -> ChatRepository : getChatRoomsByUser(userId)
+    ' Step 4: Map DTOs to response data.
+    UseCaseInteractor -> UseCaseInteractor : map rooms to ResponseData
+    ' Step 5: Return Promise with rooms list.
+    UseCaseInteractor --> Controller : Promise<GetRoomsByUserResponseData[]>
+    Controller -> Presenter : present(rooms)
+    Presenter -> Presenter : formatResponse(rooms)
+    Presenter --> Controller : formattedRooms
+    Controller --> User : JSON Response
+
+else SSR Flow (Presenter -> View)
+    ' Step 2b: The SSR Controller calls the SSR UseCaseInteractor.
+    Controller -> UseCaseInteractor : getRoomsByUser(request)
+    ' Step 3b: The UseCaseInteractor queries the repository.
+    UseCaseInteractor -> ChatRepository : getChatRoomsByUser(userId)
+    ' Step 4b: Map DTOs to response data.
+    UseCaseInteractor -> UseCaseInteractor : map rooms to ResponseData
+    ' Step 5b: The UseCaseInteractor pushes to presenter.
+    UseCaseInteractor -> Presenter : present(rooms)
+    ' Step 6b: The Presenter formats view models.
+    Presenter -> Presenter : format RoomViewModels
+    ' Step 7b: The Controller reads presenter state and renders the view.
+    Controller -> Presenter : getViewModel()
+    Controller -> View : render(viewModels)
+    ' Step 8b: The View returns rendered HTML.
+    View --> User : HTML Response
+end
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+
+title Get Rooms by User Use Case Specifications
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+note left #White
+    **Use Case Name:** Get Rooms by User
+    **Use Case ID:** UC-02
+
+    **Actors:**
+    - User
+    - System
+
+    **Preconditions:**
+    - The user must be authenticated and logged into the system.
+    - The user has a valid userId.
+
+    **Postconditions:**
+    - The user receives a list of chat rooms they belong to.
+    - Each room includes its roomId, roomName, and optionally participant names.
+
+    **Triggers:**
+    - The user navigates to the chat interface and the system loads their rooms.
+
+    **Main Success Scenario (Basic Flow):**
+    1. User: Opens the chat application or navigates to the rooms list.
+    2. System: Sends a GetRoomsByUserRequest with the user's userId.
+    3. System: Queries the chat repository for all rooms associated with the userId.
+    4. System: Maps each room DTO to a GetRoomsByUserResponseData (roomId, roomName).
+    5. System: Returns the list of rooms to the requesting controller.
+    6. System: Displays the rooms list in the user interface.
+
+    **Extensions (Alternate Flows):**
+    __Extension 1:__ User Has No Rooms
+    - Condition: The user has not joined any chat rooms.
+    - Flow:
+      - System: Returns an empty list.
+      - System: Displays a message indicating no rooms are available.
+      - User: Can create or join a new chat room.
+
+    __Extension 2:__ Server-Side Rendering (SSR)
+    - Condition: The request comes from a server-rendered page.
+    - Flow:
+      - System: The SSR use case queries the repository and passes results to the presenter.
+      - System: The presenter formats rooms into RoomViewModels.
+      - System: The view renders the HTML response with the rooms list.
+
+    **Special Requirements:**
+    - Performance: The rooms list should be returned within 500ms.
+    - The use case supports both SPA (returns Promise) and SSR (Presenter -> View) flows.
+
+    **Assumptions:**
+    - The user has a stable internet connection.
+    - The chat repository is available and responsive.
+end note
+
+@enduml

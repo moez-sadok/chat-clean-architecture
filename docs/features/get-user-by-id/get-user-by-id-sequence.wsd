@@ -1,0 +1,43 @@
+@startuml
+
+!include ../../design/prodsoft.wsd
+
+title Get User by ID sequence diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+boundary View #CDA719
+boundary Controller #CDE711
+boundary Presenter #CDE711
+control UseCaseInteractor
+
+database ChatRepository #FF5722
+
+' Step 1: A request to get a user by ID is triggered.
+User -> Controller : GetUserById Request (userId)
+Controller -> Controller : formatInputRequest()
+' Step 2: The Controller forwards the request to the UseCaseInteractor.
+Controller -> UseCaseInteractor : getUser(userId)
+
+' Step 3: The UseCaseInteractor queries the repository.
+UseCaseInteractor -> ChatRepository : getUserById(userId)
+
+alt User found
+    ' Step 4: The presenter formats the user data.
+    UseCaseInteractor -> Presenter : selectedUser(userDto)
+    Presenter -> Presenter : formatResponse(user)
+    ' Step 5: Return the formatted user.
+    Presenter --> UseCaseInteractor : UserOutputData
+    UseCaseInteractor --> Controller : Promise<UserOutputData>
+    Controller -> View : display(user)
+    View -> User : See User Profile
+
+else User not found
+    ' Step 4b: Return null.
+    UseCaseInteractor --> Controller : Promise<null>
+    Controller -> View : displayEmpty()
+    View -> User : User Not Found
+end
+
+@enduml

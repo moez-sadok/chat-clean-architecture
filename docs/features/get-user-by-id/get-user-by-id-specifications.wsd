@@ -1,0 +1,49 @@
+@startuml
+
+title Get User by ID Use Case Specifications
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+note left #White
+    **Use Case Name:** Get User by ID
+    **Use Case ID:** UC-04
+
+    **Actors:**
+    - User
+    - System
+
+    **Preconditions:**
+    - The user must be authenticated and logged into the system.
+    - A valid userId is provided.
+
+    **Postconditions:**
+    - If the user exists, their profile data (id, name) is returned.
+    - If the user does not exist, null is returned.
+
+    **Triggers:**
+    - The system needs to resolve a user's identity (e.g., displaying sender info, loading a profile).
+
+    **Main Success Scenario (Basic Flow):**
+    1. System: Receives a request with a userId.
+    2. System: Queries the chat repository for the user by userId.
+    3. System: The user is found in the repository.
+    4. System: The presenter formats the user into a UserOutputData (id, name).
+    5. System: Returns the formatted user data.
+
+    **Extensions (Alternate Flows):**
+    __Extension 1:__ User Not Found
+    - Condition: The provided userId does not match any existing user.
+    - Flow:
+      - System: The repository returns no result.
+      - System: Returns null.
+      - System: The caller handles the null response appropriately.
+
+    **Special Requirements:**
+    - Performance: User lookup should complete within 200ms.
+    - The use case delegates formatting to the presenter via the selectedUser method.
+
+    **Assumptions:**
+    - The user has a stable internet connection.
+    - The chat repository is available and responsive.
+end note
+
+@enduml

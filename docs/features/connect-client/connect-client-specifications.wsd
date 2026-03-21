@@ -1,0 +1,50 @@
+@startuml
+
+title Connect Client Use Case Specifications
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+note left #White
+    **Use Case Name:** Connect Client
+    **Use Case ID:** UC-05
+
+    **Actors:**
+    - User
+    - System
+
+    **Preconditions:**
+    - The user has a valid client identity (IChatClient with getId()).
+    - The chat server is running and accepting connections.
+
+    **Postconditions:**
+    - The user's client is registered in the chat server's connected clients.
+    - The user can send and receive real-time messages.
+
+    **Triggers:**
+    - The user opens the chat application (WebSocket connection event).
+    - The system establishes a WebSocket connection on behalf of the user.
+
+    **Main Success Scenario (Basic Flow):**
+    1. User: Opens the chat application.
+    2. System: A WebSocket connection is established.
+    3. System: The WsChatController creates an IChatClient for the user.
+    4. System: The ConnectClientUseCase receives the client.
+    5. System: The use case calls chatServer.connectUser(client).
+    6. System: The chat server registers the client and returns true.
+
+    **Extensions (Alternate Flows):**
+    __Extension 1:__ Connection Failure
+    - Condition: The client cannot be registered (e.g., duplicate connection, server at capacity).
+    - Flow:
+      - System: The chat server returns false.
+      - System: The connection attempt is reported as failed.
+
+    **Special Requirements:**
+    - This is an infrastructure-level use case with no presenter, view, or repository.
+    - The use case interacts only with IChatServerPort.
+
+    **Assumptions:**
+    - The WebSocket infrastructure is available.
+    - The IChatClient implementation provides a valid getId() method.
+end note
+
+@enduml

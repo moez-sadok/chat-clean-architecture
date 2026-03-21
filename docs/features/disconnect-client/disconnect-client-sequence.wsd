@@ -1,0 +1,27 @@
+@startuml
+
+!include ../../design/prodsoft.wsd
+
+title Disconnect Client sequence diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+boundary WsChatController #CDE711
+control UseCaseInteractor
+
+boundary ChatServer #Green
+
+' Step 1: The User closes the app or loses connection.
+User -> WsChatController : WebSocket disconnect event
+' Step 2: The controller extracts userId and calls the use case.
+WsChatController -> UseCaseInteractor : disconnectClient(userId)
+' Step 3: The UseCaseInteractor delegates to the ChatServer.
+UseCaseInteractor -> ChatServer : disconnectUser(userId)
+' Step 4: The ChatServer removes the client.
+ChatServer -> ChatServer : remove client
+ChatServer --> UseCaseInteractor : boolean (success/failure)
+' Step 5: The result is returned.
+UseCaseInteractor --> WsChatController : Promise<boolean>
+
+@enduml

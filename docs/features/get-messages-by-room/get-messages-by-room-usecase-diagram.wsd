@@ -1,0 +1,27 @@
+@startuml
+
+left to right direction
+title Get Messages by Room usecase diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+rectangle #33FFCC\356CAE {
+    usecase "Get Messages by Room" as UC_GetMessages #LightGreen
+    usecase "Validate Room Exists" as UC_ValidateRoom #Yellow
+    usecase "Query Messages" as UC_QueryMessages #Yellow
+    usecase "Map DTOs to Response" as UC_MapDTOs #LightGreen
+    usecase "Get Room Metadata" as UC_GetMetadata #LightGreen
+    usecase "Present Messages" as UC_Present
+    usecase "Handle Room Not Found" as UC_NotFound
+}
+
+User --> UC_GetMessages
+UC_GetMessages --> UC_ValidateRoom : <<include>>
+UC_GetMessages --> UC_QueryMessages : <<include>>
+UC_GetMessages --> UC_MapDTOs : <<include>>
+UC_GetMessages --> UC_GetMetadata : <<include>>
+UC_GetMessages --> UC_Present : <<include>>
+UC_GetMessages .> UC_NotFound : <<extend>>
+
+@enduml

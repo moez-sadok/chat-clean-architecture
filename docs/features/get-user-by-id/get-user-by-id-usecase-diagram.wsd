@@ -1,0 +1,21 @@
+@startuml
+
+left to right direction
+title Get User by ID usecase diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+rectangle #33FFCC\356CAE {
+    usecase "Get User by ID" as UC_GetUser #LightGreen
+    usecase "Query User by ID" as UC_QueryUser #Yellow
+    usecase "Present User" as UC_PresentUser
+    usecase "Handle User Not Found" as UC_NotFound
+}
+
+User --> UC_GetUser
+UC_GetUser --> UC_QueryUser : <<include>>
+UC_GetUser --> UC_PresentUser : <<include>>
+UC_GetUser .> UC_NotFound : <<extend>>
+
+@enduml

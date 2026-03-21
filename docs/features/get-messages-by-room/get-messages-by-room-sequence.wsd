@@ -1,0 +1,51 @@
+@startuml
+
+!include ../../design/prodsoft.wsd
+
+title Get Messages by Room sequence diagram
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+actor User #F06292
+
+boundary View #CDA719
+boundary Controller #CDE711
+boundary Presenter #CDE711
+control UseCaseInteractor
+
+database ChatRepository #FF5722
+
+' Step 1: The User selects a room to view messages.
+User -> Controller : GetMessagesByRoom Request (roomId)
+Controller -> Controller : formatInputRequest()
+' Step 2: The Controller forwards the request to the UseCaseInteractor.
+Controller -> UseCaseInteractor : getChatRoomsMessages(request)
+
+' Step 3: The UseCaseInteractor validates the room exists.
+UseCaseInteractor -> ChatRepository : getChatRoomsById(roomId)
+
+alt Room exists
+    ' Step 4: Query messages for the room.
+    UseCaseInteractor -> ChatRepository : getMessagesByRoom(roomId)
+    ' Step 5: Map message DTOs to MessageOutputData.
+    UseCaseInteractor -> UseCaseInteractor : map messages to MessageOutputData
+    ' Step 6: Build room metadata (roomName, participantsNames).
+    UseCaseInteractor -> UseCaseInteractor : build room metadata
+    ' Step 7: The presenter formats the response.
+    UseCaseInteractor -> Presenter : presentMessages(messages, room)
+    Presenter -> Presenter : formatResponse(messages, room)
+    ' Step 8: Return the formatted response.
+    Presenter --> UseCaseInteractor : GetMessagesOutputData
+    UseCaseInteractor --> Controller : Promise<GetMessagesOutputData>
+    ' Step 9: Display to the user.
+    Controller -> View : display(messages)
+    View -> User : See Messages
+
+else Room not found
+    ' Step 4b: Throw error for non-existing room.
+    UseCaseInteractor -> UseCaseInteractor : throw Error("Not existing room")
+    UseCaseInteractor --> Controller : Error
+    Controller -> View : displayError()
+    View -> User : See Error
+end
+
+@enduml

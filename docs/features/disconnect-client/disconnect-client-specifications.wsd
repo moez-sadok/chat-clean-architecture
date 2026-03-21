@@ -1,0 +1,51 @@
+@startuml
+
+title Disconnect Client Use Case Specifications
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+note left #White
+    **Use Case Name:** Disconnect Client
+    **Use Case ID:** UC-06
+
+    **Actors:**
+    - User
+    - System
+
+    **Preconditions:**
+    - The chat server is running.
+    - The user has a valid userId.
+
+    **Postconditions:**
+    - The user's client is removed from the chat server's connected clients.
+    - The user can no longer send or receive real-time messages until reconnected.
+
+    **Triggers:**
+    - The user closes the chat application (WebSocket disconnect event).
+    - The user loses network connectivity.
+    - The system detects an idle timeout.
+
+    **Main Success Scenario (Basic Flow):**
+    1. User: Closes the chat application or loses connectivity.
+    2. System: A WebSocket disconnect event is detected.
+    3. System: The WsChatController sends the userId to the DisconnectClientUseCase.
+    4. System: The use case calls chatServer.disconnectUser(userId).
+    5. System: The chat server removes the client and returns true.
+
+    **Extensions (Alternate Flows):**
+    __Extension 1:__ User Not Connected
+    - Condition: The userId does not match any currently connected client.
+    - Flow:
+      - System: The chat server returns false.
+      - System: The disconnection is considered a no-op.
+
+    **Special Requirements:**
+    - This is an infrastructure-level use case with no presenter, view, or repository.
+    - The use case interacts only with IChatServerPort.
+    - Disconnection should be handled gracefully to avoid resource leaks.
+
+    **Assumptions:**
+    - The WebSocket infrastructure detects disconnection events reliably.
+    - The userId is sufficient to identify and remove the connected client.
+end note
+
+@enduml

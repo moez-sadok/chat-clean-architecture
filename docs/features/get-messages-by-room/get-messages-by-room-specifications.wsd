@@ -1,0 +1,60 @@
+@startuml
+
+title Get Messages by Room Use Case Specifications
+footer Prodsoft - Moez SADOK @Copyright 2024
+
+note left #White
+    **Use Case Name:** Get Messages by Room
+    **Use Case ID:** UC-03
+
+    **Actors:**
+    - User
+    - System
+
+    **Preconditions:**
+    - The user must be authenticated and logged into the system.
+    - The user must have selected a chat room.
+
+    **Postconditions:**
+    - The user receives the list of messages for the selected room.
+    - The response includes room metadata (roomName, participantsNames).
+
+    **Triggers:**
+    - The user selects a chat room to view its messages.
+
+    **Main Success Scenario (Basic Flow):**
+    1. User: Selects a chat room from the rooms list.
+    2. System: Sends a GetMessagesByRoomRequest with the roomId.
+    3. System: Queries the chat repository for the room by roomId.
+    4. System: Validates that the room exists.
+    5. System: Queries the chat repository for all messages in the room.
+    6. System: Maps each message DTO to a MessageOutputData (authorName, message, chatRoomId, authorId).
+    7. System: Retrieves room metadata including roomName and participantsNames.
+    8. System: The presenter formats the messages and room data into a GetMessagesOutputData.
+    9. System: Returns the formatted response to the user interface.
+
+    **Extensions (Alternate Flows):**
+    __Extension 1:__ Room Does Not Exist
+    - Condition: The provided roomId does not match any existing room.
+    - Flow:
+      - System: Throws an error "Not existing room id=<roomId>".
+      - System: The controller catches the error and returns an appropriate error response.
+      - User: Is informed that the room does not exist.
+
+    __Extension 2:__ Room Has No Messages
+    - Condition: The room exists but contains no messages.
+    - Flow:
+      - System: Returns a GetMessagesOutputData with an empty messages array.
+      - System: Displays the room with its metadata but no messages.
+
+    **Special Requirements:**
+    - Performance: Messages should be retrieved within 500ms.
+    - The response must include both messages and room metadata (roomName, participantsNames).
+
+    **Assumptions:**
+    - The user has a stable internet connection.
+    - The chat repository is available and responsive.
+    - The room's participants are accessible from the room DTO.
+end note
+
+@enduml
