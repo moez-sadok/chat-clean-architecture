@@ -14,5 +14,6 @@ export * from './presenter/getMessagesByRoom.view.model';
 export * from './presenter/getMessagesByRoom.view';
 //view
 export * from './view/getRoomsByUser.web.view';
+export * from './view/getRoomsByUser.web.reactive.view';
 //factories
 export * from './factories';

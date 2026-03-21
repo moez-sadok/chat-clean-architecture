@@ -1,8 +1,9 @@
-export interface RoomMessageViewModelDto {
+export interface RoomMessagesViewModel {
+  messages: MessageViewModel[];
   roomName: string;
-  roomMessages: MessageViewModel[];
-  // activeRoom: RoomViewModel;
+  roomId: number;
 }
+
 
 export interface MessageViewModel {
   roomId: number;

@@ -19,6 +19,7 @@
       "@cca/core-domain": ["./core/domain/index.ts"],
       "@cca/core-features": ["./core/application/index.ts"],
       "@cca/core-gateways": ["./core/gateways/index.ts"],
+      "@cca/core-view": ["./core/view/index.ts"],
 
       "@cca/frameworks/db/in-memory-db": [
         "libs/chat/frameworks/db/in-memory-db/src/index.ts"
