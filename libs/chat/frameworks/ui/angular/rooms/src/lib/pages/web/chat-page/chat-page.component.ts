@@ -7,6 +7,7 @@ import { getMessagesByRoomProviders } from '../../../components/get-room-message
 import { GetUserRoomsComponent } from '../../../components/get-user-rooms/get-user-rooms.component';
 import { SendMessageComponent } from '../../../components/send-message/send-message.component';
 import { getChatPageFacadeProviders } from '../../../providers/chat-page.main.providers';
+import { getMessagePresenterProviders } from '../../../providers/shared-get-messages.presenter.provider';
 
 @Component({
   selector: 'cca-chat-page',
@@ -14,16 +15,17 @@ import { getChatPageFacadeProviders } from '../../../providers/chat-page.main.pr
   standalone: true,
   imports: [
     CommonModule,
-    // hybrid (injection by parent)
+    // hybrid (injection by get message presenter providers)
     GetRoomMessagesComponent,
+    SendMessageComponent,
     //full isolated
     GetUserRoomsComponent,
-    ConnectUserComponent,
-    SendMessageComponent,
+    ConnectUserComponent
   ],
+  //app initialization providers (to-check)
   providers: [
+    ...getMessagePresenterProviders,
     ...getChatPageFacadeProviders,
-    ...getMessagesByRoomProviders,
     ...getUserByIdProviders
   ]
 })

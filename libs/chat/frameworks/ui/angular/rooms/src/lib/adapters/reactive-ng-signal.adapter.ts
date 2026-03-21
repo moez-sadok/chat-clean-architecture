@@ -1,8 +1,8 @@
-
 import { IReactive } from "@cca/core-view";
 import { signal } from "@angular/core";
 
 export class ReactiveNgSignalAdapter<T> implements IReactive<T> {
+
     private readonly _ngSignal = signal<T>(undefined as T);
 
     get data(): T {

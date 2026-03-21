@@ -4,14 +4,10 @@ import { IGetMessagesByRoomReactiveView } from "../presenter/getMessagesByRoom.v
 import { MessageViewModel, RoomMessagesViewModel } from "../presenter/getMessagesByRoom.view.model";
 
 export class GetMessagesByRoomClientReactiveView implements IGetMessagesByRoomReactiveView {
-  // messages: IReactive<MessageViewModel[]>;
-  // roomName: string ='';
-  // roomId: number =-1;
 
-  private readonly vm: IReactive<RoomMessagesViewModel>;
+  readonly vm: IReactive<RoomMessagesViewModel>;
 
   constructor(messagesReactive: IReactive<RoomMessagesViewModel>) {
-    console.log('GetMessagesByRoomClientReactiveView: constructor called');
     this.vm = messagesReactive;
     this.vm.set({ messages: [], roomName: '', roomId: -1 } as RoomMessagesViewModel);
   }
@@ -25,9 +21,7 @@ export class GetMessagesByRoomClientReactiveView implements IGetMessagesByRoomRe
   }
 
   setActiveRoom(id: number, name: string): void {
-    console.log('setActiveRoom: id: ', id, ' name: ', name);
     this.vm.change(prev => ({ ...prev, roomId: id, roomName: name }));
-    console.log('setActiveRoom: vm after change: ', this.vm.data);
   }
 
   receiveNewMessage(message: MessageOutputData): MessageOutputData {
@@ -37,7 +31,6 @@ export class GetMessagesByRoomClientReactiveView implements IGetMessagesByRoomRe
       participantName: message.authorName, roomId: message.chatRoomId
     };
     //check if the room is active (opened)
-    console.log('receiveNewMessage: current roomId: ', this.vm.data.roomId, ' message roomId: ', message.chatRoomId);
     if (message.chatRoomId === this.vm.data.roomId)
       this.receiveMessage(messageInput);
     //else this.notifNewMessageOnInactiveRoom(message.chatRoomId);

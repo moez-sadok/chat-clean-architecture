@@ -2,8 +2,7 @@ import { InjectionToken } from "@angular/core";
 import { IChatWsController } from "@cca/core-controllers";
 import { IGetMessagesByRoomPresenterOutput } from "@cca/core-features";
 import { ChatControllerWsClientAdapterImpl } from "@cca/drivers/socketIo/client";
-
-import { GET_MESSAGES_BY_ROOM_PRESENTER } from "../components/get-room-messages/get-room-messages.main.providers";
+import { GET_MESSAGES_BY_ROOM_PRESENTER } from "./shared-get-messages.presenter.provider";
 
 // Refactoring ... 
 export const CHAT_SERVER_CONTROLLER_PROVIDER = new InjectionToken<IChatWsController>('chat.server.controller');

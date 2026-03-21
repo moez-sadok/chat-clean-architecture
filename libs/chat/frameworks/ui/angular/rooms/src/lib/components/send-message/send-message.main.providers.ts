@@ -2,7 +2,7 @@ import { InjectionToken } from "@angular/core";
 import { IHttpController } from "@cca/core-controllers";
 import { sendMessagePresenterUiFactory, ISendMessageView, sendMessageAPIClientControllerAdapter, SendMessageWebView, ISendMessagePresenterOutput, IGetMessagesByRoomPresenterOutput } from "@cca/core-features";
 import { SendMessageSpaClient } from "./send-message.spa.client";
-import { GET_MESSAGES_BY_ROOM_PRESENTER } from "../get-room-messages/get-room-messages.main.providers";
+import { GET_MESSAGES_BY_ROOM_PRESENTER } from "../../providers/shared-get-messages.presenter.provider";
 
 export const SEND_MESSAGE_VIEW = new InjectionToken<ISendMessageView>('SendMessageView');
 export const SEND_MESSAGE_PRESENTER = new InjectionToken<ISendMessagePresenterOutput>('SendMessagePresenter');
