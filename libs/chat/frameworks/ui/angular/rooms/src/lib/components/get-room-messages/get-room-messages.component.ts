@@ -26,7 +26,7 @@ export class GetRoomMessagesComponent
   ) {
     super(cdRef, chatview.vm);
 
-    //To change on the controller adapter side to read abstract router 
+    //To change on the controller adapter side (inject the router reader)
     const roomId = +(this.route.snapshot.paramMap.get('roomId') || '-1');
     this.chatController.getRoomMessages(roomId);
   }

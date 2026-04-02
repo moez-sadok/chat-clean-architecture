@@ -1,8 +1,10 @@
-<div *ngIf="vm.roomName"><b>{{ vm.roomName}}</b></div>
-<!-- <div class="divider">{{chatview.participantNames}}</div> -->
+@if (vm.roomName) {
+  <div><b>{{ vm.roomName }}</b></div>
+}
 <div class="divider"></div>
 <br>
-<!-- <div *ngFor="let message of chatview.messages"> -->
-<div *ngFor="let message of vm.messages">
-  <p> <b>{{ message.participantName }}</b>: {{ message.content }}</p>
-</div>
+@for (message of vm.messages; track message) {
+  <div>
+    <p><b>{{ message.participantName }}</b>: {{ message.content }}</p>
+  </div>
+}
