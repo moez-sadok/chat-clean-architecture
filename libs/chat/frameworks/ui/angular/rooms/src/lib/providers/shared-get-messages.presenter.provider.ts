@@ -9,16 +9,14 @@ export const GET_MESSAGES_BY_ROOM_VIEW = new InjectionToken<IGetMessagesByRoomVi
 export const GET_MESSAGES_BY_ROOM_REACTIVE_VIEW = new InjectionToken<IGetMessagesByRoomReactiveView>('GetMessagesByRoomReactiveView');
 
 export const getMessagePresenterProviders = [
-     {
+    {
         provide: GET_MESSAGES_BY_ROOM_VIEW,
-        // Swap reactive strategy here — one line change:
         useFactory: () => new GetMessagesByRoomClientReactiveView(new ReactiveNgSignalAdapter<RoomMessagesViewModel>())
-        // useFactory: () => new GetMessagesByRoomClientReactiveView(new ReactiveRxjsObservableAdapter<RoomMessagesViewModel>()),
     },
     {
         provide: GET_MESSAGES_BY_ROOM_REACTIVE_VIEW,
         // Swap reactive strategy here — one line change:
-        // useFactory: () => new GetMessagesByRoomClientReactiveView(new ReactiveNgSignalAdapter<RoomMessagesViewModel>())
+        //useFactory: () => new GetMessagesByRoomClientReactiveView(new ReactiveNgSignalAdapter<RoomMessagesViewModel>())
         useFactory: () => new GetMessagesByRoomClientReactiveView(new ReactiveRxjsObservableAdapter<RoomMessagesViewModel>()),
     },
     {

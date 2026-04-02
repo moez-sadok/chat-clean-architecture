@@ -5,7 +5,7 @@ import { GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT, getMessagesByRoomProviders } from
 import { GetRoomMessagesSpaClient } from './get-room-messages.spa.client';
 import { IGetMessagesByRoomReactiveView } from '@cca/core-features';
 import { GET_MESSAGES_BY_ROOM_REACTIVE_VIEW } from '../../providers/shared-get-messages.presenter.provider';
-import { isChangeDetectable } from '../../adapters/angular-change-detectable';
+import { AChangeDetectableComponent } from '../../adapters/angular-change-detectable';
 
 @Component({
   selector: 'cca-get-room-messages',
@@ -15,23 +15,20 @@ import { isChangeDetectable } from '../../adapters/angular-change-detectable';
   imports: [CommonModule],
   providers: [getMessagesByRoomProviders]
 })
-export class GetRoomMessagesComponent {
+export class GetRoomMessagesComponent
+  extends AChangeDetectableComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef,
+    protected override cdRef: ChangeDetectorRef,
     @Inject(GET_MESSAGES_BY_ROOM_HTTP_API_CLIENT) public chatController: GetRoomMessagesSpaClient,
     @Inject(GET_MESSAGES_BY_ROOM_REACTIVE_VIEW) public chatview: IGetMessagesByRoomReactiveView
   ) {
-    this.route.paramMap.subscribe(params => {
-      const roomId = params.get('roomId') ? +params.get('roomId')! : null;
-      if (roomId != null) this.chatController.getRoomMessages(roomId);
-    });
+    super(cdRef, chatview.vm);
 
-    // Framework-layer concern: if the reactive adapter needs CD, bind it (no need it with signals, but needed for RxJS-based reactive view)
-    if (isChangeDetectable(this.chatview.vm)) {
-      this.chatview.vm.bindChangeDetection(this.cdRef);
-    }
+    //To change on the controller adapter side to read abstract router 
+    const roomId = +(this.route.snapshot.paramMap.get('roomId') || '-1');
+    this.chatController.getRoomMessages(roomId);
   }
 
   get vm() {
