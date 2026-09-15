@@ -14,6 +14,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "strictNullChecks": true,
     "paths": {
       "@cca/core-controllers": ["./core/controllers/index.ts"],
       "@cca/core-domain": ["./core/domain/index.ts"],

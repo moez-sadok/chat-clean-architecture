@@ -7,6 +7,8 @@ import { IGetMessagesByRoomReactiveView } from '@cca/core-features';
 import { GET_MESSAGES_BY_ROOM_REACTIVE_VIEW } from '../../providers/shared-get-messages.presenter.provider';
 import { AChangeDetectableComponent } from '../../adapters/angular-change-detectable';
 
+// If the injected IGetMessagesByRoomReactiveView use the signal, we can remove the extends AChangeDetectableComponent and the ChangeDetectorRef injection. 
+// The component will be automatically updated when the view model changes without needing to manually trigger change detection.
 @Component({
   selector: 'cca-get-room-messages',
   templateUrl: './get-room-messages.component.html',
