@@ -31,12 +31,6 @@
       "@cca/frameworks/ui/angular/rooms": [
         "libs/chat/frameworks/ui/angular/rooms/src/index.ts"
       ],
-      "@cca/frameworks/ui/react": [
-        "libs/chat/frameworks/ui/react/src/index.ts"
-      ],
-      "@cca/frameworks/web/graph-ql": [
-        "libs/chat/frameworks/web/graph-ql/src/index.ts"
-      ],
       "@cca/frameworks/web/http-nest": [
         "libs/chat/frameworks/web/http-nest/src/index.ts"
       ],
