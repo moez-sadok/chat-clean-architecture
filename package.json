@@ -22,7 +22,9 @@
     "bench-test-get-rooms": "node tests/bench/get-user-rooms-bench-test.js",
     "bench-test-get-messages": "node tests/bench/get-messages-room-bench-test.js",
     "bench-connect-users": "artillery run  tests/bench/connect-users-bench-test.yml",
-    "kill-redis": "sudo kill -9 $(lsof -t -i:6379)"
+    "kill-redis": "sudo kill -9 $(lsof -t -i:6379)",
+    "test:mongo": "MONGO_REQUIRED=true jest -c tests/jest.config.ts tests/integrations/mongo",
+    "start:api:mongo": "MONGO_URL=mongodb://localhost:27017 MONGO_DB=pchat nx serve chat-chat-server-main-api"
   },
   "private": true,
   "dependencies": {
@@ -48,7 +50,7 @@
     "@socket.io/redis-adapter": "^7.2.0",
     "axios": "^1.6.7",
     "http-server": "^14.1.1",
-    "mongodb": "^7.6.0",
+    "mongodb": "^6.21.0",
     "redis": "^4.6.7",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",

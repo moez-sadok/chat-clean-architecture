@@ -30,10 +30,12 @@ export class AppBackendDouble {
     getMessagesByRoomFeature: IGetMessagesByRoomInput;
     sendMessageFeature: ISendMessageInput;
 
-    constructor() {
+    //the database is injectable: the same wiring runs on the in-memory double
+    //or on a real adapter (mongo) without touching the use cases.
+    constructor(dataBase: IChatDatabase = new DataBaseMemoryPerfImpl()) {
         // init db and ws server
         // this.dataBase = new DataBaseMemoryImpl();
-        this.dataBase = new DataBaseMemoryPerfImpl();
+        this.dataBase = dataBase;
         this.chatdbMapper = new DataBaseMapper(this.dataBase);
         this.chatServer = new ChatServerMemoryImpl();
 

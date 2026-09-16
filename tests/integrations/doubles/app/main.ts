@@ -4,6 +4,7 @@ import { ChatroomDto } from "../../../../core/dtos/models/chatroom.dto";
 //doubles
 import { GetRoomMessagesHttpControllerClientMemory, GetUserByIdHttpControllerClientMemory, GetUserRoomsHttpControllerClientMemory, SendMessageHttpControllerClientMemory } from "../http/chat-controller-client.memory";
 import { AppBackendDouble } from "./app-backend-double";
+import { IChatDatabase } from "../../../../core/gateways/persistence";
 import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
 import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/application/usecases/get-rooms-by-user";
 import { IGetRoomsByUserView } from "../../../../core/application/usecases/get-rooms-by-user/presenter/getRoomsByUser.view";
@@ -28,7 +29,11 @@ export interface ClientViewController {
 
 export class MainDouble {
 
-    backend: AppBackendDouble = new AppBackendDouble();
+    backend: AppBackendDouble;
+
+    constructor(dataBase?: IChatDatabase) {
+        this.backend = new AppBackendDouble(dataBase);
+    }
 
     async makeClient(name: string): Promise<ClientViewController> {
 
