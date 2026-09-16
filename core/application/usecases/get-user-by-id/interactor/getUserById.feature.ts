@@ -11,13 +11,11 @@ export class GetUserByIdUseCase implements IGetUserByIdInput {
     private presenter: IGetUserByIdPresenterOutput
   ) { }
 
-  getUser(userId: number): Promise<UserOutputData | null> {
-    const existUser = this.chatRepository.getUserById(userId);
-   // if(!existUser) existUser = this.chatRepository.addUser({ name: 'autogen', id : userId})
-    return new Promise((resolve) => {
-      if (existUser) resolve(this.presenter.selectedUser(existUser));
-      else resolve(null)
-    });
+  async getUser(userId: number): Promise<UserOutputData | null> {
+    const existUser = await this.chatRepository.getUserById(userId);
+   // if(!existUser) existUser = await this.chatRepository.addUser({ name: 'autogen', id : userId})
+    if (existUser) return this.presenter.selectedUser(existUser);
+    return null;
   }
 
 }

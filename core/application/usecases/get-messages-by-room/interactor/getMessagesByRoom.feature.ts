@@ -13,12 +13,12 @@ export class GetMessagesByRoomUseCase implements IGetMessagesByRoomInput {
     private presenter: IGetMessagesByRoomPresenterOutput
   ) { }
 
-  getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<GetMessagesOutputData> {
-    // const messagesByRoom = this.chatRepository.getMessagesByRoom(room.roomId);
+  async getChatRoomsMessages(room: GetRoomMessagesInputData): Promise<GetMessagesOutputData> {
     // console.log('getChatRoomsMessages', room);
-    const roomDto = this.chatRepository.getChatRoomsById(room.roomId);
+    const roomDto = await this.chatRepository.getChatRoomsById(room.roomId);
     if (!roomDto) throw new Error('Not existing room id=' + room.roomId);
-    const messages = this.chatRepository.getMessagesByRoom(room.roomId).map((m) => {
+    const roomMessages = await this.chatRepository.getMessagesByRoom(room.roomId);
+    const messages = roomMessages.map((m) => {
       return {
         authorName: m.from.user.name,
         message: m.message,
@@ -31,9 +31,7 @@ export class GetMessagesByRoomUseCase implements IGetMessagesByRoomInput {
       roomName: roomDto.name,
       participantsNames: Object.values(roomDto.participants).map(p => p.user.name)
     };
-    return new Promise((resolve) => {
-      resolve(this.presenter.presentMessages(messages, croom));
-    });
+    return this.presenter.presentMessages(messages, croom);
   }
 
 

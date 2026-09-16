@@ -77,7 +77,7 @@ export class MainDouble {
     async addClientToRoom(userId: number, roomId: number) {
         const currUser = await this.backend.chatdbMapper.getUserById(userId);
         if (!currUser) throw new Error('addClientToRoom User not added');
-        this.backend.chatdbMapper.addParticipant({ 
+        await this.backend.chatdbMapper.addParticipant({ 
             user: { name: currUser.name, id: currUser.id }, 
             chatroom: {id: roomId, name:'',participants: {}} 
         })

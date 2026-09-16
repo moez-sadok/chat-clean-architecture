@@ -9,15 +9,13 @@ export class GetRoomsByUserUseCase implements IGetRoomsByUserRequester {
     private roomsRepository: IChatRoomsRepository
   ) { }
 
-  getRoomsByUser(user: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {
-    const rooms = this.roomsRepository.getChatRoomsByUser(user.userId).map((r) => {
+  async getRoomsByUser(user: GetRoomsByUserRequestData): Promise<GetRoomsByUserResponseData[]> {
+    const userRooms = await this.roomsRepository.getChatRoomsByUser(user.userId);
+    return userRooms.map((r) => {
       return {
         roomId: r.id,
         roomName: r.name
       } as GetRoomsByUserResponseData;
-    });
-    return new Promise((resolve) => {
-      resolve(rooms);
     });
   }
 

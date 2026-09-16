@@ -1,6 +1,6 @@
 import { ChatDataSerializer } from './utils/data.serializer';
 import { IChatDatabase } from './interfaces/chat-database';
-import { ChatroomTable } from './tables/chatroom.table';
+import { UserChatRoomDto } from '../../application/usecases/get-rooms-by-user/repositories/user-rooms.repository';
 import { IChatRepository } from '../../application/ports/chat-repository';
 import { ChatroomDto } from '../../dtos/models/chatroom.dto';
 import { MessageDto } from '../../dtos/models/message.dto';
@@ -15,107 +15,90 @@ export class DataBaseMapper implements IChatRepository {
   }
 
   /** insertions */
-  addMessage(message: MessageDto): MessageDto {
+  async addMessage(message: MessageDto): Promise<MessageDto> {
     if (message.from.id == undefined) throw new Error('Add message miss attrs: from');
     if (message.room.id == undefined) throw new Error('Add message miss attrs: room');
     const tabelMessage = this.dbSerializer.desirializeMessage({
       ...message,
       date: new Date(),
     });
-    const newMessage = this.db.insertMessage(tabelMessage);
+    const newMessage = await this.db.insertMessage(tabelMessage);
     return { ...message, id: newMessage.id };
   }
 
   /** getters / selects */
-  getUserById(userId: number): UserDto | null {
-    const dbUser = this.db.getUserById(userId);
-    if (dbUser) return this.dbSerializer.serializeUser(this.db.getUserById(userId));
+  async getUserById(userId: number): Promise<UserDto | null> {
+    const dbUser = await this.db.getUserById(userId);
+    if (dbUser) return this.dbSerializer.serializeUser(dbUser);
     else return null;
   }
 
-  getChatRooms(): ChatroomDto[] {
-    return this.db.getChatRooms().map(roomTable => this.dbSerializer.serializeRoom(roomTable))
+  async getChatRooms(): Promise<ChatroomDto[]> {
+    const rooms = await this.db.getChatRooms();
+    return Promise.all(rooms.map(roomTable => this.dbSerializer.serializeRoom(roomTable)));
   }
 
-  getChatRoomsByUser(userId: number): ChatroomDto[] {
-    //checking perf ...
+  async getChatRoomsByUser(userId: number): Promise<UserChatRoomDto[]> {
     if (userId === null || userId === undefined)
       throw new Error(' Get ChatRooms By User : user not found');
-    const currUser = this.db.getUserById(userId);
+    const currUser = await this.db.getUserById(userId);
     if (!currUser.participantsIds) return [];
-    const rooms = this.getRoomsByParticipantsIds(currUser.participantsIds);
-    const roomsTablearray = Object.keys(rooms).map((id) => rooms[parseInt(id)]);
-    return roomsTablearray.map((r) => {
-      //return this.dbSerializer.serializeRoom(r);
-      return {
-        id: r.id,
-        name: r.name,
-        participants: r.participantsIds
-          ? r.participantsIds.reduce((acc: Record<number, ParticipantDto>, pid) => {
-              const part = this.db.getParticipantById(pid);
-              const partUser = this.db.getUserById(part.userId);
-              acc[partUser.id] = { id: pid, user: { id: partUser.id, name: partUser.name }, isBot: part.isBot };
-              return acc;
-            }, {})
-          : {}
-      }
-    });
+    //3 reads whatever the number of rooms, and no participant hydration (ISP)
+    const userParts = await this.db.getParticipantsByIds(Object.values(currUser.participantsIds));
+    const roomIds = [...new Set(userParts.map((p) => p.chatRoomId))];
+    const rooms = await this.db.getRoomsByIds(roomIds);
+    return rooms.map((r) => ({ id: r.id, name: r.name }));
   }
 
-  private getRoomsByParticipantsIds(partsIds: Record<number, number>): Record<number, ChatroomTable> {
-    //to check (put in db)
-    return Object.values(partsIds).reduce((acc: Record<number, ChatroomTable>, partId) => {
-      const part = this.db.getParticipantById(partId);
-      if (!acc[part.chatRoomId]) {
-        acc[part.chatRoomId] = this.db.getRoomById(part.chatRoomId);
-      }
-      return acc;
-    }, {});
+  async getMessagesByRoom(roomId: number): Promise<MessageDto[]> {
+    const [roomTable, messages] = await Promise.all([
+      this.db.getRoomById(roomId),
+      this.db.getMessagesByRoom(roomId)
+    ]);
+    if (!roomTable) return [];
+    //the room is serialized once for the whole page of messages (no N+1)
+    const roomDto = await this.dbSerializer.serializeRoomWithoutMessages(roomTable);
+    return this.dbSerializer.serializeMessagesOfRoom(messages, roomDto);
   }
 
-  getMessagesByRoom(roomId: number): MessageDto[] {
-    return this.db.getMessagesByRoom(roomId)
-      .map((m) => this.dbSerializer.serializeMessage(m));
-  }
-
-  getParticpantByUserAndRoom(roomId: number, userId: number): ParticipantDto {
-    const partTable = this.db.getParticipantByRoomAndUser(roomId, userId);
+  async getParticpantByUserAndRoom(roomId: number, userId: number): Promise<ParticipantDto> {
+    const partTable = await this.db.getParticipantByRoomAndUser(roomId, userId);
     return this.dbSerializer.serializeParticipant(partTable);
   }
 
-  getChatRoomsById(roomId: number): ChatroomDto | null {
-    const dbRoom = this.db.getRoomById(roomId);
+  async getChatRoomsById(roomId: number): Promise<ChatroomDto | null> {
+    const dbRoom = await this.db.getRoomById(roomId);
     if (dbRoom) return this.dbSerializer.serializeRoom(dbRoom);
     return null;
   }
 
-  getUsers(): UserDto[] {
-    return this.db.getUses().map((ut) => this.dbSerializer.serializeUser(ut));
+  async getUsers(): Promise<UserDto[]> {
+    const users = await this.db.getUses();
+    return users.map((ut) => this.dbSerializer.serializeUser(ut));
   }
 
-  addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto> {
+  async addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto> {
     // const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
-    const dbRoom = this.db.insertChatRoom({ name: chatRoom.name, id: chatRoom.id });
-    const roomDto = this.dbSerializer.serializeRoom(dbRoom);
-    return new Promise((resolve) => resolve(roomDto));
+    const dbRoom = await this.db.insertChatRoom({ name: chatRoom.name, id: chatRoom.id });
+    return this.dbSerializer.serializeRoom(dbRoom);
   }
 
-  addParticipant(participant: ParticipantDto): void {
+  async addParticipant(participant: ParticipantDto): Promise<void> {
     if (participant.chatroom?.id === undefined || participant.user.id === undefined)
       throw new Error('Add participant miss attrs');
     const tabelPart = this.dbSerializer.desirializeParticipant(participant);
-    this.db.insertParticipant(tabelPart);
+    await this.db.insertParticipant(tabelPart);
   }
 
-  removeParticipant(participant: ParticipantDto): void {
+  async removeParticipant(participant: ParticipantDto): Promise<void> {
     if (!participant.id) throw new Error("Can't remouve unfoud participant");
-    this.db.removeParticipant(participant.id);
+    await this.db.removeParticipant(participant.id);
   }
 
-  addUser(user: UserDto): Promise<UserDto> {
+  async addUser(user: UserDto): Promise<UserDto> {
     if (!user?.id) throw new Error('Add user miss attrs');
     const tabelUser = this.dbSerializer.deserializeUser({ ...user });
-    const userTable = this.db.insertUser(tabelUser);
-    return new Promise((resolve) => resolve(this.dbSerializer.serializeUser(userTable)));
+    const userTable = await this.db.insertUser(tabelUser);
+    return this.dbSerializer.serializeUser(userTable);
   }
 }

@@ -13,8 +13,9 @@ export class GetRoomsByUserSSRUseCase implements IGetRoomsByUserSSRRequester {
     private presenter : IGetRoomsByUserSSRPresenter
   ) { }
 
-  getRoomsByUser(user: GetRoomsByUserRequestData):void{
-    const rooms = this.chatRepository.getChatRoomsByUser(user.userId).map((r) => {
+  async getRoomsByUser(user: GetRoomsByUserRequestData): Promise<void> {
+    const userRooms = await this.chatRepository.getChatRoomsByUser(user.userId);
+    const rooms = userRooms.map((r) => {
       return {
         roomId: r.id,
         roomName: r.name

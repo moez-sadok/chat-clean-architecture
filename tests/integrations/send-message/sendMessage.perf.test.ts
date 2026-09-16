@@ -16,7 +16,7 @@ describe('Main Perf Memory Tesing ( 20.000 connected user in one room )...', () 
         for (let i = 0; i < MAX_USERS; i++) {
             const newClient = await main.makeClient('user-' + i);
             await main.addClientToRoom(newClient.id, room.id);
-            newClient.getRoomsController.handle({userId:newClient.id});
+            await newClient.getRoomsController.handle({userId:newClient.id});
             clients.push(newClient);
         }
         console.timeEnd('Main Perf Memory Tesing - Init time')
@@ -30,10 +30,10 @@ describe('Main Perf Memory Tesing ( 20.000 connected user in one room )...', () 
         const c2room = lastClient.getRoomsView.rooms ? lastClient.getRoomsView.rooms[0] : null;
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
-        firstClient.getMessagesController.handle({roomId:c1room.roomId});
-        lastClient.getMessagesController.handle({roomId:c2room.roomId});
+        await firstClient.getMessagesController.handle({roomId:c1room.roomId});
+        await lastClient.getMessagesController.handle({roomId:c2room.roomId});
 
-        firstClient.sendMessageController.handle({ roomId: c1room.roomId, userId: firstClient.id, message: msg});
+        await firstClient.sendMessageController.handle({ roomId: c1room.roomId, userId: firstClient.id, message: msg});
 
         const lastClientMsgs = (await lastClient.getMessagesController.handle({roomId:c1room.roomId})).messages;
         const lastMsg = lastClientMsgs[lastClientMsgs.length - 1].message;
@@ -49,13 +49,13 @@ describe('Main Perf Memory Tesing ( 20.000 connected user in one room )...', () 
         const c2room = lastClient.getRoomsView.rooms ? lastClient.getRoomsView.rooms[0] : null;
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
-        firstClient.getMessagesController.handle({roomId:c1room.roomId});
-        lastClient.getMessagesController.handle({roomId:c2room.roomId});
+        await firstClient.getMessagesController.handle({roomId:c1room.roomId});
+        await lastClient.getMessagesController.handle({roomId:c2room.roomId});
 
         let lastSentMessage = '';
         for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
             lastSentMessage = msg+'-'+i;
-            firstClient.sendMessageController.handle({ roomId: c1room.roomId, userId: firstClient.id, message: lastSentMessage});
+            await firstClient.sendMessageController.handle({ roomId: c1room.roomId, userId: firstClient.id, message: lastSentMessage});
         }
 
         const lastClientMsgs = (await lastClient.getMessagesController.handle({roomId:c1room.roomId})).messages;
@@ -71,13 +71,13 @@ describe('Main Perf Memory Tesing ( 20.000 connected user in one room )...', () 
         const c2room = lastClient.getRoomsView.rooms ? lastClient.getRoomsView.rooms[0] : null;
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
-        firstClient.getMessagesController.handle({roomId:c1room.roomId});
-        lastClient.getMessagesController.handle({roomId:c2room.roomId});
+        await firstClient.getMessagesController.handle({roomId:c1room.roomId});
+        await lastClient.getMessagesController.handle({roomId:c2room.roomId});
 
         let lastSentMessage = '';
         for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
             lastSentMessage = msg+'-'+i;
-            clients[i].sendMessageController.handle({ roomId: c1room.roomId, userId: clients[i].id, message: lastSentMessage});
+            await clients[i].sendMessageController.handle({ roomId: c1room.roomId, userId: clients[i].id, message: lastSentMessage});
         }
 
         const lastClientMsgs = (await lastClient.getMessagesController.handle({roomId:c1room.roomId})).messages;

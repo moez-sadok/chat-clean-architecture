@@ -33,7 +33,7 @@ describe('Server Main Perf Memory Tesing ( 200.000 connected user in one room ).
 
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
 
-        main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: firstClient.getId(), message: msg })
+        await main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: firstClient.getId(), message: msg })
 
         const lastClientMsgs = (await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId })).messages;
         const lastMsg = lastClientMsgs[lastClientMsgs.length - 1].message;
@@ -54,7 +54,7 @@ describe('Server Main Perf Memory Tesing ( 200.000 connected user in one room ).
         let lastSentMessage = '';
         for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
             lastSentMessage = msg + '-i';
-            main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: firstClient.getId(), message: lastSentMessage })
+            await main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: firstClient.getId(), message: lastSentMessage })
         }
 
         const lastClientMsgs = (await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId })).messages;
@@ -75,7 +75,7 @@ describe('Server Main Perf Memory Tesing ( 200.000 connected user in one room ).
         let lastSentMessage = '';
         for (let i = 0; i < MAX_CONCURRENT_MESSAGES; i++) {
             lastSentMessage = msg + '-i';
-            main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: clients[i].getId(), message: lastSentMessage })
+            await main.backend.sendMessageFeature.sendMessage({ roomId: c1room.roomId, userId: clients[i].getId(), message: lastSentMessage })
         }
 
         const lastClientMsgs = (await main.backend.getMessagesByRoomFeature.getChatRoomsMessages({ roomId: c1room.roomId})).messages;
