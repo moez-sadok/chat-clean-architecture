@@ -7,6 +7,9 @@ Feature: Connect Client
   I want to connect to the chat server
   So that I can send and receive messages in real time
 
+  Background:
+    Given Alice is a chat member
+
   Rule: R1 A client that carries a user id is registered as online
 
     Scenario: Connecting with a user id

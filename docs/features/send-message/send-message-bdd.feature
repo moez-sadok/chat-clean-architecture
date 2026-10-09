@@ -9,7 +9,7 @@ Feature: Send Message
 
   Background:
     Given the chat room "General" with participants Alice, Bob and Carol
-    And Alice is connected
+    And Alice and Bob are connected
 
   Rule: R14 A sent message is saved in the room history
 
@@ -21,7 +21,7 @@ Feature: Send Message
   Rule: R15 Online participants receive the message in real time, except its author
 
     Scenario: Participants are online
-      Given Bob and Carol are connected
+      Given Carol is connected
       When Alice sends "Hello team" in "General"
       Then Bob receives "Hello team" from Alice in "General"
       And Carol receives "Hello team" from Alice in "General"
@@ -31,8 +31,7 @@ Feature: Send Message
 
     @wip
     Scenario: A participant is offline
-      Given Bob is connected
-      And Carol is not connected
+      Given Carol is not connected
       When Alice sends "Hello team" in "General"
       Then Bob receives "Hello team" from Alice in "General"
       And Carol gets a push notification with "Hello team"

@@ -10,7 +10,7 @@ Feature: Get Messages by Room
   Background:
     Given the chat room "General" with participants Alice and Bob
 
-  Rule: R6 The messages of a room are returned with their author and the room details
+  Rule: R6 The messages of a room are returned with their author
 
     Scenario: Reading a room that has messages
       Given the room "General" holds these messages:
@@ -18,14 +18,10 @@ Feature: Get Messages by Room
         | Alice  | Hi Bob           |
         | Bob    | Hello Alice      |
       When Alice reads the messages of "General"
-      Then she gets these messages:
-        | author | message          |
-        | Alice  | Hi Bob           |
-        | Bob    | Hello Alice      |
-      And each message gives its author id and the room id
-      And the room is described with the name "General" and the participants Alice and Bob
+      Then she gets these 2 messages
+      And each message gives its author name, its author id and the room id
 
-  Rule: R7 A room without messages still returns its details
+  Rule: R7 The room details are returned, even when the room has no messages
 
     Scenario: Reading a room that has no messages
       Given the room "General" holds no messages

@@ -7,6 +7,9 @@ Feature: Disconnect Client
   I want to disconnect from the chat server
   So that my session is closed and its resources are released
 
+  Background:
+    Given Alice is a chat member
+
   Rule: R4 Disconnecting an online user takes them offline
 
     Scenario: Disconnecting while online
