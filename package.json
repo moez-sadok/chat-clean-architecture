@@ -22,7 +22,8 @@
     "bench-test-get-rooms": "node tests/bench/get-user-rooms-bench-test.js",
     "bench-test-get-messages": "node tests/bench/get-messages-room-bench-test.js",
     "bench-connect-users": "artillery run  tests/bench/connect-users-bench-test.yml",
-    "kill-redis": "sudo kill -9 $(lsof -t -i:6379)"
+    "kill-redis": "sudo kill -9 $(lsof -t -i:6379)",
+    "test:bdd": "cucumber-js"
   },
   "private": true,
   "dependencies": {
@@ -66,6 +67,7 @@
     "@angular/cli": "^17.2.2",
     "@angular/compiler-cli": "^17.2.0",
     "@angular/language-service": "^17.2.0",
+    "@cucumber/cucumber": "^13.3.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
     "@nx/angular": "^20.0.0",
