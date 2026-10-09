@@ -58,7 +58,7 @@ defineFeature(feature, (test) => {
         });
     });
 
-    test('Disconnecting twice', ({ given, when, then }) => {
+    test('Disconnecting twice times', ({ given, when, then }) => {
         aliceIsAChatMember(given, s);
 
         given('Alice was connected and has already disconnected', async () => {
