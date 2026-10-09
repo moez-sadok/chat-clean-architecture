@@ -1,30 +1,41 @@
 # BDD : Get Messages by Room Use Case
 ## Prodsoft - Moez SADOK @Copyright 2024
 
+@UC-03 @domain:messaging @actor:room-participant
 Feature: Get Messages by Room
-  As a connected User
-  I want to retrieve all messages in a chat room
-  So that I can read the conversation history
+  As a Room Participant
+  I want to read the messages of a chat room
+  So that I can follow the conversation history
 
-Scenario: Room with messages
-  Given a User is authenticated and a chat room exists with messages
-  When the User sends a GetMessagesByRoomRequest with the roomId
-  Then the system verifies the room exists in the repository
-  And the system retrieves all messages for the room
-  And each message is mapped to a MessageOutputData with authorName, message, chatRoomId, and authorId
-  And the room metadata (roomName, participantsNames) is included in the response
-  And the presenter formats a GetMessagesOutputData response
-  And the response is returned to the User
+  Background:
+    Given the chat room "General" with participants Alice and Bob
 
-Scenario: Room with no messages
-  Given a User is authenticated and a chat room exists with no messages
-  When the User sends a GetMessagesByRoomRequest with the roomId
-  Then the system verifies the room exists in the repository
-  And the system retrieves an empty list of messages for the room
-  And a GetMessagesOutputData with an empty messages list and room metadata is returned
+  Rule: R6 The messages of a room are returned with their author and the room details
 
-Scenario: Room does not exist
-  Given a User requests messages for a non-existing room
-  When the User sends a GetMessagesByRoomRequest with an invalid roomId
-  Then the system checks the repository and the room is not found
-  And an error is thrown indicating the room does not exist
+    Scenario: Reading a room that has messages
+      Given the room "General" holds these messages:
+        | author | message          |
+        | Alice  | Hi Bob           |
+        | Bob    | Hello Alice      |
+      When Alice reads the messages of "General"
+      Then she gets these messages:
+        | author | message          |
+        | Alice  | Hi Bob           |
+        | Bob    | Hello Alice      |
+      And each message gives its author id and the room id
+      And the room is described with the name "General" and the participants Alice and Bob
+
+  Rule: R7 A room without messages still returns its details
+
+    Scenario: Reading a room that has no messages
+      Given the room "General" holds no messages
+      When Alice reads the messages of "General"
+      Then she gets an empty list of messages
+      And the room is described with the name "General" and the participants Alice and Bob
+
+  Rule: R8 Reading an unknown room is an error
+
+    Scenario: Reading a room that does not exist
+      Given no room exists with the id 999
+      When Alice reads the messages of room 999
+      Then an error says the room 999 does not exist

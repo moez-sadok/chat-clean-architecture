@@ -1,20 +1,28 @@
 # BDD : Get User by ID Use Case
 ## Prodsoft - Moez SADOK @Copyright 2024
 
+@UC-04 @domain:users @actor:chat-member
 Feature: Get User by ID
-  As a connected User
-  I want to retrieve a user's information by their ID
-  So that I can see their profile details
+  As a Chat Member
+  I want to look up a user by their id
+  So that I can see who they are
 
-Scenario: User found
-  Given a User is authenticated and a valid userId exists in the system
-  When the User sends a GetUserByIdRequest with the userId
-  Then the system queries the repository for the user by userId
-  And the presenter formats the user into a UserOutputData with id and name
-  And the formatted user is returned to the User
+  Rule: R9 A known user is returned with their id and name
 
-Scenario: User not found
-  Given a User is authenticated and the requested userId does not exist
-  When the User sends a GetUserByIdRequest with a non-existing userId
-  Then the system queries the repository for the user by userId
-  And null is returned to the User
+    Scenario Outline: Looking up a known user
+      Given the user <name> exists with the id <id>
+      When I look up the user <id>
+      Then I get the user with the id <id> and the name <name>
+
+      Examples:
+        | id | name  |
+        | 1  | Alice |
+        | 2  | Bob   |
+
+  Rule: R10 Looking up an unknown user returns no user, not an error
+
+    Scenario: Looking up an unknown user
+      Given no user exists with the id 999
+      When I look up the user 999
+      Then I get no user
+      And no error is raised
