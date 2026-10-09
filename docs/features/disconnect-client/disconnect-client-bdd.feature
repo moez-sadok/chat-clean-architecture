@@ -12,7 +12,7 @@ Feature: Disconnect Client
 
   Rule: R4 Disconnecting an online user takes them offline
 
-    Scenario: Disconnecting while online status
+    Scenario: Disconnecting while online
       Given Alice is connected to the chat server
       When Alice disconnects
       Then the disconnection is confirmed
