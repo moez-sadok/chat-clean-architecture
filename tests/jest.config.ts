@@ -11,7 +11,12 @@ export default {
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  // docs/features is a root and 'feature' an extension only so that watch mode
+  // re-runs the BDD steps when a .feature file changes
+  roots: ['<rootDir>', '<rootDir>/../docs/features'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'feature'],
+  // *.steps.ts bind the BDD features of docs/features (jest-cucumber)
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)', '**/*.steps.ts'],
   coverageDirectory:
     '../tests',
 };

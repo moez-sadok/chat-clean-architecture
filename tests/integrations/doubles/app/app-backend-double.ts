@@ -30,10 +30,10 @@ export class AppBackendDouble {
     getMessagesByRoomFeature: IGetMessagesByRoomInput;
     sendMessageFeature: ISendMessageInput;
 
-    constructor() {
+    constructor(dataBase: IChatDatabase = new DataBaseMemoryPerfImpl()) {
         // init db and ws server
         // this.dataBase = new DataBaseMemoryImpl();
-        this.dataBase = new DataBaseMemoryPerfImpl();
+        this.dataBase = dataBase;
         this.chatdbMapper = new DataBaseMapper(this.dataBase);
         this.chatServer = new ChatServerMemoryImpl();
 

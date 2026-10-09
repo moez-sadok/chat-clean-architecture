@@ -9,9 +9,12 @@ import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../..
 import { IGetRoomsByUserView } from "../../../../core/application/usecases/get-rooms-by-user/presenter/getRoomsByUser.view";
 import { GetMessagesByRoomClientView, GetMessagesByRoomPresenterUi, GetUserByIdClientView, IGetMessagesByRoomView, IGetUserByIdView, ISendMessageView, SendMessagePresenterUi, SendMessageWebView, UserByIdPresenterUi } from "../../../../core/application";
 import { IChatClient } from "../../../../core/domain";
+import { IChatDatabase } from "../../../../core/gateways/persistence";
+import { UserDto } from "../../../../core/dtos/models/user.dto";
 
 export interface ClientViewController {
     id: number
+    ws: IChatClient,
     //
     getRoomsView: IGetRoomsByUserView,
     getRoomsController: IHttpController,
@@ -28,9 +31,19 @@ export interface ClientViewController {
 
 export class MainDouble {
 
-    backend: AppBackendDouble = new AppBackendDouble();
+    backend: AppBackendDouble;
+
+    constructor(dataBase?: IChatDatabase) {
+        this.backend = new AppBackendDouble(dataBase);
+    }
 
     async makeClient(name: string): Promise<ClientViewController> {
+        const addedUser = await this.backend.chatdbMapper.addUser({ id: -1, name: name });
+        return this.makeClientFor(addedUser);
+    }
+
+    // a client for a user already in the repository, connected to the chat server unless told otherwise
+    async makeClientFor(addedUser: UserDto, connect = true): Promise<ClientViewController> {
 
         const getRoomsByUserView = new GetRoomsByUserClientView();
         const getRoomsByUserPresenter = new GetRoomsByUserPresenterUi(getRoomsByUserView);
@@ -42,22 +55,22 @@ export class MainDouble {
 
         const getUserByIdView = new GetUserByIdClientView();
         const getUserByIdPresenter = new UserByIdPresenterUi(getUserByIdView);
-        const clientGetUserByIdController = new GetUserByIdHttpControllerClientMemory( getUserByIdPresenter,this.backend.getUserRoomsHttpControllerApi);
+        const clientGetUserByIdController = new GetUserByIdHttpControllerClientMemory( getUserByIdPresenter,this.backend.getUserByIdHttpControllerApi);
 
         const sendMessageView = new SendMessageWebView();
         const sendMessagePresenter = new SendMessagePresenterUi(sendMessageView);
         const clientsendMessageController = new SendMessageHttpControllerClientMemory( sendMessagePresenter,this.backend.sendMessageHttpControllerApi);
 
-        const addedUser = await this.backend.chatdbMapper.addUser({ id: -1, name: name });
         const currUser = await clientGetUserByIdController.handle({ userId :  addedUser.id});
         if (!currUser) throw new Error('Fail in adding user to repository');
         
         const clientWs: IChatClient = new ChatClientMemoryImpl(addedUser.id, addedUser.name, getMessagesByRoomPresenter);
-        await this.backend.chatServer.connectUser(clientWs);
+        if (connect) await this.backend.chatServer.connectUser(clientWs);
 
         return new Promise((resolve) => {
             resolve({ 
                 id: addedUser.id,
+                ws: clientWs,
                 //
                 getRoomsView: getRoomsByUserView,
                 getRoomsController: clientGetRoomsController,

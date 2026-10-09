@@ -28,6 +28,7 @@ Feature: Connect Client
 
   Rule: R3 Connecting again keeps the session already open
 
+    @wip
     Scenario: Connecting a second time
       Given Alice is already connected from a first client
       When Alice connects again from a second client
