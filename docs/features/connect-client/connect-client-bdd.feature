@@ -12,6 +12,8 @@ Feature: Connect Client
 
   Rule: R1 A client that carries a user id is registered as online
 
+    # Main scenario
+    @main
     Scenario: Connecting with a user id
       Given Alice is not connected to the chat server
       When Alice connects with her user id

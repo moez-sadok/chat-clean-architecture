@@ -10,6 +10,18 @@ Feature: Get Messages by Room
   Background:
     Given the chat room "General" with participants Alice and Bob
 
+  # Main flow, end to end: the rules below detail each outcome
+  @main
+  Scenario: Reading the conversation of a room
+    Given the room "General" holds these messages:
+      | author | message     |
+      | Alice  | Hi Bob      |
+      | Bob    | Hello Alice |
+    When Alice reads the messages of "General"
+    Then she gets these 2 messages
+    And each message gives its author name, its author id and the room id
+    And the room is described with the name "General" and the participants Alice and Bob
+
   Rule: R6 The messages of a room are returned with their author
 
     Scenario: Reading a room that has messages

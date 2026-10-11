@@ -15,6 +15,8 @@ Feature: Get User by ID
 
   Rule: R9 A known user is returned with their id and name
 
+    # Main scenario
+    @main
     Scenario Outline: Looking up a known user
       When I look up the user <id>
       Then I get the user with the id <id> and the name <name>

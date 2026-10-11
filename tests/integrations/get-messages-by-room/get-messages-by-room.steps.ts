@@ -19,8 +19,13 @@ class RecordingGetMessagesPresenter extends GetMessagesByRoomPresenterApi {
 
 defineFeature(feature, (test) => {
     const s = new ChatScenario();
+    // the messages a Given stored in the room, in order
+    let held: { author: string; message: string }[] = [];
 
-    beforeEach(() => s.reset());
+    beforeEach(() => {
+        s.reset();
+        held = [];
+    });
 
     const messagesView = () => s.clients['Alice'].getMessagesView as GetMessagesByRoomClientView;
     const readResult = () => {
@@ -38,16 +43,7 @@ defineFeature(feature, (test) => {
             await s.addRoom(name, ['Alice', 'Bob']);
         });
 
-    const aliceReadsTheMessagesOf = (when: DefineStepFunction) =>
-        when(/^Alice reads the messages of "(.*)"$/, async (name: string) => {
-            await readMessages(s.room(name).id);
-        });
-
-    test('Reading a room that has messages', ({ given, when, then, and }) => {
-        let held: { author: string; message: string }[] = [];
-
-        theChatRoom(given);
-
+    const theRoomHoldsTheseMessages = (given: DefineStepFunction) =>
         given(/^the room "(.*)" holds these messages:$/, async (name: string, table: { author: string; message: string }[]) => {
             held = table;
             for (const { author, message } of table) {
@@ -56,14 +52,19 @@ defineFeature(feature, (test) => {
             }
         });
 
-        aliceReadsTheMessagesOf(when);
+    const aliceReadsTheMessagesOf = (when: DefineStepFunction) =>
+        when(/^Alice reads the messages of "(.*)"$/, async (name: string) => {
+            await readMessages(s.room(name).id);
+        });
 
+    const sheGetsTheseMessages = (then: DefineStepFunction) =>
         then(/^she gets these (\d+) messages$/, (count: string) => {
             const displayed = messagesView().vm.messages;
             expect(displayed).toHaveLength(Number(count));
             expect(displayed.map((m) => ({ author: m.participantName, message: m.content }))).toEqual(held);
         });
 
+    const eachMessageGivesItsAuthorAndRoom = (and: DefineStepFunction) =>
         and('each message gives its author name, its author id and the room id', () => {
             const { messages, roomId } = readResult();
             for (const m of messages) {
@@ -71,6 +72,30 @@ defineFeature(feature, (test) => {
                 expect(m.chatRoomId).toBe(roomId);
             }
         });
+
+    const theRoomIsDescribed = (and: DefineStepFunction) =>
+        and(/^the room is described with the name "(.*)" and the participants Alice and Bob$/, async (name: string) => {
+            expect(messagesView().vm.roomName).toBe(name);
+            const presenter = new RecordingGetMessagesPresenter();
+            await new GetMessagesByRoomUseCase(s.main.backend.chatdbMapper, presenter).getChatRoomsMessages({ roomId: s.room(name).id });
+            expect([...(presenter.room?.participantsNames ?? [])].sort()).toEqual(['Alice', 'Bob']);
+        });
+
+    test('Reading the conversation of a room', ({ given, when, then, and }) => {
+        theChatRoom(given);
+        theRoomHoldsTheseMessages(given);
+        aliceReadsTheMessagesOf(when);
+        sheGetsTheseMessages(then);
+        eachMessageGivesItsAuthorAndRoom(and);
+        theRoomIsDescribed(and);
+    });
+
+    test('Reading a room that has messages', ({ given, when, then, and }) => {
+        theChatRoom(given);
+        theRoomHoldsTheseMessages(given);
+        aliceReadsTheMessagesOf(when);
+        sheGetsTheseMessages(then);
+        eachMessageGivesItsAuthorAndRoom(and);
     });
 
     test('Reading a room that has no messages', ({ given, when, then, and }) => {
@@ -87,12 +112,7 @@ defineFeature(feature, (test) => {
             expect(messagesView().vm.messages).toEqual([]);
         });
 
-        and(/^the room is described with the name "(.*)" and the participants Alice and Bob$/, async (name: string) => {
-            expect(messagesView().vm.roomName).toBe(name);
-            const presenter = new RecordingGetMessagesPresenter();
-            await new GetMessagesByRoomUseCase(s.main.backend.chatdbMapper, presenter).getChatRoomsMessages({ roomId: s.room(name).id });
-            expect([...(presenter.room?.participantsNames ?? [])].sort()).toEqual(['Alice', 'Bob']);
-        });
+        theRoomIsDescribed(and);
     });
 
     test('Reading a room that does not exist', ({ given, when, then }) => {

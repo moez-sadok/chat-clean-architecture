@@ -7,10 +7,19 @@ import { ChatroomDto } from "../../../core/dtos/models/chatroom.dto";
 import { UserDto } from "../../../core/dtos/models/user.dto";
 import { GetMessagesByRoomClientView } from "../../../core/application";
 
+// BDD_TAGS narrows the run, e.g. BDD_TAGS=@main for the main scenarios only. jest-cucumber
+// evaluates the expression as code, so only tags, and/or/not and parentheses are accepted.
+const tagFilter = (): string => {
+    const tags = process.env['BDD_TAGS']?.trim();
+    if (!tags) return 'not @wip';
+    if (!/^(\s|\(|\)|@[\w-]+|and|or|not)+$/.test(tags)) throw new Error(`Invalid BDD_TAGS expression: ${tags}`);
+    return `(${tags}) and not @wip`;
+};
+
 // Loads a feature of docs/features. Scenarios tagged @wip describe behaviour not built yet:
 // they are reported as skipped, and every other scenario must match its steps exactly.
 export const loadChatFeature = (name: string) =>
-    loadFeature(resolve(__dirname, `../../../docs/features/${name}/${name}-bdd.feature`), { tagFilter: 'not @wip' });
+    loadFeature(resolve(__dirname, `../../../docs/features/${name}/${name}-bdd.feature`), { tagFilter: tagFilter() });
 
 // State of one scenario, on top of the integration MainDouble (client + server wired together).
 export class ChatScenario {

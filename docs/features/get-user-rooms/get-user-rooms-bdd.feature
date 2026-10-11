@@ -16,6 +16,8 @@ Feature: Get Rooms by User
 
   Rule: R11 A user sees only the rooms they participate in
 
+    # Main scenario
+    @main
     Scenario: Listing my rooms
       When Alice lists her rooms
       Then she gets the rooms "General" and "Project"

@@ -24,7 +24,8 @@
     "bench-connect-users": "artillery run  tests/bench/connect-users-bench-test.yml",
     "kill-redis": "sudo kill -9 $(lsof -t -i:6379)",
     "test:bdd": "jest -c tests/jest.config.ts --testPathPattern \"\\.steps\\.ts$\" --verbose",
-    "test:bdd:watch": "jest -c tests/jest.config.ts --testPathPattern \"\\.steps\\.ts$\" --watchAll"
+    "test:bdd:watch": "jest -c tests/jest.config.ts --testPathPattern \"\\.steps\\.ts$\" --watchAll",
+    "test:bdd:main": "BDD_TAGS=@main jest -c tests/jest.config.ts --testPathPattern \"\\.steps\\.ts$\" --verbose"
   },
   "private": true,
   "dependencies": {
