@@ -54,15 +54,13 @@ defineFeature(feature, (test) => {
             expect(pushedTo(receiver)).toEqual([{ content: message, participantName: 'Alice', roomId: s.room(room).id }]);
         });
 
-    test('Sending a message', ({ given, and, when, then }) => {
-        background(given, and);
-        aliceSendsIn(when);
-
+    const savedInHistory = (then: DefineStepFunction) =>
         then(/^"(.*)" by Alice is saved in the history of "(.*)"$/, (message: string, room: string) => {
             const history = s.main.backend.chatdbMapper.getMessagesByRoom(s.room(room).id);
             expect(history[history.length - 1]).toMatchObject({ message, from: { user: { name: 'Alice' } } });
         });
 
+    const aliceGetsTheSentMessageBack = (and: DefineStepFunction) =>
         and('Alice gets the sent message back with her name, her id and the room id', () => {
             expect(s.error).toBeNull();
             expect(s.result as SendMessageOutputData).toMatchObject({
@@ -71,22 +69,42 @@ defineFeature(feature, (test) => {
                 chatRoomId: s.room('General').id,
             });
         });
-    });
 
-    test('Participants are online', ({ given, and, when, then }) => {
-        background(given, and);
-
+    const carolIsConnected = (given: DefineStepFunction) =>
         given('Carol is connected', async () => {
             await openGeneral('Carol');
         });
 
-        aliceSendsIn(when);
-        receivesFromAlice(then, 'Bob');
-        receivesFromAlice(and, 'Carol');
-
+    const aliceDoesNotReceiveHerOwnMessage = (and: DefineStepFunction) =>
         and('Alice does not receive her own message as a new message', () => {
             expect(pushedTo('Alice')).toEqual([]);
         });
+
+    test('A message reaches every online participant', ({ given, and, when, then }) => {
+        background(given, and);
+        carolIsConnected(given);
+        aliceSendsIn(when);
+        savedInHistory(then);
+        receivesFromAlice(and, 'Bob');
+        receivesFromAlice(and, 'Carol');
+        aliceDoesNotReceiveHerOwnMessage(and);
+        aliceGetsTheSentMessageBack(and);
+    });
+
+    test('Sending a message', ({ given, and, when, then }) => {
+        background(given, and);
+        aliceSendsIn(when);
+        savedInHistory(then);
+        aliceGetsTheSentMessageBack(and);
+    });
+
+    test('Participants are online', ({ given, and, when, then }) => {
+        background(given, and);
+        carolIsConnected(given);
+        aliceSendsIn(when);
+        receivesFromAlice(then, 'Bob');
+        receivesFromAlice(and, 'Carol');
+        aliceDoesNotReceiveHerOwnMessage(and);
     });
 
     // @wip: the domain has a push notification port (INotifiyer) but nothing wires it yet

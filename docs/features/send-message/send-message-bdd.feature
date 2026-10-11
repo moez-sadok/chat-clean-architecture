@@ -11,6 +11,17 @@ Feature: Send Message
     Given the chat room "General" with participants Alice, Bob and Carol
     And Alice and Bob are connected
 
+  # Main flow, end to end: the rules below detail each outcome
+  @main
+  Scenario: A message reaches every online participant
+    Given Carol is connected
+    When Alice sends "Hello team" in "General"
+    Then "Hello team" by Alice is saved in the history of "General"
+    And Bob receives "Hello team" from Alice in "General"
+    And Carol receives "Hello team" from Alice in "General"
+    And Alice does not receive her own message as a new message
+    And Alice gets the sent message back with her name, her id and the room id
+
   Rule: R14 A sent message is saved in the room history
 
     Scenario: Sending a message
