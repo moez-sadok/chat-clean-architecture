@@ -1,8 +1,6 @@
-
-
+import { SendMessageOutputData } from "../send-message.response";
 
 export interface SendMessageViewModel {
   sendButtonLabel: string;
-  messageContent: string;
-  sentMessages: string[];
+  sentMessages: SendMessageOutputData[];
 }

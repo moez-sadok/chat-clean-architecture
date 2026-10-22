@@ -294,6 +294,7 @@ Each use case follows Clean Architecture's dependency rule: it depends only on p
 | **Port/Adapter** | `IChatRepository`, `IChatServerPort`, `IChatDatabase` | Core business logic defines port interfaces; framework-specific adapters implement them (in-memory DB, MongoDB, Socket.IO). |
 | **Factory** | `factories.ts` in each use case | Factory functions create use cases, presenters, and controllers with proper dependency injection wiring. |
 | **Presenter** | `*PresenterApi`, `*PresenterUi` | Separates output formatting from business logic. API presenters format data for HTTP responses; UI presenters update views. |
+| **Composition at the wiring** | `send-message-in-room.providers.ts`, `MainDouble` | Two use cases never call each other. When one screen needs both (the author must see the message they sent in the room's list), the composition root gives send-message's `ISendMessageView` the room's message list of get-messages-by-room, which satisfies that contract structurally. Neither use case imports the other, and the behaviour is specified in BDD (`Alice sees "Hello team" in "General"`). |
 | **ISP (Interface Segregation)** | `ISendMessageRepository` | Narrow repository interface (3 methods) instead of the full `IChatRepository` (12+ methods), so the use case depends only on what it needs. |
 
 <!-- Page-break For PDF generation -->

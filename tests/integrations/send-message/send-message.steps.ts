@@ -9,23 +9,16 @@ const feature = loadChatFeature('send-message');
 
 defineFeature(feature, (test) => {
     const s = new ChatScenario();
-    // messages each client displayed when it opened the room, to tell them from the pushed ones
-    let displayedOnOpen: Record<string, number> = {};
 
-    beforeEach(() => {
-        s.reset();
-        displayedOnOpen = {};
-    });
+    beforeEach(() => s.reset());
 
-    const openGeneral = async (name: string) => {
-        const view = await s.openRoom(name, 'General');
-        displayedOnOpen[name] = view.vm.messages.length;
-    };
+    const openGeneral = (name: string) => s.openRoom(name, 'General');
 
-    const pushedTo = (name: string) => {
-        const view = s.clients[name].getMessagesView as GetMessagesByRoomClientView;
-        return view.vm.messages.slice(displayedOnOpen[name]);
-    };
+    // what the server pushed to a client, as the room view shows it
+    const pushedTo = (name: string) =>
+        s.clients[name].ws.received.map((m) => ({ content: m.message, participantName: m.authorName, roomId: m.chatRoomId }));
+
+    const shownTo = (name: string) => (s.clients[name].getMessagesView as GetMessagesByRoomClientView).vm.messages;
 
     const aliceSends = async (message: string, roomId: number) => {
         const alice = await s.client('Alice');
@@ -70,6 +63,12 @@ defineFeature(feature, (test) => {
             });
         });
 
+    // the SPA shows the sent message in the author's open room (one view for two use cases)
+    const aliceSeesHerMessage = (and: DefineStepFunction) =>
+        and(/^Alice sees "(.*)" in "(.*)"$/, (message: string, room: string) => {
+            expect(shownTo('Alice').at(-1)).toEqual({ content: message, participantName: 'Alice', roomId: s.room(room).id });
+        });
+
     const carolIsConnected = (given: DefineStepFunction) =>
         given('Carol is connected', async () => {
             await openGeneral('Carol');
@@ -89,6 +88,7 @@ defineFeature(feature, (test) => {
         receivesFromAlice(and, 'Carol');
         aliceDoesNotReceiveHerOwnMessage(and);
         aliceGetsTheSentMessageBack(and);
+        aliceSeesHerMessage(and);
     });
 
     test('Sending a message', ({ given, and, when, then }) => {

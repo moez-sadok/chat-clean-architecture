@@ -1,13 +1,13 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
-import { IGetMessagesByRoomPresenterOutput, SendMessageOutputData } from '@cca/core-features';
 import { ConnectUserComponent } from '../../../components/connect-user/connect-user.component';
 import { getUserByIdProviders } from '../../../components/connect-user/get-user-by-id.main.providers';
 import { GetRoomMessagesComponent } from '../../../components/get-room-messages/get-room-messages.component';
 import { SendMessageComponent } from '../../../components/send-message/send-message.component';
 import { getChatPageFacadeProviders } from '../../../providers/chat-page.main.providers';
-import { GET_MESSAGES_BY_ROOM_PRESENTER, getMessagePresenterProviders } from '../../../providers/shared-get-messages.presenter.provider';
+import { getMessagePresenterProviders } from '../../../providers/shared-get-messages.presenter.provider';
+import { sendMessageInRoomProviders } from '../../../providers/send-message-in-room.providers';
 
 @Component({
   selector: 'cca-mobile-chat-message-page',
@@ -23,6 +23,7 @@ import { GET_MESSAGES_BY_ROOM_PRESENTER, getMessagePresenterProviders } from '..
   providers: [
     // the shared get-messages presenter and view, which the components below inject
     ...getMessagePresenterProviders,
+    ...sendMessageInRoomProviders,
     ...getChatPageFacadeProviders,
     ...getUserByIdProviders
   ]
@@ -31,17 +32,10 @@ export class MobileChatMessagePageComponent {
 
   userId = -1;
 
-  constructor(route: ActivatedRoute,
-    @Inject(GET_MESSAGES_BY_ROOM_PRESENTER) private roomMessages: IGetMessagesByRoomPresenterOutput
-  ) {
+  constructor(route: ActivatedRoute) {
     route.paramMap.subscribe(params => {
       this.userId = Number(params.get('userId') ?? -1);
     });
-  }
-
-  // the page composes two use cases: what send-message returns is shown by get-messages-by-room
-  showSentMessage(message: SendMessageOutputData): void {
-    this.roomMessages.presentNewMessage(message);
   }
 
 }

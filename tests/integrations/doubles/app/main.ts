@@ -9,13 +9,13 @@ import { IChatDatabase } from "../../../../core/gateways/persistence";
 import { ChatClientMemoryImpl } from "../ws/chat-client.port.impl";
 import { GetRoomsByUserClientView, GetRoomsByUserPresenterUi } from "../../../../core/application/usecases/get-rooms-by-user";
 import { IGetRoomsByUserView } from "../../../../core/application/usecases/get-rooms-by-user/presenter/get-rooms-by-user.view";
-import { GetMessagesByRoomClientView, GetMessagesByRoomPresenterUi, GetUserByIdClientView, IGetMessagesByRoomView, IGetUserByIdView, ISendMessageView, SendMessagePresenterUi, SendMessageWebView, UserByIdPresenterUi } from "../../../../core/application";
+import { GetMessagesByRoomClientView, GetMessagesByRoomPresenterUi, GetUserByIdClientView, IGetMessagesByRoomView, IGetUserByIdView, SendMessagePresenterUi, UserByIdPresenterUi } from "../../../../core/application";
 import { IChatClient } from "../../../../core/domain";
 import { UserDto } from "../../../../core/dtos/models/user.dto";
 
 export interface ClientViewController {
     id: number
-    ws: IChatClient,
+    ws: ChatClientMemoryImpl,
     //
     getRoomsView: IGetRoomsByUserView,
     getRoomsController: SpaHttpClientMemory<GetRoomsByUserRequestData, GetRoomsByUserResponseData[]>,
@@ -26,7 +26,6 @@ export interface ClientViewController {
     getUserByIdView: IGetUserByIdView,
     getUserByIdController: SpaHttpClientMemory<GetUserByIdInputData, UserOutputData | null>,
     //
-    sendMessageView: ISendMessageView,
     sendMessageController: SpaHttpClientMemory<SendMessageInputData, SendMessageOutputData>
 }
 
@@ -58,14 +57,14 @@ export class MainDouble {
         const getUserByIdPresenter = new UserByIdPresenterUi(getUserByIdView);
         const clientGetUserByIdController = new SpaHttpClientMemory(this.backend.getUserByIdHttpControllerApi, new GetUserByIdAPIHttpControllerClientAdapter(getUserByIdPresenter));
 
-        const sendMessageView = new SendMessageWebView();
-        const sendMessagePresenter = new SendMessagePresenterUi(sendMessageView);
+        // as in the SPA: the sent message is displayed by the room's message list (one view, two use cases)
+        const sendMessagePresenter = new SendMessagePresenterUi(getMessagesByRoomView);
         const clientsendMessageController = new SpaHttpClientMemory(this.backend.sendMessageHttpControllerApi, new SendMessageAPIHttpControllerClientAdapter(sendMessagePresenter));
 
         const currUser = await clientGetUserByIdController.handle({ userId :  addedUser.id});
         if (!currUser) throw new Error('Fail in adding user to repository');
         
-        const clientWs: IChatClient = new ChatClientMemoryImpl(addedUser.id, addedUser.name, getMessagesByRoomPresenter);
+        const clientWs = new ChatClientMemoryImpl(addedUser.id, addedUser.name, getMessagesByRoomPresenter);
         if (connect) await this.backend.chatServer.connectUser(clientWs);
 
         return new Promise((resolve) => {
@@ -82,7 +81,6 @@ export class MainDouble {
                 getUserByIdView: getUserByIdView,
                 getUserByIdController : clientGetUserByIdController,
                 //
-                sendMessageView: sendMessageView,
                 sendMessageController : clientsendMessageController
             });
         });

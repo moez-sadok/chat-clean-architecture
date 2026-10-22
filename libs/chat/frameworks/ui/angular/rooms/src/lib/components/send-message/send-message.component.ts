@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ISendMessageView, SendMessageOutputData } from '@cca/core-features';
-import { SEND_MESSAGE_HTTP_API_CLIENT, SEND_MESSAGE_VIEW, sendMessageProviders } from './send-message.main.providers';
+import { SEND_MESSAGE_HTTP_API_CLIENT, sendMessageProviders } from './send-message.main.providers';
 import { SendMessageSpaClient } from './send-message.spa.client';
 
 @Component({
@@ -14,15 +13,11 @@ import { SendMessageSpaClient } from './send-message.spa.client';
 })
 export class SendMessageComponent {
 
-  // the sent message, for the page to show it wherever it belongs (e.g. the room's message list)
-  @Output() messageSent = new EventEmitter<SendMessageOutputData>();
-
   roomId = -1;
   userId = -1;
 
   constructor(route: ActivatedRoute,
-    @Inject(SEND_MESSAGE_HTTP_API_CLIENT) private sendMessageClient: SendMessageSpaClient,
-    @Inject(SEND_MESSAGE_VIEW) public sendMessageView: ISendMessageView
+    @Inject(SEND_MESSAGE_HTTP_API_CLIENT) private sendMessageClient: SendMessageSpaClient
   ) {
     route.paramMap.subscribe(params => {
       this.userId = Number(params.get('userId') ?? -1);
@@ -30,8 +25,9 @@ export class SendMessageComponent {
     });
   }
 
-  async send(message: string): Promise<void> {
-    this.messageSent.emit(await this.sendMessageClient.sendMessage(this.roomId, this.userId, message));
+  // the result is presented by the use case's presenter into the view the page provided
+  send(message: string): Promise<unknown> {
+    return this.sendMessageClient.sendMessage(this.roomId, this.userId, message);
   }
 
 }

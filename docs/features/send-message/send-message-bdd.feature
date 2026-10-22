@@ -21,6 +21,7 @@ Feature: Send Message
     And Carol receives "Hello team" from Alice in "General"
     And Alice does not receive her own message as a new message
     And Alice gets the sent message back with her name, her id and the room id
+    And Alice sees "Hello team" in "General"
 
   Rule: R14 A sent message is saved in the room history
 

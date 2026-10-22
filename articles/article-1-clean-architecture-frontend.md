@@ -459,6 +459,21 @@ The provider is the **only place** that knows about concrete classes. The compon
 { provide: TASK_REPOSITORY, useFactory: () => new TaskInMemoryRepository() }
 ```
 
+### When Two Use Cases Share a Screen
+
+Sooner or later two use cases meet on one screen: after `SendMessage`, the author expects to see their message in the list that `GetMessagesByRoom` manages. The reflex is to have one use case call the other, or to have the component forward the result (an `@Output` from one component to the other). Both put application behaviour where it does not belong: inside a use case that should not know its neighbour, or inside the framework, where a React or Vue port would have to reinvent it.
+
+The composition root solves it without either side knowing: `SendMessage` presents to its own view port, `ISendMessageView { display(message) }`; the room's list view simply has a `display` method too, so it satisfies that port structurally, with no import between the two use case folders. The providers hand the same view object to both presenters:
+
+```typescript
+// libs/.../providers/send-message-in-room.providers.ts
+export const sendMessageInRoomProviders = [
+  { provide: SEND_MESSAGE_VIEW, useExisting: GET_MESSAGES_BY_ROOM_REACTIVE_VIEW },
+];
+```
+
+One view, two contracts, one line of wiring. The behaviour is specified in Gherkin ("the author sees their message in the room") and runs in the framework-free integration tests with the same wiring, so it is a property of the application, not of Angular.
+
 ---
 
 ## 7. The Full Flow: From User Click to Screen Update

@@ -37,6 +37,12 @@ export class GetMessagesByRoomClientReactiveView implements IGetMessagesByRoomRe
     return message;
   }
 
+  // Also the view of send-message (ISendMessageView, matched structurally: no import between use
+  // cases): the author sees the message they just sent in the open room, like any new message.
+  display(message: MessageOutputData): void {
+    this.receiveNewMessage(message);
+  }
+
   private receiveMessage(message: MessageViewModel): MessageViewModel | null {
     this.vm.change(prev => ({ ...prev, messages: [...prev.messages, message] }));
     return message;
