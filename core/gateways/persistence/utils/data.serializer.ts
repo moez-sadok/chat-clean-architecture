@@ -102,13 +102,13 @@ export class ChatDataSerializer {
     };
   }
 
-  public desirializeParticipant(part: ParticipantDto): ParticipantTable {
+  public deserializeParticipant(part: ParticipantDto): ParticipantTable {
     if (
      // part.id == undefined ||
       part.chatroom?.id == undefined ||
       part.user?.id == undefined
     )
-      throw new Error('desirializeMessage miss attrs');
+      throw new Error('deserializeMessage miss attrs');
     return {
       id: part.id || -1,
       chatRoomId: part.chatroom.id,
@@ -143,9 +143,9 @@ export class ChatDataSerializer {
     };
   }
 
-  public desirializeMessage(message: MessageDto): MessageTable {
+  public deserializeMessage(message: MessageDto): MessageTable {
     if (message.from.id == undefined || message.room?.id == undefined)
-      throw new Error('desirializeMessage miss attrs');
+      throw new Error('deserializeMessage miss attrs');
     return {
       id: message.id || 0,
       participantId: message.from.id,
@@ -154,8 +154,8 @@ export class ChatDataSerializer {
     };
   }
 
-  public desirializeRoom(room: ChatroomDto): ChatroomTable {
-    if (!room.id) throw new Error('desirialize room miss room id');
+  public deserializeRoom(room: ChatroomDto): ChatroomTable {
+    if (!room.id) throw new Error('deserialize room miss room id');
     return {
       id: room.id,
       name: room.name,
@@ -163,7 +163,7 @@ export class ChatDataSerializer {
   }
 
   public deserializeUser(uDto: UserDto): UserTable {
-    if (!uDto.id) throw new Error('desirialize user miss user id');
+    if (!uDto.id) throw new Error('deserialize user miss user id');
     return {
       id: uDto.id,
       name: uDto.name,

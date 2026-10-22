@@ -1,4 +1,3 @@
-import { Inject } from "@angular/core";
 import { IHttpController } from "@cca/core-controllers";
 import { GET_USER_BY_ID_HTTP_URL } from "@cca/core-features";
 
@@ -6,7 +5,6 @@ import { GET_USER_BY_ID_HTTP_URL } from "@cca/core-features";
 export class GetUserByIdSpaClient {
 
   constructor(
-    @Inject('GET_USER_BY_IDApiClientControllerAdapter')
     private clientControllerAdapter: IHttpController
   ) { }
 

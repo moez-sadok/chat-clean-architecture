@@ -3,7 +3,7 @@ import { Socket, io } from 'socket.io-client';
 import { IChatWsController } from '@cca/core-controllers';
 import { IGetMessagesByRoomPresenterOutput } from '@cca/core-features';
 import { IChatClient } from '@cca/core-domain';
-import { ChatClientSocketkAdapter } from './chat-socket-client-adapter';
+import { ChatClientSocketAdapter } from './chat-socket-client-adapter';
 // Adapter pattern (Object) 
 export class ChatControllerWsClientAdapterImpl implements IChatWsController {
 
@@ -15,7 +15,7 @@ export class ChatControllerWsClientAdapterImpl implements IChatWsController {
       auth: { userId: userId },
     });
     socket.id = userId.toString();
-    const clientSocket: IChatClient = new ChatClientSocketkAdapter(socket, this.presentator);
+    const clientSocket: IChatClient = new ChatClientSocketAdapter(socket, this.presentator);
     return new Promise((resolve) => {
       if (clientSocket) resolve(true);
       resolve(false);

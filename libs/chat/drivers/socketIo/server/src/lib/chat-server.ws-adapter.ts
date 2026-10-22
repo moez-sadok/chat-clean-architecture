@@ -13,7 +13,7 @@ export class ChatServerWSAdapter implements IChatServerPort {
   wsServer :Server ;
   httpServer = createServer();
 
-  connectetdUsers: Record<number, IChatClient> = {};
+  connectedUsers: Record<number, IChatClient> = {};
 
   constructor(){
     this.wsServer = new Server(this.httpServer,
@@ -35,20 +35,20 @@ export class ChatServerWSAdapter implements IChatServerPort {
   }
 
   getConnectedClient(userId: number): IChatClient {
-    return this.connectetdUsers[userId];
+    return this.connectedUsers[userId];
   }
 
   connectUser(client: IChatClient): boolean {
     const userId = client.getId();
     if (userId === null || userId === undefined) return false;
-    if (!this.connectetdUsers[userId]) this.connectetdUsers[userId] = client;
+    if (!this.connectedUsers[userId]) this.connectedUsers[userId] = client;
     return true;
   }
 
   disconnectUser(userId: number): boolean {
     if (userId === null || userId === undefined) return false;
-    if (!this.connectetdUsers[userId]) return false;
-    delete this.connectetdUsers[userId];
+    if (!this.connectedUsers[userId]) return false;
+    delete this.connectedUsers[userId];
     return true;
   }
 

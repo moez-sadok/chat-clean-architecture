@@ -1,5 +1,4 @@
 
-import { IHttpController } from "../../../../core/controllers";
 import { DataBaseMapper, IChatDatabase } from "../../../../core/gateways/persistence";
 import { ChatServerMemoryImpl } from "../ws/chat-server.memory.impl";
 import { DataBaseMemoryPerfImpl } from "../../../../libs/chat/frameworks/db/in-memory-db/src";
@@ -18,10 +17,10 @@ export class AppBackendDouble {
     sendMessagePresenterApi = new SendMessagePresenterApi();
 
     // api controllers
-    getUserRoomsHttpControllerApi!: IHttpController;
-    getMessagesRoomHttpControllerApi!: IHttpController;
-    getUserByIdHttpControllerApi !: IHttpController;
-    sendMessageHttpControllerApi !: IHttpController;
+    getUserRoomsHttpControllerApi: GetUserRoomsApiHttpControllerAdapter;
+    getMessagesRoomHttpControllerApi: GetRoomMessagesApiHttpControllerAdapter;
+    getUserByIdHttpControllerApi: GetUserByIdApiHttpControllerAdapter;
+    sendMessageHttpControllerApi: SendMessageApiHttpControllerAdapter;
 
     //features
     getRoomsByUserFeature: IGetRoomsByUserRequester;

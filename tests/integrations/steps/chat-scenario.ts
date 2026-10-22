@@ -92,7 +92,7 @@ export class ChatScenario {
     }
 
     onlineUserIds(): number[] {
-        return Object.keys(this.chatServer.connectetdUsers).map(Number);
+        return Object.keys(this.chatServer.connectedUsers).map(Number);
     }
 
     async messageCount(): Promise<number> {

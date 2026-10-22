@@ -105,7 +105,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     //return Object.values(this.participants).filter((p) => p.chatRoomId === roomId);
   }
 
-  async getUses(): Promise<UserTable[]> {
+  async getUsers(): Promise<UserTable[]> {
     return Object.values(this.users);
   }
 

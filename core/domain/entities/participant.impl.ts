@@ -1,5 +1,5 @@
 import { IChatClient } from '../ports/chat-client';
-import { INotifiyer } from '../ports/push-notif.port';
+import { INotifier } from '../ports/push-notif.port';
 import { IChatroom } from '../interfaces/chatroom';
 import { IMessage } from '../interfaces/message';
 import { IParticipant } from '../interfaces/participant';
@@ -11,14 +11,14 @@ export class Participant implements IParticipant {
 
   protected lastReceivedMessage?: IMessage | null;
 
-  protected notifiyer?: INotifiyer | null;
+  protected notifier?: INotifier | null;
 
   constructor(
     protected userName: string,
     protected userId: number,
     protected client?: IChatClient) { }
 
-  getchatRoom(): IChatroom {
+  getChatRoom(): IChatroom {
     if (!this.chatroom) throw new Error('Participant dont have a chatroom');
     return this.chatroom;
   }
@@ -32,7 +32,7 @@ export class Participant implements IParticipant {
   }
 
   getLastReceivedMessage(): IMessage {
-    if (!this.lastReceivedMessage) throw new Error('No last recaived message found');
+    if (!this.lastReceivedMessage) throw new Error('No last received message found');
     return this.lastReceivedMessage;
   }
 
@@ -53,8 +53,8 @@ export class Participant implements IParticipant {
   receive(message: IMessage) {
     this.lastReceivedMessage = message;
     if (this.client) this.client.receive(
-      message.getcontent(),
-      message.getchatRoom().getId(),
+      message.getContent(),
+      message.getChatRoom().getId(),
       this.getUserId(),
       message.getParticipant().getUserName());
   }

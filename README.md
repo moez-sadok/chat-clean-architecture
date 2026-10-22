@@ -218,7 +218,7 @@ chat-clean-architecture/
 │   │   ├── entities/              # Entity implementations (Chatroom, Participant, Message, Bot)
 │   │   └── interfaces/            # Entity contracts (IChatroom, IParticipant, IMessage)
 │   ├── application/               # Application Business Rules
-│   │   ├── usecases/              # Use case interactors
+│   │   ├── usecases/              # One folder per use case (layout below)
 │   │   ├── ports/                 # Port interfaces (IChatRepository, IChatServerPort)
 │   │   └── mappers/               # DTO-to-entity mappers (RoomEntityMapper)
 │   ├── controllers/               # Interface Adapters - Controllers
@@ -247,19 +247,35 @@ This maps to Clean Architecture layers:
 | Interface Adapters | `core/controllers/`, `core/gateways/`, `core/dtos/` | Controllers, gateways, DTOs |
 | Frameworks & Drivers | `apps/`, `libs/` | Angular, NestJS, Socket.IO, MongoDB, in-memory DB |
 
+Every use case folder follows the same layout, each file named `<use-case>.<role>.ts`:
+
+```
+send-message/
+├── send-message.input.ts        # input boundary: what a controller calls
+├── send-message.output.ts       # output boundary: the presenter port
+├── send-message.request.ts      # request data
+├── send-message.response.ts     # response data
+├── send-message.usecase.ts      # the interactor
+├── repositories/                # (optional) repository port narrowed to the use case (ISP)
+├── controller/                  # *.http.controller.ts (server), *.http.client.controller.ts (SPA), *.routes.ts
+├── presenter/                   # *.presenter.api|ui|ssr.ts, *.view.ts (view contract), *.view.model.ts
+├── view/                        # framework-free views: *.web.view.ts, *.web.reactive.view.ts, *.ssr.view.ts
+├── factories.ts                 # DI tokens (UPPER_SNAKE) and factory functions
+└── index.ts
+```
+
 <!-- Page-break For PDF generation -->
 <div style="page-break-after: always;"></div>
 
 # 6. Use Cases Overview <a id="use-cases-overview"></a>
 
-The application implements the following use cases, each following the `UseCase -> Presenter` pattern:
+The application implements the following use cases. All of them follow one flow, `Controller -> UseCase -> Presenter`: the use case presents through its output port and returns what the presenter returned; a server controller adapter only returns it.
 
 | Use Case | Class | Description |
 |----------|-------|-------------|
 | Send Message | `SendMessageUseCase` | Validates and broadcasts a message to room participants |
 | Get Messages by Room | `GetMessagesByRoomUseCase` | Retrieves all messages for a given chat room |
-| Get Rooms by User | `GetRoomsByUserUseCase` | Returns the list of rooms a user belongs to (API/SPA) |
-| Get Rooms by User (SSR) | `GetRoomsByUserSSRUseCase` | Server-side rendered variant of room listing |
+| Get Rooms by User | `GetRoomsByUserUseCase` | Returns the rooms a user belongs to; wired to the API presenter, or to the SSR presenter for the server-rendered page |
 | Get User by ID | `GetUserByIdUseCase` | Fetches user details by their identifier |
 | Connect Client | `ConnectClientUseCase` | Registers a user's WebSocket connection |
 | Disconnect Client | `DisconnectClientUseCase` | Handles user disconnection and cleanup |

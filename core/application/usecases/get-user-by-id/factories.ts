@@ -1,19 +1,15 @@
 import { IChatRepository } from '../../ports/chat-repository';
-import { GetUserByIdApiHttpControllerAdapter } from './controller/http/getUserById.api.http.controller.adapter';
-import { GetUserByIdAPIHttpControllerClientAdapter } from './controller/http/getUserById.api.http.controller.client.adapter';
-import { IGetUserByIdInput } from './interactor/getUserById.controller.input';
-import { GetUserByIdUseCase } from './interactor/getUserById.feature';
-import { IGetUserByIdPresenterOutput } from './interactor/getUserById.presenter.output';
-import { UserByIdPresenterUi } from './presenter/getUserById.presenter.ui';
-import { IGetUserByIdView } from './presenter/getUserById.view';
-//
-export * from './interactor/getUserById.controller.input';
-export * from './interactor/getUserById.presenter.output';
-export * from './interactor/getUserById.feature';
+import { GetUserByIdApiHttpControllerAdapter } from './controller/get-user-by-id.http.controller';
+import { GetUserByIdAPIHttpControllerClientAdapter } from './controller/get-user-by-id.http.client.controller';
+import { IGetUserByIdInput } from './get-user-by-id.input';
+import { GetUserByIdUseCase } from './get-user-by-id.usecase';
+import { IGetUserByIdPresenterOutput } from './get-user-by-id.output';
+import { UserByIdPresenterUi } from './presenter/get-user-by-id.presenter.ui';
+import { IGetUserByIdView } from './presenter/get-user-by-id.view';
 
-export const GET_USER_ByIdFeature = 'GET_USER_ByIdFeature';
-export const GET_USER_ByIdPresenterApi = 'GET_USER_ByIdPresenterApi';
-export const GET_USER_ByIdApiServerControllerAdapter = 'GET_USER_ByIdApiServerControllerAdapter';
+export const GET_USER_BY_ID_USECASE = 'GET_USER_BY_ID_USECASE';
+export const GET_USER_BY_ID_PRESENTER_API = 'GET_USER_BY_ID_PRESENTER_API';
+export const GET_USER_BY_ID_HTTP_CONTROLLER = 'GET_USER_BY_ID_HTTP_CONTROLLER';
 
 export const getUserByIdFeatureFactory = (
   chatRepository: IChatRepository,

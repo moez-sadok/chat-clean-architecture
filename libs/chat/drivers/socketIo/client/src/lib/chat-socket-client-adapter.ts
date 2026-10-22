@@ -3,7 +3,7 @@ import { Socket } from 'socket.io-client';
 import { MessageOutputData ,IGetMessagesByRoomPresenterOutput} from '@cca/core-features';
 import { IChatClient } from '@cca/core-domain';
 
-export class ChatClientSocketkAdapter implements IChatClient {
+export class ChatClientSocketAdapter implements IChatClient {
     // socket as the adaptee
     constructor(private socket: Socket, protected presenter: IGetMessagesByRoomPresenterOutput) {
         this.onReceivedMessage();

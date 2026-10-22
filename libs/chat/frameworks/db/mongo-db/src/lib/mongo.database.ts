@@ -170,7 +170,7 @@ export class MongoDataBaseImpl implements IChatDatabase {
     return this.toUser(doc);
   }
 
-  async getUses(): Promise<UserTable[]> {
+  async getUsers(): Promise<UserTable[]> {
     const docs = await this.users().find().toArray();
     return docs.map((d) => this.toUser(d));
   }

@@ -41,5 +41,5 @@ export interface IChatDatabase {
   /** Batch read: one round trip instead of one per id. */
   getUsersByIds(userIds: number[]): Promise<UserTable[]>;
   insertUser(user: UserTable): Promise<UserTable>;
-  getUses(): Promise<UserTable[]>;
+  getUsers(): Promise<UserTable[]>;
 }

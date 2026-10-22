@@ -3,6 +3,6 @@ import { IChatroom } from './chatroom';
 
 export interface IMessage {
   getParticipant(): IParticipant;
-  getchatRoom(): IChatroom;
-  getcontent(): string;
+  getChatRoom(): IChatroom;
+  getContent(): string;
 }

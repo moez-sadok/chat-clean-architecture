@@ -64,7 +64,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     );
   }
 
-  async getUses(): Promise<UserTable[]> {
+  async getUsers(): Promise<UserTable[]> {
     return Object.values(this.users);
   }
 

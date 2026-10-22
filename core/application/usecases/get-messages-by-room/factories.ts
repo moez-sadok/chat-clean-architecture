@@ -1,20 +1,16 @@
 import { IChatRepository } from '../../ports/chat-repository';
-import { GetRoomMessagesApiHttpControllerAdapter } from './controller/http/getMessagesByRoom.api.http.controller.adapter';
-import { GetRoomMessagesAPIHttpControllerClientAdapter } from './controller/http/getMessagesByRoom.api.http.controller.client.adapter';
-import { IGetMessagesByRoomInput } from './interactor/getMessagesByRoom.controller.input';
-import { GetMessagesByRoomUseCase } from './interactor/getMessagesByRoom.feature';
+import { GetRoomMessagesApiHttpControllerAdapter } from './controller/get-messages-by-room.http.controller';
+import { GetRoomMessagesAPIHttpControllerClientAdapter } from './controller/get-messages-by-room.http.client.controller';
+import { IGetMessagesByRoomInput } from './get-messages-by-room.input';
+import { GetMessagesByRoomUseCase } from './get-messages-by-room.usecase';
 
-import { IGetMessagesByRoomPresenterOutput } from './interactor/getMessagesByRoom.presenter.output';
-import { GetMessagesByRoomPresenterUi } from './presenter/getMessagesByRoom.presenter.ui';
-import { IGetMessagesByRoomView } from './presenter/getMessagesByRoom.view';
-//
-export * from './interactor/getMessagesByRoom.presenter.output';
-export * from './interactor/getMessagesByRoom.feature';
-export * from './interactor/getMessagesByRoom.controller.input';
+import { IGetMessagesByRoomPresenterOutput } from './get-messages-by-room.output';
+import { GetMessagesByRoomPresenterUi } from './presenter/get-messages-by-room.presenter.ui';
+import { IGetMessagesByRoomView } from './presenter/get-messages-by-room.view';
 
-export const GET_MESSAGES_ByRoomFeature = 'GET_MESSAGES_ByRoomFeature';
-export const GET_MESSAGES_ByRoomPresenterApi = 'GET_MESSAGES_ByRoomPresenterApi';
-export const GET_MESSAGES_ByRoomApiServerControllerAdapter = 'GET_MESSAGES_ByRoomApiServerControllerAdapter';
+export const GET_MESSAGES_BY_ROOM_USECASE = 'GET_MESSAGES_BY_ROOM_USECASE';
+export const GET_MESSAGES_BY_ROOM_PRESENTER_API = 'GET_MESSAGES_BY_ROOM_PRESENTER_API';
+export const GET_MESSAGES_BY_ROOM_HTTP_CONTROLLER = 'GET_MESSAGES_BY_ROOM_HTTP_CONTROLLER';
 
 export const getMessagesByRoomFeatureFactory = (
   chatRepository: IChatRepository,

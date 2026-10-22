@@ -105,7 +105,7 @@ describe('Mongo adapter testing...', () => {
 
     test('A participant removed from a room no longer lists it', async () => {
         if (!reachable) return;
-        const participant = await main.backend.chatdbMapper.getParticpantByUserAndRoom(room.id, client2.id);
+        const participant = await main.backend.chatdbMapper.getParticipantByUserAndRoom(room.id, client2.id);
         await main.backend.chatdbMapper.removeParticipant(participant);
         const rooms = await main.backend.getRoomsByUserFeature.getRoomsByUser({ userId: client2.id });
         expect(rooms.find((r) => r.roomId === room.id)).toBeUndefined();

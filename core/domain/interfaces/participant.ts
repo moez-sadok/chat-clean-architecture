@@ -7,7 +7,7 @@ import { IMessage } from './message';
 export interface IParticipant {
   getUserName(): string;
   getUserId(): number;
-  getchatRoom(): IChatroom;
+  getChatRoom(): IChatroom;
   getLastReceivedMessage(): IMessage;
 
   send(message: string): void;

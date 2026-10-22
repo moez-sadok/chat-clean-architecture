@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { Chatroom, IParticipant, Participant }  from "../../core/domain/index";
+import { Chatroom, IParticipant, Participant }  from "../../core/domain";
 
 describe('Participant testing', () => {
     let participant: IParticipant;
@@ -7,7 +7,7 @@ describe('Participant testing', () => {
         participant = new Participant('Anna', 1);
     });
     test('No Existing chat room, throw error', () => {
-        expect(() => { participant.getchatRoom() }).toThrow('Participant dont have a chatroom');
+        expect(() => { participant.getChatRoom() }).toThrow('Participant dont have a chatroom');
         expect(() => { participant.send('test message') })
             .toThrow('Can not send a message: participant dont have a chatroom');
     });
@@ -22,8 +22,8 @@ describe('Participant testing', () => {
         chatroom.register(participant);
         chatroom.register(secondParticipant);
         participant.send('Hi');
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Hi');
-        expect(secondParticipant.getLastReceivedMessage().getcontent()).toBe('Hi');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Hi');
+        expect(secondParticipant.getLastReceivedMessage().getContent()).toBe('Hi');
         expect(secondParticipant.getLastReceivedMessage().getParticipant()).toBe(participant);
     });
 

@@ -5,5 +5,5 @@ import { ParticipantDto } from '../../../../dtos/models/participant.dto';
 export interface ISendMessageRepository {
   getChatRoomsById(roomId: number): Promise<ChatroomDto | null>;
   addMessage(message: MessageDto): Promise<MessageDto>;
-  getParticpantByUserAndRoom(roomId: number, userId: number): Promise<ParticipantDto>;
+  getParticipantByUserAndRoom(roomId: number, userId: number): Promise<ParticipantDto>;
 }

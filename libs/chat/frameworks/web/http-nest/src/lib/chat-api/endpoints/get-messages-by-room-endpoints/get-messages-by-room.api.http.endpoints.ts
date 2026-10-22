@@ -1,18 +1,18 @@
-import { Controller, Get, Inject, Optional, Param } from '@nestjs/common';
-import { GET_ROOM_MESSAGES_HTTP_URI } from '@cca/core-features';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { GET_MESSAGES_BY_ROOM_HTTP_CONTROLLER, GET_ROOM_MESSAGES_HTTP_URI } from '@cca/core-features';
 import { IHttpController } from '@cca/core-controllers';
 
 @Controller()
 export class GetRoomMessagesHttpApiEndPoint {
 
   constructor(
-    @Optional() @Inject('GET_MESSAGES_ByRoomApiServerControllerAdapter') 
-    private getMessagesByRoomControllerAdapter: IHttpController
+    @Inject(GET_MESSAGES_BY_ROOM_HTTP_CONTROLLER)
+    private getMessagesByRoomController: IHttpController
   ) { }
 
   @Get(`${GET_ROOM_MESSAGES_HTTP_URI}/:roomId`)
-  getRoomMessages(@Param() params: any) {
-    return this.getMessagesByRoomControllerAdapter.handle({ roomId: +params.roomId });
+  getRoomMessages(@Param('roomId') roomId: string) {
+    return this.getMessagesByRoomController.handle({ roomId: +roomId });
   }
 
 }

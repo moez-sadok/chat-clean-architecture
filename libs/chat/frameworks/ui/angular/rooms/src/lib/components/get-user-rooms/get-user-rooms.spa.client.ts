@@ -1,4 +1,3 @@
-import { Inject } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { IHttpController } from "@cca/core-controllers";
 import { GET_USER_ROOMS_HTTP_URL } from "@cca/core-features";
@@ -7,7 +6,6 @@ import { GET_USER_ROOMS_HTTP_URL } from "@cca/core-features";
 export class GetUserRoomsSpaClient {
 
   constructor(
-    @Inject('GET_ROOMS_ByUserApiClientControllerAdapter')
     private clientControllerAdapter: IHttpController,
     private router: Router,
     private route: ActivatedRoute

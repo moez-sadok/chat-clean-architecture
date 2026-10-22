@@ -1,22 +1,22 @@
 import { IChatRepository } from '../../ports/chat-repository';
-import { IGetRoomsByUserPresenter, IGetRoomsByUserSSRPresenter } from './controller/getRoomsByUser.presenter';
-import { GetUserRoomsApiHttpControllerAdapter } from './controller/http/getRoomsByUser.api.http.controller.adapter';
-import { GetUserRoomsSSRHttpControllerAdapter } from './controller/http/getRoomsByUser.ssr.http.controller.adapter';
-import { IGetRoomsByUserRequester } from './interactor/getRoomsByUser.requester';
-import { GetRoomsByUserUseCase } from './interactor/getRoomsByUser.usecase';
-import { GetRoomsByUserPresenterSSR } from './presenter/getRoomsByUser.presenter.ssr';
-import { GetRoomsByUserPresenterUi } from './presenter/getRoomsByUser.presenter.ui';
-import { IGetRoomsByUserSSRView, IGetRoomsByUserView } from './presenter/getRoomsByUser.view';
-import { GetUserRoomsAPIHttpControllerClientAdapter } from './controller/http/getRoomsByUser.api.http.controller.client.adapter';
+import { IGetRoomsByUserPresenter, IGetRoomsByUserSSRPresenter } from './get-rooms-by-user.output';
+import { GetUserRoomsApiHttpControllerAdapter } from './controller/get-rooms-by-user.http.controller';
+import { GetUserRoomsSSRHttpControllerAdapter } from './controller/get-rooms-by-user.ssr.controller';
+import { IGetRoomsByUserRequester } from './get-rooms-by-user.input';
+import { GetRoomsByUserUseCase } from './get-rooms-by-user.usecase';
+import { GetRoomsByUserPresenterSSR } from './presenter/get-rooms-by-user.presenter.ssr';
+import { GetRoomsByUserPresenterUi } from './presenter/get-rooms-by-user.presenter.ui';
+import { IGetRoomsByUserSSRView, IGetRoomsByUserView } from './presenter/get-rooms-by-user.view';
+import { GetUserRoomsAPIHttpControllerClientAdapter } from './controller/get-rooms-by-user.http.client.controller';
 
-export const GET_ROOMS_ByUserFeature = 'GET_ROOMS_ByUserFeature';
-export const GET_ROOMS_ByUserPresenterApi = 'GET_ROOMS_ByUserPresenterApi';
-export const GET_ROOMS_ByUserApiServerControllerAdapter = 'GET_ROOMS_ByUserApiServerControllerAdapter';
+export const GET_ROOMS_BY_USER_USECASE = 'GET_ROOMS_BY_USER_USECASE';
+export const GET_ROOMS_BY_USER_PRESENTER_API = 'GET_ROOMS_BY_USER_PRESENTER_API';
+export const GET_ROOMS_BY_USER_HTTP_CONTROLLER = 'GET_ROOMS_BY_USER_HTTP_CONTROLLER';
 
-export const GET_ROOMS_ByUserSSRFeature = 'GET_ROOMS_ByUserSSRFeature';
-export const GET_ROOMS_ByUserSSRControllerAdapter = 'GET_ROOMS_ByUserSSRControllerAdapter';
-export const GET_ROOMS_ByUserSSRView = 'GET_ROOMS_ByUserSSRView';
-export const GET_ROOMS_ByUserSSRPresenter = 'GET_ROOMS_ByUserSSRPresenter';
+export const GET_ROOMS_BY_USER_SSR_USECASE = 'GET_ROOMS_BY_USER_SSR_USECASE';
+export const GET_ROOMS_BY_USER_SSR_CONTROLLER = 'GET_ROOMS_BY_USER_SSR_CONTROLLER';
+export const GET_ROOMS_BY_USER_SSR_VIEW = 'GET_ROOMS_BY_USER_SSR_VIEW';
+export const GET_ROOMS_BY_USER_SSR_PRESENTER = 'GET_ROOMS_BY_USER_SSR_PRESENTER';
 
 //feature: one use case, wired to the API presenter or to the SSR one
 export const getRoomsByUserFeatureFactory = (

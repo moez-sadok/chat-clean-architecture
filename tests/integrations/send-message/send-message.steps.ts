@@ -3,7 +3,7 @@ import { beforeEach, expect } from "@jest/globals";
 import { ChatScenario, loadChatFeature } from "../steps/chat-scenario";
 import { errorMentionsRoom, noRoomExistsWithId } from "../steps/common-steps";
 import { GetMessagesByRoomClientView } from "../../../core/application";
-import { SendMessageOutputData } from "../../../core/application/usecases/send-message/interactor/send-message.response.data";
+import { SendMessageOutputData } from "../../../core/application/usecases/send-message/send-message.response";
 
 const feature = loadChatFeature('send-message');
 
@@ -124,7 +124,7 @@ defineFeature(feature, (test) => {
         receivesFromAlice(then, 'Carol');
     });
 
-    // @wip: the domain has a push notification port (INotifiyer) but nothing wires it yet
+    // @wip: the domain has a push notification port (INotifier) but nothing wires it yet
     test('A participant is offline', ({ given, and, when, then }) => {
         background(given, and);
 

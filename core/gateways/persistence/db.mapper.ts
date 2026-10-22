@@ -1,6 +1,6 @@
 import { ChatDataSerializer } from './utils/data.serializer';
 import { IChatDatabase } from './interfaces/chat-database';
-import { UserChatRoomDto } from '../../application/usecases/get-rooms-by-user/repositories/user-rooms.repository';
+import { UserChatRoomDto } from '../../application/usecases/get-rooms-by-user/repositories/get-rooms-by-user.repository';
 import { IChatRepository } from '../../application/ports/chat-repository';
 import { ChatroomDto } from '../../dtos/models/chatroom.dto';
 import { MessageDto } from '../../dtos/models/message.dto';
@@ -18,7 +18,7 @@ export class DataBaseMapper implements IChatRepository {
   async addMessage(message: MessageDto): Promise<MessageDto> {
     if (message.from.id == undefined) throw new Error('Add message miss attrs: from');
     if (message.room.id == undefined) throw new Error('Add message miss attrs: room');
-    const tabelMessage = this.dbSerializer.desirializeMessage({
+    const tabelMessage = this.dbSerializer.deserializeMessage({
       ...message,
       date: new Date(),
     });
@@ -61,7 +61,7 @@ export class DataBaseMapper implements IChatRepository {
     return this.dbSerializer.serializeMessagesOfRoom(messages, roomDto);
   }
 
-  async getParticpantByUserAndRoom(roomId: number, userId: number): Promise<ParticipantDto> {
+  async getParticipantByUserAndRoom(roomId: number, userId: number): Promise<ParticipantDto> {
     const partTable = await this.db.getParticipantByRoomAndUser(roomId, userId);
     return this.dbSerializer.serializeParticipant(partTable);
   }
@@ -73,12 +73,12 @@ export class DataBaseMapper implements IChatRepository {
   }
 
   async getUsers(): Promise<UserDto[]> {
-    const users = await this.db.getUses();
+    const users = await this.db.getUsers();
     return users.map((ut) => this.dbSerializer.serializeUser(ut));
   }
 
   async addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto> {
-    // const tabelroom = this.dbSerializer.desirializeRoom({ ...chatRoom });
+    // const tabelroom = this.dbSerializer.deserializeRoom({ ...chatRoom });
     const dbRoom = await this.db.insertChatRoom({ name: chatRoom.name, id: chatRoom.id });
     return this.dbSerializer.serializeRoom(dbRoom);
   }
@@ -86,12 +86,12 @@ export class DataBaseMapper implements IChatRepository {
   async addParticipant(participant: ParticipantDto): Promise<void> {
     if (participant.chatroom?.id === undefined || participant.user.id === undefined)
       throw new Error('Add participant miss attrs');
-    const tabelPart = this.dbSerializer.desirializeParticipant(participant);
+    const tabelPart = this.dbSerializer.deserializeParticipant(participant);
     await this.db.insertParticipant(tabelPart);
   }
 
   async removeParticipant(participant: ParticipantDto): Promise<void> {
-    if (!participant.id) throw new Error("Can't remouve unfoud participant");
+    if (!participant.id) throw new Error("Can't remove unknown participant");
     await this.db.removeParticipant(participant.id);
   }
 
