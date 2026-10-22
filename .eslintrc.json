@@ -1,20 +1,40 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx/nx"],
+  "plugins": ["@nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@nx/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": true,
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": ["type:framework", "type:db", "type:driver"]
+              },
+              {
+                "sourceTag": "type:framework",
+                "onlyDependOnLibsWithTags": ["type:db", "type:driver"]
+              },
+              {
+                "sourceTag": "type:db",
+                "onlyDependOnLibsWithTags": []
+              },
+              {
+                "sourceTag": "type:driver",
+                "onlyDependOnLibsWithTags": []
+              },
+              {
+                "sourceTag": "platform:browser",
+                "onlyDependOnLibsWithTags": ["platform:browser"]
+              },
+              {
+                "sourceTag": "platform:server",
+                "onlyDependOnLibsWithTags": ["platform:server"]
               }
             ]
           }
@@ -23,12 +43,12 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/nx/typescript"],
+      "extends": ["plugin:@nx/typescript"],
       "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/nx/javascript"],
+      "extends": ["plugin:@nx/javascript"],
       "rules": {}
     },
     {

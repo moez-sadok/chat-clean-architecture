@@ -21,8 +21,8 @@ export class ChatClientSocketAdapter implements IChatClient {
     }
 
     getId(): number {
-        //@ts-ignore
-        return this.socket.auth['userId']
+        // set by ChatControllerWsClientAdapterImpl when it opens the socket
+        return (this.socket.auth as { userId: number }).userId;
     }
 
 }

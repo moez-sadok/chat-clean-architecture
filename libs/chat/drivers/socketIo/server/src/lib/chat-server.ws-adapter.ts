@@ -1,4 +1,4 @@
-import { ChatServerSocketAdapter } from "@cca/drivers/socketIo/client";
+import { ChatServerSocketAdapter } from "./chat-socket-server-adapter";
 import { IChatServerPort } from "@cca/core-features";
 import { IChatClient } from "@cca/core-domain";
 import { createServer } from "http";

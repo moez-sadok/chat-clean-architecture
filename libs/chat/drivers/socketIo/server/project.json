@@ -3,7 +3,10 @@
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/chat/drivers/socketIo/server/src",
   "projectType": "library",
-  "tags": [],
+  "tags": [
+    "type:driver",
+    "platform:server"
+  ],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -12,6 +15,17 @@
       ],
       "options": {
         "jestConfig": "libs/chat/drivers/socketIo/server/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/chat/drivers/socketIo/server/src/**/*.ts"
+        ]
       }
     }
   }

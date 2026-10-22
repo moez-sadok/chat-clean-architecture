@@ -1,4 +1,3 @@
-// import { ChatroomDto, UserDto, ParticipantDto, MessageDto } from '@chat-clean-architecture/chat/application-business-rules/interactor';
 import { ChatroomDto } from '../../../dtos/models/chatroom.dto';
 import { MessageDto } from '../../../dtos/models/message.dto';
 import { ParticipantDto } from '../../../dtos/models/participant.dto';
@@ -8,7 +7,6 @@ import { ChatroomTable } from '../tables/chatroom.table';
 import { MessageTable } from '../tables/message.table';
 import { ParticipantTable } from '../tables/participant.table';
 import { UserTable } from '../tables/user.table';
-//import { Chatroom } from '@chat-clean-architecture/chat/entreprise-business-rules/entities';
 //serialisation / desirialisation (utils for gateway part)
 //serialisations hit the database, so they are async; desirialisations are pure.
 export class ChatDataSerializer {

@@ -407,6 +407,20 @@ Using Bun:
    npm run test
    ```
 
+- Architecture guards: the dependency rule is checked, not only drawn
+
+   ```bash
+   # core/: tests/architecture/dependency-rule.test.ts lists the layers each layer may import
+   # and fails on any other import, or on any package import (core stays framework-free)
+   npx jest -c tests/jest.config.ts tests/architecture
+
+   # apps/ and libs/: Nx module boundaries in .eslintrc.json, from the project tags
+   #   type:app -> type:framework -> type:db | type:driver, platform:browser and platform:server kept apart
+   npx nx run-many -t lint
+   ```
+
+   Both run in CI (`.github/workflows/ci.yml`) with the tests, the MongoDB suite and the builds.
+
 - Performance (Autocannon)
 
    ```bash

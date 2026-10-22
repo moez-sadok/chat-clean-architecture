@@ -5,13 +5,13 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": [
         "{options.outputFile}"
       ],
       "options": {
         "lintFilePatterns": [
-          "libs/chat/frameworks/db/mongo-db/**/*.ts"
+          "libs/chat/frameworks/db/mongo-db/src/**/*.ts"
         ]
       }
     },
@@ -26,5 +26,8 @@
       }
     }
   },
-  "tags": []
+  "tags": [
+    "type:db",
+    "platform:server"
+  ]
 }
