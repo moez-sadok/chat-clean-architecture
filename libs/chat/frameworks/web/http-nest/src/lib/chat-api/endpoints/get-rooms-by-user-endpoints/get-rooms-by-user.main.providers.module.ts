@@ -8,7 +8,6 @@ import {
   GET_ROOMS_ByUserSSRView,
   GET_ROOMS_ByUserSSRPresenter,
   getRoomsByUserPresenterSSRFactory,
-  getRoomsByUserSSRFeatureFactory,
   GET_ROOMS_ByUserSSRFeature
 } from '@cca/core-features';
 import { CHAT_DB_MAPPER_PROVIDER, ChatMainConfigProvidersModule } from '../../main/chat.main.config.providers.module';
@@ -22,11 +21,11 @@ import { GetUserRoomsSSREndPoint } from './get-user-rooms.ssr.http.endpoints';
     { provide: GET_ROOMS_ByUserPresenterApi, useValue: new GetRoomsByUserPresenterAPI() },
     { // api usecase (spa)
       provide: GET_ROOMS_ByUserFeature, useFactory: getRoomsByUserFeatureFactory,
-      inject: [CHAT_DB_MAPPER_PROVIDER]
+      inject: [CHAT_DB_MAPPER_PROVIDER, GET_ROOMS_ByUserPresenterApi]
     },
     { // api controller adapter
       provide: GET_ROOMS_ByUserApiServerControllerAdapter, useFactory: getRoomsByUserAPIControllerAdapter,
-      inject: [GET_ROOMS_ByUserFeature, GET_ROOMS_ByUserPresenterApi]
+      inject: [GET_ROOMS_ByUserFeature]
     },
     
     // ssr view 
@@ -36,7 +35,7 @@ import { GetUserRoomsSSREndPoint } from './get-user-rooms.ssr.http.endpoints';
       inject: [GET_ROOMS_ByUserSSRView]
     },
     { //ssr usecase
-      provide: GET_ROOMS_ByUserSSRFeature, useFactory: getRoomsByUserSSRFeatureFactory,
+      provide: GET_ROOMS_ByUserSSRFeature, useFactory: getRoomsByUserFeatureFactory,
       inject: [CHAT_DB_MAPPER_PROVIDER, GET_ROOMS_ByUserSSRPresenter]
     },
     { //ssr controller adapter

@@ -5,7 +5,7 @@ export interface IGetRoomsByUserPresenter {
     present(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[];
 }
 
-export interface IGetRoomsByUserSSRPresenter {
-   getViewModel():RoomViewModel[];
-   present(rooms: GetRoomsByUserResponseData[]):void;
+// The SSR presenter keeps the view model it built, for the controller to render.
+export interface IGetRoomsByUserSSRPresenter extends IGetRoomsByUserPresenter {
+    getViewModel(): RoomViewModel[];
 }

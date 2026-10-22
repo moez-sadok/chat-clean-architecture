@@ -1,20 +1,20 @@
-
 import { IHttpController } from "../../../../../controllers";
 import { GetRoomsByUserRequestData } from "../../interactor/getRoomsByUser.request.data";
-import { IGetRoomsByUserSSRRequester } from "../../interactor/getRoomsByUser.requester";
+import { IGetRoomsByUserRequester } from "../../interactor/getRoomsByUser.requester";
 import { IGetRoomsByUserSSRView } from "../../presenter/getRoomsByUser.view";
 import { IGetRoomsByUserSSRPresenter } from "../getRoomsByUser.presenter";
-//ssr
+
+// Same use case as the API, wired to the SSR presenter: the controller renders its view model.
 export class GetUserRoomsSSRHttpControllerAdapter implements IHttpController {
 
   constructor(
-    public usecase: IGetRoomsByUserSSRRequester,//InputBoundary
-    public presenter: IGetRoomsByUserSSRPresenter,//OutputBoundary
-    public view: IGetRoomsByUserSSRView//View
+    public usecase: IGetRoomsByUserRequester,
+    public presenter: IGetRoomsByUserSSRPresenter,
+    public view: IGetRoomsByUserSSRView
   ) {}
 
   async handle(input: GetRoomsByUserRequestData): Promise<string> {
-    await this.usecase.getRoomsByUser(input, this.presenter);
+    await this.usecase.getRoomsByUser(input);
     return this.view.render(this.presenter.getViewModel());
   }
 

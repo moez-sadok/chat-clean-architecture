@@ -26,8 +26,8 @@ export const getMessagesByRoomPresenterUiFactory = (view: IGetMessagesByRoomView
     return new GetMessagesByRoomPresenterUi(view);
 };
 // controller api adapter 
-export const getMessagesByRoomAPIControllerAdapter = (usecase: IGetMessagesByRoomInput,presenter: IGetMessagesByRoomPresenterOutput) => {
-    return new GetRoomMessagesApiHttpControllerAdapter(usecase,presenter);
+export const getMessagesByRoomAPIControllerAdapter = (usecase: IGetMessagesByRoomInput) => {
+    return new GetRoomMessagesApiHttpControllerAdapter(usecase);
 };
 // controller client adapter 
 export const getMessagesByRoomAPIClientControllerAdapter = (presenter: IGetMessagesByRoomPresenterOutput) => {

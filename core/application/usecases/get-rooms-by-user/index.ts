@@ -5,6 +5,8 @@ export * from './interactor/getRoomsByUser.response.data';
 //controller
 export * from './controller/getRoomsByUser.presenter';
 export * from './controller/http/getRoomsByUser.constant.controller.http';
+export * from './controller/http/getRoomsByUser.api.http.controller.adapter';
+export * from './controller/http/getRoomsByUser.api.http.controller.client.adapter';
 export * from './controller/http/getRoomsByUser.ssr.http.controller.adapter';
 //presenter
 export * from './presenter/getRoomsByUser.presenter.api';

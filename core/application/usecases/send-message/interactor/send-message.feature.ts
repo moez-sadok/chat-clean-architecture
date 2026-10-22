@@ -1,8 +1,7 @@
 import { MessageDto } from "../../../../dtos/models/message.dto";
 import { IChatroom } from "../../../../domain/interfaces/chatroom";
-import { IMessage } from "../../../../domain/interfaces/message";
 import { Message } from "../../../../domain/entities/message.impl";
-import { RoomEntityMapper } from "../../../../application/mappers/room-entity.mapper";
+import { RoomEntityMapper } from "../../../mappers/room-entity.mapper";
 import { ISendMessageRepository } from "../repositories/send-message.repository";
 import { IChatServerPort } from "../../../ports/chat-server.port";
 import { ISendMessageInput } from "./sendMessage.controller.input";
@@ -10,40 +9,39 @@ import { ISendMessagePresenterOutput } from "./sendMessage.presenter.output";
 import { SendMessageOutputData } from "./send-message.response.data";
 import { SendMessageInputData } from "./send-message.request.data";
 
-export class SendMessageFeatureV1 implements ISendMessageInput {
+export class SendMessageUseCase implements ISendMessageInput {
 
   private roomEntityMapper: RoomEntityMapper;
 
   constructor(
     private chatRepository: ISendMessageRepository,
     private presenter: ISendMessagePresenterOutput,
-    private chatServer: IChatServerPort
+    chatServer: IChatServerPort
   ) {
     this.roomEntityMapper = new RoomEntityMapper(chatServer);
   }
 
   async sendMessage(message: SendMessageInputData): Promise<SendMessageOutputData> {
-    const participantInRoom = await this.chatRepository.getParticpantByUserAndRoom(message.roomId, message.userId);
-    const croom = await this.chatRepository.getChatRoomsById(message.roomId);
-    if (!croom || croom.id == undefined) throw new Error('SendMessage: room not found id=' + message.roomId);
+    const roomDto = await this.chatRepository.getChatRoomsById(message.roomId);
+    if (!roomDto) throw new Error('SendMessage: room not found id=' + message.roomId);
+    const author = await this.chatRepository.getParticpantByUserAndRoom(message.roomId, message.userId);
 
-    const messagedto: MessageDto = { from: participantInRoom, message: message.message, room: croom };
-    const newMessage = await this.chatRepository.addMessage(messagedto);
-    const messagedOutput: SendMessageOutputData = {
-      authorName: newMessage.from.user.name,
-      message: newMessage.message,
-      chatRoomId: croom.id,
+    const messageDto: MessageDto = { from: author, message: message.message, room: roomDto };
+    const savedMessage = await this.chatRepository.addMessage(messageDto);
+    const output: SendMessageOutputData = {
+      authorName: savedMessage.from.user.name,
+      message: savedMessage.message,
+      chatRoomId: roomDto.id,
       authorId: message.userId
     };
 
-    const currRoom: IChatroom = this.roomEntityMapper.toRoomEntity(croom);
-    this.broadcast(messagedOutput, currRoom);
-    return this.presenter.receiveNewMessage(messagedOutput);
+    // the room entity is rebuilt on every message, so it always holds the clients online right now
+    this.broadcast(output, this.roomEntityMapper.toRoomEntity(roomDto));
+    return this.presenter.receiveNewMessage(output);
   }
 
-  private broadcast(msg: SendMessageOutputData, currRoom: IChatroom): void {
-    const currPart = currRoom.getParticipants()[msg.authorId];
-    const message: IMessage = new Message(msg.message, currRoom, currPart);
-    currRoom.broadcastMessage(message, currPart);
+  private broadcast(msg: SendMessageOutputData, room: IChatroom): void {
+    const author = room.getParticipants()[msg.authorId];
+    room.broadcastMessage(new Message(msg.message, room, author), author);
   }
 }

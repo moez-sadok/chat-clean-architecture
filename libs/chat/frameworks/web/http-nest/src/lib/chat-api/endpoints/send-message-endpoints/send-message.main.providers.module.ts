@@ -21,7 +21,7 @@ import { SendMessageHttpApiEndPoint } from './send-message.api.http.endpoints';
     },
     { // api controller adapter
       provide: SEND_MESSAGEApiServerControllerAdapter, useFactory: sendMessageAPIControllerAdapter,
-      inject: [SEND_MESSAGE_Feature, SEND_MESSAGE_PresenterApi]
+      inject: [SEND_MESSAGE_Feature]
     }
   ],
   controllers: [

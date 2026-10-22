@@ -38,6 +38,12 @@ Feature: Send Message
       And Carol receives "Hello team" from Alice in "General"
       And Alice does not receive her own message as a new message
 
+    Scenario: A participant connects after the room is active
+      Given Alice already sent "Hi" in "General"
+      And Carol connects afterwards
+      When Alice sends "Hello team" in "General"
+      Then Carol receives "Hello team" from Alice in "General"
+
   Rule: R16 Offline participants are told about the message by push notification
 
     @wip

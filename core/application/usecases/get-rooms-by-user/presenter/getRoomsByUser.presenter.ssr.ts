@@ -9,10 +9,11 @@ export class GetRoomsByUserPresenterSSR implements IGetRoomsByUserSSRPresenter {
 
   constructor(public view: IGetRoomsByUserSSRView) { }
 
-  present(rooms: GetRoomsByUserResponseData[]): void {
+  present(rooms: GetRoomsByUserResponseData[]): GetRoomsByUserResponseData[] {
     this.roomsViewModel = rooms.map((e) => {
       return { name: e.roomName, roomId: e.roomId } as RoomViewModel;
-    })
+    });
+    return rooms;
   }
 
   getViewModel(): RoomViewModel[] {

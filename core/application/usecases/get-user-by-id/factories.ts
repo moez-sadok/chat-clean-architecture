@@ -25,8 +25,8 @@ export const getUserByIdPresenterUiFactory = (view: IGetUserByIdView) => {
     return new UserByIdPresenterUi(view);
 };
 // controller api adapter 
-export const getUserByIdAPIControllerAdapter = (usecase: IGetUserByIdInput,presenter: IGetUserByIdPresenterOutput) => {
-    return new GetUserByIdApiHttpControllerAdapter(usecase,presenter);
+export const getUserByIdAPIControllerAdapter = (usecase: IGetUserByIdInput) => {
+    return new GetUserByIdApiHttpControllerAdapter(usecase);
 };
 // controller client adapter 
 export const getUserByIdAPIClientControllerAdapter = (presenter: IGetUserByIdPresenterOutput) => {

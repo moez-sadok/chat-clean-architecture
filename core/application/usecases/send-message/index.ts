@@ -19,6 +19,5 @@ export * from './repositories/send-message.repository';
 export * from './interactor/sendMessage.presenter.output';
 export * from './interactor/sendMessage.controller.input';
 export * from './interactor/send-message.feature';
-export * from './interactor/send-message.feature.perf';
 //
 export * from './factories';

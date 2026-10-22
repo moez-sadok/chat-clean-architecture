@@ -21,7 +21,7 @@ import { GetUserByIdHttpApiEndPoint } from './get-user-by-id.api.http.endpoints'
     },
     { // api controller adapter
       provide: GET_USER_ByIdApiServerControllerAdapter, useFactory: getUserByIdAPIControllerAdapter,
-      inject: [GET_USER_ByIdFeature, GET_USER_ByIdPresenterApi]
+      inject: [GET_USER_ByIdFeature]
     }
   ],
   controllers: [

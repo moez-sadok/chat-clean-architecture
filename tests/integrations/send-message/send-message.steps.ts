@@ -107,6 +107,23 @@ defineFeature(feature, (test) => {
         aliceDoesNotReceiveHerOwnMessage(and);
     });
 
+    // the room is already live on the server when Carol connects: she must still get what follows
+    test('A participant connects after the room is active', ({ given, and, when, then }) => {
+        background(given, and);
+
+        given(/^Alice already sent "(.*)" in "(.*)"$/, async (message: string, room: string) => {
+            await aliceSends(message, s.room(room).id);
+            expect(s.error).toBeNull();
+        });
+
+        and('Carol connects afterwards', async () => {
+            await openGeneral('Carol');
+        });
+
+        aliceSendsIn(when);
+        receivesFromAlice(then, 'Carol');
+    });
+
     // @wip: the domain has a push notification port (INotifiyer) but nothing wires it yet
     test('A participant is offline', ({ given, and, when, then }) => {
         background(given, and);

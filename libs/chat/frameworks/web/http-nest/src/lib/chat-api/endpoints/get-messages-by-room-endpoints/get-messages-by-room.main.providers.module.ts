@@ -19,7 +19,7 @@ import { GetRoomMessagesHttpApiEndPoint } from './get-messages-by-room.api.http.
     },
     { // api controller adapter
       provide: GET_MESSAGES_ByRoomApiServerControllerAdapter, useFactory: getMessagesByRoomAPIControllerAdapter,
-      inject: [GET_MESSAGES_ByRoomFeature, GET_MESSAGES_ByRoomPresenterApi]
+      inject: [GET_MESSAGES_ByRoomFeature]
     }
   ],
   controllers: [
