@@ -101,8 +101,8 @@ defineFeature(feature, (test) => {
     test('Reading a room that has no messages', ({ given, when, then, and }) => {
         theChatRoom(given);
 
-        given(/^the room "(.*)" holds no messages$/, (name: string) => {
-            expect(s.main.backend.chatdbMapper.getMessagesByRoom(s.room(name).id)).toEqual([]);
+        given(/^the room "(.*)" holds no messages$/, async (name: string) => {
+            expect(await s.main.backend.chatdbMapper.getMessagesByRoom(s.room(name).id)).toEqual([]);
         });
 
         aliceReadsTheMessagesOf(when);

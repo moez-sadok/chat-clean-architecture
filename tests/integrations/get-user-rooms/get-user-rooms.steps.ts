@@ -51,7 +51,7 @@ defineFeature(feature, (test) => {
 
         given('Dave participates in no room', async () => {
             const dave = await s.user('Dave');
-            expect(s.main.backend.chatdbMapper.getChatRoomsByUser(dave.id)).toEqual([]);
+            expect(await s.main.backend.chatdbMapper.getChatRoomsByUser(dave.id)).toEqual([]);
         });
 
         listsRooms(when, 'Dave', 'Dave lists his rooms');

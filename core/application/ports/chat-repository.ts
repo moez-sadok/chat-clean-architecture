@@ -5,20 +5,22 @@ import { UserDto } from "../../dtos/models/user.dto";
 import { IChatRoomsRepository } from "../usecases/get-rooms-by-user/repositories/user-rooms.repository";
 
 //Refactoring ... (ISP as IChatRoomsRepository)
+//Asynchronous by contract: the application must not assume the store answers in
+//process (see IChatDatabase).
 export interface IChatRepository extends IChatRoomsRepository {
 
-  getUserById(userId: number): UserDto | null ;
-  
-  getChatRooms(): ChatroomDto[];
-  // getChatRoomsByUser(userId: number): ChatroomDto[];
-  getChatRoomsById(roomId: number): ChatroomDto | null ;
-  getMessagesByRoom(roomId: number): MessageDto[];
-  addMessage(message: MessageDto): MessageDto;
-  getParticpantByUserAndRoom(roomId: number, userId: number): ParticipantDto;
+  getUserById(userId: number): Promise<UserDto | null>;
+
+  getChatRooms(): Promise<ChatroomDto[]>;
+  // getChatRoomsByUser(userId: number): Promise<ChatroomDto[]>;
+  getChatRoomsById(roomId: number): Promise<ChatroomDto | null>;
+  getMessagesByRoom(roomId: number): Promise<MessageDto[]>;
+  addMessage(message: MessageDto): Promise<MessageDto>;
+  getParticpantByUserAndRoom(roomId: number, userId: number): Promise<ParticipantDto>;
 
   addUser(user: UserDto): Promise<UserDto>;
-  addParticipant(participant: ParticipantDto): void;
-  removeParticipant(participant: ParticipantDto): void;
-  getUsers(): UserDto[];
+  addParticipant(participant: ParticipantDto): Promise<void>;
+  removeParticipant(participant: ParticipantDto): Promise<void>;
+  getUsers(): Promise<UserDto[]>;
   addChatRoom(chatRoom: ChatroomDto): Promise<ChatroomDto>;
 }

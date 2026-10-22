@@ -14,7 +14,7 @@ export class GetUserRoomsSSRHttpControllerAdapter implements IHttpController {
   ) {}
 
   async handle(input: GetRoomsByUserRequestData): Promise<string> {
-    this.usecase.getRoomsByUser(input,this.presenter);
+    await this.usecase.getRoomsByUser(input, this.presenter);
     return this.view.render(this.presenter.getViewModel());
   }
 

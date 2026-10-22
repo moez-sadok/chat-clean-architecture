@@ -17,9 +17,9 @@ export const aliceIsNotConnected = (given: DefineStepFunction, s: ChatScenario) 
     });
 
 export const noRoomExistsWithId = (given: DefineStepFunction, s: ChatScenario) =>
-    given(/^no room exists with the id (\d+)$/, (roomId: string) => {
-        expect(s.main.backend.chatdbMapper.getChatRoomsById(Number(roomId))).toBeNull();
-        s.messageCountBefore = s.messageCount();
+    given(/^no room exists with the id (\d+)$/, async (roomId: string) => {
+        expect(await s.main.backend.chatdbMapper.getChatRoomsById(Number(roomId))).toBeNull();
+        s.messageCountBefore = await s.messageCount();
     });
 
 export const errorMentionsRoom = (then: DefineStepFunction, s: ChatScenario, verb: 'does not exist' | 'was not found') =>

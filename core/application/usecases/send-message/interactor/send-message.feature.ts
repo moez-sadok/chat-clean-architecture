@@ -22,13 +22,13 @@ export class SendMessageFeatureV1 implements ISendMessageInput {
     this.roomEntityMapper = new RoomEntityMapper(chatServer);
   }
 
-  sendMessage(message: SendMessageInputData): Promise<SendMessageOutputData> {
-    const participantInRoom = this.chatRepository.getParticpantByUserAndRoom(message.roomId, message.userId);
-    const croom = this.chatRepository.getChatRoomsById(message.roomId);
+  async sendMessage(message: SendMessageInputData): Promise<SendMessageOutputData> {
+    const participantInRoom = await this.chatRepository.getParticpantByUserAndRoom(message.roomId, message.userId);
+    const croom = await this.chatRepository.getChatRoomsById(message.roomId);
     if (!croom || croom.id == undefined) throw new Error('SendMessage: room not found id=' + message.roomId);
 
     const messagedto: MessageDto = { from: participantInRoom, message: message.message, room: croom };
-    const newMessage = this.chatRepository.addMessage(messagedto);
+    const newMessage = await this.chatRepository.addMessage(messagedto);
     const messagedOutput: SendMessageOutputData = {
       authorName: newMessage.from.user.name,
       message: newMessage.message,
@@ -38,7 +38,7 @@ export class SendMessageFeatureV1 implements ISendMessageInput {
 
     const currRoom: IChatroom = this.roomEntityMapper.toRoomEntity(croom);
     this.broadcast(messagedOutput, currRoom);
-    return Promise.resolve(this.presenter.receiveNewMessage(messagedOutput));
+    return this.presenter.receiveNewMessage(messagedOutput);
   }
 
   private broadcast(msg: SendMessageOutputData, currRoom: IChatroom): void {

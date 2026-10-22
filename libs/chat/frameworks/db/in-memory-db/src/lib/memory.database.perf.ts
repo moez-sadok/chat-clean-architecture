@@ -14,15 +14,24 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   private messages: Record<number, MessageTable> = {};
   private cacheMessagesByRoom: Record<number, MessageTable[]> = {};
 
-  constructor() {
-    this.createDb();
+  //withDemoData=false starts from an empty store, with ids from 1 (BDD scenarios)
+  constructor(private readonly withDemoData = true) {
+    if (withDemoData) this.seed();
   }
 
-  getChatRooms(): ChatroomTable[] {
+  async createDb(): Promise<void> {
+    if (this.withDemoData) this.seed();
+  }
+
+  async closeDb(): Promise<void> {
+    //nothing to release: the store lives in this process
+  }
+
+  async getChatRooms(): Promise<ChatroomTable[]> {
     return Object.values(this.rooms);
   }
 
-  insertMessage(message: MessageTable): MessageTable {
+  async insertMessage(message: MessageTable): Promise<MessageTable> {
     const newId = this.lastMessageId + 1;
     const tabelMessage = { ...message, id: newId };
     this.messages[newId] = tabelMessage;
@@ -35,7 +44,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   }
 
   //getters
-  getMessagesByRoom(roomId: number, page = 1): MessageTable[] {
+  async getMessagesByRoom(roomId: number, page = 1): Promise<MessageTable[]> {
     const MAX_PER_PAGE = 50;
     const messages = this.cacheMessagesByRoom[roomId] ?? [];
     const start = (page - 1) * MAX_PER_PAGE;
@@ -64,9 +73,11 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     // return Object.values(this.messages).filter((m) => m.roomId == roomId);
   }
 
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticipantTable {
-    const partsByUser = this.getParticipantsByUser(userId);
-    const partsByRoom = this.getParticipantsByRoom(roomId);
+  async getParticipantByRoomAndUser(roomId: number, userId: number): Promise<ParticipantTable> {
+    const [partsByUser, partsByRoom] = await Promise.all([
+      this.getParticipantsByUser(userId),
+      this.getParticipantsByRoom(roomId)
+    ]);
     const part = partsByUser.find((p) => partsByRoom.includes(p));
     if (!part) throw new Error('User is not a participant in this chat room');
     return part;
@@ -77,8 +88,8 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   }
 
   //TO_REMOVE
-  getParticipantsByUser(userId: number): ParticipantTable[] {
-    const userTable = this.getUserById(userId);
+  async getParticipantsByUser(userId: number): Promise<ParticipantTable[]> {
+    const userTable = this.users[userId];
     if (userTable.participantsIds) return Object.values(userTable.participantsIds).map((id) => this.participants[id]);
     return [];
     //perf issue (revers nosql: userParts.getParticipantsIds())
@@ -86,31 +97,43 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
   }
 
   //TO_REMOVE
-  getParticipantsByRoom(roomId: number): ParticipantTable[] {
-    const roomTable = this.getRoomById(roomId);
+  async getParticipantsByRoom(roomId: number): Promise<ParticipantTable[]> {
+    const roomTable = this.rooms[roomId];
     if (roomTable.participantsIds) return roomTable.participantsIds.map((id) => this.participants[id]);
     return [];
     //perf issue (revers nosql: room.getParticipantsIds() add max particpants by room)
     //return Object.values(this.participants).filter((p) => p.chatRoomId === roomId);
   }
 
-  getUses(): UserTable[] {
+  async getUses(): Promise<UserTable[]> {
     return Object.values(this.users);
   }
 
-  getRoomById(roomId: number): ChatroomTable {
+  async getRoomById(roomId: number): Promise<ChatroomTable> {
     return this.rooms[roomId];
   }
 
-  getParticipantById(participantId: number): ParticipantTable {
+  async getRoomsByIds(roomIds: number[]): Promise<ChatroomTable[]> {
+    return roomIds.map((id) => this.rooms[id]).filter((r) => !!r);
+  }
+
+  async getParticipantById(participantId: number): Promise<ParticipantTable> {
     return this.participants[participantId];
   }
 
-  getUserById(userId: number): UserTable {
+  async getParticipantsByIds(participantIds: number[]): Promise<ParticipantTable[]> {
+    return participantIds.map((id) => this.participants[id]).filter((p) => !!p);
+  }
+
+  async getUserById(userId: number): Promise<UserTable> {
     return this.users[userId];
   }
 
-  insertUser(user: UserTable): UserTable {
+  async getUsersByIds(userIds: number[]): Promise<UserTable[]> {
+    return userIds.map((id) => this.users[id]).filter((u) => !!u);
+  }
+
+  async insertUser(user: UserTable): Promise<UserTable> {
     const newId = this.lastUserId + 1;
     const tabelUser = { ...user, id: newId };
     this.users[newId] = tabelUser;
@@ -118,7 +141,7 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     return tabelUser;
   }
 
-  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
+  async insertChatRoom(chatRoom: ChatroomTable): Promise<ChatroomTable> {
     const newId = this.lastRoomId + 1;
     const tabelroom = { ...chatRoom, id: newId };
     this.rooms[newId] = tabelroom;
@@ -126,14 +149,14 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     return tabelroom;
   }
 
-  removeParticipant(id: number): void {
+  async removeParticipant(id: number): Promise<void> {
     //TODO - romove from user and room
     if (this.lastParticipantId === id)
       this.lastParticipantId = this.lastParticipantId - 1;
     delete this.participants[id];
   }
 
-  insertParticipant(participant: ParticipantTable): ParticipantTable {
+  async insertParticipant(participant: ParticipantTable): Promise<ParticipantTable> {
     const newId = this.lastParticipantId + 1;
     const tabelPart = { ...participant, id: newId };
     this.participants[newId] = tabelPart;
@@ -143,14 +166,14 @@ export class DataBaseMemoryPerfImpl implements IChatDatabase {
     if (!currUser.participantsIds) currUser.participantsIds = {};
     currUser.participantsIds[newId] = newId;
     // update room participants id
-    const currRoom = this.getRoomById(participant.chatRoomId);
+    const currRoom = this.rooms[participant.chatRoomId];
     if (!currRoom.participantsIds) currRoom.participantsIds = [];
     currRoom.participantsIds?.push(newId);
     //
     return tabelPart;
   }
 
-  createDb() {
+  private seed(): void {
     //init users
     this.users = [
       { id: 0, name: 'Yuri', participantsIds: { 0: 0, 3: 3 } },

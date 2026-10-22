@@ -8,5 +8,5 @@ export interface IGetRoomsByUserRequester {
 
 //Optional (to respect strict flow)
 export interface IGetRoomsByUserSSRRequester {
-  getRoomsByUser(user: GetRoomsByUserRequestData,presenter: IGetRoomsByUserSSRPresenter): void;
+  getRoomsByUser(user: GetRoomsByUserRequestData,presenter: IGetRoomsByUserSSRPresenter): Promise<void>;
 }

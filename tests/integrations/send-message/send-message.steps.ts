@@ -29,7 +29,7 @@ defineFeature(feature, (test) => {
 
     const aliceSends = async (message: string, roomId: number) => {
         const alice = await s.client('Alice');
-        s.messageCountBefore = s.messageCount();
+        s.messageCountBefore = await s.messageCount();
         await s.attempt(() => alice.sendMessageController.handle({ roomId, userId: alice.id, message }));
     };
 
@@ -55,8 +55,8 @@ defineFeature(feature, (test) => {
         });
 
     const savedInHistory = (then: DefineStepFunction) =>
-        then(/^"(.*)" by Alice is saved in the history of "(.*)"$/, (message: string, room: string) => {
-            const history = s.main.backend.chatdbMapper.getMessagesByRoom(s.room(room).id);
+        then(/^"(.*)" by Alice is saved in the history of "(.*)"$/, async (message: string, room: string) => {
+            const history = await s.main.backend.chatdbMapper.getMessagesByRoom(s.room(room).id);
             expect(history[history.length - 1]).toMatchObject({ message, from: { user: { name: 'Alice' } } });
         });
 
@@ -139,8 +139,8 @@ defineFeature(feature, (test) => {
 
         errorMentionsRoom(then, s, 'was not found');
 
-        and('no message is saved', () => {
-            expect(s.messageCount()).toBe(s.messageCountBefore);
+        and('no message is saved', async () => {
+            expect(await s.messageCount()).toBe(s.messageCountBefore);
         });
     });
 });

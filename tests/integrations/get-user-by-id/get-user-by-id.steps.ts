@@ -41,8 +41,8 @@ defineFeature(feature, (test) => {
     test('Looking up an unknown user', ({ given, when, then, and }) => {
         theseChatMembers(given);
 
-        given(/^no user exists with the id (\d+)$/, (userId: string) => {
-            expect(s.main.backend.chatdbMapper.getUserById(Number(userId))).toBeFalsy();
+        given(/^no user exists with the id (\d+)$/, async (userId: string) => {
+            expect(await s.main.backend.chatdbMapper.getUserById(Number(userId))).toBeFalsy();
         });
 
         iLookUpTheUser(when);
