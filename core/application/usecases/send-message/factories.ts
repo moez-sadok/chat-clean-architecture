@@ -1,17 +1,16 @@
-// import { SendMessageFeature } from './send-message.feature';
-import { ISendMessagePresenterOutput } from './interactor/sendMessage.presenter.output';
-import { SendMessageUseCase } from './interactor/send-message.feature.perf';
+import { ISendMessagePresenterOutput } from './send-message.output';
+import { SendMessageUseCase } from './send-message.usecase';
 import { ISendMessageRepository } from './repositories/send-message.repository';
 import { IChatServerPort } from '../../ports/chat-server.port';
-import { SendMessagePresenterUi } from './presenter/sendMessage.presenter.ui';
-import { SendMessageApiHttpControllerAdapter } from './controller/http/sendMessage.api.http.controller.adapter';
-import { SendMessageAPIHttpControllerClientAdapter } from './controller/http/sendMessage.api.http.controller.client.adapter';
-import { ISendMessageInput } from './interactor/sendMessage.controller.input';
-import { ISendMessageView } from './presenter/sendMessage.view';
+import { SendMessagePresenterUi } from './presenter/send-message.presenter.ui';
+import { SendMessageApiHttpControllerAdapter } from './controller/send-message.http.controller';
+import { SendMessageAPIHttpControllerClientAdapter } from './controller/send-message.http.client.controller';
+import { ISendMessageInput } from './send-message.input';
+import { ISendMessageView } from './presenter/send-message.view';
 
-export const SEND_MESSAGE_Feature = 'SEND_MESSAGE_Feature';
-export const SEND_MESSAGE_PresenterApi = 'SEND_MESSAGE_PresenterApi';
-export const SEND_MESSAGEApiServerControllerAdapter = 'SEND_MESSAGEApiServerControllerAdapter';
+export const SEND_MESSAGE_USECASE = 'SEND_MESSAGE_USECASE';
+export const SEND_MESSAGE_PRESENTER_API = 'SEND_MESSAGE_PRESENTER_API';
+export const SEND_MESSAGE_HTTP_CONTROLLER = 'SEND_MESSAGE_HTTP_CONTROLLER';
 
 
 export const sendMessageFeatureFactory = (
@@ -19,7 +18,6 @@ export const sendMessageFeatureFactory = (
      presenter: ISendMessagePresenterOutput,
      chatServer: IChatServerPort
 ) => {
-     // return new SendMessageFeature(chatRepository, presenter, chatServer);
      return new SendMessageUseCase(chatRepository, presenter, chatServer);
 };
 
@@ -28,8 +26,8 @@ export const sendMessagePresenterUiFactory = (view: ISendMessageView) => {
     return new SendMessagePresenterUi(view);
 };
 // controller api adapter 
-export const sendMessageAPIControllerAdapter = (usecase: ISendMessageInput,presenter: ISendMessagePresenterOutput) => {
-    return new SendMessageApiHttpControllerAdapter(usecase,presenter);
+export const sendMessageAPIControllerAdapter = (usecase: ISendMessageInput) => {
+    return new SendMessageApiHttpControllerAdapter(usecase);
 };
 // controller client adapter 
 export const sendMessageAPIClientControllerAdapter = (presenter: ISendMessagePresenterOutput) => {

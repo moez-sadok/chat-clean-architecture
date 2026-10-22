@@ -3,7 +3,7 @@ import { Socket } from 'socket.io-client';
 import { MessageOutputData ,IGetMessagesByRoomPresenterOutput} from '@cca/core-features';
 import { IChatClient } from '@cca/core-domain';
 
-export class ChatClientSocketkAdapter implements IChatClient {
+export class ChatClientSocketAdapter implements IChatClient {
     // socket as the adaptee
     constructor(private socket: Socket, protected presenter: IGetMessagesByRoomPresenterOutput) {
         this.onReceivedMessage();
@@ -21,8 +21,8 @@ export class ChatClientSocketkAdapter implements IChatClient {
     }
 
     getId(): number {
-        //@ts-ignore
-        return this.socket.auth['userId']
+        // set by ChatControllerWsClientAdapterImpl when it opens the socket
+        return (this.socket.auth as { userId: number }).userId;
     }
 
 }

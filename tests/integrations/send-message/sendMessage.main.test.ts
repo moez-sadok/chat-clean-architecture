@@ -14,8 +14,8 @@ describe('Main Memory Tesing...', () => {
         room = await main.addNewRoom('test-room');
         await main.addClientToRoom(client1.id,room.id);
         await main.addClientToRoom(client2.id,room.id);
-        client1.getRoomsController.handle({userId:client1.id});
-        client2.getRoomsController.handle({userId:client2.id});
+        await client1.getRoomsController.handle({userId:client1.id});
+        await client2.getRoomsController.handle({userId:client2.id});
     });
 
     test('Sent message', async () => {
@@ -23,10 +23,10 @@ describe('Main Memory Tesing...', () => {
         const c2room = client2.getRoomsView.rooms ? client2.getRoomsView.rooms[0] : null;
         
         if (!c1room || !c2room) throw new Error('One of clients not exist in the room')
-        client1.getMessagesController.handle({roomId:c1room.roomId});
-        client2.getMessagesController.handle({roomId:c2room.roomId});
+        await client1.getMessagesController.handle({roomId:c1room.roomId});
+        await client2.getMessagesController.handle({roomId:c2room.roomId});
 
-        client1.sendMessageController.handle({ roomId: c1room.roomId, userId: client1.id, message: msg});
+        await client1.sendMessageController.handle({ roomId: c1room.roomId, userId: client1.id, message: msg});
         const client2Msgs = (await client2.getMessagesController.handle({ roomId: c1room.roomId})).messages;
         const lastMsg = client2Msgs[client2Msgs.length - 1].message;
         expect(lastMsg).toBe(msg);

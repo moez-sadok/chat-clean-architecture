@@ -1,12 +1,4 @@
-
-export interface IHttpController {
-  handle(req: any): Promise<any>;
+// A controller adapter: takes the request of one use case, resolves with its response.
+export interface IHttpController<TRequest = unknown, TResponse = unknown> {
+  handle(request: TRequest): Promise<TResponse>;
 }
-
-
-//generic
-// export interface IHttpController<U,P,T,R> {
-//   usecase: U; //InputBoundary , Optional (e.g. for SSR)
-//   presenter: P; //OutputBoundary, Optional (e.g. for SSR)
-//   handle(req: T): Promise<R>;
-// }

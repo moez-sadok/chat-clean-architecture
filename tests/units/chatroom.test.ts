@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { Chatroom, IChatroom, IParticipant, Message, Participant } from  "../../core/domain/index";
+import { Chatroom, IChatroom, IParticipant, Message, Participant } from  "../../core/domain";
 
 describe('Chatroom Register ...', () => {
     let chatroom: IChatroom;
@@ -62,24 +62,24 @@ describe('Chatroom send and broadcats messages', () => {
 
     test('"Lili" as a participant sent a message inside the "Girls" chatroom ', () => {
         p1.send('Hello');
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Hello');
-        expect(p2.getLastReceivedMessage().getcontent()).toBe('Hello');
-        expect(p3.getLastReceivedMessage().getcontent()).toBe('Hello');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Hello');
+        expect(p2.getLastReceivedMessage().getContent()).toBe('Hello');
+        expect(p3.getLastReceivedMessage().getContent()).toBe('Hello');
     })
 
     test('"Dina" as a participant sent a message inside the "Girls" chatroom ', () => {
         p2.send('Hi girls');
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Hi girls');
-        expect(p1.getLastReceivedMessage().getcontent()).toBe('Hi girls');
-        expect(p3.getLastReceivedMessage().getcontent()).toBe('Hi girls');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Hi girls');
+        expect(p1.getLastReceivedMessage().getContent()).toBe('Hi girls');
+        expect(p3.getLastReceivedMessage().getContent()).toBe('Hi girls');
     })
 
     test('"Lina" as a participant sent a message inside the "Girls" chatroom with broadcast ', () => {
         const msg = new Message('Cc',chatroom,p3);
         chatroom.broadcastMessage(msg,p3);
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Cc');
-        expect(p1.getLastReceivedMessage().getcontent()).toBe('Cc');
-        expect(p2.getLastReceivedMessage().getcontent()).toBe('Cc');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Cc');
+        expect(p1.getLastReceivedMessage().getContent()).toBe('Cc');
+        expect(p2.getLastReceivedMessage().getContent()).toBe('Cc');
     })
 
 });
@@ -106,15 +106,15 @@ describe('Big Chatroom (1 million) send and broadcats messages', () => {
 
     test('"First" as a participant sent a message inside the "BigRoom" chatroom ', () => {
         pFirst.send('Hello');
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Hello');
-        expect(pLast.getLastReceivedMessage().getcontent()).toBe('Hello');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Hello');
+        expect(pLast.getLastReceivedMessage().getContent()).toBe('Hello');
     })
 
     test('"First" as a participant sent a message inside the "BigRoom" chatroom with broadcast ', () => {
         const msg = new Message('Cc',chatroom,pFirst);
         chatroom.broadcastMessage(msg,pFirst);
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Cc');
-        expect(pLast.getLastReceivedMessage().getcontent()).toBe('Cc');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Cc');
+        expect(pLast.getLastReceivedMessage().getContent()).toBe('Cc');
     })
 
     test('Concurrent "First" as a participant sent multi messages inside the "BigRoom" chatroom ', () => {
@@ -123,8 +123,8 @@ describe('Big Chatroom (1 million) send and broadcats messages', () => {
             lastSentMessage = 'msg-'+i;
             pFirst.send(lastSentMessage);
         }
-        expect(chatroom.getMessages()[MAX_CONCURRENT_MESSAGES-1].getcontent()).toBe(lastSentMessage);
-        expect(pLast.getLastReceivedMessage().getcontent()).toBe(lastSentMessage);
+        expect(chatroom.getMessages()[MAX_CONCURRENT_MESSAGES-1].getContent()).toBe(lastSentMessage);
+        expect(pLast.getLastReceivedMessage().getContent()).toBe(lastSentMessage);
     })
 
 });

@@ -1,4 +1,3 @@
-import { Inject } from "@angular/core";
 import { IHttpController } from "@cca/core-controllers";
 import { GET_ROOM_MESSAGES_HTTP_URL } from "@cca/core-features";
 
@@ -6,7 +5,6 @@ import { GET_ROOM_MESSAGES_HTTP_URL } from "@cca/core-features";
 export class GetRoomMessagesSpaClient {
 
   constructor(
-    @Inject('GET_MESSAGES_ByRoomApiClientControllerAdapter')
     private clientControllerAdapter: IHttpController
   ) { }
 

@@ -14,14 +14,22 @@ export class DataBaseMemoryImpl implements IChatDatabase {
   private messages: Record<number, MessageTable> = {};
 
   constructor() {
-    this.createDb();
+    this.seed();
   }
 
-  getChatRooms(): ChatroomTable[] {
+  async createDb(): Promise<void> {
+    this.seed();
+  }
+
+  async closeDb(): Promise<void> {
+    //nothing to release: the store lives in this process
+  }
+
+  async getChatRooms(): Promise<ChatroomTable[]> {
      return Object.values(this.rooms);
   }
 
-  insertMessage(message: MessageTable): MessageTable {
+  async insertMessage(message: MessageTable): Promise<MessageTable> {
     const newId = this.lastMessageId + 1;
     const tabelMessage = { ...message, id: newId };
     this.messages[newId] = tabelMessage;
@@ -30,12 +38,12 @@ export class DataBaseMemoryImpl implements IChatDatabase {
   }
 
   //getters
-  getMessagesByRoom(roomId: number): MessageTable[] {
+  async getMessagesByRoom(roomId: number): Promise<MessageTable[]> {
     //perf issue (dedicated db + replicat nodes + use pagination + archive db + sharding by period (ex. 3 months))
     return Object.values(this.messages).filter((m) => m.roomId == roomId);
   }
 
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticipantTable {
+  async getParticipantByRoomAndUser(roomId: number, userId: number): Promise<ParticipantTable> {
     //perf issue (using getParticipantsByUser & getParticipantsByRoom)
     const part = Object.values(this.participants).find(
       (p) => p.chatRoomId === roomId && p.userId === userId
@@ -44,36 +52,48 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return part;
   }
 
-  getParticipantsByUser(userId: number): ParticipantTable[] {
+  async getParticipantsByUser(userId: number): Promise<ParticipantTable[]> {
     //perf issue (revers nosql: userParts.getParticipantsIds())
     return Object.values(this.participants).filter((p) => p.userId === userId);
   }
 
-  getParticipantsByRoom(roomId: number): ParticipantTable[] {
+  async getParticipantsByRoom(roomId: number): Promise<ParticipantTable[]> {
     //perf issue (revers nosql: room.getParticipantsIds() add max particpants by room)
     return Object.values(this.participants).filter(
       (p) => p.chatRoomId === roomId
     );
   }
 
-  getUses(): UserTable[] {
+  async getUsers(): Promise<UserTable[]> {
     return Object.values(this.users);
   }
 
-  getRoomById(roomId: number): ChatroomTable {
+  async getRoomById(roomId: number): Promise<ChatroomTable> {
     return this.rooms[roomId];
   }
 
-  getParticipantById(participantId: number): ParticipantTable {
+  async getRoomsByIds(roomIds: number[]): Promise<ChatroomTable[]> {
+    return roomIds.map((id) => this.rooms[id]).filter((r) => !!r);
+  }
+
+  async getParticipantById(participantId: number): Promise<ParticipantTable> {
     return this.participants[participantId];
   }
 
-  getUserById(userId: number): UserTable {
+  async getParticipantsByIds(participantIds: number[]): Promise<ParticipantTable[]> {
+    return participantIds.map((id) => this.participants[id]).filter((p) => !!p);
+  }
+
+  async getUserById(userId: number): Promise<UserTable> {
     //console.log('user',this.users);
     return this.users[userId];
   }
 
-  insertUser(user: UserTable): UserTable {
+  async getUsersByIds(userIds: number[]): Promise<UserTable[]> {
+    return userIds.map((id) => this.users[id]).filter((u) => !!u);
+  }
+
+  async insertUser(user: UserTable): Promise<UserTable> {
     const newId = this.lastUserId + 1;
     const tabelUser = { ...user, id: newId };
     this.users[newId] = tabelUser;
@@ -81,7 +101,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return tabelUser;
   }
 
-  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable {
+  async insertChatRoom(chatRoom: ChatroomTable): Promise<ChatroomTable> {
     const newId = this.lastRoomId + 1;
     const tabelroom = { ...chatRoom, id: newId };
     this.rooms[newId] = tabelroom;
@@ -89,13 +109,13 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return tabelroom;
   }
   
-  removeParticipant(id: number): void {
+  async removeParticipant(id: number): Promise<void> {
     if (this.lastParticipantId === id)
       this.lastParticipantId = this.lastParticipantId - 1;
     delete this.participants[id];
   }
 
-  insertParticipant(participant: ParticipantTable): ParticipantTable {
+  async insertParticipant(participant: ParticipantTable): Promise<ParticipantTable> {
     const newId = this.lastParticipantId + 1;
     const tabelPart = { ...participant, id: newId };
     this.participants[newId] = tabelPart;
@@ -103,7 +123,7 @@ export class DataBaseMemoryImpl implements IChatDatabase {
     return tabelPart;
   }
 
-  createDb() {
+  private seed(): void {
     //init users
     this.users = [
       { id: 0, name: 'Yuri' },

@@ -1,6 +1,6 @@
 import { expect } from "@jest/globals";
 // import { BotParticipant, Chatroom, IParticipant, Participant } from "@cca/core-entities";
-import { BotParticipant, Chatroom, IParticipant, Participant } from "../../core/domain/index";
+import { BotParticipant, Chatroom, IParticipant, Participant } from "../../core/domain";
 describe('Bot participant testing', () => {
     let bot: IParticipant;
     beforeEach(() => {
@@ -13,11 +13,11 @@ describe('Bot participant testing', () => {
         chatroom.register(participant);
         participant.send('Hi');
 
-        expect(chatroom.getMessages()[0].getcontent()).toBe('Hi');
-        expect(bot.getLastReceivedMessage().getcontent()).toBe('Hi');
+        expect(chatroom.getMessages()[0].getContent()).toBe('Hi');
+        expect(bot.getLastReceivedMessage().getContent()).toBe('Hi');
         //bot response testing
         await new Promise((r) => setTimeout(r, 100));
         expect(participant.getLastReceivedMessage().getParticipant()).toBe(bot);
-        expect(chatroom.getMessages()[1].getcontent()).toBe('Hello Lili, Who i can help you?');
+        expect(chatroom.getMessages()[1].getContent()).toBe('Hello Lili, Who i can help you?');
     });
 });

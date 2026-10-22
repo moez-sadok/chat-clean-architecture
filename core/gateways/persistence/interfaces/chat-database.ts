@@ -4,27 +4,42 @@ import { ParticipantTable } from '../tables/participant.table';
 import { UserTable } from '../tables/user.table';
 
 //TODO (ISP)
+/**
+ * Gateway-level port over the raw storage (table models in, table models out).
+ * Every operation is asynchronous: a real database (MongoDB, SQL, ...) can only
+ * answer over the network, so the port must not promise a synchronous result.
+ */
 export interface IChatDatabase {
-  createDb(): void;
+  /** Opens the connection (when there is one) and prepares the schema/indexes. */
+  createDb(): Promise<void>;
+  /** Releases the connection. In-memory adapters make it a no-op. */
+  closeDb(): Promise<void>;
+
   //rooms
-  getRoomById(roomId: number): ChatroomTable;
-  getChatRooms(): ChatroomTable[];
-  insertChatRoom(chatRoom: ChatroomTable): ChatroomTable;
+  getRoomById(roomId: number): Promise<ChatroomTable>;
+  /** Batch read: one round trip instead of one per id. */
+  getRoomsByIds(roomIds: number[]): Promise<ChatroomTable[]>;
+  getChatRooms(): Promise<ChatroomTable[]>;
+  insertChatRoom(chatRoom: ChatroomTable): Promise<ChatroomTable>;
 
   //messages
-  insertMessage(message: MessageTable): MessageTable;
-  getMessagesByRoom(roomId: number,page?: number): MessageTable[];
+  insertMessage(message: MessageTable): Promise<MessageTable>;
+  getMessagesByRoom(roomId: number, page?: number): Promise<MessageTable[]>;
 
   //participants
-  getParticipantById(participantId: number): ParticipantTable;
-  getParticipantsByRoom(id: number): ParticipantTable[];
-  getParticipantsByUser(userId: number): ParticipantTable[];
-  getParticipantByRoomAndUser(roomId: number, userId: number): ParticipantTable;
-  insertParticipant(participant: ParticipantTable): ParticipantTable;
-  removeParticipant(id: number): void;
+  getParticipantById(participantId: number): Promise<ParticipantTable>;
+  /** Batch read: one round trip instead of one per id. */
+  getParticipantsByIds(participantIds: number[]): Promise<ParticipantTable[]>;
+  getParticipantsByRoom(id: number): Promise<ParticipantTable[]>;
+  getParticipantsByUser(userId: number): Promise<ParticipantTable[]>;
+  getParticipantByRoomAndUser(roomId: number, userId: number): Promise<ParticipantTable>;
+  insertParticipant(participant: ParticipantTable): Promise<ParticipantTable>;
+  removeParticipant(id: number): Promise<void>;
 
   //users
-  getUserById(userId: number): UserTable;
-  insertUser(user: UserTable): UserTable;
-  getUses(): UserTable[];
+  getUserById(userId: number): Promise<UserTable>;
+  /** Batch read: one round trip instead of one per id. */
+  getUsersByIds(userIds: number[]): Promise<UserTable[]>;
+  insertUser(user: UserTable): Promise<UserTable>;
+  getUsers(): Promise<UserTable[]>;
 }

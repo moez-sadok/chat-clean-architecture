@@ -19,12 +19,12 @@ export class Message implements IMessage {
     return this.participant;
   }
 
-  getchatRoom(): IChatroom {
+  getChatRoom(): IChatroom {
     if (!this.chatroom) throw new Error('Not found chatroom for this message');
     return this.chatroom;
   }
   
-  getcontent(): string {
+  getContent(): string {
     if (!this.content) throw new Error('Not found content for this message');
     return this.content;
   }

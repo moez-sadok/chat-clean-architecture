@@ -6,14 +6,18 @@
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/apps/chat/chat-server-main-api",
         "main": "apps/chat/chat-server-main-api/src/main.ts",
         "tsConfig": "apps/chat/chat-server-main-api/tsconfig.app.json",
-        "assets": ["apps/chat/chat-server-main-api/src/assets"],
+        "assets": [
+          "apps/chat/chat-server-main-api/src/assets"
+        ],
         "webpackConfig": "apps/chat/chat-server-main-api/webpack.config.js"
       },
       "configurations": {
@@ -50,15 +54,21 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/chat/chat-server-main-api/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/chat/chat-server-main-api/src/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/chat/chat-server-main-api/jest.config.ts",
         "passWithNoTests": true
@@ -71,5 +81,8 @@
       }
     }
   },
-  "tags": []
+  "tags": [
+    "type:app",
+    "platform:server"
+  ]
 }

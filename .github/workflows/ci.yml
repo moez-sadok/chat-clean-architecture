@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    # a real MongoDB, so the mongo adapter suite runs instead of being skipped
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # artillery pulls opentelemetry peers that npm cannot resolve strictly
+      - run: npm ci --legacy-peer-deps
+
+      # Nx module boundaries: apps -> frameworks -> db/drivers, browser and server kept apart
+      - run: npx nx run-many -t lint
+
+      # unit, BDD and integration suites, plus the dependency rule of core/ (tests/architecture)
+      - run: npm test
+
+      # MONGO_REQUIRED: the suite fails instead of skipping if the service does not answer
+      - run: npm run test:mongo
+
+      - run: npx nx run-many -t build

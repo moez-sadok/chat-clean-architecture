@@ -92,13 +92,14 @@ export class ChatScenario {
     }
 
     onlineUserIds(): number[] {
-        return Object.keys(this.chatServer.connectetdUsers).map(Number);
+        return Object.keys(this.chatServer.connectedUsers).map(Number);
     }
 
-    messageCount(): number {
+    async messageCount(): Promise<number> {
         const repository = this.main.backend.chatdbMapper;
-        return repository.getChatRooms()
-            .reduce((count, room) => count + repository.getMessagesByRoom(room.id).length, 0);
+        const rooms = await repository.getChatRooms();
+        const pages = await Promise.all(rooms.map((room) => repository.getMessagesByRoom(room.id)));
+        return pages.reduce((count, messages) => count + messages.length, 0);
     }
 
     // use cases throw synchronously as well as reject, so both are caught here

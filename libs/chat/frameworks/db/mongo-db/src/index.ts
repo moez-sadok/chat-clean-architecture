@@ -1,1 +1,3 @@
-export * from './lib/chat-frameworks-db-mongo-db';
+export * from './lib/mongo.database';
+export * from './lib/mongo.config';
+export * from './lib/mongo.seed';

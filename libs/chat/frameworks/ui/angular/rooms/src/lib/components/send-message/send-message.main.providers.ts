@@ -7,7 +7,7 @@ import { GET_MESSAGES_BY_ROOM_PRESENTER } from "../../providers/shared-get-messa
 export const SEND_MESSAGE_VIEW = new InjectionToken<ISendMessageView>('SendMessageView');
 export const SEND_MESSAGE_PRESENTER = new InjectionToken<ISendMessagePresenterOutput>('SendMessagePresenter');
 
-export const SEND_MESSAGEApiClientControllerAdapter = new InjectionToken<IHttpController>('SEND_MESSAGEApiClientControllerAdapter');
+export const SEND_MESSAGE_HTTP_CLIENT_CONTROLLER = new InjectionToken<IHttpController>('SEND_MESSAGE_HTTP_CLIENT_CONTROLLER');
 export const SEND_MESSAGE_HTTP_API_CLIENT = new InjectionToken('SEND_MESSAGE_HTTP_API_CLIENT');
 
 export const sendMessageProviders = [
@@ -18,7 +18,7 @@ export const sendMessageProviders = [
     deps: [SEND_MESSAGE_VIEW]
   },
   {// API client controller adapter
-    provide: SEND_MESSAGEApiClientControllerAdapter, useFactory: sendMessageAPIClientControllerAdapter,
+    provide: SEND_MESSAGE_HTTP_CLIENT_CONTROLLER, useFactory: sendMessageAPIClientControllerAdapter,
     deps: [SEND_MESSAGE_PRESENTER]
   },
   {//HTTP_API_CLIENT service (to-check)
@@ -26,6 +26,6 @@ export const sendMessageProviders = [
     useFactory: (apiClientControllerAdapter: IHttpController,getMessagePresenetr: IGetMessagesByRoomPresenterOutput ) => {
       return new SendMessageSpaClient(apiClientControllerAdapter, getMessagePresenetr);
     },
-    deps: [SEND_MESSAGEApiClientControllerAdapter,GET_MESSAGES_BY_ROOM_PRESENTER]
+    deps: [SEND_MESSAGE_HTTP_CLIENT_CONTROLLER,GET_MESSAGES_BY_ROOM_PRESENTER]
   },
 ]

@@ -3,7 +3,7 @@ import { beforeEach, expect } from "@jest/globals";
 import { ChatScenario, loadChatFeature } from "../steps/chat-scenario";
 import { errorMentionsRoom, noRoomExistsWithId } from "../steps/common-steps";
 import { GetMessagesByRoomClientView } from "../../../core/application";
-import { SendMessageOutputData } from "../../../core/application/usecases/send-message/interactor/send-message.response.data";
+import { SendMessageOutputData } from "../../../core/application/usecases/send-message/send-message.response";
 
 const feature = loadChatFeature('send-message');
 
@@ -29,7 +29,7 @@ defineFeature(feature, (test) => {
 
     const aliceSends = async (message: string, roomId: number) => {
         const alice = await s.client('Alice');
-        s.messageCountBefore = s.messageCount();
+        s.messageCountBefore = await s.messageCount();
         await s.attempt(() => alice.sendMessageController.handle({ roomId, userId: alice.id, message }));
     };
 
@@ -55,8 +55,8 @@ defineFeature(feature, (test) => {
         });
 
     const savedInHistory = (then: DefineStepFunction) =>
-        then(/^"(.*)" by Alice is saved in the history of "(.*)"$/, (message: string, room: string) => {
-            const history = s.main.backend.chatdbMapper.getMessagesByRoom(s.room(room).id);
+        then(/^"(.*)" by Alice is saved in the history of "(.*)"$/, async (message: string, room: string) => {
+            const history = await s.main.backend.chatdbMapper.getMessagesByRoom(s.room(room).id);
             expect(history[history.length - 1]).toMatchObject({ message, from: { user: { name: 'Alice' } } });
         });
 
@@ -107,7 +107,24 @@ defineFeature(feature, (test) => {
         aliceDoesNotReceiveHerOwnMessage(and);
     });
 
-    // @wip: the domain has a push notification port (INotifiyer) but nothing wires it yet
+    // the room is already live on the server when Carol connects: she must still get what follows
+    test('A participant connects after the room is active', ({ given, and, when, then }) => {
+        background(given, and);
+
+        given(/^Alice already sent "(.*)" in "(.*)"$/, async (message: string, room: string) => {
+            await aliceSends(message, s.room(room).id);
+            expect(s.error).toBeNull();
+        });
+
+        and('Carol connects afterwards', async () => {
+            await openGeneral('Carol');
+        });
+
+        aliceSendsIn(when);
+        receivesFromAlice(then, 'Carol');
+    });
+
+    // @wip: the domain has a push notification port (INotifier) but nothing wires it yet
     test('A participant is offline', ({ given, and, when, then }) => {
         background(given, and);
 
@@ -139,8 +156,8 @@ defineFeature(feature, (test) => {
 
         errorMentionsRoom(then, s, 'was not found');
 
-        and('no message is saved', () => {
-            expect(s.messageCount()).toBe(s.messageCountBefore);
+        and('no message is saved', async () => {
+            expect(await s.messageCount()).toBe(s.messageCountBefore);
         });
     });
 });

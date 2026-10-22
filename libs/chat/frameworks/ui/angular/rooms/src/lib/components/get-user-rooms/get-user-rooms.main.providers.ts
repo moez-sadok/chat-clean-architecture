@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 export const GET_ROOMS_BY_USER_VIEW = new InjectionToken<IGetRoomsByUserView>('GetRoomsByUserView');
 export const GET_ROOMS_BY_USER_PRESENTER = new InjectionToken<IGetRoomsByUserPresenter>('GetRoomsByUserPresenter');
 
-export const GET_ROOMS_ByUserApiClientControllerAdapter = new InjectionToken<IHttpController>('GET_ROOMS_ByUserApiClientControllerAdapter');
+export const GET_ROOMS_BY_USER_HTTP_CLIENT_CONTROLLER = new InjectionToken<IHttpController>('GET_ROOMS_BY_USER_HTTP_CLIENT_CONTROLLER');
 export const GET_ROOMS_BY_USER_HTTP_API_CLIENT = new InjectionToken('GetRoomsByUserHttpApiClient');
 
 export const getRoomsByUserProviders = [
@@ -18,7 +18,7 @@ export const getRoomsByUserProviders = [
     deps: [GET_ROOMS_BY_USER_VIEW]
   },
   {// API client controller adapter
-    provide: GET_ROOMS_ByUserApiClientControllerAdapter, useFactory: getRoomsByUserAPIClientControllerAdapter,
+    provide: GET_ROOMS_BY_USER_HTTP_CLIENT_CONTROLLER, useFactory: getRoomsByUserAPIClientControllerAdapter,
     deps: [GET_ROOMS_BY_USER_PRESENTER]
   },
   {//HTTP_API_CLIENT service
@@ -26,6 +26,6 @@ export const getRoomsByUserProviders = [
     useFactory: (apiClientControllerAdapter: IHttpController, router: Router, route: ActivatedRoute) => {
       return new GetUserRoomsSpaClient(apiClientControllerAdapter, router,route);
     },
-    deps: [GET_ROOMS_ByUserApiClientControllerAdapter, Router,ActivatedRoute]
+    deps: [GET_ROOMS_BY_USER_HTTP_CLIENT_CONTROLLER, Router,ActivatedRoute]
   },
 ]

@@ -16,17 +16,19 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": [
         "{options.outputFile}"
       ],
       "options": {
         "lintFilePatterns": [
-          "libs/chat/frameworks/ui/angular/rooms/**/*.ts",
-          "libs/chat/frameworks/ui/angular/rooms/**/*.html"
+          "libs/chat/frameworks/ui/angular/rooms/src/**/*.ts"
         ]
       }
     }
   },
-  "tags": []
+  "tags": [
+    "type:framework",
+    "platform:browser"
+  ]
 }

@@ -1,8 +1,7 @@
 import { defineFeature, DefineStepFunction } from "jest-cucumber";
 import { beforeEach, expect } from "@jest/globals";
 import { ChatScenario, loadChatFeature } from "../steps/chat-scenario";
-import { GetRoomsByUserClientView, GetRoomsByUserPresenterSSR, GetRoomsByUserSSRView, GetUserRoomsSSRHttpControllerAdapter } from "../../../core/application";
-import { GetRoomsByUserSSRUseCase } from "../../../core/application/usecases/get-rooms-by-user/interactor/getRoomsByUser.usecase.ssr";
+import { GetRoomsByUserClientView, GetRoomsByUserPresenterSSR, GetRoomsByUserSSRView, GetRoomsByUserUseCase, GetUserRoomsSSRHttpControllerAdapter } from "../../../core/application";
 
 const feature = loadChatFeature('get-user-rooms');
 
@@ -51,7 +50,7 @@ defineFeature(feature, (test) => {
 
         given('Dave participates in no room', async () => {
             const dave = await s.user('Dave');
-            expect(s.main.backend.chatdbMapper.getChatRoomsByUser(dave.id)).toEqual([]);
+            expect(await s.main.backend.chatdbMapper.getChatRoomsByUser(dave.id)).toEqual([]);
         });
 
         listsRooms(when, 'Dave', 'Dave lists his rooms');
@@ -69,7 +68,7 @@ defineFeature(feature, (test) => {
             const alice = await s.user('Alice');
             const presenter = new GetRoomsByUserPresenterSSR(new GetRoomsByUserSSRView());
             const controller = new GetUserRoomsSSRHttpControllerAdapter(
-                new GetRoomsByUserSSRUseCase(s.main.backend.chatdbMapper, presenter), presenter, presenter.view);
+                new GetRoomsByUserUseCase(s.main.backend.chatdbMapper, presenter), presenter, presenter.view);
             await s.attempt(() => controller.handle({ userId: alice.id }));
         });
 
