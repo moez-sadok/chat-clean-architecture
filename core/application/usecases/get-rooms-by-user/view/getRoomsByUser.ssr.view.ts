@@ -42,14 +42,3 @@ export class GetRoomsByUserSSRView implements IGetRoomsByUserSSRView {
 
   }
 }
-
-
-//TODO change by router
-//const script = ` <script>
-//     function selectRoom(roomId) {
-//       window.location.href = '/' + roomId;
-//     }
-//   </script>`;
-// ----
-// <body>
-//     ${script}

@@ -8,9 +8,3 @@ export interface IGetRoomsByUserView {
 export interface IGetRoomsByUserSSRView {
   render(rooms: RoomViewModel[]): string;
 }
-
-// //generic
-// export interface IView<T,R> {
-//   data: T;
-//   render(data: T): R;
-// }

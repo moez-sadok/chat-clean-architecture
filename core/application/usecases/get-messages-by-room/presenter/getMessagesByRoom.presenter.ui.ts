@@ -14,7 +14,6 @@ export class GetMessagesByRoomPresenterUi implements IGetMessagesByRoomPresenter
     });
     this.view.setActiveRoom(room.roomId, room.roomName);
     this.view.render(ouputMessages);
-    //this.notifNewMessageOnInactiveRoom(room?.roomId, -1);//reset
     return { messages: messages, roomName: room.roomName, roomId: room.roomId };
   }
 
@@ -23,19 +22,5 @@ export class GetMessagesByRoomPresenterUi implements IGetMessagesByRoomPresenter
     return message;
   }
 
-  //private notifNewMessageOnInactiveRoom(roomId: number, notifsNumber = 0) {
-    // if (!this.chatWebViewScreen.chatDataViewModelDto.rooms)
-    //   throw new Error('Not found rooms in the connect user view');
-    // const roomHasNewMessageIndex = this.chatWebViewScreen.chatDataViewModelDto.rooms?.findIndex(e => e.roomId === +roomId);
-    // if (roomHasNewMessageIndex == undefined || roomHasNewMessageIndex < 0)
-    //   throw new Error('Room not found to set local notif of new messages' + roomHasNewMessageIndex);
-    // const roomHasNewMessage = this.chatWebViewScreen.chatDataViewModelDto.rooms[roomHasNewMessageIndex];
-    // const currentNewMessagesNotif = notifsNumber == -1 ? 0 : roomHasNewMessage.newMessagesNotif
-    //   ? roomHasNewMessage.newMessagesNotif + 1 : 1;
-    // const newRoomView: RoomViewModel = { ...roomHasNewMessage, newMessagesNotif: currentNewMessagesNotif };
-    // const currRooms = [...this.chatWebViewScreen.chatDataViewModelDto.rooms];
-    // currRooms[roomHasNewMessageIndex] = newRoomView;
-    // this.chatWebViewScreen.displayChatPageRooms(currRooms);
-  //}
 
 }

@@ -25,7 +25,7 @@ Feature: Disconnect Client
     Scenario: Disconnecting while offline
       Given Alice is not connected to the chat server
       When Alice disconnects
-      Then the disconnection is reported as failed report
+      Then the disconnection is reported as failed
       And the online users are unchanged
 
     Scenario: Disconnecting twice

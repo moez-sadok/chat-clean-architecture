@@ -57,10 +57,6 @@ export class Participant implements IParticipant {
       message.getchatRoom().getId(),
       this.getUserId(),
       message.getParticipant().getUserName());
-    //else
-     //TO-Compleate
-     // this.notifiyer?.notify(this.getUserId(), message.getcontent())
-     //console.log('Participant user is not connected, send a push notif...', this.getUserId());
   }
 
   setClient(client: IChatClient) {
