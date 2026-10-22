@@ -11,12 +11,13 @@ export class Participant implements IParticipant {
 
   protected lastReceivedMessage?: IMessage | null;
 
-  protected notifier?: INotifier | null;
-
+  // client: the participant's live connection, absent while offline.
+  // notifier: how an offline participant is told about a message (R16).
   constructor(
     protected userName: string,
     protected userId: number,
-    protected client?: IChatClient) { }
+    protected client?: IChatClient,
+    protected notifier?: INotifier) { }
 
   getChatRoom(): IChatroom {
     if (!this.chatroom) throw new Error('Participant dont have a chatroom');
@@ -52,11 +53,12 @@ export class Participant implements IParticipant {
 
   receive(message: IMessage) {
     this.lastReceivedMessage = message;
-    if (this.client) this.client.receive(
-      message.getContent(),
-      message.getChatRoom().getId(),
-      this.getUserId(),
-      message.getParticipant().getUserName());
+    const author = message.getParticipant().getUserName();
+    if (this.client) {
+      this.client.receive(message.getContent(), message.getChatRoom().getId(), this.getUserId(), author);
+    } else {
+      this.notifier?.notify(this.getUserId(), message.getContent(), `${author} in ${message.getChatRoom().getName()}`);
+    }
   }
 
   setClient(client: IChatClient) {

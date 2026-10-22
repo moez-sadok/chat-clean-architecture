@@ -1,27 +1,23 @@
 import { IHttpController } from "@cca/core-controllers";
-import { IGetMessagesByRoomPresenterOutput, SEND_MESSAGE_HTTP_URL } from "@cca/core-features";
+import { SEND_MESSAGE_HTTP_URL, SendMessageOutputData } from "@cca/core-features";
 
-//use the router to orchestrates UI (statless)
+// Posts the message, hands the response to the send-message client controller and returns it.
+// Showing the sent message in the room's list is not its job: the page composes the two use cases.
 export class SendMessageSpaClient {
 
-  constructor(
-    private clientControllerAdapter: IHttpController,
-    //To-check
-    private getMessagesRoomPresentator: IGetMessagesByRoomPresenterOutput
-  ) { }
+  constructor(private clientController: IHttpController<SendMessageOutputData, void>) { }
 
-  async sendMessage(roomId: number, userId: number, message: string) {
-    const msg = { roomId: roomId, userId: userId, message: message };
-    const res= await fetch(SEND_MESSAGE_HTTP_URL, {
+  async sendMessage(roomId: number, userId: number, message: string): Promise<SendMessageOutputData> {
+    const response: SendMessageOutputData = await fetch(SEND_MESSAGE_HTTP_URL, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
       },
       method: "POST",
-      body: JSON.stringify(msg)
+      body: JSON.stringify({ roomId, userId, message })
     }).then(res => res.json());
-    this.clientControllerAdapter.handle(res);
-    this.getMessagesRoomPresentator.presentNewMessage(res);
+    await this.clientController.handle(response);
+    return response;
   }
-  
+
 }

@@ -4,6 +4,7 @@ import { Message } from "../../../domain/entities/message.impl";
 import { RoomEntityMapper } from "../../mappers/room-entity.mapper";
 import { ISendMessageRepository } from "./repositories/send-message.repository";
 import { IChatServerPort } from "../../ports/chat-server.port";
+import { INotifier } from "../../../domain/ports/push-notif.port";
 import { ISendMessageInput } from "./send-message.input";
 import { ISendMessagePresenterOutput } from "./send-message.output";
 import { SendMessageOutputData } from "./send-message.response";
@@ -16,9 +17,10 @@ export class SendMessageUseCase implements ISendMessageInput {
   constructor(
     private chatRepository: ISendMessageRepository,
     private presenter: ISendMessagePresenterOutput,
-    chatServer: IChatServerPort
+    chatServer: IChatServerPort,
+    notifier: INotifier
   ) {
-    this.roomEntityMapper = new RoomEntityMapper(chatServer);
+    this.roomEntityMapper = new RoomEntityMapper(chatServer, notifier);
   }
 
   async sendMessage(message: SendMessageInputData): Promise<SendMessageOutputData> {
@@ -35,7 +37,8 @@ export class SendMessageUseCase implements ISendMessageInput {
       authorId: message.userId
     };
 
-    // the room entity is rebuilt on every message, so it always holds the clients online right now
+    // the room entity is rebuilt on every message, so it always holds the clients online right now:
+    // online participants get the message pushed, offline ones a notification (R16)
     this.broadcast(output, this.roomEntityMapper.toRoomEntity(roomDto));
     return this.presenter.receiveNewMessage(output);
   }

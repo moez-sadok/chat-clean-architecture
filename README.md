@@ -273,7 +273,7 @@ The application implements the following use cases. All of them follow one flow,
 
 | Use Case | Class | Description |
 |----------|-------|-------------|
-| Send Message | `SendMessageUseCase` | Validates and broadcasts a message to room participants |
+| Send Message | `SendMessageUseCase` | Saves a message and delivers it: pushed in real time to online participants, by push notification (domain port `INotifier`) to offline ones |
 | Get Messages by Room | `GetMessagesByRoomUseCase` | Retrieves all messages for a given chat room |
 | Get Rooms by User | `GetRoomsByUserUseCase` | Returns the rooms a user belongs to; wired to the API presenter, or to the SSR presenter for the server-rendered page |
 | Get User by ID | `GetUserByIdUseCase` | Fetches user details by their identifier |
@@ -290,7 +290,7 @@ Each use case follows Clean Architecture's dependency rule: it depends only on p
 | Pattern | Where Applied | Purpose |
 |---------|---------------|---------|
 | **Mediator** | `IChatroom` / `Chatroom` | The chat room acts as a mediator that coordinates message delivery between participants, avoiding direct participant-to-participant coupling. |
-| **Observer** | `IParticipant.receive()` | Participants are notified of new messages through the mediator, following an observer-like notification pattern. |
+| **Observer** | `IParticipant.receive()` | Participants are notified of new messages through the mediator, following an observer-like notification pattern. An online participant forwards the message to its `IChatClient`, an offline one to the `INotifier` port (R16). |
 | **Port/Adapter** | `IChatRepository`, `IChatServerPort`, `IChatDatabase` | Core business logic defines port interfaces; framework-specific adapters implement them (in-memory DB, MongoDB, Socket.IO). |
 | **Factory** | `factories.ts` in each use case | Factory functions create use cases, presenters, and controllers with proper dependency injection wiring. |
 | **Presenter** | `*PresenterApi`, `*PresenterUi` | Separates output formatting from business logic. API presenters format data for HTTP responses; UI presenters update views. |
@@ -420,6 +420,14 @@ Using Bun:
    ```
 
    Both run in CI (`.github/workflows/ci.yml`) with the tests, the MongoDB suite and the builds.
+
+- Mutation testing (Stryker): how much of the business rules the tests really pin down
+
+   ```bash
+   # mutates the domain, the use cases, the mappers and the persistence gateway, then replays
+   # the tests/ suites against each mutant; a surviving mutant is a behaviour no test checks
+   npm run test:mutation          # HTML report in reports/mutation/index.html
+   ```
 
 - Performance (Autocannon)
 

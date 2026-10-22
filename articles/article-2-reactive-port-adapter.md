@@ -52,7 +52,7 @@ Notice what's deliberately **absent**: no `subscribe()` (an RxJS concept), no `c
 The View class from Part 1 receives `IReactive<T>` by constructor injection:
 
 ```typescript
-// core/application/usecases/get-tasks/view/getTasks.web.reactive.view.ts
+// core/application/usecases/get-tasks/view/get-tasks.web.reactive.view.ts
 
 export class GetTasksClientReactiveView implements IGetTasksReactiveView {
 
@@ -229,9 +229,9 @@ export const taskProviders = [
 | Layer | File | Changed? |
 |-------|------|----------|
 | Domain | `task.entity.ts` | No |
-| Application | `getTasks.feature.ts` (Use Case) | No |
-| Adapters | `getTasks.presenter.ui.ts` (Presenter) | No |
-| Adapters | `getTasks.web.reactive.view.ts` (View) | No |
+| Application | `get-tasks.usecase.ts` (Use Case) | No |
+| Adapters | `get-tasks.presenter.ui.ts` (Presenter) | No |
+| Adapters | `get-tasks.web.reactive.view.ts` (View) | No |
 | Framework | `task-list.component.ts` (Component) | No |
 | Framework | `task-list.component.html` (Template) | No |
 | Framework | **`task.providers.ts` (Provider)** | **Yes -- 1 line** |

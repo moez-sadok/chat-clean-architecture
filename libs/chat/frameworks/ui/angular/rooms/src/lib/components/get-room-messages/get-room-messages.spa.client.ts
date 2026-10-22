@@ -1,17 +1,18 @@
 import { IHttpController } from "@cca/core-controllers";
-import { GET_ROOM_MESSAGES_HTTP_URL } from "@cca/core-features";
+import { GET_ROOM_MESSAGES_HTTP_URL, GetMessagesOutputData } from "@cca/core-features";
 
-//use the router to orchestrates UI (statless)
+// fetches the API and hands the response to the use case's client controller, which presents it
 export class GetRoomMessagesSpaClient {
 
   constructor(
-    private clientControllerAdapter: IHttpController
+    private clientControllerAdapter: IHttpController<GetMessagesOutputData, void>
   ) { }
 
-  async getRoomMessages(roomId: number): Promise<any> {
+  async getRoomMessages(roomId: number): Promise<GetMessagesOutputData> {
     const url = `${GET_ROOM_MESSAGES_HTTP_URL}/${roomId}`;
-    const res = await fetch(url).then(res => res.json());
-    this.clientControllerAdapter.handle(res);
+    const res: GetMessagesOutputData = await fetch(url).then(res => res.json());
+    await this.clientControllerAdapter.handle(res);
+    return res;
   }
   
 }

@@ -3,10 +3,12 @@ import { DataBaseMemoryPerfImpl } from '@cca/frameworks/db/in-memory-db';
 import { MongoDataBaseImpl, mongoConfigFromEnv } from '@cca/frameworks/db/mongo-db';
 import { IChatDatabase, DataBaseMapper } from '@cca/core-gateways';
 import { ChatServerWSAdapter } from '@cca/drivers/socketIo/server';
+import { LogPushNotifierAdapter } from '@cca/drivers/push/log';
 
 export const CHAT_DB_PROVIDER = 'CHAT_DB_PROVIDER';
 export const CHAT_DB_MAPPER_PROVIDER = 'CHAT_DB_MAPPER_PROVIDER';
 export const CHAT_SERVER_PROVIDER_PORT = 'CHAT_SERVER_PROVIDER_PORT';
+export const CHAT_NOTIFIER_PROVIDER = 'CHAT_NOTIFIER_PROVIDER';
 
 export const dbMapperFactory = (db: IChatDatabase) => {
   return new DataBaseMapper(db);
@@ -33,11 +35,14 @@ export const chatDatabaseFactory = async (): Promise<IChatDatabase> => {
       inject: [CHAT_DB_PROVIDER]
     },
     { provide: CHAT_SERVER_PROVIDER_PORT, useClass: ChatServerWSAdapter },
+    // push notifications for offline participants (R16): swap for a real push driver here
+    { provide: CHAT_NOTIFIER_PROVIDER, useValue: new LogPushNotifierAdapter() },
   ],
   exports: [
     CHAT_DB_MAPPER_PROVIDER, 
     CHAT_DB_PROVIDER, 
-    CHAT_SERVER_PROVIDER_PORT
+    CHAT_SERVER_PROVIDER_PORT,
+    CHAT_NOTIFIER_PROVIDER
   ]
 })
 export class ChatMainConfigProvidersModule { }

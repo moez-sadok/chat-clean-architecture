@@ -33,6 +33,9 @@ jobs:
       # unit, BDD and integration suites, plus the dependency rule of core/ (tests/architecture)
       - run: npm test
 
+      # the specs inside the Nx projects (e.g. the Angular pages composing two use cases)
+      - run: npx nx run-many -t test
+
       # MONGO_REQUIRED: the suite fails instead of skipping if the service does not answer
       - run: npm run test:mongo
 

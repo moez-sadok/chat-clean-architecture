@@ -1,17 +1,18 @@
 import { IHttpController } from "@cca/core-controllers";
-import { GET_USER_BY_ID_HTTP_URL } from "@cca/core-features";
+import { GET_USER_BY_ID_HTTP_URL, UserOutputData } from "@cca/core-features";
 
-//use the router to orchestrates UI (statless)
+// fetches the API and hands the response to the use case's client controller, which presents it
 export class GetUserByIdSpaClient {
 
   constructor(
-    private clientControllerAdapter: IHttpController
+    private clientControllerAdapter: IHttpController<UserOutputData | null, void>
   ) { }
 
-  async getUserById(userId: number): Promise<any> {
+  async getUserById(userId: number): Promise<UserOutputData | null> {
     const url = `${GET_USER_BY_ID_HTTP_URL}/${userId}`;
-    const res = await fetch(url).then(res => res.json());
-    this.clientControllerAdapter.handle(res);
+    const res: UserOutputData | null = await fetch(url).then(res => res.json());
+    await this.clientControllerAdapter.handle(res);
+    return res;
   }
   
 }

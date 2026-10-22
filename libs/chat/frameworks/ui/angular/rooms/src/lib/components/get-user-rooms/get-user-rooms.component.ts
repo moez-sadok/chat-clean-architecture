@@ -18,14 +18,14 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 })
 export class GetUserRoomsComponent {
 
-  userId!: number;
+  userId: number;
 
   constructor(
     private route: ActivatedRoute,
     @Inject(GET_ROOMS_BY_USER_VIEW) public getRoomsView: IGetRoomsByUserView,
     @Inject(GET_ROOMS_BY_USER_HTTP_API_CLIENT) public getRoomsController: GetUserRoomsSpaClient
   ) {
-    this.userId = +this.route.snapshot.paramMap.get('userId')!;
+    this.userId = Number(this.route.snapshot.paramMap.get('userId') ?? -1);
     if (this.userId >= 0) this.getRoomsController.getUserRooms(this.userId);
   }
 

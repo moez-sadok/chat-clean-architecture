@@ -14,7 +14,8 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "libs/chat/drivers/socketIo/server/jest.config.ts"
+        "jestConfig": "libs/chat/drivers/socketIo/server/jest.config.ts",
+        "passWithNoTests": true
       }
     },
     "lint": {

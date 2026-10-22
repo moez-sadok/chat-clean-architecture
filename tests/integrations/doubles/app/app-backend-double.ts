@@ -1,6 +1,7 @@
 
 import { DataBaseMapper, IChatDatabase } from "../../../../core/gateways/persistence";
 import { ChatServerMemoryImpl } from "../ws/chat-server.memory.impl";
+import { NotifierMemoryImpl } from "../push/notifier.memory.impl";
 import { DataBaseMemoryPerfImpl } from "../../../../libs/chat/frameworks/db/in-memory-db/src";
 import { GetRoomsByUserUseCase, GetUserByIdUseCase, GetMessagesByRoomUseCase, IGetRoomsByUserRequester, IGetUserByIdInput, IGetMessagesByRoomInput, ISendMessageInput, SendMessageUseCase, GetRoomsByUserPresenterAPI, GetMessagesByRoomPresenterApi, GetUserByIdPresenterAPI, SendMessagePresenterApi, IChatServerPort, IChatRepository, GetUserRoomsApiHttpControllerAdapter, GetRoomMessagesApiHttpControllerAdapter, GetUserByIdApiHttpControllerAdapter, SendMessageApiHttpControllerAdapter } from "../../../../core/application";
 
@@ -9,6 +10,7 @@ export class AppBackendDouble {
     dataBase!: IChatDatabase;
     chatdbMapper!: IChatRepository;
     chatServer!: IChatServerPort;
+    notifier = new NotifierMemoryImpl();
 
     //init api presenters
     getUserByIdPresenterAPI = new GetUserByIdPresenterAPI();
@@ -40,7 +42,7 @@ export class AppBackendDouble {
         this.getRoomsByUserFeature = new GetRoomsByUserUseCase(this.chatdbMapper, this.getRoomsByUserPresenterAPI);
         this.getUserByIdFeature = new GetUserByIdUseCase(this.chatdbMapper, this.getUserByIdPresenterAPI);
         this.getMessagesByRoomFeature = new GetMessagesByRoomUseCase(this.chatdbMapper, this.getMessagesByRoomPresenterApi);
-        this.sendMessageFeature = new SendMessageUseCase(this.chatdbMapper, this.sendMessagePresenterApi, this.chatServer);
+        this.sendMessageFeature = new SendMessageUseCase(this.chatdbMapper, this.sendMessagePresenterApi, this.chatServer, this.notifier);
 
         // the production API controller adapters: only the HTTP transport is left out
         this.getUserRoomsHttpControllerApi = new GetUserRoomsApiHttpControllerAdapter(this.getRoomsByUserFeature);

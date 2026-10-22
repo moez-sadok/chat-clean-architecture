@@ -1,14 +1,13 @@
 import { InjectionToken } from "@angular/core";
 import { IHttpController } from "@cca/core-controllers";
-import { sendMessagePresenterUiFactory, ISendMessageView, sendMessageAPIClientControllerAdapter, SendMessageWebView, ISendMessagePresenterOutput, IGetMessagesByRoomPresenterOutput } from "@cca/core-features";
+import { sendMessagePresenterUiFactory, ISendMessageView, sendMessageAPIClientControllerAdapter, SendMessageWebView, ISendMessagePresenterOutput, SendMessageOutputData } from "@cca/core-features";
 import { SendMessageSpaClient } from "./send-message.spa.client";
-import { GET_MESSAGES_BY_ROOM_PRESENTER } from "../../providers/shared-get-messages.presenter.provider";
 
 export const SEND_MESSAGE_VIEW = new InjectionToken<ISendMessageView>('SendMessageView');
 export const SEND_MESSAGE_PRESENTER = new InjectionToken<ISendMessagePresenterOutput>('SendMessagePresenter');
 
-export const SEND_MESSAGE_HTTP_CLIENT_CONTROLLER = new InjectionToken<IHttpController>('SEND_MESSAGE_HTTP_CLIENT_CONTROLLER');
-export const SEND_MESSAGE_HTTP_API_CLIENT = new InjectionToken('SEND_MESSAGE_HTTP_API_CLIENT');
+export const SEND_MESSAGE_HTTP_CLIENT_CONTROLLER = new InjectionToken<IHttpController<SendMessageOutputData, void>>('SEND_MESSAGE_HTTP_CLIENT_CONTROLLER');
+export const SEND_MESSAGE_HTTP_API_CLIENT = new InjectionToken<SendMessageSpaClient>('SEND_MESSAGE_HTTP_API_CLIENT');
 
 export const sendMessageProviders = [
   // View
@@ -21,11 +20,9 @@ export const sendMessageProviders = [
     provide: SEND_MESSAGE_HTTP_CLIENT_CONTROLLER, useFactory: sendMessageAPIClientControllerAdapter,
     deps: [SEND_MESSAGE_PRESENTER]
   },
-  {//HTTP_API_CLIENT service (to-check)
+  {// SPA client
     provide: SEND_MESSAGE_HTTP_API_CLIENT,
-    useFactory: (apiClientControllerAdapter: IHttpController,getMessagePresenetr: IGetMessagesByRoomPresenterOutput ) => {
-      return new SendMessageSpaClient(apiClientControllerAdapter, getMessagePresenetr);
-    },
-    deps: [SEND_MESSAGE_HTTP_CLIENT_CONTROLLER,GET_MESSAGES_BY_ROOM_PRESENTER]
+    useFactory: (clientController: IHttpController<SendMessageOutputData, void>) => new SendMessageSpaClient(clientController),
+    deps: [SEND_MESSAGE_HTTP_CLIENT_CONTROLLER]
   },
 ]

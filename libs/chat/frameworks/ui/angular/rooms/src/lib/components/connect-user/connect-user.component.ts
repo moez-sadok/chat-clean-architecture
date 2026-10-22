@@ -22,8 +22,8 @@ export class ConnectUserComponent {
     @Inject(CHAT_SERVER_CONTROLLER_PROVIDER) public wsController: IChatWsController
   ) {
 
-    const userId = +this.route.snapshot.paramMap.get('userId')!;
-    if (userId != null) {
+    const userId = Number(this.route.snapshot.paramMap.get('userId') ?? -1);
+    if (userId >= 0) {
       this.chatController.getUserById(userId);
       this.wsController.connectClient(userId);
     }

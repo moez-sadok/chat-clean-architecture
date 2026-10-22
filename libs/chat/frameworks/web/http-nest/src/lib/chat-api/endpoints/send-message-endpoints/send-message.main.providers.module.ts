@@ -7,7 +7,7 @@ import {
   SendMessagePresenterApi
 } from '@cca/core-features';
 import { Module } from '@nestjs/common';
-import { ChatMainConfigProvidersModule, CHAT_DB_MAPPER_PROVIDER, CHAT_SERVER_PROVIDER_PORT } from '../../main/chat.main.config.providers.module';
+import { ChatMainConfigProvidersModule, CHAT_DB_MAPPER_PROVIDER, CHAT_SERVER_PROVIDER_PORT, CHAT_NOTIFIER_PROVIDER } from '../../main/chat.main.config.providers.module';
 import { SendMessageHttpApiEndPoint } from './send-message.api.http.endpoints';
 
 @Module({
@@ -17,7 +17,7 @@ import { SendMessageHttpApiEndPoint } from './send-message.api.http.endpoints';
     { provide: SEND_MESSAGE_PRESENTER_API, useValue: new SendMessagePresenterApi() },
     {
       provide: SEND_MESSAGE_USECASE, useFactory: sendMessageFeatureFactory,
-      inject: [CHAT_DB_MAPPER_PROVIDER, SEND_MESSAGE_PRESENTER_API,CHAT_SERVER_PROVIDER_PORT ]
+      inject: [CHAT_DB_MAPPER_PROVIDER, SEND_MESSAGE_PRESENTER_API, CHAT_SERVER_PROVIDER_PORT, CHAT_NOTIFIER_PROVIDER]
     },
     { // api controller adapter
       provide: SEND_MESSAGE_HTTP_CONTROLLER, useFactory: sendMessageAPIControllerAdapter,

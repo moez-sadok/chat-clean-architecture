@@ -2,28 +2,33 @@ import { Socket, io } from 'socket.io-client';
 
 import { IChatWsController } from '@cca/core-controllers';
 import { IGetMessagesByRoomPresenterOutput } from '@cca/core-features';
-import { IChatClient } from '@cca/core-domain';
 import { ChatClientSocketAdapter } from './chat-socket-client-adapter';
-// Adapter pattern (Object) 
+
+// Adapter pattern (object): opens one Socket.IO connection per connected user and hands the
+// messages it receives to the get-messages presenter.
 export class ChatControllerWsClientAdapterImpl implements IChatWsController {
 
-  constructor(private presentator: IGetMessagesByRoomPresenterOutput) { }
+  private sockets: Record<number, Socket> = {};
 
-  connectClient(userId: number): Promise<boolean> {
+  constructor(private presenter: IGetMessagesByRoomPresenterOutput) { }
+
+  async connectClient(userId: number): Promise<boolean> {
+    if (this.sockets[userId]) return false;
     const socket: Socket = io('ws://localhost:8080', {
       reconnectionDelayMax: 10000,
-      auth: { userId: userId },
+      auth: { userId },
     });
-    socket.id = userId.toString();
-    const clientSocket: IChatClient = new ChatClientSocketAdapter(socket, this.presentator);
-    return new Promise((resolve) => {
-      if (clientSocket) resolve(true);
-      resolve(false);
-    });
+    new ChatClientSocketAdapter(socket, this.presenter);
+    this.sockets[userId] = socket;
+    return true;
   }
 
-  disconnectClient(userId: number): Promise<boolean> {
-    return new Promise((resolve) => { resolve(true); });
+  async disconnectClient(userId: number): Promise<boolean> {
+    const socket = this.sockets[userId];
+    if (!socket) return false;
+    socket.disconnect();
+    delete this.sockets[userId];
+    return true;
   }
 
 }

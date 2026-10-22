@@ -3,13 +3,14 @@ import { Chatroom } from '../../domain/entities/chat-room.impl';
 import { Participant } from '../../domain/entities/participant.impl';
 import { IChatroom } from '../../domain/interfaces/chatroom';
 import { IParticipant } from '../../domain/interfaces/participant';
+import { INotifier } from '../../domain/ports/push-notif.port';
 import { IChatServerPort } from '../ports/chat-server.port';
 import { ChatroomDto } from '../../dtos/models/chatroom.dto';
 import { ParticipantDto } from '../../dtos/models/participant.dto';
 
 export class RoomEntityMapper {
 
-  constructor(private chatServer: IChatServerPort) {}
+  constructor(private chatServer: IChatServerPort, private notifier: INotifier) {}
 
   toRoomEntity(roomDto: ChatroomDto): IChatroom {
     const roomEntity: IChatroom = new Chatroom(roomDto.name, roomDto.id);
@@ -24,6 +25,6 @@ export class RoomEntityMapper {
     const client = this.chatServer.getConnectedClient(partDto.user.id);
     return partDto.isBot
       ? new BotParticipant(partDto.user.name, partDto.user.id, client)
-      : new Participant(partDto.user.name, partDto.user.id, client);
+      : new Participant(partDto.user.name, partDto.user.id, client, this.notifier);
   }
 }

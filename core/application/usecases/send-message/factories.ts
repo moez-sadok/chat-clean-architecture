@@ -2,6 +2,7 @@ import { ISendMessagePresenterOutput } from './send-message.output';
 import { SendMessageUseCase } from './send-message.usecase';
 import { ISendMessageRepository } from './repositories/send-message.repository';
 import { IChatServerPort } from '../../ports/chat-server.port';
+import { INotifier } from '../../../domain/ports/push-notif.port';
 import { SendMessagePresenterUi } from './presenter/send-message.presenter.ui';
 import { SendMessageApiHttpControllerAdapter } from './controller/send-message.http.controller';
 import { SendMessageAPIHttpControllerClientAdapter } from './controller/send-message.http.client.controller';
@@ -16,9 +17,10 @@ export const SEND_MESSAGE_HTTP_CONTROLLER = 'SEND_MESSAGE_HTTP_CONTROLLER';
 export const sendMessageFeatureFactory = (
      chatRepository: ISendMessageRepository,
      presenter: ISendMessagePresenterOutput,
-     chatServer: IChatServerPort
+     chatServer: IChatServerPort,
+     notifier: INotifier
 ) => {
-     return new SendMessageUseCase(chatRepository, presenter, chatServer);
+     return new SendMessageUseCase(chatRepository, presenter, chatServer, notifier);
 };
 
 // presenter ui

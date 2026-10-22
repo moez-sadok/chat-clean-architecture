@@ -46,7 +46,6 @@ Feature: Send Message
 
   Rule: R16 Offline participants are told about the message by push notification
 
-    @wip
     Scenario: A participant is offline
       Given Carol is not connected
       When Alice sends "Hello team" in "General"

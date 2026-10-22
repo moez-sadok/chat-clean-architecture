@@ -110,7 +110,7 @@ The application layer defines **what the system does** (use cases) and **what it
 ### The Input Port -- What the Controller Calls
 
 ```typescript
-// core/application/usecases/get-tasks/interactor/getTasks.controller.input.ts
+// core/application/usecases/get-tasks/get-tasks.input.ts
 
 export interface IGetTasksInput {
   getTasks(): Promise<TaskOutputData[]>;
@@ -120,7 +120,7 @@ export interface IGetTasksInput {
 ### The Output Port -- What the Use Case Calls to Present Results
 
 ```typescript
-// core/application/usecases/get-tasks/interactor/getTasks.presenter.output.ts
+// core/application/usecases/get-tasks/get-tasks.output.ts
 
 export interface IGetTasksPresenterOutput {
   presentTasks(tasks: TaskOutputData[]): TaskOutputData[];
@@ -132,7 +132,7 @@ export interface IGetTasksPresenterOutput {
 ### The Data Model
 
 ```typescript
-// core/application/usecases/get-tasks/interactor/getTasks.response.data.ts
+// core/application/usecases/get-tasks/get-tasks.response.ts
 
 export interface TaskOutputData {
   id: number;
@@ -156,7 +156,7 @@ The repository returns a `Promise` because data comes from a backend API. But th
 ### The Use Case -- Orchestration with Loading and Error Handling
 
 ```typescript
-// core/application/usecases/get-tasks/interactor/getTasks.feature.ts
+// core/application/usecases/get-tasks/get-tasks.usecase.ts
 
 export class GetTasksUseCase implements IGetTasksInput {
   constructor(
@@ -199,7 +199,7 @@ The adapters layer sits between the application and the framework. It converts u
 ### The View Model -- What the Screen Displays
 
 ```typescript
-// core/application/usecases/get-tasks/presenter/getTasks.view.model.ts
+// core/application/usecases/get-tasks/presenter/get-tasks.view.model.ts
 
 export interface TaskViewModel {
   // No id -- the view doesn't need it, only the API does
@@ -217,7 +217,7 @@ export interface TaskListViewModel {
 ### The View Interface -- A Port for the Screen
 
 ```typescript
-// core/application/usecases/get-tasks/presenter/getTasks.view.ts
+// core/application/usecases/get-tasks/presenter/get-tasks.view.ts
 
 export interface IGetTasksView {
   readonly vm: TaskListViewModel;
@@ -233,7 +233,7 @@ The View interface exposes a `vm` property that holds the current state as a pla
 ### The Presenter -- Maps Use Case Output to View Models
 
 ```typescript
-// core/application/usecases/get-tasks/presenter/getTasks.presenter.ui.ts
+// core/application/usecases/get-tasks/presenter/get-tasks.presenter.ui.ts
 
 export class GetTasksPresenterUi implements IGetTasksPresenterOutput {
   constructor(private view: IGetTasksView) {}
@@ -264,7 +264,7 @@ The Presenter's job is clear: take API data, transform it into view models, and 
 This is the simplest possible View implementation. It manages the view model as a plain object in memory -- no reactivity, no framework dependency, no change detection:
 
 ```typescript
-// core/application/usecases/get-tasks/view/getTasks.web.view.ts
+// core/application/usecases/get-tasks/view/get-tasks.web.view.ts
 
 export class GetTasksClientView implements IGetTasksView {
   readonly vm: TaskListViewModel;
@@ -575,18 +575,17 @@ High-level modules depend on abstractions. Low-level modules implement those abs
 ```
 core/
   application/
-    usecases/get-tasks/
-      interactor/
-        getTasks.feature.ts            <-- Use Case
-        getTasks.controller.input.ts   <-- Input port (IGetTasksInput)
-        getTasks.presenter.output.ts   <-- Output port (IGetTasksPresenterOutput)
-        getTasks.response.data.ts      <-- Output data model
+    usecases/get-tasks/                <-- every file named <use-case>.<role>.ts
+      get-tasks.usecase.ts             <-- Use Case
+      get-tasks.input.ts               <-- Input port (IGetTasksInput)
+      get-tasks.output.ts              <-- Output port (IGetTasksPresenterOutput)
+      get-tasks.response.ts            <-- Output data model
       presenter/
-        getTasks.presenter.ui.ts       <-- UI Presenter
-        getTasks.view.ts               <-- View interface (IGetTasksView)
-        getTasks.view.model.ts         <-- View model
+        get-tasks.presenter.ui.ts      <-- UI Presenter
+        get-tasks.view.ts              <-- View interface (IGetTasksView)
+        get-tasks.view.model.ts        <-- View model
       view/
-        getTasks.web.view.ts           <-- Simple in-memory View
+        get-tasks.web.view.ts          <-- Simple in-memory View
     ports/
       task-repository.ts               <-- Repository port (ITaskRepository)
 

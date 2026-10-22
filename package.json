@@ -27,7 +27,8 @@
     "test:bdd:watch": "jest -c tests/jest.config.ts --testPathPattern \"\\.steps\\.ts$\" --watchAll",
     "test:bdd:main": "BDD_TAGS=@main jest -c tests/jest.config.ts --testPathPattern \"\\.steps\\.ts$\" --verbose",
     "test:mongo": "MONGO_REQUIRED=true jest -c tests/jest.config.ts tests/integrations/mongo",
-    "start:api:mongo": "MONGO_URL=mongodb://localhost:27017 MONGO_DB=pchat nx serve chat-chat-server-main-api"
+    "start:api:mongo": "MONGO_URL=mongodb://localhost:27017 MONGO_DB=pchat nx serve chat-chat-server-main-api",
+    "test:mutation": "stryker run"
   },
   "private": true,
   "dependencies": {
@@ -79,6 +80,8 @@
     "@nx/node": "^20.0.0",
     "@nx/webpack": "^20.0.0",
     "@nx/workspace": "^20.0.0",
+    "@stryker-mutator/core": "^8.7.1",
+    "@stryker-mutator/jest-runner": "^8.7.1",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",

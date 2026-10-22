@@ -35,7 +35,8 @@
         "libs/chat/frameworks/web/http-nest/src/index.ts"
       ],
       "@cca/drivers/socketIo/client": ["libs/chat/drivers/socketIo/client/src/index.ts"],
-      "@cca/drivers/socketIo/server": ["libs/chat/drivers/socketIo/server/src/index.ts"]
+      "@cca/drivers/socketIo/server": ["libs/chat/drivers/socketIo/server/src/index.ts"],
+      "@cca/drivers/push/log": ["libs/chat/drivers/push/log/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

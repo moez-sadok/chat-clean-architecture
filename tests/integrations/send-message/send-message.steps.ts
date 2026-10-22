@@ -124,7 +124,6 @@ defineFeature(feature, (test) => {
         receivesFromAlice(then, 'Carol');
     });
 
-    // @wip: the domain has a push notification port (INotifier) but nothing wires it yet
     test('A participant is offline', ({ given, and, when, then }) => {
         background(given, and);
 
@@ -135,8 +134,10 @@ defineFeature(feature, (test) => {
         aliceSendsIn(when);
         receivesFromAlice(then, 'Bob');
 
-        and(/^Carol gets a push notification with "(.*)"$/, () => {
-            throw new Error('Push notifications are not implemented yet');
+        and(/^Carol gets a push notification with "(.*)"$/, async (message: string) => {
+            const carol = await s.user('Carol');
+            expect(s.main.backend.notifier.sent).toEqual([
+                { userId: carol.id, message, description: 'Alice in General' }]);
         });
 
         and(/^"(.*)" is in the history of "(.*)" when Carol comes back$/, async (message: string, room: string) => {

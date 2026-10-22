@@ -5,7 +5,7 @@
     <button [routerLink]="['/mobile/user', userId]">⬅ Rooms</button>
     <br> <br>
     <cca-get-room-messages></cca-get-room-messages>
-    <cca-send-message></cca-send-message>
+    <cca-send-message (messageSent)="showSentMessage($event)"></cca-send-message>
   </div>
 
 </div>

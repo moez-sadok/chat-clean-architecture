@@ -43,3 +43,8 @@ testem.log
 Thumbs.db
 
 .angular
+
+# mutation testing (npm run test:mutation)
+.stryker-tmp
+strykerTmp
+reports

@@ -6,7 +6,7 @@ export interface IAngularChangeDetectable {
 
 export abstract class AChangeDetectableComponent {
 
-    constructor(protected cdRef: ChangeDetectorRef, rvm: IReactive<any>) {
+    constructor(protected cdRef: ChangeDetectorRef, rvm: IReactive<unknown>) {
         if (this.isChangeDetectable(rvm)) rvm.bindChangeDetection(this.cdRef);
     }
 
